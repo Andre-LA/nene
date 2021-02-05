@@ -3,12 +3,21 @@ Tiny game library build around SDL2 and it's extension libraries (SDL_image, SDL
 
 Is a very simple game library for simple games, for now, using any library than the SDL2's ones is a
  non-goal.
+ 
+## Dependencies
+- [Nelua language](https://nelua.io/)
+- [SDL2 library](https://www.libsdl.org/)
+- [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
+- [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
+- [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
 
-Some examples are also available on [Rotor-quick](https://github.com/andre-la/rotor-quick), which is
- where `nene` is currently used.
+## Examples
+There is no examples for now, however, the
+ [Rotor-quick project contains some examples](https://github.com/Andre-LA/rotor-quick/tree/master/tests)
+ and `nene` is used there.
  
 ## Download
-You can download this library using a simple `git clone`:
+You can download this library by using a simple `git clone`:
 ```
 git clone https://github.com/Andre-LA/nene.git
 ```
