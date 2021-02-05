@@ -343,7 +343,7 @@ function CoreState:terminate()
   SDL_Quit()
 end
 
-function CoreState:pool_events(evt_callbacks: facultative(record{
+global Nene.Callbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
   edit_cb    : function(edit    : SDL_TextEditingEvent),      -- edit text editing event data
@@ -365,8 +365,11 @@ function CoreState:pool_events(evt_callbacks: facultative(record{
   syswm_cb   : function(syswm   : SDL_SysWMEvent),            -- syswm system dependent window event data
   tfinger_cb : function(tfinger : SDL_TouchFingerEvent),      -- tfinger touch finger event data
   mgesture_cb: function(mgesture: SDL_MultiGestureEvent),     -- mgesture multi finger gesture data
-  dgesture_cb: function(dgesture: SDL_DollarGestureEvent)     -- dgesture multi finger gesture data
-}))
+  dgesture_cb: function(dgesture: SDL_DollarGestureEvent),    -- dgesture multi finger gesture data
+  drop_cb    : function(drop    : SDL_DropEvent)              -- drag and drop event data
+}
+
+function CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   check(self.initialized, 'Core State variable is not initialized')
 
   local evt: SDL_Event;
@@ -424,7 +427,7 @@ function CoreState:pool_events(evt_callbacks: facultative(record{
         evt_callbacks.user_cb(evt.user)
       elseif (evt.type == SDL_WINDOWEVENT) and evt_callbacks.window_cb ~= nilptr then
         evt_callbacks.window_cb(evt.window)
-      elseif (evt.type == SDL_AUDIODEVICEADDED or evt.type == SDL_AUDIODEVICEREMOVED) and _callbacks.adevice_cb ~= nilptr then
+      elseif (evt.type == SDL_AUDIODEVICEADDED or evt.type == SDL_AUDIODEVICEREMOVED) and evt_callbacks.adevice_cb ~= nilptr then
         evt_callbacks.adevice_cb(evt.adevice)
       end
     ## end
