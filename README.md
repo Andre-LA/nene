@@ -13,7 +13,7 @@ Is a very simple game library for simple games, for now, using any library than 
 
 ## Examples
 There is no examples for now, however, the
- [Rotor-quick project contains some examples](https://github.com/Andre-LA/rotor-quick/tree/master/tests)
+ [Rotor-quick project contains some examples](https://github.com/Andre-LA/rotor-quick/tree/sdl2-refactor/tests)
  and `nene` is used there.
  
 ## Download
