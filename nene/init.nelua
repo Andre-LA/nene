@@ -1,4 +1,5 @@
 -- TODO (general):
+-- * deltaTime!
 -- * Almost all SDL calls can fail, this library should check
 --    all these calls and do something about it.
 -- * Review implicit conversions and try to optimize that
@@ -18,9 +19,9 @@ require 'sdl2_mixer'
 require 'math'
 require 'vector'
 
-require 'gamemath'
-
 global Nene = @record{}
+
+require 'nene.math'
 
 local prev_music_id: usize = 0
 
@@ -32,15 +33,15 @@ global Nene.Color = @record{
 }
 
 -- Some handy colors
-global Nene.Palette:record{
-  BLACK: Nene.Color,
-  WHITE: Nene.Color,
-  RED: Nene.Color,
-  GREEN: Nene.Color,
-  BLUE: Nene.Color,
-  YELLOW: Nene.Color,
-  BG: Nene.Color,
-} = {
+global Nene.Palette: record{
+  black: Nene.Color,
+  white: Nene.Color,
+  red: Nene.Color,
+  green: Nene.Color,
+  blue: Nene.Color,
+  yellow: Nene.Color,
+  bg: Nene.Color,
+} <const> = {
   { 0x00, 0x00, 0x00, 0xff },
   { 0xff, 0xff, 0xff, 0xff },
   { 0xff, 0x00, 0x00, 0xff },
@@ -209,8 +210,8 @@ global Nene.Tilemap = @record{
   map: vector(isize),
 }
 
-function Nene.Tilemap:get_position_from_index(index: usize): GameMath.Vec2
-  return (@GameMath.Vec2){
+function Nene.Tilemap:get_position_from_index(index: usize): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){
     x = (index % self.width) * self.atlas.unit_width,
     y = (index // self.width) * self.atlas.unit_height
   }
@@ -229,6 +230,7 @@ end
 -- that doesn't contains this limitation should be a Nene
 --  function instead.
 -- This is something that needs to be reviewed too.
+-- Note that Nene is made to use only one window.
 global Nene.CoreState = @record{
   initialized: boolean,
   quit: boolean,
@@ -251,9 +253,9 @@ local CoreState: type = Nene.CoreState
 --   succeeded before trying to use the state
 function Nene.init(
   title: stringview,
-  pos_x: integer, pos_y: integer,
   size_x: integer, size_y: integer,
-  flags: uint32
+  pos_x: facultative(integer), pos_y: facultative(integer),
+  flags: facultative(uint32)
 ): (boolean, stringview, Nene.CoreState)
   local new_state: Nene.CoreState = {}
 
@@ -261,6 +263,16 @@ function Nene.init(
   if sdl_init_result < 0 then
     return false, SDL_GetError(), new_state
   end
+
+  ## if pos_x.type.is_niltype then
+    local pos_x = SDL_WINDOWPOS_UNDEFINED
+  ## end
+  ## if pos_y.type.is_niltype then
+    local pos_y = SDL_WINDOWPOS_UNDEFINED
+  ## end
+  ## if flags.type.is_niltype then
+    local flags = SDL_WINDOW_SHOWN
+  ## end
 
   local window = SDL_CreateWindow(title, pos_x, pos_y, size_x, size_y, flags)
   if not window then
@@ -297,6 +309,13 @@ function Nene.init(
   }
 
   return true, "", new_state
+end
+
+-- Get the size of window
+function Nene.CoreState:get_window_size(): Nene.Math.Vec2
+  local ww: cint, wh: cint;
+  SDL_GetWindowSize(self.window, &ww, &wh)
+  return (@Nene.Math.Vec2){ x = ww, y = wh}
 end
 
 -- plays a music
@@ -517,7 +536,7 @@ end
 function CoreState:render_draw_atlas_frame(
   atlas_src: overload(Nene.TextureAtlas, Nene.SpriteSheet, Nene.Tilemap),
   frame: usize,
-  position: GameMath.Vec2,
+  position: Nene.Math.Vec2,
   color: Nene.Color
 )
   check(self.initialized, 'Core State variable is not initialized')
@@ -555,7 +574,7 @@ function CoreState:render_draw_atlas_frame(
   SDL_RenderCopy(self.renderer, atlas_texture, src_rect, dest_rect)
 end
 
-function CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: GameMath.Vec2, color: Nene.Color)
+function CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
   check(tilemap.atlas ~= nilptr, "tilemap's atlas is not initialized")
 
@@ -580,7 +599,7 @@ function CoreState:render_clear(color: Nene.Color)
   SDL_RenderClear(self.renderer)
 end
 
-function CoreState:render_draw_rect(rect: GameMath.Rect, use_lines: boolean, color: Nene.Color)
+function CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
 
   local sdl_rect: SDL_Rect = {

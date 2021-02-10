@@ -1,0 +1,63 @@
+require 'nene'
+
+global Nene.Math = @record{}
+
+global Nene.Math.Vec2 = @record{
+  x: number,
+  y: number
+}
+
+function Nene.Math.Vec2.__len(v: Nene.Math.Vec2): number
+  return math.sqrt( (v.x * v.x) + (v.y * v.y) )
+end
+
+function Nene.Math.Vec2.__add(l: Nene.Math.Vec2, r: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){ x = l.x + r.x, y = l.y + r.y }
+end
+
+function Nene.Math.Vec2.__sub(l: Nene.Math.Vec2, r: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){ x = l.x - r.x, y = l.y - r.y }
+end
+
+function Nene.Math.Vec2.__mul(l: Nene.Math.Vec2, r: overload(Nene.Math.Vec2, number)): Nene.Math.Vec2
+  ## if r.type.is_arithmetic then
+    return (@Nene.Math.Vec2){ x = l.x * r, y = l.y * r }
+  ## else
+    return (@Nene.Math.Vec2){ x = l.x * r.x, y = l.y * r.y }
+  ## end
+end
+
+function Nene.Math.Vec2.__div(l: Nene.Math.Vec2, r: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){ x = l.x / r.x, y = l.y / r.y }
+end
+
+## local decl_rect = function(name, T)
+  ## staticassert(T.value.is_arithmetic, 'T is not arithmetic')
+
+  local T = #[T]#
+
+  global Nene.Math.#|name|# = @record{
+    x: T,
+    y: T,
+    w: T,
+    h: T
+  }
+
+## end
+
+## decl_rect('Rectf', number)
+## decl_rect('Rect', integer)
+
+function Nene.Math.Rectf:to_rect(): Nene.Math.Rect
+  return (@Nene.Math.Rect){
+    x = math.ifloor(self.x), y = math.ifloor(self.y),
+    w = math.ifloor(self.w), h = math.ifloor(self.h)
+  }
+end
+
+function Nene.Math.Rect:to_rectf(): Nene.Math.Rectf
+  return (@Nene.Math.Rectf){
+    x = self.x, y = self.y,
+    w = self.w, h = self.h
+  }
+end
