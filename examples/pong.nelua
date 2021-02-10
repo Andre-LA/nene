@@ -1,0 +1,87 @@
+require 'nene'
+
+local SETTINGS: record{
+  racket: record{
+    size: Nene.Math.Vec2,
+    velocity: integer,
+  },
+  ball: record{
+    radius: integer,
+  }
+} <const> = {
+  racket = {
+    size = { 20, 100 },
+    velocity = 20,
+  },
+  ball = {
+    radius = 10
+  }
+}
+
+local Racket = @record{
+  pos_y: integer,
+}
+
+function Racket.new(player_one: boolean): Racket
+  return (@Racket){ pos_y = 200 }
+end
+
+function Racket:draw(nene_state: Nene.CoreState, player_one: boolean, winsize: Nene.Math.Vec2)
+  nene_state:render_draw_rect(
+    {
+      x = player_one and SETTINGS.racket.size.x or winsize.x - (SETTINGS.racket.size.x * 2),
+      y = self.pos_y,
+      w = SETTINGS.racket.size.x,
+      h = SETTINGS.racket.size.y,
+    },
+    true,
+    Nene.Palette.yellow
+  )
+end
+
+local Ball = @record{
+  pos: Nene.Math.Vec2
+}
+
+function Ball.new(winsize: Nene.Math.Vec2)
+  return (@Ball){ pos = { winsize.x // 2, winsize.y // 2 } }
+end
+
+function Ball:draw(nene_state: Nene.CoreState)
+  local radius = SETTINGS.ball.radius
+  local half_radius: integer = radius // 2
+
+  -- unfortunately Nene only support rect drawing
+  nene_state:render_draw_rect(
+    {
+      x = self.pos.x - half_radius,
+      y = self.pos.y - half_radius,
+      w = radius,
+      h = radius,
+    },
+    true,
+    Nene.Palette.white
+  )
+end
+
+-- main code:
+local ok, errmsg, nene_state = Nene.init('nene pong example', 800, 600)
+check(ok, errmsg)
+
+local winsize <const> = nene_state:get_window_size()
+
+local pl_1, pl_2 = Racket.new(true), Racket.new(false)
+local ball = Ball.new(winsize)
+
+repeat
+
+  nene_state:pool_events()
+
+  nene_state:render_clear(Nene.Palette.bg)
+  do
+    pl_1:draw(nene_state, true, winsize)
+    pl_2:draw(nene_state, false, winsize)
+    ball:draw(nene_state)
+  end
+  nene_state:render_present()
+until nene_state.quit
