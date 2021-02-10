@@ -1,3 +1,6 @@
+-- NOTE: nene only supports drawing rects, so the "ball" in this pong example will be
+--       a rect, I may change to a texture (drawing polygons is something far away in the moment)
+
 require 'nene'
 
 local SETTINGS: record{
@@ -7,14 +10,16 @@ local SETTINGS: record{
   },
   ball: record{
     radius: integer,
+    velocity: integer,
   }
 } <const> = {
   racket = {
     size = { 20, 100 },
-    velocity = 20,
+    velocity = 10,
   },
   ball = {
-    radius = 10
+    radius = 20,
+    velocity = 5,
   }
 }
 
@@ -22,46 +27,107 @@ local Racket = @record{
   pos_y: integer,
 }
 
-function Racket.new(player_one: boolean): Racket
+function Racket.new(): Racket
   return (@Racket){ pos_y = 200 }
 end
 
-function Racket:draw(nene_state: Nene.CoreState, player_one: boolean, winsize: Nene.Math.Vec2)
-  nene_state:render_draw_rect(
-    {
-      x = player_one and SETTINGS.racket.size.x or winsize.x - (SETTINGS.racket.size.x * 2),
-      y = self.pos_y,
-      w = SETTINGS.racket.size.x,
-      h = SETTINGS.racket.size.y,
-    },
-    true,
-    Nene.Palette.yellow
-  )
+function Racket:get_rect(is_player_one: boolean, winsize: Nene.Math.Vec2): Nene.Math.Rect
+  return (@Nene.Math.Rect){
+    x = is_player_one and SETTINGS.racket.size.x or winsize.x - (SETTINGS.racket.size.x * 2),
+    y = self.pos_y,
+    w = SETTINGS.racket.size.x,
+    h = SETTINGS.racket.size.y,
+  }
+end
+
+function Racket:update(is_player_one: boolean, winsize: Nene.Math.Vec2, nene_state: Nene.CoreState)
+  local is_up, is_down = false, false
+
+  if is_player_one then
+    is_up, is_down = nene_state:get_key(SDL_SCANCODE_W), nene_state:get_key(SDL_SCANCODE_S)
+  else
+    is_up, is_down = nene_state:get_key(SDL_SCANCODE_I), nene_state:get_key(SDL_SCANCODE_K)
+  end
+
+  if is_up then
+    self.pos_y = self.pos_y - SETTINGS.racket.velocity
+  end
+  if is_down then
+    self.pos_y = self.pos_y + SETTINGS.racket.velocity
+  end
+
+  if self.pos_y < 0 then
+    self.pos_y = 0
+  elseif self.pos_y + SETTINGS.racket.size.y > winsize.y then
+    self.pos_y = winsize.y - SETTINGS.racket.size.y
+  end
+end
+
+function Racket:draw(nene_state: Nene.CoreState, is_player_one: boolean, winsize: Nene.Math.Vec2)
+  nene_state:render_draw_rect(self:get_rect(is_player_one, winsize), false, Nene.Palette.yellow)
 end
 
 local Ball = @record{
-  pos: Nene.Math.Vec2
+  pos: Nene.Math.Vec2,
+  direction: Nene.Math.Vec2,
 }
 
 function Ball.new(winsize: Nene.Math.Vec2)
-  return (@Ball){ pos = { winsize.x // 2, winsize.y // 2 } }
+  return (@Ball){
+    pos = { winsize.x // 2, winsize.y // 2 },
+    direction = { 1, 1 },
+  }
+end
+
+function Ball:get_corner_pos(): Nene.Math.Vec2
+  local half_radius: integer = SETTINGS.ball.radius // 2
+
+  return (@Nene.Math.Vec2){
+    x = self.pos.x - half_radius,
+    y = self.pos.y - half_radius,
+  }
+end
+
+function Ball:get_rect(): Nene.Math.Rect
+  local corner_pos = self:get_corner_pos()
+
+  return (@Nene.Math.Rect){
+    x = corner_pos.x,
+    y = corner_pos.y,
+    w = SETTINGS.ball.radius,
+    h = SETTINGS.ball.radius,
+  }
+end
+
+function Ball:update(winsize: Nene.Math.Vec2, racket_1: Racket, racket_2: Racket)
+  self.pos.x = self.pos.x + self.direction.x * SETTINGS.ball.velocity
+  self.pos.y = self.pos.y + self.direction.y * SETTINGS.ball.velocity
+
+  local corner_pos = self:get_corner_pos()
+  local ball_rect = self:get_rect()
+
+  -- invert direction when intersecting window corners
+  if corner_pos.x < 0 or corner_pos.x + SETTINGS.ball.radius > winsize.x then
+    self.direction.x = -self.direction.x
+  end
+  if corner_pos.y < 0 or corner_pos.y + SETTINGS.ball.radius > winsize.y then
+    self.direction.y = -self.direction.y
+  end
+
+  -- invert direction when intersecting rackets
+  local r1_rect = racket_1:get_rect(true, winsize)
+  local r2_rect = racket_2:get_rect(false, winsize)
+
+  if ball_rect:is_rect_intersecting(r1_rect) or ball_rect:is_rect_intersecting(r2_rect) then
+    self.direction.x = -self.direction.x
+  end
 end
 
 function Ball:draw(nene_state: Nene.CoreState)
-  local radius = SETTINGS.ball.radius
-  local half_radius: integer = radius // 2
+  local corner_pos = self:get_corner_pos()
 
-  -- unfortunately Nene only support rect drawing
-  nene_state:render_draw_rect(
-    {
-      x = self.pos.x - half_radius,
-      y = self.pos.y - half_radius,
-      w = radius,
-      h = radius,
-    },
-    true,
-    Nene.Palette.white
-  )
+  -- unfortunately Nene only supports rect drawing
+  nene_state:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
 end
 
 -- main code:
@@ -70,18 +136,25 @@ check(ok, errmsg)
 
 local winsize <const> = nene_state:get_window_size()
 
-local pl_1, pl_2 = Racket.new(true), Racket.new(false)
+local pl_1, pl_2 = Racket.new(), Racket.new()
 local ball = Ball.new(winsize)
 
 repeat
-
   nene_state:pool_events()
 
-  nene_state:render_clear(Nene.Palette.bg)
-  do
+  do -- update step
+    ball:update(winsize, pl_1, pl_2)
+    pl_1:update(true, winsize, nene_state)
+    pl_2:update(false, winsize, nene_state)
+  end
+
+  do -- draw step
+    nene_state:render_clear(Nene.Palette.bg)
+
     pl_1:draw(nene_state, true, winsize)
     pl_2:draw(nene_state, false, winsize)
     ball:draw(nene_state)
+
+    nene_state:render_present()
   end
-  nene_state:render_present()
 until nene_state.quit
