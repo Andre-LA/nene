@@ -1,9 +1,9 @@
 -- NOTE: nene only supports drawing rects, so the "ball" in this pong example will be
 --       a rect, I may change to a texture (drawing polygons is something far away in the moment)
-
 require 'nene'
 
 local SETTINGS: record{
+  winsize: Nene.Math.Vec2,
   racket: record{
     size: Nene.Math.Vec2,
     velocity: integer,
@@ -13,9 +13,10 @@ local SETTINGS: record{
     velocity: integer,
   }
 } <const> = {
+  winsize = { 640, 360 },
   racket = {
-    size = { 20, 100 },
-    velocity = 10,
+    size = { 50, 100 },
+    velocity = 4,
   },
   ball = {
     radius = 20,
@@ -31,16 +32,16 @@ function Racket.new(): Racket
   return (@Racket){ pos_y = 200 }
 end
 
-function Racket:get_rect(is_player_one: boolean, winsize: Nene.Math.Vec2): Nene.Math.Rect
+function Racket:get_rect(is_player_one: boolean): Nene.Math.Rect
   return (@Nene.Math.Rect){
-    x = is_player_one and SETTINGS.racket.size.x or winsize.x - (SETTINGS.racket.size.x * 2),
+    x = is_player_one and SETTINGS.racket.size.x or SETTINGS.winsize.x - (SETTINGS.racket.size.x * 2),
     y = self.pos_y,
     w = SETTINGS.racket.size.x,
     h = SETTINGS.racket.size.y,
   }
 end
 
-function Racket:update(is_player_one: boolean, winsize: Nene.Math.Vec2, nene_state: Nene.CoreState)
+function Racket:update(is_player_one: boolean, nene_state: Nene.CoreState)
   local is_up, is_down = false, false
 
   if is_player_one then
@@ -58,13 +59,13 @@ function Racket:update(is_player_one: boolean, winsize: Nene.Math.Vec2, nene_sta
 
   if self.pos_y < 0 then
     self.pos_y = 0
-  elseif self.pos_y + SETTINGS.racket.size.y > winsize.y then
-    self.pos_y = winsize.y - SETTINGS.racket.size.y
+  elseif self.pos_y + SETTINGS.racket.size.y > SETTINGS.winsize.y then
+    self.pos_y = SETTINGS.winsize.y - SETTINGS.racket.size.y
   end
 end
 
-function Racket:draw(nene_state: Nene.CoreState, is_player_one: boolean, winsize: Nene.Math.Vec2)
-  nene_state:render_draw_rect(self:get_rect(is_player_one, winsize), false, Nene.Palette.yellow)
+function Racket:draw(nene_state: Nene.CoreState, is_player_one: boolean)
+  nene_state:render_draw_rect(self:get_rect(is_player_one), false, Nene.Palette.yellow)
 end
 
 local Ball = @record{
@@ -72,9 +73,9 @@ local Ball = @record{
   direction: Nene.Math.Vec2,
 }
 
-function Ball.new(winsize: Nene.Math.Vec2)
+function Ball.new()
   return (@Ball){
-    pos = { winsize.x // 2, winsize.y // 2 },
+    pos = { SETTINGS.winsize.x // 2, SETTINGS.winsize.y // 2 },
     direction = { 1, 1 },
   }
 end
@@ -99,7 +100,7 @@ function Ball:get_rect(): Nene.Math.Rect
   }
 end
 
-function Ball:update(winsize: Nene.Math.Vec2, racket_1: Racket, racket_2: Racket)
+function Ball:update(racket_1: Racket, racket_2: Racket)
   self.pos.x = self.pos.x + self.direction.x * SETTINGS.ball.velocity
   self.pos.y = self.pos.y + self.direction.y * SETTINGS.ball.velocity
 
@@ -107,16 +108,16 @@ function Ball:update(winsize: Nene.Math.Vec2, racket_1: Racket, racket_2: Racket
   local ball_rect = self:get_rect()
 
   -- invert direction when intersecting window corners
-  if corner_pos.x < 0 or corner_pos.x + SETTINGS.ball.radius > winsize.x then
+  if corner_pos.x < 0 or corner_pos.x + SETTINGS.ball.radius > SETTINGS.winsize.x then
     self.direction.x = -self.direction.x
   end
-  if corner_pos.y < 0 or corner_pos.y + SETTINGS.ball.radius > winsize.y then
+  if corner_pos.y < 0 or corner_pos.y + SETTINGS.ball.radius > SETTINGS.winsize.y then
     self.direction.y = -self.direction.y
   end
 
   -- invert direction when intersecting rackets
-  local r1_rect = racket_1:get_rect(true, winsize)
-  local r2_rect = racket_2:get_rect(false, winsize)
+  local r1_rect = racket_1:get_rect(true)
+  local r2_rect = racket_2:get_rect(false)
 
   if ball_rect:is_rect_intersecting(r1_rect) or ball_rect:is_rect_intersecting(r2_rect) then
     self.direction.x = -self.direction.x
@@ -131,28 +132,26 @@ function Ball:draw(nene_state: Nene.CoreState)
 end
 
 -- main code:
-local ok, errmsg, nene_state = Nene.init('nene pong example', 800, 600)
+local ok, errmsg, nene_state = Nene.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
 check(ok, errmsg)
 
-local winsize <const> = nene_state:get_window_size()
-
 local pl_1, pl_2 = Racket.new(), Racket.new()
-local ball = Ball.new(winsize)
+local ball = Ball.new()
 
 repeat
   nene_state:pool_events()
 
   do -- update step
-    ball:update(winsize, pl_1, pl_2)
-    pl_1:update(true, winsize, nene_state)
-    pl_2:update(false, winsize, nene_state)
+    ball:update(pl_1, pl_2)
+    pl_1:update(true, nene_state)
+    pl_2:update(false, nene_state)
   end
 
   do -- draw step
     nene_state:render_clear(Nene.Palette.bg)
 
-    pl_1:draw(nene_state, true, winsize)
-    pl_2:draw(nene_state, false, winsize)
+    pl_1:draw(nene_state, true)
+    pl_2:draw(nene_state, false)
     ball:draw(nene_state)
 
     nene_state:render_present()

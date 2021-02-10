@@ -257,6 +257,8 @@ function Nene.init(
   pos_x: facultative(integer), pos_y: facultative(integer),
   flags: facultative(uint32)
 ): (boolean, stringview, Nene.CoreState)
+  check(size_x > 0 and size_y > 0, 'cannot create a window with `0` as a size parameter')
+
   local new_state: Nene.CoreState = {}
 
   local sdl_init_result = SDL_Init(SDL_INIT_VIDEO)
