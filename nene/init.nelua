@@ -1,5 +1,4 @@
 -- TODO (general):
--- * deltaTime!
 -- * Almost all SDL calls can fail, this library should check
 --    all these calls and do something about it.
 -- * Review implicit conversions and try to optimize that
@@ -238,6 +237,7 @@ global Nene.CoreState = @record{
   renderer: *SDL_Renderer,
   keyboard_state: span(uint8),
   current_music: Nene.Music,
+  previous_time: uint32,
 }
 
 local CoreState: type = Nene.CoreState
@@ -305,7 +305,7 @@ function Nene.init(
     initialized = true,
     quit = false,
     =window,
-    =renderer,
+    =renderer
   }
 
   return true, "", new_state
@@ -388,6 +388,7 @@ global Nene.Callbacks = @record{
   drop_cb    : function(drop    : SDL_DropEvent)              -- drag and drop event data
 }
 
+-- TODO: Should I rename this method as "update"?
 function CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   check(self.initialized, 'Core State variable is not initialized')
 
@@ -616,12 +617,17 @@ function CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, co
   end
 end
 
-function Nene.get_ms_time()
+function CoreState:get_ms_time()
   return SDL_GetTicks()
+end
+
+function CoreState:get_deltatime()
+  return self:get_ms_time() - self.previous_time
 end
 
 function CoreState:render_present()
   check(self.initialized, 'Core State variable is not initialized')
 
+  self.previous_time = self:get_ms_time()
   SDL_RenderPresent(self.renderer)
 end
