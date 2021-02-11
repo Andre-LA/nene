@@ -102,8 +102,13 @@ function Nene.Music:free()
   self._data = nilptr
 end
 
--- TODO:
-global Nene.Camera = @record{b: byte}
+global Nene.Camera = @record{
+  pos: Nene.Math.Vec2,
+}
+
+function Nene.Camera:get_relative_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){pos.x - self.pos.x, pos.y - self.pos.y}
+end
 
 -- just a wrap of SDL_Texture, the `_data` field
 -- should never be directly accessed, instead, use
@@ -238,6 +243,7 @@ global Nene.CoreState = @record{
   keyboard_state: span(uint8),
   current_music: Nene.Music,
   previous_time: uint32,
+  camera: Nene.Camera,
 }
 
 local CoreState: type = Nene.CoreState
@@ -305,7 +311,6 @@ function Nene.init(
 
   new_state = {
     initialized = true,
-    quit = false,
     =window,
     =renderer
   }
@@ -313,11 +318,22 @@ function Nene.init(
   return true, "", new_state
 end
 
--- Get the size of window
+-- Get the size of current window
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
   local ww: cint, wh: cint;
   SDL_GetWindowSize(self.window, &ww, &wh)
   return (@Nene.Math.Vec2){ x = ww, y = wh}
+end
+
+-- Get a proper drawing origin position (left-up point) considering the
+-- camera's position and the window's screen size
+function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
+  local cam_relative_pos = self.camera:get_relative_pos(pos)
+  local winsize = self:get_window_size() * 0.5
+  return (@Nene.Math.Vec2){
+    x = cam_relative_pos.x + winsize.x,
+    y = cam_relative_pos.y + winsize.y
+  }
 end
 
 -- plays a music
@@ -562,16 +578,14 @@ function CoreState:render_draw_atlas_frame(
     h = atlas.unit_height
   }
 
+  position = self:get_render_pos(position)
+
   local dest_rect: SDL_Rect = {
     x = math.ifloor(position.x),
     y = math.ifloor(position.y),
     w = atlas.unit_width,
     h = atlas.unit_height,
   }
-
-  if color.g == 0 then
-    print('color:', color.r, color.g, color.b)
-  end
 
   SDL_SetTextureColorMod(atlas_texture, color.r, color.g, color.b)
   SDL_RenderCopy(self.renderer, atlas_texture, src_rect, dest_rect)
@@ -605,8 +619,10 @@ end
 function CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
 
+  local target_pos = self:get_render_pos({rect.x, rect.y})
+
   local sdl_rect: SDL_Rect = {
-    x = rect.x, y = rect.y,
+    x = target_pos.x, y = target_pos.y,
     w = rect.w, h = rect.h
   }
 
