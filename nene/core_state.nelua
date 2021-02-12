@@ -102,6 +102,7 @@ function Nene.init(
 
   new_state = {
     initialized = true,
+    camera = { pos = { x = size_x // 2, y = size_y // 2 } },
     =window,
     =renderer
   }
