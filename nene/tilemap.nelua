@@ -1,0 +1,28 @@
+require 'nene.texture_atlas'
+require 'nene.math'
+require 'vector'
+
+-- a tilemap uses an atlas and applies it for tilemaps:
+-- it contains just two fields:
+-- * atlas field (read above)
+-- * a map, this map is a vector of integers,
+--   0 and positive numbers refers to the indexes of the atlas,
+--   while negative numbers is a "skip" count, which skips
+--   some tiles of the tilemap, this should be used on empty
+--   space tiles (like the space of a room);
+global Nene.Tilemap = @record{
+  atlas: *Nene.TextureAtlas,
+  width: uinteger,
+  height: uinteger,
+  map: vector(isize),
+}
+
+function Nene.Tilemap:get_position_from_index(index: usize): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){
+    x = (index % self.width) * self.atlas.unit_width,
+    y = (index // self.width) * self.atlas.unit_height
+  }
+end
+
+## Nene.value.metafields.Tilemap.value.is_tilemap = true
+## Nene.value.metafields.Tilemap.value.is_atlas_user = true

@@ -1,0 +1,9 @@
+require 'nene.math'
+
+global Nene.Camera = @record{
+  pos: Nene.Math.Vec2,
+}
+
+function Nene.Camera:get_relative_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){pos.x - self.pos.x, pos.y - self.pos.y}
+end

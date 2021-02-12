@@ -1,0 +1,54 @@
+require 'sdl2_mixer'
+require 'nene.core'
+
+global Nene.Sound = @record{
+  _data: *Mix_Chunk,
+  channel: integer, -- -1 when no channel is being used
+}
+
+-- plays the sound
+-- when `true` is passed as argument, the sound will loop forever;
+-- when a integer is passed as a argument, the sound will loop `loop` times
+function Nene.Sound:play(loop: overload(boolean, integer, niltype))
+  check(self._data ~= nilptr, 'play: Cannot play a nilptr sound')
+  local loops = 0
+
+  ## if loop.type.is_boolean then
+    loops = loop and -1 or 0
+  ## elseif loop.type.is_integral then
+    loops = ĺoop
+  ## end
+
+  self.channel = Mix_PlayChannel(-1, self._data, loops)
+end
+
+-- stops the sound
+function Nene.Sound:stop()
+  if self.channel >= 0 then
+    Mix_HaltChannel(self.channel)
+    self.channel = -1
+  end
+end
+
+-- free the sound's memory, is recommended to first stop the sound, use `stop_and_free` instead
+function Nene.Sound:free()
+  check(self._data ~= nilptr, 'free: cannot free a nilptr sound')
+  Mix_FreeChunk(self._data)
+  self._data = nilptr
+end
+
+-- stops and free the sound's memory
+function Nene.Sound:stop_and_free()
+  self:stop()
+  self:free()
+end
+
+global Nene.Music = @record{
+  _data: *Mix_Music,
+  id: usize,
+}
+
+function Nene.Music:free()
+  Mix_FreeMusic(self._data)
+  self._data = nilptr
+end

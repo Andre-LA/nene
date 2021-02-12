@@ -1,0 +1,27 @@
+require 'nene.core'
+
+global Nene.Color = @record{
+  r: uint8,
+  g: uint8,
+  b: uint8,
+  a: uint8,
+}
+
+-- Some handy colors
+global Nene.Palette: record{
+  black: Nene.Color,
+  white: Nene.Color,
+  red: Nene.Color,
+  green: Nene.Color,
+  blue: Nene.Color,
+  yellow: Nene.Color,
+  bg: Nene.Color,
+} <const> = {
+  { 0x00, 0x00, 0x00, 0xff },
+  { 0xff, 0xff, 0xff, 0xff },
+  { 0xff, 0x00, 0x00, 0xff },
+  { 0x00, 0xff, 0x00, 0xff },
+  { 0x00, 0x00, 0xff, 0xff },
+  { 0xfc, 0xea, 0x20, 0xff },
+  { 0x69, 0x46, 0x6b, 0xff }
+}

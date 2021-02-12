@@ -1,0 +1,12 @@
+require 'nene.texture'
+
+-- a texture atlas just contains a pointer to a texture
+-- and the information about individual sub-textures
+-- the texture atlas in Nene is used just like
+-- as a tile set, in other words, all sub-textures of this
+-- atlas contains the same size and are uniformly aligned
+global Nene.TextureAtlas = @record{
+  texture: *Nene.Texture,
+  unit_width: uinteger,
+  unit_height: uinteger
+}

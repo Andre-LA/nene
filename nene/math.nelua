@@ -1,7 +1,7 @@
 -- TODO:
 -- review this module with proper math algorithms
 
-require 'nene'
+require 'nene.core'
 require 'math'
 
 global Nene.Math = @record{}

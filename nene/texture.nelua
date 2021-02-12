@@ -1,0 +1,39 @@
+require 'sdl2'
+
+-- just a wrap of SDL_Texture, the `_data` field
+-- should never be directly accessed, instead, use
+-- the methods, which do checks
+global Nene.Texture = @record{
+  _data: *SDL_Texture,
+  width: uinteger,
+  height: uinteger,
+}
+
+-- create a new initialized texture, always either use this or `Nene.CoreState.load_texture`
+function Nene.Texture.new(new_tex: *SDL_Texture): Nene.Texture
+  check(new_tex ~= nilptr, "Cannot initialize Nene.Texture with a nilptr")
+
+  local fmt: uint32, access: cint, w: cint, h: cint;
+  local ok = SDL_QueryTexture(new_tex, &fmt, &access, &w, &h)
+
+  local new: Nene.Texture = {
+    _data = new_tex,
+    width = w,
+    height = h,
+  }
+  return new
+end
+
+function Nene.Texture:get(): *SDL_Texture
+  check(self ~= nilptr, 'Texture is nilptr')
+  check(self._data ~= nilptr, "Texture doesn't points to any loaded resource")
+  return self._data
+end
+
+-- I may move this to a general "free" function of Nene
+-- which could decide the right free procedure at compile-time
+function Nene.Texture:free()
+  check(self._data ~= nilptr, "There is no texture to be freed")
+  SDL_DestroyTexture(self._data)
+  self._data = nilptr
+end
