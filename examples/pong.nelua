@@ -1,6 +1,7 @@
 -- NOTE: nene only supports drawing rects, so the "ball" in this pong example will be
 --       a rect, I may change to a texture (drawing polygons is something far away in the moment)
 require 'nene'
+require 'string'
 
 local SETTINGS: record{
   winsize: Nene.Math.Vec2,
@@ -19,32 +20,34 @@ local SETTINGS: record{
     velocity = 4,
   },
   ball = {
-    radius = 20,
+    radius = 10,
     velocity = 5,
   }
 }
 
 local Racket = @record{
   pos_y: integer,
+  is_player_one: boolean,
+  points: integer,
 }
 
-function Racket.new(): Racket
-  return (@Racket){ pos_y = 200 }
+function Racket.new(is_player_one: boolean): Racket
+  return (@Racket){ pos_y = 200, =is_player_one }
 end
 
-function Racket:get_rect(is_player_one: boolean): Nene.Math.Rect
+function Racket:get_rect(): Nene.Math.Rect
   return (@Nene.Math.Rect){
-    x = is_player_one and SETTINGS.racket.size.x or SETTINGS.winsize.x - (SETTINGS.racket.size.x * 2),
+    x = self.is_player_one and SETTINGS.racket.size.x or SETTINGS.winsize.x - (SETTINGS.racket.size.x * 2),
     y = self.pos_y,
     w = SETTINGS.racket.size.x,
     h = SETTINGS.racket.size.y,
   }
 end
 
-function Racket:update(is_player_one: boolean, nene_state: Nene.CoreState)
+function Racket:update(nene_state: Nene.CoreState)
   local is_up, is_down = false, false
 
-  if is_player_one then
+  if self.is_player_one then
     is_up, is_down = nene_state:get_key(SDL_SCANCODE_W), nene_state:get_key(SDL_SCANCODE_S)
   else
     is_up, is_down = nene_state:get_key(SDL_SCANCODE_I), nene_state:get_key(SDL_SCANCODE_K)
@@ -64,8 +67,8 @@ function Racket:update(is_player_one: boolean, nene_state: Nene.CoreState)
   end
 end
 
-function Racket:draw(nene_state: Nene.CoreState, is_player_one: boolean)
-  nene_state:render_draw_rect(self:get_rect(is_player_one), false, Nene.Palette.yellow)
+function Racket:draw(nene_state: Nene.CoreState)
+  nene_state:render_draw_rect(self:get_rect(), false, Nene.Palette.yellow)
 end
 
 local Ball = @record{
@@ -81,26 +84,23 @@ function Ball.new()
 end
 
 function Ball:get_corner_pos(): Nene.Math.Vec2
-  local half_radius: integer = SETTINGS.ball.radius // 2
-
   return (@Nene.Math.Vec2){
-    x = self.pos.x - half_radius,
-    y = self.pos.y - half_radius,
+    x = self.pos.x - SETTINGS.ball.radius,
+    y = self.pos.y - SETTINGS.ball.radius,
   }
 end
 
 function Ball:get_rect(): Nene.Math.Rect
   local corner_pos = self:get_corner_pos()
-
   return (@Nene.Math.Rect){
     x = corner_pos.x,
     y = corner_pos.y,
-    w = SETTINGS.ball.radius,
-    h = SETTINGS.ball.radius,
+    w = SETTINGS.ball.radius * 2,
+    h = SETTINGS.ball.radius * 2,
   }
 end
 
-function Ball:update(racket_1: Racket, racket_2: Racket)
+function Ball:update(racket_1: *Racket, racket_2: *Racket)
   self.pos.x = self.pos.x + self.direction.x * SETTINGS.ball.velocity
   self.pos.y = self.pos.y + self.direction.y * SETTINGS.ball.velocity
 
@@ -108,26 +108,40 @@ function Ball:update(racket_1: Racket, racket_2: Racket)
   local ball_rect = self:get_rect()
 
   -- invert direction when intersecting window corners
-  if corner_pos.x < 0 or corner_pos.x + SETTINGS.ball.radius > SETTINGS.winsize.x then
+  local intersected_window_left = corner_pos.x < 0
+  local intersected_window_right = corner_pos.x + SETTINGS.ball.radius > SETTINGS.winsize.x
+
+  if intersected_window_left or intersected_window_right then
+    if intersected_window_left then
+      racket_2.points = racket_2.points + 1
+    else
+      racket_1.points = racket_1.points + 1
+    end
+
+    print(intersected_window_left, intersected_window_right)
     self.direction.x = -self.direction.x
   end
+
   if corner_pos.y < 0 or corner_pos.y + SETTINGS.ball.radius > SETTINGS.winsize.y then
     self.direction.y = -self.direction.y
   end
 
   -- invert direction when intersecting rackets
-  local r1_rect = racket_1:get_rect(true)
-  local r2_rect = racket_2:get_rect(false)
+  local r1_rect, r2_rect = racket_1:get_rect(), racket_2:get_rect()
+  local is_r1_intersecting, is_r2_intersecting = ball_rect:is_rect_intersecting(r1_rect), ball_rect:is_rect_intersecting(r2_rect)
 
-  if ball_rect:is_rect_intersecting(r1_rect) or ball_rect:is_rect_intersecting(r2_rect) then
+  if is_r1_intersecting or is_r2_intersecting then
     self.direction.x = -self.direction.x
+
+    self.pos.x = (do
+      local racket_surface_x = is_r1_intersecting and r1_rect.x + r1_rect.w or r2_rect.x
+      local radius_offset = (SETTINGS.ball.radius + 1) * (is_r1_intersecting and 1 or -1)
+      return racket_surface_x + radius_offset
+    end)
   end
 end
 
 function Ball:draw(nene_state: Nene.CoreState)
-  local corner_pos = self:get_corner_pos()
-
-  -- unfortunately Nene only supports rect drawing
   nene_state:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
 end
 
@@ -135,24 +149,52 @@ end
 local ok, errmsg, nene_state = Nene.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
 check(ok, errmsg)
 
-local pl_1, pl_2 = Racket.new(), Racket.new()
+local pl_1, pl_2 = Racket.new(true), Racket.new(false)
 local ball = Ball.new()
+
+local ok, errmsg, font = nene_state:load_font('examples/monogram_extended.ttf', 48) -- obtained at: https://datagoblin.itch.io/monogram
+check(ok, errmsg)
+
+local r1_text = Nene.TextTexture.new(nene_state, '0', Nene.Palette.white, font)
+local r2_text = Nene.TextTexture.new(nene_state, '0', Nene.Palette.white, font)
+
+local function update_points(pts_text: *Nene.TextTexture, points: integer, prev_points: integer)
+  if points == prev_points then
+    return
+  end
+
+  local pts_str = tostring(points)
+  defer pts_str:destroy() end
+
+  pts_text:update_text(nene_state, pts_str, Nene.Palette.white, font)
+end
 
 repeat
   nene_state:pool_events()
 
+  local new = nene_state:get_ms_time()
+
   do -- update step
+    local r1_pts_before = pl_1.points
+    local r2_pts_before = pl_2.points
+
     ball:update(pl_1, pl_2)
-    pl_1:update(true, nene_state)
-    pl_2:update(false, nene_state)
+    pl_1:update(nene_state)
+    pl_2:update(nene_state)
+
+    update_points(r1_text, pl_1.points, r1_pts_before)
+    update_points(r2_text, pl_2.points, r2_pts_before)
   end
 
   do -- draw step
     nene_state:render_clear(Nene.Palette.bg)
 
-    pl_1:draw(nene_state, true)
-    pl_2:draw(nene_state, false)
+    pl_1:draw(nene_state)
+    pl_2:draw(nene_state)
     ball:draw(nene_state)
+
+    r1_text:draw(nene_state, {10, 0}, Nene.Palette.white)
+    r2_text:draw(nene_state, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
 
     nene_state:render_present()
   end
