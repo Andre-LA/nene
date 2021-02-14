@@ -1,0 +1,18 @@
+require 'sdl2_ttf'
+
+require 'hashmap'
+
+require 'nene.core'
+require 'nene.math'
+
+global Nene.Font = @record{
+  _data: *TTF_Font,
+}
+
+function Nene.Font:free()
+  check(self._data ~= nilptr, 'cannot free a not initialized font')
+  TTF_CloseFont(self._data)
+  self._data = nilptr
+end
+
+

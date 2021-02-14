@@ -1,0 +1,31 @@
+require 'sdl2'
+
+require 'nene.core'
+require 'nene.colors'
+require 'nene.font'
+require 'nene.texture'
+require 'nene.math'
+
+global Nene.TextTexture = @record{
+  texture: Nene.Texture,
+  text: stringview,
+}
+
+function Nene.TextTexture:update_text(nene_state: Nene.CoreState, text: stringview, color: Nene.Color, font: Nene.Font)
+  local text_surface = TTF_RenderUTF8_Solid(font._data, text, color)
+  local text_texture = SDL_CreateTextureFromSurface(nene_state.renderer, text_surface)
+  SDL_FreeSurface(text_surface)
+
+  self.texture:apply_sdltex(text_texture)
+end
+
+function Nene.TextTexture:draw(nene_state: Nene.CoreState, pos: Nene.Math.Vec2, color: Nene.Color)
+  local dest_rect: Nene.Math.Rect = {pos.x, pos.y, self.texture.width, self.texture.height}
+  self.texture:draw(nene_state, color, nil, dest_rect)
+end
+
+function Nene.TextTexture.new(nene_state: Nene.CoreState, initial_text: stringview, color: Nene.Color, font: Nene.Font): Nene.TextTexture
+  local new: Nene.TextTexture = {}
+  new:update_text(nene_state, initial_text, color, font)
+  return new
+end

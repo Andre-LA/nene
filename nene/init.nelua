@@ -3,13 +3,14 @@
 --    all these calls and do something about it.
 -- * Review implicit conversions and try to optimize that
 -- * Also review integer sizes, should I use uinteger,
---    usize, or smalled fixed sizes like int32?
--- * Change the "ok, errmsg, result" return pattern to an more lua-like "ok, err_msg"
---   -> for that, create a new "option" library which you replace the "optional" library from Rotor
---      (this will be used while the official optional nelua feature is not implemented)
+--    usize, or smaller fixed sizes like int32?
+-- * Try to change the "ok, errmsg, result" return pattern to an more lua-like "ok, err_msg"
 -- * Abstract used SDL symbols, like SDL_Scancode, used in get_key method
--- * Create a good color palette, I may create a second extra code with even more
---    color definitions, like 'nene.html-palette', 'nene.raylib-palette', etc.
+-- * Create a good color palette
+-- * I'm thinking about setting all types in lowercase, just like nelua standard library
+-- * create `Nene.Resource` record, which will replace all `._data` fields and methods
+-- * move some functions from CoreState to respective records, passing CoreState as argument
+-- * rename Nene.CoreState to Nene.State
 
 require 'nene.core'
 require 'nene.core_state'

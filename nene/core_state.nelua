@@ -1,21 +1,17 @@
-require 'nene.core'
-
 require 'sdl2'
+require 'sdl2_ttf'
 require 'sdl2_image'
 require 'sdl2_mixer'
 
+require 'span'
+
+require 'nene.core'
+
+require 'nene.audio'
+require 'nene.camera'
+
 require 'nene.colors'
 require 'nene.math'
-
-require 'nene.texture'
-require 'nene.texture_atlas'
-require 'nene.audio'
-
-require 'nene.camera'
-require 'nene.spritesheet'
-require 'nene.tilemap'
-
-local prev_music_id: usize = 0
 
 -- instead of a internal state, the state is
 -- exported and should be used externally.
@@ -38,6 +34,16 @@ global Nene.CoreState = @record{
   previous_time: uint32,
   camera: Nene.Camera,
 }
+
+require 'nene.texture'
+require 'nene.texture_atlas'
+require 'nene.text_texture'
+require 'nene.font'
+
+require 'nene.spritesheet'
+require 'nene.tilemap'
+
+local prev_music_id: usize = 0
 
 -- try to initialize and return a new initilized
 -- core state.
@@ -96,6 +102,11 @@ function Nene.init(
   local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
   if mix_openaudio < 0 then
     return false, Mix_GetError(), (@Nene.CoreState){}
+  end
+
+  local ttf_init_result = TTF_Init()
+  if ttf_init_result < 0 then
+    return false, TTF_GetError(), (@Nene.CoreState){}
   end
 
   SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
@@ -163,6 +174,8 @@ function Nene.CoreState:terminate()
 
   SDL_DestroyWindow(self.window)
   self.window = nilptr
+
+  TTF_Quit()
 
   Mix_CloseAudio()
   Mix_Quit()
@@ -278,6 +291,23 @@ function Nene.CoreState:get_key(scancode: SDL_Scancode): boolean
   return self.keyboard_state[scancode] == 1
 end
 
+-- try to load a font from a file
+-- it returns:
+-- * a boolean that indicates the success or failure of procedure
+-- * an error message stringview, it will be an empty string on success
+-- * the font, properly initialized on success
+function Nene.CoreState:load_font(filename: stringview, ptsize: integer): (boolean, stringview, Nene.Font)
+  local new_font: Nene.Font = {
+    _data = TTF_OpenFont(filename, ptsize)
+  }
+
+  if not new_font._data then
+    return false, TTF_GetError(), new_font
+  else
+    return true, '', new_font
+  end
+end
+
 -- try to load a sound from a file
 -- it returns:
 -- * a boolean that indicates the success or failure of procedure
@@ -353,17 +383,14 @@ function Nene.CoreState:render_draw_atlas_frame(
   check(self.initialized, 'Core State variable is not initialized')
 
   ## if atlas_src.type.is_spritesheet or atlas_src.type.is_tilemap then
-    local atlas = atlas_src.atlas
+  local atlas = atlas_src.atlas
   ## else
-    local atlas = atlas_src
+  local atlas = atlas_src
   ## end
-
-  check(atlas ~= nilptr, 'atlas is not initialized')
-  local atlas_texture = atlas.texture:get()
 
   local tex_w_units = math.ifloor(atlas.texture.width / atlas.unit_width)
 
-  local src_rect: SDL_Rect = {
+  local src_rect: Nene.Math.Rect = {
     x = (frame % tex_w_units) * atlas.unit_width,
     y = math.ifloor(frame / tex_w_units) * atlas.unit_height,
     w = atlas.unit_width,
@@ -372,15 +399,14 @@ function Nene.CoreState:render_draw_atlas_frame(
 
   position = self:get_render_pos(position)
 
-  local dest_rect: SDL_Rect = {
+  local dest_rect: Nene.Math.Rect = {
     x = math.ifloor(position.x),
     y = math.ifloor(position.y),
     w = atlas.unit_width,
     h = atlas.unit_height,
   }
 
-  SDL_SetTextureColorMod(atlas_texture, color.r, color.g, color.b)
-  SDL_RenderCopy(self.renderer, atlas_texture, src_rect, dest_rect)
+  atlas.texture:draw(self, color, src_rect, dest_rect)
 end
 
 function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)

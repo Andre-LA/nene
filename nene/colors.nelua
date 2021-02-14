@@ -1,11 +1,7 @@
+require 'sdl2'
 require 'nene.core'
 
-global Nene.Color = @record{
-  r: uint8,
-  g: uint8,
-  b: uint8,
-  a: uint8,
-}
+global Nene.Color = @SDL_Color
 
 -- Some handy colors
 global Nene.Palette: record{
