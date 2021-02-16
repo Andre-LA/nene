@@ -33,6 +33,7 @@ global Nene.CoreState = @record{
   current_music: Nene.Music,
   previous_time: uint32,
   camera: Nene.Camera,
+  --added later: screen_texture: Nene.Texture,
 }
 
 require 'nene.texture'
@@ -43,82 +44,26 @@ require 'nene.font'
 require 'nene.spritesheet'
 require 'nene.tilemap'
 
+##[[do
+  local CoreState = Nene.value.metafields.CoreState.value
+  local Texture = Nene.value.metafields.Texture.value
+
+  staticassert(traits.is_type(CoreState) and CoreState.is_record)
+  staticassert(traits.is_type(Texture) and Texture.is_record)
+
+  CoreState:add_field('screen_texture', Texture)
+end]]
+
 local prev_music_id: usize = 0
 
--- try to initialize and return a new initilized
--- core state.
--- returns:
---   * a boolean that indicates true on success
---   * a string error message on failure (or empty otherwise)
---   * a new state, only filled on success
--- notes:
---   You always should first check if the initialization
---   succeeded before trying to use the state
-function Nene.init(
-  title: stringview,
-  size_x: integer, size_y: integer,
-  pos_x: facultative(integer), pos_y: facultative(integer),
-  flags: facultative(uint32)
-): (boolean, stringview, Nene.CoreState)
-  check(size_x > 0 and size_y > 0, 'cannot create a window with `0` as a size parameter')
+function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
+  check(self.initialized, 'Core State variable is not initialized')
 
-  local new_state: Nene.CoreState = {}
-
-  local sdl_init_result = SDL_Init(SDL_INIT_VIDEO)
-  if sdl_init_result < 0 then
-    return false, SDL_GetError(), new_state
-  end
-
-  ## if pos_x.type.is_niltype then
-    local pos_x = SDL_WINDOWPOS_UNDEFINED
+  ## if target_tex.type.is_niltype then
+    self:set_render_target(self.screen_texture)
+  ## else
+    SDL_SetRenderTarget(self.renderer, target_tex:get())
   ## end
-  ## if pos_y.type.is_niltype then
-    local pos_y = SDL_WINDOWPOS_UNDEFINED
-  ## end
-  ## if flags.type.is_niltype then
-    local flags = SDL_WINDOW_SHOWN
-  ## end
-
-  local window = SDL_CreateWindow(title, pos_x, pos_y, size_x, size_y, flags)
-  if not window then
-    return false, SDL_GetError(), new_state
-  end
-
-  local renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
-  if not renderer then
-    return false, SDL_GetError(), new_state
-  end
-
-  local img_init_result = IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG
-  if img_init_result == 0 then
-    return false, IMG_GetError(), (@Nene.CoreState){}
-  end
-
-  local mixer_init_result = Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG
-  if mixer_init_result == 0 then
-    return false, Mix_GetError(), (@Nene.CoreState){}
-  end
-
-  local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
-  if mix_openaudio < 0 then
-    return false, Mix_GetError(), (@Nene.CoreState){}
-  end
-
-  local ttf_init_result = TTF_Init()
-  if ttf_init_result < 0 then
-    return false, TTF_GetError(), (@Nene.CoreState){}
-  end
-
-  SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
-
-  new_state = {
-    initialized = true,
-    camera = { pos = { x = size_x // 2, y = size_y // 2 } },
-    =window,
-    =renderer
-  }
-
-  return true, "", new_state
 end
 
 -- Get the size of current window
@@ -128,11 +73,16 @@ function Nene.CoreState:get_window_size(): Nene.Math.Vec2
   return (@Nene.Math.Vec2){ x = ww, y = wh}
 end
 
+function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){ x = self.screen_texture.width, y = self.screen_texture.height }
+end
+
 -- Get a proper drawing origin position (left-up point) considering the
 -- camera's position and the window's screen size
 function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
   local cam_relative_pos = self.camera:get_relative_pos(pos)
-  local winsize = self:get_window_size() * 0.5
+  local winsize = self:get_screen_size() * 0.5
+
   return (@Nene.Math.Vec2){
     x = cam_relative_pos.x + winsize.x,
     y = cam_relative_pos.y + winsize.y
@@ -162,27 +112,6 @@ end
 -- stops the music
 function Nene.CoreState:stop_music()
   Mix_HaltMusic()
-end
-
-function Nene.CoreState:terminate()
-  check(self.initialized, 'Core State variable is not initialized')
-
-  self.initialized = false
-
-  SDL_DestroyRenderer(self.renderer)
-  self.renderer = nilptr
-
-  SDL_DestroyWindow(self.window)
-  self.window = nilptr
-
-  TTF_Quit()
-
-  Mix_CloseAudio()
-  Mix_Quit()
-
-  IMG_Quit()
-
-  SDL_Quit()
 end
 
 global Nene.Callbacks = @record{
@@ -463,7 +392,130 @@ end
 
 function Nene.CoreState:render_present()
   check(self.initialized, 'Core State variable is not initialized')
-
   self.previous_time = self:get_ms_time()
+
+  local sdl_screen_tex = SDL_GetRenderTarget(self.renderer)
+
+  SDL_SetRenderTarget(self.renderer, nilptr)
+  SDL_RenderCopy(self.renderer, sdl_screen_tex, nilptr, nilptr)
   SDL_RenderPresent(self.renderer)
+
+  SDL_SetRenderTarget(self.renderer, sdl_screen_tex)
+end
+
+-- try to initialize and return a new initilized
+-- core state.
+-- returns:
+--   * a boolean that indicates true on success
+--   * a string error message on failure (or empty otherwise)
+--   * a new state, only filled on success
+-- notes:
+--   You always should first check if the initialization
+--   succeeded before trying to use the state
+function Nene.init(
+  title: stringview,
+  window_size_x: integer, window_size_y: integer,
+  screen_size_x: facultative(integer), screen_size_y: facultative(integer),
+  pos_x: facultative(integer), pos_y: facultative(integer),
+  flags: facultative(uint32)
+): (boolean, stringview, Nene.CoreState)
+  check(window_size_x > 0 and window_size_y > 0, 'cannot create a window with `0` as a size parameter')
+
+  local new_state: Nene.CoreState = {}
+
+  local sdl_init_result = SDL_Init(SDL_INIT_VIDEO)
+  if sdl_init_result < 0 then
+    return false, SDL_GetError(), new_state
+  end
+
+  ## if pos_x.type.is_niltype then
+    local pos_x = SDL_WINDOWPOS_UNDEFINED
+  ## end
+  ## if pos_y.type.is_niltype then
+    local pos_y = SDL_WINDOWPOS_UNDEFINED
+  ## end
+  ## if flags.type.is_niltype then
+    local flags = SDL_WINDOW_SHOWN
+  ## end
+
+  local window = SDL_CreateWindow(title, pos_x, pos_y, window_size_x, window_size_y, flags)
+  if not window then
+    return false, SDL_GetError(), new_state
+  end
+
+  local renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
+  if not renderer then
+    return false, SDL_GetError(), new_state
+  end
+
+  local img_init_result = IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG
+  if img_init_result == 0 then
+    return false, IMG_GetError(), (@Nene.CoreState){}
+  end
+
+  local mixer_init_result = Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG
+  if mixer_init_result == 0 then
+    return false, Mix_GetError(), (@Nene.CoreState){}
+  end
+
+  local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
+  if mix_openaudio < 0 then
+    return false, Mix_GetError(), (@Nene.CoreState){}
+  end
+
+  local ttf_init_result = TTF_Init()
+  if ttf_init_result < 0 then
+    return false, TTF_GetError(), (@Nene.CoreState){}
+  end
+
+  local screen_size: Nene.Math.Vec2 = {window_size_x, window_size_y}
+
+  ## if not screen_size_x.type.is_niltype then
+    screen_size.x = screen_size_x
+  ## end
+  ## if not screen_size_y.type.is_niltype then
+    screen_size.y = screen_size_y
+  ## end
+
+
+  local screen_texture = Nene.Texture.new(SDL_CreateTexture(renderer,
+                                                            SDL_PIXELFORMAT_RGBA8888,
+                                                            SDL_TEXTUREACCESS_TARGET,
+                                                            math.ifloor(screen_size.x),
+                                                            math.ifloor(screen_size.y)))
+
+  SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
+
+  new_state = {
+    initialized = true,
+    camera = { pos = { x = screen_size.x // 1, y = screen_size.y // 1 } },
+    =window,
+    =renderer,
+    =screen_texture
+  }
+
+  new_state:set_render_target(nil)
+
+  return true, "", new_state
+end
+
+function Nene.CoreState:terminate()
+  check(self.initialized, 'Core State variable is not initialized')
+
+  self.initialized = false
+
+  SDL_DestroyRenderer(self.renderer)
+  self.renderer = nilptr
+
+  SDL_DestroyWindow(self.window)
+  self.window = nilptr
+
+  TTF_Quit()
+
+  Mix_CloseAudio()
+  Mix_Quit()
+
+  IMG_Quit()
+
+  SDL_Quit()
 end
