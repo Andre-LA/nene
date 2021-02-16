@@ -440,7 +440,7 @@ function Nene.CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolea
   local target_pos = self:get_render_pos({rect.x, rect.y})
 
   local sdl_rect: SDL_Rect = {
-    x = target_pos.x, y = target_pos.y,
+    x = math.ifloor(target_pos.x), y = math.ifloor(target_pos.y),
     w = rect.w, h = rect.h
   }
 
