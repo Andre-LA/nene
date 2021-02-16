@@ -488,7 +488,7 @@ function Nene.init(
 
   new_state = {
     initialized = true,
-    camera = { pos = { x = screen_size.x // 1, y = screen_size.y // 1 } },
+    camera = { pos = { x = screen_size.x // 2, y = screen_size.y // 2 } },
     =window,
     =renderer,
     =screen_texture
