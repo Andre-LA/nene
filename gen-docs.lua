@@ -10,14 +10,14 @@ function doc_chunk.tostring(doc)
 
   local fmt = [[
 ## %s (%s)
+%s
 ```lua
 %s
 ```
-%s
 ]]
 
   for i, doc_item in ipairs(doc) do
-    local doc_content = string.format(fmt, doc_item.title, doc_item.type, doc_item.code, doc_item.doc)
+    local doc_content = string.format(fmt, doc_item.title, doc_item.type, doc_item.doc, doc_item.code)
     table.insert(result, doc_content)
   end
 
@@ -60,19 +60,19 @@ local function doc_file(file, filename)
     local newlineonly = file_line == ''
 
     local function print_status()
-      print(inspect{
-        line = file_line,
-        documenting = documenting,
-        documented = documented,
-        file_doc = file_doc,
-        doc_lines = doc_lines,
-        doc_type = doc_type,
-        doc_code_lines = doc_code_lines,
-        doc_title = doc_title,
-        doc_match = doc_match,
-        gl_rec_match = gl_rec_match,
-        newlineonly = newlineonly,
-      })
+      --print(inspect{
+      --  line = file_line,
+      --  documenting = documenting,
+      --  documented = documented,
+      --  file_doc = file_doc,
+      --  doc_lines = doc_lines,
+      --  doc_type = doc_type,
+      --  doc_code_lines = doc_code_lines,
+      --  doc_title = doc_title,
+      --  doc_match = doc_match,
+      --  gl_rec_match = gl_rec_match,
+      --  newlineonly = newlineonly,
+      --})
     end
 
     local function finalize_doc_content()
