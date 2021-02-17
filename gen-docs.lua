@@ -83,7 +83,15 @@ local function doc_file(file, filename)
 
     local function add_doc_content()
       documenting = true
-      table.insert(doc_lines, doc_match)
+      if doc_match ~= '' and #doc_lines > 0 then
+        doc_lines[#doc_lines] = doc_lines[#doc_lines] .. doc_match .. ' '
+      else
+        if #doc_lines == 0 then
+          table.insert(doc_lines,  doc_match .. ' ')
+        else
+          table.insert(doc_lines,  doc_match)
+        end
+      end
       print_status()
     end
 
