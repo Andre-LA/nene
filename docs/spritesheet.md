@@ -11,5 +11,5 @@ global Nene.SpriteSheet = @record{
 ## Nene.SpriteSheet:get_named_animation_range (function)
 
 ```lua
-function Nene.SpriteSheet:get_named_animation_range(name: stringview): (boolean, Nene.AnimationRange)
+function Nene.SpriteSheet:get_named_animation_range(name: string): (boolean, Nene.AnimationRange)
 ```

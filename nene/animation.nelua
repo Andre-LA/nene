@@ -2,7 +2,7 @@ require 'nene.core'
 
 -- Animation range type, used on Spritesheets
 global Nene.AnimationRange = @record{
-  name: stringview,
+  name: string,
   fps: number,
   from: usize,
   to: usize,

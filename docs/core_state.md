@@ -104,25 +104,25 @@ function Nene.CoreState:get_key(scancode: SDL_Scancode): boolean
 ## Nene.CoreState:load_font (function)
 
 ```lua
-function Nene.CoreState:load_font(filename: stringview, ptsize: integer): (boolean, stringview, Nene.Font)
+function Nene.CoreState:load_font(filename: string, ptsize: integer): (boolean, string, Nene.Font)
 ```
 
 ## Nene.CoreState:load_sound (function)
 
 ```lua
-function Nene.CoreState:load_sound(filename: stringview): (boolean, stringview, Nene.Sound)
+function Nene.CoreState:load_sound(filename: string): (boolean, string, Nene.Sound)
 ```
 
 ## Nene.CoreState:load_music (function)
 
 ```lua
-function Nene.CoreState:load_music(filename: stringview): (boolean, stringview, Nene.Music)
+function Nene.CoreState:load_music(filename: string): (boolean, string, Nene.Music)
 ```
 
 ## Nene.CoreState:load_texture (function)
 
 ```lua
-function Nene.CoreState:load_texture(filename: stringview): (boolean, stringview, Nene.Texture)
+function Nene.CoreState:load_texture(filename: string): (boolean, string, Nene.Texture)
 ```
 
 ## Nene.CoreState:render_draw_atlas_frame (function)

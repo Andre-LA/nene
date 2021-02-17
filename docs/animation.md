@@ -3,7 +3,7 @@
 
 ```lua
 global Nene.AnimationRange = @record{
-  name: stringview,
+  name: string,
   fps: number,
   from: usize,
   to: usize,

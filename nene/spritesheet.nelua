@@ -15,7 +15,7 @@ global Nene.SpriteSheet = @record{
 -- search the animation range with the respective name
 -- when found, it returns `true` and the a copy of the respective animation range,
 -- otherwise it returns `false` and a unitilialized animation range.
-function Nene.SpriteSheet:get_named_animation_range(name: stringview): (boolean, Nene.AnimationRange)
+function Nene.SpriteSheet:get_named_animation_range(name: string): (boolean, Nene.AnimationRange)
   for i = 0, < #self.animations do
     if self.animations[i].name == name then
       return true, self.animations[i]

@@ -230,9 +230,9 @@ end
 -- try to load a font from a file
 -- it returns:
 -- * a boolean that indicates the success or failure of procedure
--- * an error message stringview, it will be an empty string on success
+-- * an error message string, it will be an empty string on success
 -- * the font, properly initialized on success
-function Nene.CoreState:load_font(filename: stringview, ptsize: integer): (boolean, stringview, Nene.Font)
+function Nene.CoreState:load_font(filename: string, ptsize: integer): (boolean, string, Nene.Font)
   local new_font: Nene.Font = {
     _data = TTF_OpenFont(filename, ptsize)
   }
@@ -247,9 +247,9 @@ end
 -- try to load a sound from a file
 -- it returns:
 -- * a boolean that indicates the success or failure of procedure
--- * an error message stringview, it will be an empty string on success
+-- * an error message string, it will be an empty string on success
 -- * the sound, properly initialized on success
-function Nene.CoreState:load_sound(filename: stringview): (boolean, stringview, Nene.Sound)
+function Nene.CoreState:load_sound(filename: string): (boolean, string, Nene.Sound)
   local new_sound: Nene.Sound = {
     _data = Mix_LoadWAV(filename),
     channel = -1
@@ -265,9 +265,9 @@ end
 -- try to load a music from a file
 -- it returns:
 -- * a boolean that indicates the success or failure of procedure
--- * an error message stringview, it will be an empty string on success
+-- * an error message string, it will be an empty string on success
 -- * the music, properly initialized on success
-function Nene.CoreState:load_music(filename: stringview): (boolean, stringview, Nene.Music)
+function Nene.CoreState:load_music(filename: string): (boolean, string, Nene.Music)
   local new_music: Nene.Music = {
     _data = Mix_LoadMUS(filename),
     id = prev_music_id + 1 -- using an unique id
@@ -285,9 +285,9 @@ end
 -- try to load a texture from a file
 -- it returns:
 -- * a boolean that indicates the success or failure of procedure
--- * an error message stringview, it will be a empty string on success
+-- * an error message string, it will be a empty string on success
 -- * the texture, properly initialized on success
-function Nene.CoreState:load_texture(filename: stringview): (boolean, stringview, Nene.Texture)
+function Nene.CoreState:load_texture(filename: string): (boolean, string, Nene.Texture)
   check(self.initialized, 'Core State variable is not initialized')
 
   local surface = IMG_Load(filename)
@@ -420,12 +420,12 @@ end
 ---   You always should first check if the initialization
 ---   succeeded before trying to use the state
 function Nene.init(
-  title: stringview,
+  title: string,
   window_size_x: integer, window_size_y: integer,
   screen_size_x: facultative(integer), screen_size_y: facultative(integer),
   pos_x: facultative(integer), pos_y: facultative(integer),
   flags: facultative(uint32)
-): (boolean, stringview, Nene.CoreState)
+): (boolean, string, Nene.CoreState)
   check(window_size_x > 0 and window_size_y > 0, 'cannot create a window with `0` as a size parameter')
 
   local new_state: Nene.CoreState = {}
