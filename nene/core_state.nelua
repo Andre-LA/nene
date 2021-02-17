@@ -13,17 +13,21 @@ require 'nene.camera'
 require 'nene.colors'
 require 'nene.math'
 
--- instead of a internal state, the state is
--- exported and should be used externally.
--- Also, great part of the SDL API only works after initialization
---  so, the ideia is that a Nene.CoreState lives just as the SDL
---  after initialization and before quit.
--- SDL functions that should be only used after initialization
---  should be abstracted as a Nene.CoreState method, the functions
--- that doesn't contains this limitation should be a Nene
---  function instead.
--- This is something that needs to be reviewed too.
--- Note that Nene is made to use only one window.
+--- instead of a internal state, the state is
+--- exported and should be used externally.
+---
+--- Also, great part of the SDL API only works after initialization
+--- so, the ideia is that a Nene.CoreState lives just as the SDL
+--- after initialization and before quit.
+---
+--- SDL functions that should be only used after initialization
+--- should be abstracted as a Nene.CoreState method, the functions
+---
+--- that doesn't contains this limitation should be a Nene
+--- function instead.
+---
+--- This is something that needs to be reviewed too.
+--- Note that Nene is made to use only one window.
 global Nene.CoreState = @record{
   initialized: boolean,
   quit: boolean,
@@ -33,7 +37,7 @@ global Nene.CoreState = @record{
   current_music: Nene.Music,
   previous_time: uint32,
   camera: Nene.Camera,
-  --added later: screen_texture: Nene.Texture,
+  --screen_texture: Nene.Texture (added later through meta-programming)
 }
 
 require 'nene.texture'
@@ -44,7 +48,7 @@ require 'nene.font'
 require 'nene.spritesheet'
 require 'nene.tilemap'
 
-##[[do
+##[[do -- adding `screen_texture` field on `Nene.CoreState`
   local CoreState = Nene.value.metafields.CoreState.value
   local Texture = Nene.value.metafields.Texture.value
 
@@ -66,7 +70,7 @@ function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
   ## end
 end
 
--- Get the size of current window
+--- Get the size of current window
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
   local ww: cint, wh: cint;
   SDL_GetWindowSize(self.window, &ww, &wh)
