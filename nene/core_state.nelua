@@ -24,9 +24,8 @@ require 'nene.math'
 --- should be abstracted as a Nene.CoreState method, the functions
 ---
 --- that doesn't contains this limitation should be a Nene
---- function instead.
+--- function instead (which is something that needs a review).
 ---
---- This is something that needs to be reviewed too.
 --- Note that Nene is made to use only one window.
 global Nene.CoreState = @record{
   initialized: boolean,
