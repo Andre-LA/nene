@@ -1,9 +1,13 @@
 # nene/core_state.nelua
 ## Nene.CoreState (record)
 instead of a internal state, the state is exported and should be used externally. 
+
 Also, great part of the SDL API only works after initialization so, the ideia is that a Nene.CoreState lives just as the SDL after initialization and before quit. 
+
 SDL functions that should be only used after initialization should be abstracted as a Nene.CoreState method, the functions 
+
 that doesn't contains this limitation should be a Nene function instead. 
+
 This is something that needs to be reviewed too. Note that Nene is made to use only one window. 
 ```lua
 global Nene.CoreState = @record{

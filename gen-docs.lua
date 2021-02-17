@@ -87,9 +87,9 @@ local function doc_file(file, filename)
         doc_lines[#doc_lines] = doc_lines[#doc_lines] .. doc_match .. ' '
       else
         if #doc_lines == 0 then
-          table.insert(doc_lines,  doc_match .. ' ')
+          table.insert(doc_lines, doc_match .. ' ')
         else
-          table.insert(doc_lines,  doc_match)
+          table.insert(doc_lines, doc_match)
         end
       end
       print_status()
@@ -142,7 +142,7 @@ local function doc_file(file, filename)
       file_doc:insert(
         doc_title,
         doc_type,
-        table.concat(doc_lines, '\n'),
+        table.concat(doc_lines, '\n\n'),
         table.concat(doc_code_lines, '\n')
       )
 
