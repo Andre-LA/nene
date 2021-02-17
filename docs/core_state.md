@@ -13,36 +13,57 @@ global Nene.CoreState = @record{
   --screen_texture: Nene.Texture (added later through meta-programming)
 }
 ```
+instead of a internal state, the state is
+exported and should be used externally.
+
+Also, great part of the SDL API only works after initialization
+so, the ideia is that a Nene.CoreState lives just as the SDL
+after initialization and before quit.
+
+SDL functions that should be only used after initialization
+should be abstracted as a Nene.CoreState method, the functions
+
+that doesn't contains this limitation should be a Nene
+function instead.
+
+This is something that needs to be reviewed too.
+Note that Nene is made to use only one window.
 
 ## Nene.CoreState:set_render_target (function)
 ```lua
 function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
 ```
 
+
 ## Nene.CoreState:get_window_size (function)
 ```lua
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
 ```
+Get the size of current window
 
 ## Nene.CoreState:get_screen_size (function)
 ```lua
 function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
 ```
 
+
 ## Nene.CoreState:get_render_pos (function)
 ```lua
 function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
 ```
+
 
 ## Nene.CoreState:play_music (function)
 ```lua
 function Nene.CoreState:play_music(music: Nene.Music, loop: overload(boolean, integer, niltype))
 ```
 
+
 ## Nene.CoreState:stop_music (function)
 ```lua
 function Nene.CoreState:stop_music()
 ```
+
 
 ## Nene.Callbacks (record)
 ```lua
@@ -73,77 +94,93 @@ global Nene.Callbacks = @record{
 }
 ```
 
+
 ## Nene.CoreState:pool_events (function)
 ```lua
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
 ```
+
 
 ## Nene.CoreState:get_key (function)
 ```lua
 function Nene.CoreState:get_key(scancode: SDL_Scancode): boolean
 ```
 
+
 ## Nene.CoreState:load_font (function)
 ```lua
 function Nene.CoreState:load_font(filename: stringview, ptsize: integer): (boolean, stringview, Nene.Font)
 ```
+
 
 ## Nene.CoreState:load_sound (function)
 ```lua
 function Nene.CoreState:load_sound(filename: stringview): (boolean, stringview, Nene.Sound)
 ```
 
+
 ## Nene.CoreState:load_music (function)
 ```lua
 function Nene.CoreState:load_music(filename: stringview): (boolean, stringview, Nene.Music)
 ```
+
 
 ## Nene.CoreState:load_texture (function)
 ```lua
 function Nene.CoreState:load_texture(filename: stringview): (boolean, stringview, Nene.Texture)
 ```
 
+
 ## Nene.CoreState:render_draw_atlas_frame (function)
 ```lua
 function Nene.CoreState:render_draw_atlas_frame(
 ```
+
 
 ## Nene.CoreState:render_draw_tilemap (function)
 ```lua
 function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)
 ```
 
+
 ## Nene.CoreState:render_clear (function)
 ```lua
 function Nene.CoreState:render_clear(color: Nene.Color)
 ```
+
 
 ## Nene.CoreState:render_draw_rect (function)
 ```lua
 function Nene.CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
 ```
 
+
 ## Nene.CoreState:get_ms_time (function)
 ```lua
 function Nene.CoreState:get_ms_time()
 ```
+
 
 ## Nene.CoreState:get_deltatime (function)
 ```lua
 function Nene.CoreState:get_deltatime()
 ```
 
+
 ## Nene.CoreState:render_present (function)
 ```lua
 function Nene.CoreState:render_present()
 ```
+
 
 ## Nene.init (function)
 ```lua
 function Nene.init(
 ```
 
+
 ## Nene.CoreState:terminate (function)
 ```lua
 function Nene.CoreState:terminate()
 ```
+

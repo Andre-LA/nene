@@ -1,4 +1,4 @@
-# nene/core_state.nelua
+# nene/animation.nelua
 ## Nene.AnimationRange (record)
 ```lua
 global Nene.AnimationRange = @record{
@@ -9,7 +9,9 @@ global Nene.AnimationRange = @record{
 }
 ```
 
+
 ## Nene.AnimationRange.__eq (function)
 ```lua
 function Nene.AnimationRange.__eq(l: Nene.AnimationRange, r: Nene.AnimationRange): boolean
 ```
+

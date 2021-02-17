@@ -1,4 +1,4 @@
-# nene/core_state.nelua
+# nene/font.nelua
 ## Nene.Font (record)
 ```lua
 global Nene.Font = @record{
@@ -6,7 +6,9 @@ global Nene.Font = @record{
 }
 ```
 
+
 ## Nene.Font:free (function)
 ```lua
 function Nene.Font:free()
 ```
+

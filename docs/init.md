@@ -1,1 +1,1 @@
-# nene/core_state.nelua
+# nene/init.nelua

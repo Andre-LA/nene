@@ -1,4 +1,4 @@
-# nene/core_state.nelua
+# nene/audio.nelua
 ## Nene.Sound (record)
 ```lua
 global Nene.Sound = @record{
@@ -7,25 +7,30 @@ global Nene.Sound = @record{
 }
 ```
 
+
 ## Nene.Sound:play (function)
 ```lua
 function Nene.Sound:play(loop: overload(boolean, integer, niltype))
 ```
+
 
 ## Nene.Sound:stop (function)
 ```lua
 function Nene.Sound:stop()
 ```
 
+
 ## Nene.Sound:free (function)
 ```lua
 function Nene.Sound:free()
 ```
 
+
 ## Nene.Sound:stop_and_free (function)
 ```lua
 function Nene.Sound:stop_and_free()
 ```
+
 
 ## Nene.Music (record)
 ```lua
@@ -35,7 +40,9 @@ global Nene.Music = @record{
 }
 ```
 
+
 ## Nene.Music:free (function)
 ```lua
 function Nene.Music:free()
 ```
+

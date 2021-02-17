@@ -13,6 +13,7 @@ function doc_chunk.tostring(doc)
 ```lua
 %s
 ```
+%s
 ]]
 
   for i, doc_item in ipairs(doc) do
@@ -41,12 +42,11 @@ local function new_doc_chunk(filename)
   )
 end
 
-local function doc_file(file)
-
+local function doc_file(file, filename)
   local documenting = false
   local documented = false
 
-  local file_doc = new_doc_chunk('nene/core_state.nelua')
+  local file_doc = new_doc_chunk(filename)
 
   local doc_lines = {}
   local doc_title = ''
@@ -60,17 +60,19 @@ local function doc_file(file)
     local newlineonly = file_line == ''
 
     local function print_status()
-      --print(inspect{
-      --  documenting = documenting,
-      --  file_doc = file_doc,
-      --  doc_lines = doc_lines,
-      --  doc_type = doc_type,
-      --  doc_code_lines = doc_code_lines,
-      --  doc_title = doc_title,
-      --  doc_match = doc_match,
-      --  gl_rec_match = gl_rec_match,
-      --  newlineonly = newlineonly,
-      --})
+      print(inspect{
+        line = file_line,
+        documenting = documenting,
+        documented = documented,
+        file_doc = file_doc,
+        doc_lines = doc_lines,
+        doc_type = doc_type,
+        doc_code_lines = doc_code_lines,
+        doc_title = doc_title,
+        doc_match = doc_match,
+        gl_rec_match = gl_rec_match,
+        newlineonly = newlineonly,
+      })
     end
 
     local function finalize_doc_content()
@@ -153,7 +155,7 @@ for filename in lfs.dir'nene' do
     print('documenting '..filename..'...')
 
     local in_file = io.open('nene/'..filename)
-    local doc = doc_file(in_file)
+    local doc = doc_file(in_file, 'nene/'..filename)
     in_file:close()
 
     local out_file = io.open('docs/'..(filename:gsub('%.nelua', '.md')), 'w+')
