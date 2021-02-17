@@ -1,18 +1,5 @@
 # nene/core_state.nelua
 ## Nene.CoreState (record)
-```lua
-global Nene.CoreState = @record{
-  initialized: boolean,
-  quit: boolean,
-  window: *SDL_Window,
-  renderer: *SDL_Renderer,
-  keyboard_state: span(uint8),
-  current_music: Nene.Music,
-  previous_time: uint32,
-  camera: Nene.Camera,
-  --screen_texture: Nene.Texture (added later through meta-programming)
-}
-```
 instead of a internal state, the state is
 exported and should be used externally.
 
@@ -28,44 +15,61 @@ function instead.
 
 This is something that needs to be reviewed too.
 Note that Nene is made to use only one window.
+```lua
+global Nene.CoreState = @record{
+  initialized: boolean,
+  quit: boolean,
+  window: *SDL_Window,
+  renderer: *SDL_Renderer,
+  keyboard_state: span(uint8),
+  current_music: Nene.Music,
+  previous_time: uint32,
+  camera: Nene.Camera,
+  --screen_texture: Nene.Texture (added later through meta-programming)
+}
+```
 
 ## Nene.CoreState:set_render_target (function)
+Set `target_tex` texture as a render target
 ```lua
 function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
 ```
 
-
 ## Nene.CoreState:get_window_size (function)
+Get the size of current window
 ```lua
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
 ```
-Get the size of current window
 
 ## Nene.CoreState:get_screen_size (function)
+Get the screen size
 ```lua
 function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
 ```
 
-
 ## Nene.CoreState:get_render_pos (function)
+Get a proper drawing origin position (left-up point) considering the
+camera's position and the window's screen size
 ```lua
 function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
 ```
 
-
 ## Nene.CoreState:play_music (function)
+plays the current music
+when `true` is passed on `loop` parameter, the music will loop forever;
+when an `integer` is passed on `loop` parameter, the music will loop `loop` times
 ```lua
 function Nene.CoreState:play_music(music: Nene.Music, loop: overload(boolean, integer, niltype))
 ```
 
-
 ## Nene.CoreState:stop_music (function)
+stops the current music
 ```lua
 function Nene.CoreState:stop_music()
 ```
 
-
 ## Nene.Callbacks (record)
+The callbacks that should be passed on `pool_events`
 ```lua
 global Nene.Callbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
@@ -94,93 +98,100 @@ global Nene.Callbacks = @record{
 }
 ```
 
-
 ## Nene.CoreState:pool_events (function)
+Pool all SDL events, calls the respective callbacks, and then updates the state
 ```lua
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
 ```
 
-
 ## Nene.CoreState:get_key (function)
+
 ```lua
 function Nene.CoreState:get_key(scancode: SDL_Scancode): boolean
 ```
 
-
 ## Nene.CoreState:load_font (function)
+
 ```lua
 function Nene.CoreState:load_font(filename: stringview, ptsize: integer): (boolean, stringview, Nene.Font)
 ```
 
-
 ## Nene.CoreState:load_sound (function)
+
 ```lua
 function Nene.CoreState:load_sound(filename: stringview): (boolean, stringview, Nene.Sound)
 ```
 
-
 ## Nene.CoreState:load_music (function)
+
 ```lua
 function Nene.CoreState:load_music(filename: stringview): (boolean, stringview, Nene.Music)
 ```
 
-
 ## Nene.CoreState:load_texture (function)
+
 ```lua
 function Nene.CoreState:load_texture(filename: stringview): (boolean, stringview, Nene.Texture)
 ```
 
-
 ## Nene.CoreState:render_draw_atlas_frame (function)
+
 ```lua
 function Nene.CoreState:render_draw_atlas_frame(
 ```
 
-
 ## Nene.CoreState:render_draw_tilemap (function)
+
 ```lua
 function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)
 ```
 
-
 ## Nene.CoreState:render_clear (function)
+
 ```lua
 function Nene.CoreState:render_clear(color: Nene.Color)
 ```
 
-
 ## Nene.CoreState:render_draw_rect (function)
+
 ```lua
 function Nene.CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
 ```
 
-
 ## Nene.CoreState:get_ms_time (function)
+
 ```lua
 function Nene.CoreState:get_ms_time()
 ```
 
-
 ## Nene.CoreState:get_deltatime (function)
+
 ```lua
 function Nene.CoreState:get_deltatime()
 ```
 
-
 ## Nene.CoreState:render_present (function)
+
 ```lua
 function Nene.CoreState:render_present()
 ```
 
-
 ## Nene.init (function)
+try to initialize and return a new initilized
+core state.
+returns:
+  * a boolean that indicates true on success
+  * a string error message on failure (or empty otherwise)
+  * a new state, only filled on success
+notes:
+  You always should first check if the initialization
+  succeeded before trying to use the state
 ```lua
 function Nene.init(
 ```
 
-
 ## Nene.CoreState:terminate (function)
+Finalize application and quits all SDL subsystems
 ```lua
 function Nene.CoreState:terminate()
 ```
-

@@ -60,6 +60,7 @@ end]]
 
 local prev_music_id: usize = 0
 
+--- Set `target_tex` texture as a render target
 function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
   check(self.initialized, 'Core State variable is not initialized')
 
@@ -77,12 +78,13 @@ function Nene.CoreState:get_window_size(): Nene.Math.Vec2
   return (@Nene.Math.Vec2){ x = ww, y = wh}
 end
 
+--- Get the screen size
 function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
   return (@Nene.Math.Vec2){ x = self.screen_texture.width, y = self.screen_texture.height }
 end
 
--- Get a proper drawing origin position (left-up point) considering the
--- camera's position and the window's screen size
+--- Get a proper drawing origin position (left-up point) considering the
+--- camera's position and the window's screen size
 function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
   local cam_relative_pos = self.camera:get_relative_pos(pos)
   local winsize = self:get_screen_size() * 0.5
@@ -93,9 +95,9 @@ function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
   }
 end
 
--- plays a music
--- when `true` is passed as argument, the music will loop forever;
--- when a integer is passed as a argument, the music will loop `loop` times
+--- plays the current music
+--- when `true` is passed on `loop` parameter, the music will loop forever;
+--- when an `integer` is passed on `loop` parameter, the music will loop `loop` times
 function Nene.CoreState:play_music(music: Nene.Music, loop: overload(boolean, integer, niltype))
   check(music._data ~= nilptr, 'play: Cannot play a nilptr music')
   local loops = 0
@@ -113,11 +115,12 @@ function Nene.CoreState:play_music(music: Nene.Music, loop: overload(boolean, in
   end
 end
 
--- stops the music
+--- stops the current music
 function Nene.CoreState:stop_music()
   Mix_HaltMusic()
 end
 
+--- The callbacks that should be passed on `pool_events`
 global Nene.Callbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
@@ -145,6 +148,7 @@ global Nene.Callbacks = @record{
 }
 
 -- TODO: Should I rename this method as "update"?
+--- Pool all SDL events, calls the respective callbacks, and then updates the state
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   check(self.initialized, 'Core State variable is not initialized')
 
@@ -407,15 +411,15 @@ function Nene.CoreState:render_present()
   SDL_SetRenderTarget(self.renderer, sdl_screen_tex)
 end
 
--- try to initialize and return a new initilized
--- core state.
--- returns:
---   * a boolean that indicates true on success
---   * a string error message on failure (or empty otherwise)
---   * a new state, only filled on success
--- notes:
---   You always should first check if the initialization
---   succeeded before trying to use the state
+--- try to initialize and return a new initilized
+--- core state.
+--- returns:
+---   * a boolean that indicates true on success
+---   * a string error message on failure (or empty otherwise)
+---   * a new state, only filled on success
+--- notes:
+---   You always should first check if the initialization
+---   succeeded before trying to use the state
 function Nene.init(
   title: stringview,
   window_size_x: integer, window_size_y: integer,
@@ -503,6 +507,7 @@ function Nene.init(
   return true, "", new_state
 end
 
+--- Finalize application and quits all SDL subsystems
 function Nene.CoreState:terminate()
   check(self.initialized, 'Core State variable is not initialized')
 
