@@ -1,14 +1,19 @@
 # nene/core_state.nelua
 ## Nene.CoreState (record)
-instead of a internal state, the state is exported and should be used externally. 
-
-Also, great part of the SDL API only works after initialization so, the ideia is that a Nene.CoreState lives just as the SDL after initialization and before quit. 
-
-SDL functions that should be only used after initialization should be abstracted as a Nene.CoreState method, the functions 
-
-that doesn't contains this limitation should be a Nene function instead (which is something that needs a review). 
-
-Note that Nene is made to use only one window. 
+instead of a internal state, the state is  
+exported and should be used externally.  
+  
+Also, great part of the SDL API only works after initialization  
+so, the ideia is that a Nene.CoreState lives just as the SDL  
+after initialization and before quit.  
+  
+SDL functions that should be only used after initialization  
+should be abstracted as a Nene.CoreState method, the functions  
+  
+that doesn't contains this limitation should be a Nene  
+function instead (which is something that needs a review).  
+  
+Note that Nene is made to use only one window.
 ```lua
 global Nene.CoreState = @record{
   initialized: boolean,
@@ -24,43 +29,46 @@ global Nene.CoreState = @record{
 ```
 
 ## Nene.CoreState:set_render_target (function)
-Set `target_tex` texture as a render target 
+Set `target_tex` texture as a render target
 ```lua
 function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
 ```
 
 ## Nene.CoreState:get_window_size (function)
-Get the size of current window 
+Get the size of current window
 ```lua
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
 ```
 
 ## Nene.CoreState:get_screen_size (function)
-Get the screen size 
+Get the screen size
 ```lua
 function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
 ```
 
 ## Nene.CoreState:get_render_pos (function)
-Get a proper drawing origin position (left-up point) considering the camera's position and the window's screen size 
+Get a proper drawing origin position (left-up point) considering the  
+camera's position and the window's screen size
 ```lua
 function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
 ```
 
 ## Nene.CoreState:play_music (function)
-plays the current music when `true` is passed on `loop` parameter, the music will loop forever; when an `integer` is passed on `loop` parameter, the music will loop `loop` times 
+plays the current music  
+when `true` is passed on `loop` parameter, the music will loop forever;  
+when an `integer` is passed on `loop` parameter, the music will loop `loop` times
 ```lua
 function Nene.CoreState:play_music(music: Nene.Music, loop: overload(boolean, integer, niltype))
 ```
 
 ## Nene.CoreState:stop_music (function)
-stops the current music 
+stops the current music
 ```lua
 function Nene.CoreState:stop_music()
 ```
 
 ## Nene.Callbacks (record)
-The callbacks that should be passed on `pool_events` 
+The callbacks that should be passed on `pool_events`
 ```lua
 global Nene.Callbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
@@ -90,91 +98,124 @@ global Nene.Callbacks = @record{
 ```
 
 ## Nene.CoreState:pool_events (function)
-Pool all SDL events, calls the respective callbacks, and then updates the state 
+You should call this method at the start of each game loop tick, it:  
+1. Pools all SDL events  
+2. Calls the respective callbacks if `evt_callbacks` is given  
+3. Updates the internal state data
 ```lua
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
 ```
 
-## Nene.CoreState:get_key (function)
-
+## Nene.CoreState:get_scancode (function)
+returns if a `scancode` is pressed
 ```lua
-function Nene.CoreState:get_key(scancode: SDL_Scancode): boolean
+function Nene.CoreState:get_scancode(scancode: SDL_Scancode): boolean
 ```
 
 ## Nene.CoreState:load_font (function)
-
+try to load a font from a file  
+it returns:  
+* a boolean that indicates the success or failure of procedure  
+* an error message string, it will be an empty string on success  
+* the font, properly initialized on success
 ```lua
 function Nene.CoreState:load_font(filename: string, ptsize: integer): (boolean, string, Nene.Font)
 ```
 
 ## Nene.CoreState:load_sound (function)
-
+try to load a sound from a file,  
+it returns:  
+* a boolean that indicates the success or failure of procedure  
+* an error message string, it will be an empty string on success  
+* the sound, properly initialized on success
 ```lua
 function Nene.CoreState:load_sound(filename: string): (boolean, string, Nene.Sound)
 ```
 
 ## Nene.CoreState:load_music (function)
-
+try to load a music from a file,  
+it returns:  
+* a boolean that indicates the success or failure of procedure  
+* an error message string, it will be an empty string on success  
+* the music, properly initialized on success
 ```lua
 function Nene.CoreState:load_music(filename: string): (boolean, string, Nene.Music)
 ```
 
 ## Nene.CoreState:load_texture (function)
-
+try to load a texture from a file  
+it returns:  
+* a boolean that indicates the success or failure of procedure  
+* an error message string, it will be a empty string on success  
+* the texture, properly initialized on success
 ```lua
 function Nene.CoreState:load_texture(filename: string): (boolean, string, Nene.Texture)
 ```
 
 ## Nene.CoreState:render_draw_atlas_frame (function)
-
+Draw an `atlas`'s `frame` at a specific `position`.  
+if a value of type `SpriteSheet` or `Tilemap` is passed at the `atlas` argument,  
+the respective atlas of these types will be used.
 ```lua
 function Nene.CoreState:render_draw_atlas_frame(
 ```
 
 ## Nene.CoreState:render_draw_tilemap (function)
-
+renders a whole `tilemap` in the given `position` using the given `color` tint.
 ```lua
 function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)
 ```
 
 ## Nene.CoreState:render_clear (function)
-
+clears the screen with the `given` color
 ```lua
 function Nene.CoreState:render_clear(color: Nene.Color)
 ```
 
 ## Nene.CoreState:render_draw_rect (function)
-
+renders a `rectangle` on the screen, with the given `color`; it will be filled if `use_lines` is `false`.
 ```lua
-function Nene.CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
+function Nene.CoreState:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
 ```
 
 ## Nene.CoreState:get_ms_time (function)
-
+get the current time relative to SDL initialization (done at the `init` method)
 ```lua
 function Nene.CoreState:get_ms_time()
 ```
 
 ## Nene.CoreState:get_deltatime (function)
-
+get the current delta time relative to the time of previous frame  
+in other words, the difference of time between the current and previous frame.
 ```lua
 function Nene.CoreState:get_deltatime()
 ```
 
 ## Nene.CoreState:render_present (function)
-
+presents the rendered screen by presenting the composed backbuffer (any rendering operation  
+is done on the SDL's backbuffer, this function presents it)  
+  
+This also does some operations that finishes the frame on the state.
 ```lua
 function Nene.CoreState:render_present()
 ```
 
 ## Nene.init (function)
-try to initialize and return a new initilized core state. returns:   * a boolean that indicates true on success   * a string error message on failure (or empty otherwise)   * a new state, only filled on success notes:   You always should first check if the initialization   succeeded before trying to use the state 
+try to initialize and return a new initilized  
+core state.  
+returns:  
+  * a boolean that indicates true on success  
+  * a string error message on failure (or empty otherwise)  
+  * a new state, only filled on success  
+notes:  
+  You always should first check if the initialization  
+  succeeded before trying to use the state
 ```lua
 function Nene.init(
 ```
 
 ## Nene.CoreState:terminate (function)
-Finalize application and quits all SDL subsystems 
+Finalize application and quits all SDL subsystems
 ```lua
 function Nene.CoreState:terminate()
 ```

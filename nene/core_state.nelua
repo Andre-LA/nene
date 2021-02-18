@@ -147,7 +147,10 @@ global Nene.Callbacks = @record{
 }
 
 -- TODO: Should I rename this method as "update"?
---- Pool all SDL events, calls the respective callbacks, and then updates the state
+--- You should call this method at the start of each game loop tick, it:
+--- 1. Pools all SDL events
+--- 2. Calls the respective callbacks if `evt_callbacks` is given
+--- 3. Updates the internal state data
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   check(self.initialized, 'Core State variable is not initialized')
 
@@ -223,15 +226,16 @@ function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   end
 end
 
-function Nene.CoreState:get_key(scancode: SDL_Scancode): boolean
+--- returns if a `scancode` is pressed
+function Nene.CoreState:get_scancode(scancode: SDL_Scancode): boolean
   return self.keyboard_state[scancode] == 1
 end
 
--- try to load a font from a file
--- it returns:
--- * a boolean that indicates the success or failure of procedure
--- * an error message string, it will be an empty string on success
--- * the font, properly initialized on success
+--- try to load a font from a file
+--- it returns:
+--- * a boolean that indicates the success or failure of procedure
+--- * an error message string, it will be an empty string on success
+--- * the font, properly initialized on success
 function Nene.CoreState:load_font(filename: string, ptsize: integer): (boolean, string, Nene.Font)
   local new_font: Nene.Font = {
     _data = TTF_OpenFont(filename, ptsize)
@@ -244,11 +248,11 @@ function Nene.CoreState:load_font(filename: string, ptsize: integer): (boolean, 
   end
 end
 
--- try to load a sound from a file
--- it returns:
--- * a boolean that indicates the success or failure of procedure
--- * an error message string, it will be an empty string on success
--- * the sound, properly initialized on success
+--- try to load a sound from a file,
+--- it returns:
+--- * a boolean that indicates the success or failure of procedure
+--- * an error message string, it will be an empty string on success
+--- * the sound, properly initialized on success
 function Nene.CoreState:load_sound(filename: string): (boolean, string, Nene.Sound)
   local new_sound: Nene.Sound = {
     _data = Mix_LoadWAV(filename),
@@ -262,11 +266,11 @@ function Nene.CoreState:load_sound(filename: string): (boolean, string, Nene.Sou
   end
 end
 
--- try to load a music from a file
--- it returns:
--- * a boolean that indicates the success or failure of procedure
--- * an error message string, it will be an empty string on success
--- * the music, properly initialized on success
+--- try to load a music from a file,
+--- it returns:
+--- * a boolean that indicates the success or failure of procedure
+--- * an error message string, it will be an empty string on success
+--- * the music, properly initialized on success
 function Nene.CoreState:load_music(filename: string): (boolean, string, Nene.Music)
   local new_music: Nene.Music = {
     _data = Mix_LoadMUS(filename),
@@ -282,11 +286,11 @@ function Nene.CoreState:load_music(filename: string): (boolean, string, Nene.Mus
   end
 end
 
--- try to load a texture from a file
--- it returns:
--- * a boolean that indicates the success or failure of procedure
--- * an error message string, it will be a empty string on success
--- * the texture, properly initialized on success
+--- try to load a texture from a file
+--- it returns:
+--- * a boolean that indicates the success or failure of procedure
+--- * an error message string, it will be a empty string on success
+--- * the texture, properly initialized on success
 function Nene.CoreState:load_texture(filename: string): (boolean, string, Nene.Texture)
   check(self.initialized, 'Core State variable is not initialized')
 
@@ -305,20 +309,21 @@ function Nene.CoreState:load_texture(filename: string): (boolean, string, Nene.T
   return true, "", Nene.Texture.new(texture)
 end
 
--- Draw an `atlas` `frame` at a specific `position` from a `spritesheet`
--- You can also pass a `SpriteSheet` or a `Tilemap` as the `atlas` argument
 -- TODO: * add `angle`, `center`, and `flip` facultative parameters and use RenderCopyEx
 --       * I'll may need scaling too
 --       * use `color`
+--- Draw an `atlas`'s `frame` at a specific `position`.
+--- if a value of type `SpriteSheet` or `Tilemap` is passed at the `atlas` argument,
+--- the respective atlas of these types will be used.
 function Nene.CoreState:render_draw_atlas_frame(
-  atlas_src: overload(Nene.TextureAtlas, Nene.SpriteSheet, Nene.Tilemap),
+  atlas: overload(Nene.TextureAtlas, Nene.SpriteSheet, Nene.Tilemap),
   frame: usize,
   position: Nene.Math.Vec2,
   color: Nene.Color
 )
   check(self.initialized, 'Core State variable is not initialized')
 
-  ## if atlas_src.type.is_spritesheet or atlas_src.type.is_tilemap then
+  ## if atlas.type.is_spritesheet or atlas_src.type.is_tilemap then
   local atlas = atlas_src.atlas
   ## else
   local atlas = atlas_src
@@ -345,6 +350,7 @@ function Nene.CoreState:render_draw_atlas_frame(
   atlas.texture:draw(self, color, src_rect, dest_rect)
 end
 
+--- renders a whole `tilemap` in the given `position` using the given `color` tint.
 function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
   check(tilemap.atlas ~= nilptr, "tilemap's atlas is not initialized")
@@ -358,11 +364,12 @@ function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nen
       i_offset = i_offset - frame - 1 -- frame is negative, so this will increate i_offset
     else
       local tile_pos = tilemap:get_position_from_index(i + i_offset)
-      self:render_draw_atlas_frame($tilemap.atlas, frame, tile_pos + position, color)
+      self:render_draw_atlas_frame($tilemap.atlas, frame, position + tile_pos, color)
     end
   end
 end
 
+--- clears the screen with the `given` color
 function Nene.CoreState:render_clear(color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
 
@@ -370,14 +377,15 @@ function Nene.CoreState:render_clear(color: Nene.Color)
   SDL_RenderClear(self.renderer)
 end
 
-function Nene.CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
+--- renders a `rectangle` on the screen, with the given `color`; it will be filled if `use_lines` is `false`.
+function Nene.CoreState:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
 
-  local target_pos = self:get_render_pos({rect.x, rect.y})
+  local target_pos = self:get_render_pos({rectangle.x, rectangle.y})
 
   local sdl_rect: SDL_Rect = {
     x = math.ifloor(target_pos.x), y = math.ifloor(target_pos.y),
-    w = rect.w, h = rect.h
+    w = rectangle.w, h = rectangle.h
   }
 
   SDL_SetRenderDrawColor(self.renderer, color.r, color.g, color.b, color.a)
@@ -389,14 +397,21 @@ function Nene.CoreState:render_draw_rect(rect: Nene.Math.Rect, use_lines: boolea
   end
 end
 
+--- get the current time relative to SDL initialization (done at the `init` method)
 function Nene.CoreState:get_ms_time()
   return SDL_GetTicks()
 end
 
+--- get the current delta time relative to the time of previous frame
+--- in other words, the difference of time between the current and previous frame.
 function Nene.CoreState:get_deltatime()
   return self:get_ms_time() - self.previous_time
 end
 
+--- presents the rendered screen by presenting the composed backbuffer (any rendering operation
+--- is done on the SDL's backbuffer, this function presents it)
+---
+--- This also does some operations that finishes the frame on the state.
 function Nene.CoreState:render_present()
   check(self.initialized, 'Core State variable is not initialized')
   self.previous_time = self:get_ms_time()

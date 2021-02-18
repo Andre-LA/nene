@@ -83,15 +83,7 @@ local function doc_file(file, filename)
 
     local function add_doc_content()
       documenting = true
-      if doc_match ~= '' and #doc_lines > 0 then
-        doc_lines[#doc_lines] = doc_lines[#doc_lines] .. doc_match .. ' '
-      else
-        if #doc_lines == 0 then
-          table.insert(doc_lines, doc_match .. ' ')
-        else
-          table.insert(doc_lines, doc_match)
-        end
-      end
+      table.insert(doc_lines, doc_match)
       print_status()
     end
 
@@ -142,7 +134,7 @@ local function doc_file(file, filename)
       file_doc:insert(
         doc_title,
         doc_type,
-        table.concat(doc_lines, '\n\n'),
+        table.concat(doc_lines, '  \n'),
         table.concat(doc_code_lines, '\n')
       )
 
