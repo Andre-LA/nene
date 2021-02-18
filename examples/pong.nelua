@@ -51,9 +51,9 @@ function Racket:update(nene_state: Nene.CoreState)
   local is_up, is_down = false, false
 
   if self.is_player_one then
-    is_up, is_down = nene_state:get_key(SDL_SCANCODE_W), nene_state:get_key(SDL_SCANCODE_S)
+    is_up, is_down = nene_state:get_scancode(SDL_SCANCODE_W), nene_state:get_scancode(SDL_SCANCODE_S)
   else
-    is_up, is_down = nene_state:get_key(SDL_SCANCODE_I), nene_state:get_key(SDL_SCANCODE_K)
+    is_up, is_down = nene_state:get_scancode(SDL_SCANCODE_I), nene_state:get_scancode(SDL_SCANCODE_K)
   end
 
   if is_up then

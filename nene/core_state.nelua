@@ -323,10 +323,8 @@ function Nene.CoreState:render_draw_atlas_frame(
 )
   check(self.initialized, 'Core State variable is not initialized')
 
-  ## if atlas.type.is_spritesheet or atlas_src.type.is_tilemap then
-  local atlas = atlas_src.atlas
-  ## else
-  local atlas = atlas_src
+  ## if atlas.type.is_spritesheet or atlas.type.is_tilemap then
+  local atlas = atlas.atlas
   ## end
 
   local tex_w_units = math.ifloor(atlas.texture.width / atlas.unit_width)
