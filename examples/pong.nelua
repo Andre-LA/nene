@@ -184,6 +184,8 @@ repeat
     pl_2:draw(nene_state)
     ball:draw(nene_state)
 
+    nene_state:render_screen()
+
     r1_text:draw(nene_state, {10, 0}, Nene.Palette.white)
     r2_text:draw(nene_state, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
 

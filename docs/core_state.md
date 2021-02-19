@@ -101,7 +101,8 @@ global Nene.Callbacks = @record{
 You should call this method at the start of each game loop tick, it:  
 1. Pools all SDL events  
 2. Calls the respective callbacks if `evt_callbacks` is given  
-3. Updates the internal state data
+3. Updates the internal state data  
+4. Set the game screen as render target
 ```lua
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
 ```
@@ -191,11 +192,18 @@ in other words, the difference of time between the current and previous frame.
 function Nene.CoreState:get_deltatime()
 ```
 
+## Nene.CoreState:render_screen (function)
+renders the screen an resets the SDL render target.  
+you can still draw after calling this function, like GUI drawing.
+```lua
+function Nene.CoreState:render_screen()
+```
+
 ## Nene.CoreState:render_present (function)
-presents the rendered screen by presenting the composed backbuffer (any rendering operation  
+presents the SDL's composed backbuffer (any rendering operation  
 is done on the SDL's backbuffer, this function presents it)  
   
-This also does some operations that finishes the frame on the state.
+This also does some modification on the state, preparing it for the next frame.
 ```lua
 function Nene.CoreState:render_present()
 ```
