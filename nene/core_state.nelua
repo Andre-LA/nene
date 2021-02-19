@@ -40,22 +40,26 @@ global Nene.CoreState = @record{
 }
 
 require 'nene.texture'
-require 'nene.texture_atlas'
-require 'nene.text_texture'
-require 'nene.font'
 
-require 'nene.spritesheet'
-require 'nene.tilemap'
-
-##[[do -- adding `screen_texture` field on `Nene.CoreState`
+##[[
+do -- adding `screen_texture` field on `Nene.CoreState`
   local CoreState = Nene.value.metafields.CoreState.value
   local Texture = Nene.value.metafields.Texture.value
 
   staticassert(traits.is_type(CoreState) and CoreState.is_record)
   staticassert(traits.is_type(Texture) and Texture.is_record)
 
+  CoreState.is_nenestate = true
   CoreState:add_field('screen_texture', Texture)
-end]]
+end
+]]
+
+require 'nene.texture_atlas'
+require 'nene.text_texture'
+require 'nene.font'
+
+require 'nene.spritesheet'
+require 'nene.tilemap'
 
 local prev_music_id: usize = 0
 
