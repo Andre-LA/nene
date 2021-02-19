@@ -4,6 +4,8 @@ Tiny game library build around SDL2 and it's extension libraries (SDL_image, SDL
 Is a very simple game library for simple games, for now, using any library than the SDL2's ones is a
  non-goal.
  
+**Note: This is WIP, incomplete and unstable (frequent breaking changes)**
+ 
 ## Dependencies
 - [Nelua language](https://nelua.io/)
 - [SDL2 library](https://www.libsdl.org/)
@@ -12,9 +14,8 @@ Is a very simple game library for simple games, for now, using any library than 
 - [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
 
 ## Examples
-There is no examples for now, however, the
- [Rotor-quick project contains some examples](https://github.com/Andre-LA/rotor-quick/tree/sdl2-refactor/tests)
- and `nene` is used there.
+- [Pong example](examples/pong.nelua)
+- [(external) Rotor-quick tests](https://github.com/Andre-LA/rotor-quick/tree/sdl2-refactor/tests)
  
 ## Download
 You can download this library by using a simple `git clone`:
