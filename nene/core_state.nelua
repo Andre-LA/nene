@@ -36,7 +36,8 @@ global Nene.CoreState = @record{
   current_music: Nene.Music,
   previous_time: uint32,
   camera: Nene.Camera,
-  --screen_texture: Nene.Texture (added later through meta-programming)
+  --screen_texture: Nene.Txture, (added later through meta-programming)
+  --current_render_target: Nene.Texture, (added later through meta-programming)
 }
 
 require 'nene.texture'
@@ -51,6 +52,7 @@ do -- adding `screen_texture` field on `Nene.CoreState`
 
   CoreState.is_nenestate = true
   CoreState:add_field('screen_texture', Texture)
+  CoreState:add_field('current_render_target', Texture)
 end
 ]]
 
@@ -69,8 +71,10 @@ function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
 
   ## if target_tex.type.is_niltype then
     SDL_SetRenderTarget(self.renderer, nilptr)
+    self.current_render_target = {}
   ## else
     SDL_SetRenderTarget(self.renderer, target_tex:get())
+    self.current_render_target = target_tex
   ## end
 end
 
@@ -78,12 +82,19 @@ end
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
   local ww: cint, wh: cint;
   SDL_GetWindowSize(self.window, &ww, &wh)
-  return (@Nene.Math.Vec2){ x = ww, y = wh}
+  return (@Nene.Math.Vec2){ x = ww, y = wh }
 end
 
---- Get the screen size
-function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
-  return (@Nene.Math.Vec2){ x = self.screen_texture.width, y = self.screen_texture.height }
+--- Get the dimensions of the current render target
+function Nene.CoreState:get_render_target_dimensions(): Nene.Math.Vec2
+  if self.current_render_target.initialized then
+    return (@Nene.Math.Vec2){
+      x = self.current_render_target.width,
+      y = self.current_render_target.height
+    }
+  else
+    return self:get_window_size()
+  end
 end
 
 --- Get a proper drawing origin position (left-up point) considering the
@@ -414,7 +425,7 @@ function Nene.CoreState:render_screen()
 
   local sdl_screen_tex = SDL_GetRenderTarget(self.renderer)
 
-  SDL_SetRenderTarget(self.renderer, nilptr)
+  self:set_render_target(nil)
   SDL_RenderCopy(self.renderer, sdl_screen_tex, nilptr, nilptr)
 end
 
