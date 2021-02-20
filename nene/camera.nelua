@@ -1,9 +1,34 @@
 require 'nene.math'
 
 global Nene.Camera = @record{
+  offset: Nene.Math.Vec2, -- should be on ([0, 1], [0, 1]) range
   pos: Nene.Math.Vec2,
 }
+local Camera = Nene.Camera
+## Camera.value.is_camera = true
 
-function Nene.Camera:get_relative_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
-  return (@Nene.Math.Vec2){pos.x - self.pos.x, pos.y - self.pos.y}
+--- sets the offset vector of camera, it's {0.5, 0.5} by default, which
+--- means that the objects will look
+--- offset is how the camera centers on the screen, you probably want
+function Camera:set_offset(offset: Nene.Math.Vec2)
+  check(offset.x >= 0 and offset.y <= 1, 'offset should be on the [0, 1] range for each axis')
+  self.offset = offset
+end
+
+function Camera:get_relative_pos(pos: Nene.Math.Vec2, screen_size: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){
+    x = (pos.x - self.pos.x) + (screen_size.x * self.offset.x),
+    y = (pos.y - self.pos.y) + (screen_size.y * self.offset.y),
+  }
+end
+
+function Camera.new(pos: facultative(Nene.Math.Vec2)): Camera
+  ## if pos.type.is_niltype then
+    local pos: Nene.Math.Vec2 = {0, 0}
+  ## end
+
+  return (@Camera) {
+    offset = { 0.5, 0.5 },
+    =pos
+  }
 end

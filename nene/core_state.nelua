@@ -89,13 +89,7 @@ end
 --- Get a proper drawing origin position (left-up point) considering the
 --- camera's position and the window's screen size
 function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
-  local cam_relative_pos = self.camera:get_relative_pos(pos)
-  local winsize = self:get_screen_size() * 0.5
-
-  return (@Nene.Math.Vec2){
-    x = cam_relative_pos.x + winsize.x,
-    y = cam_relative_pos.y + winsize.y
-  }
+  return self.camera:get_relative_pos(pos, self:get_render_target_dimensions())
 end
 
 --- plays the current music
@@ -520,7 +514,10 @@ function Nene.init(
 
   new_state = {
     initialized = true,
-    camera = { pos = { x = screen_size.x // 2, y = screen_size.y // 2 } },
+    camera = {
+      pos = { x = screen_size.x // 2, y = screen_size.y // 2 },
+      offset = { 0.5, 0.5 },
+    },
     =window,
     =renderer,
     =screen_texture
