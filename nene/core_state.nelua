@@ -8,6 +8,7 @@ require 'span'
 require 'nene.core'
 
 require 'nene.audio'
+require 'nene.font'
 require 'nene.camera'
 
 require 'nene.colors'
@@ -36,6 +37,7 @@ global Nene.CoreState = @record{
   current_music: Nene.Music,
   previous_time: uint32,
   camera: Nene.Camera,
+  default_font: Nene.Font,
   --screen_texture: Nene.Txture, (added later through meta-programming)
   --current_render_target: Nene.Texture, (added later through meta-programming)
 }
@@ -58,7 +60,6 @@ end
 
 require 'nene.texture_atlas'
 require 'nene.text_texture'
-require 'nene.font'
 
 require 'nene.spritesheet'
 require 'nene.tilemap'
@@ -440,6 +441,7 @@ function Nene.CoreState:render_present()
   SDL_RenderPresent(self.renderer)
 end
 
+-- TODO: rethink this function
 --- try to initialize and return a new initilized
 --- core state.
 --- returns:
@@ -452,6 +454,7 @@ end
 function Nene.init(
   title: string,
   window_size_x: integer, window_size_y: integer,
+  default_font_path: string, default_font_ptsize: integer,
   screen_size_x: facultative(integer), screen_size_y: facultative(integer),
   pos_x: facultative(integer), pos_y: facultative(integer),
   flags: facultative(uint32)
@@ -514,6 +517,8 @@ function Nene.init(
     screen_size.y = screen_size_y
   ## end
 
+  local ok, errmsg, default_font = new_state:load_font(default_font_path, default_font_ptsize)
+  check(ok, errmsg)
 
   local screen_texture = Nene.Texture.new(SDL_CreateTexture(renderer,
                                                             SDL_PIXELFORMAT_RGBA8888,
@@ -531,7 +536,8 @@ function Nene.init(
     },
     =window,
     =renderer,
-    =screen_texture
+    =screen_texture,
+    =default_font
   }
 
   new_state:set_render_target(new_state.screen_texture)
