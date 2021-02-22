@@ -81,6 +81,13 @@ end
     return self:is_point_intersecting(test_point) and other:is_point_intersecting(test_point)
   end
 
+  function RectT:get_center(): Nene.Math.Vec2
+    return (@Nene.Math.Vec2){
+      x = self.x + (self.w / 2),
+      y = self.y + (self.h / 2),
+    }
+  end
+
   ## RectT.value.is_rect = true
 ## end
 
