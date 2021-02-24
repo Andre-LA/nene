@@ -21,10 +21,13 @@ global Nene.CoreState = @record{
   window: *SDL_Window,
   renderer: *SDL_Renderer,
   keyboard_state: span(uint8),
+  prev_keyboard_state: vector(uint8),
   current_music: Nene.Music,
   previous_time: uint32,
   camera: Nene.Camera,
-  --screen_texture: Nene.Texture (added later through meta-programming)
+  default_font: Nene.Font,
+  --screen_texture: Nene.Txture, -- (added later through meta-programming)
+  --current_render_target: Nene.Texture, -- (added later through meta-programming)
 }
 ```
 
@@ -40,10 +43,10 @@ Get the size of current window
 function Nene.CoreState:get_window_size(): Nene.Math.Vec2
 ```
 
-## Nene.CoreState:get_screen_size (function)
-Get the screen size
+## Nene.CoreState:get_render_target_dimensions (function)
+Get the dimensions of the current render target
 ```lua
-function Nene.CoreState:get_screen_size(): Nene.Math.Vec2
+function Nene.CoreState:get_render_target_dimensions(): Nene.Math.Vec2
 ```
 
 ## Nene.CoreState:get_render_pos (function)
@@ -108,9 +111,12 @@ function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
 ```
 
 ## Nene.CoreState:get_scancode (function)
-returns if a `scancode` is pressed
+when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);  
+when `is_down` argument is also given:  
+    * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);  
+    * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
 ```lua
-function Nene.CoreState:get_scancode(scancode: SDL_Scancode): boolean
+function Nene.CoreState:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean) <comptime>): boolean
 ```
 
 ## Nene.CoreState:load_font (function)

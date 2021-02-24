@@ -74,6 +74,12 @@ function Nene.Math.Vec2.__div(l: Nene.Math.Vec2, r: Nene.Math.Vec2): Nene.Math.V
   function RectT:is_rect_intersecting(other: RectT): boolean
 ```
 
+## RectT:get_center (function)
+
+```lua
+  function RectT:get_center(): Nene.Math.Vec2
+```
+
 ## Nene.Math.Rectf:to_rect (function)
 
 ```lua
