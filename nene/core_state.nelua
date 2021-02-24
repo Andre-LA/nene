@@ -4,6 +4,7 @@ require 'sdl2_image'
 require 'sdl2_mixer'
 
 require 'span'
+require 'vector'
 
 require 'nene.core'
 
@@ -34,12 +35,13 @@ global Nene.CoreState = @record{
   window: *SDL_Window,
   renderer: *SDL_Renderer,
   keyboard_state: span(uint8),
+  prev_keyboard_state: vector(uint8),
   current_music: Nene.Music,
   previous_time: uint32,
   camera: Nene.Camera,
   default_font: Nene.Font,
-  --screen_texture: Nene.Txture, (added later through meta-programming)
-  --current_render_target: Nene.Texture, (added later through meta-programming)
+  --screen_texture: Nene.Txture, -- (added later through meta-programming)
+  --current_render_target: Nene.Texture, -- (added later through meta-programming)
 }
 
 require 'nene.texture'
@@ -165,6 +167,13 @@ global Nene.Callbacks = @record{
 function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   check(self.initialized, 'Core State variable is not initialized')
 
+  do -- update previous frame keyboard state
+    self.prev_keyboard_state:resize(#self.keyboard_state)
+    for i = 0, < #self.keyboard_state do
+      self.prev_keyboard_state[i] = self.keyboard_state[i]
+    end
+  end
+
   local evt: SDL_Event;
 
   while SDL_PollEvent(&evt) == 1 do
@@ -226,7 +235,7 @@ function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
     ## end
   end
 
-  do -- update keyboard_state
+  do -- update current keyboard_state
     local kb_state_len: cint;
     local kb_state_arr = SDL_GetKeyboardState(&kb_state_len)
 
@@ -239,9 +248,23 @@ function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
   self:set_render_target(self.screen_texture)
 end
 
---- returns if a `scancode` is pressed
-function Nene.CoreState:get_scancode(scancode: SDL_Scancode): boolean
-  return self.keyboard_state[scancode] == 1
+--- when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);
+--- when `is_down` argument is also given:
+---     * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
+---     * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
+function Nene.CoreState:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean) <comptime>): boolean
+  ## if is_down.type.is_niltype then
+    return self.keyboard_state[scancode] == 1
+  ## else
+    local currently_pressed = self.keyboard_state[scancode] == 1
+    local previously_pressed = scancode < #self.prev_keyboard_state and self.prev_keyboard_state[scancode] == 1 or false
+
+    ## if is_down.value then
+      return currently_pressed and not previously_pressed
+    ## else
+      return not currently_pressed and previously_pressed
+    ## end
+  ## end
 end
 
 --- try to load a font from a file
@@ -537,7 +560,7 @@ function Nene.init(
     =window,
     =renderer,
     =screen_texture,
-    =default_font
+    =default_font,
   }
 
   new_state:set_render_target(new_state.screen_texture)
@@ -550,6 +573,8 @@ function Nene.CoreState:terminate()
   check(self.initialized, 'Core State variable is not initialized')
 
   self.initialized = false
+
+  self.prev_keyboard_state:destroy()
 
   SDL_DestroyRenderer(self.renderer)
   self.renderer = nilptr
