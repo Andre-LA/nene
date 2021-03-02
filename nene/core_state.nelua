@@ -413,6 +413,22 @@ function Nene.CoreState:render_clear(color: Nene.Color)
   SDL_RenderClear(self.renderer)
 end
 
+--- renders a line from `origin` to `destination` with the given `color`
+function Nene.CoreState:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
+  check(self.initialized, 'Core State variable is not initialized')
+
+  local origin_render_pos = self:get_render_pos(origin)
+  local destination_render_pos = self:get_render_pos(destination)
+
+  SDL_SetRenderDrawColor(self.renderer, color.r, color.g, color.b, color.a)
+
+  SDL_RenderDrawLine(self.renderer,
+                     math.ifloor(origin_render_pos.x),
+                     math.ifloor(origin_render_pos.y),
+                     math.ifloor(destination_render_pos.x),
+                     math.ifloor(destination_render_pos.y))
+end
+
 --- renders a `rectangle` on the screen, with the given `color`; it will be filled if `use_lines` is `false`.
 function Nene.CoreState:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
   check(self.initialized, 'Core State variable is not initialized')
