@@ -24,6 +24,8 @@ local SETTINGS: record{
   }
 }
 
+-- [[ Game code [[
+
 -- racket record
 local Racket = @record{
   pos_y: integer,
@@ -135,8 +137,10 @@ end
 function Ball:draw(nene_state: Nene.CoreState)
   nene_state:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
 end
+-- ]] Game code ]]
 
--- main code:
+-- [[ Application code [[
+
 local ok, errmsg, nene_state = Nene.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y, 'resources/monogram_extended.ttf', 32)
 check(ok, errmsg)
 
@@ -157,6 +161,7 @@ local function update_points(pts_text: *Nene.TextTexture, points: integer, prev_
   pts_text:update_text(nene_state, pts_str, Nene.Palette.white)
 end
 
+-- Game Loop:
 repeat
   nene_state:pool_events()
 
@@ -188,3 +193,5 @@ repeat
     nene_state:render_present()
   end
 until nene_state.quit
+
+-- ]] Application code ]]
