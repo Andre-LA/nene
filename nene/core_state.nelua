@@ -32,6 +32,7 @@ require 'nene.math'
 global Nene.CoreState = @record{
   initialized: boolean,
   quit: boolean,
+  deltatime: number,
   window: *SDL_Window,
   renderer: *SDL_Renderer,
   keyboard_state: span(uint8),
@@ -40,7 +41,7 @@ global Nene.CoreState = @record{
   previous_time: uint32,
   camera: Nene.Camera,
   default_font: Nene.Font,
-  --screen_texture: Nene.Txture, -- (added later through meta-programming)
+  --screen_texture: Nene.Texture, -- (added later through meta-programming)
   --current_render_target: Nene.Texture, -- (added later through meta-programming)
 }
 
@@ -245,6 +246,7 @@ function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
     }
   end
 
+  -- update render target
   self:set_render_target(self.screen_texture)
 end
 
@@ -436,12 +438,6 @@ function Nene.CoreState:get_ms_time()
   return SDL_GetTicks()
 end
 
---- get the current delta time relative to the time of previous frame
---- in other words, the difference of time between the current and previous frame.
-function Nene.CoreState:get_deltatime()
-  return self:get_ms_time() - self.previous_time
-end
-
 --- renders the screen an resets the SDL render target.
 --- you can still draw after calling this function, like GUI drawing.
 function Nene.CoreState:render_screen()
@@ -459,7 +455,11 @@ end
 --- This also does some modification on the state, preparing it for the next frame.
 function Nene.CoreState:render_present()
   check(self.initialized, 'Core State variable is not initialized')
-  self.previous_time = self:get_ms_time()
+
+  local current_time = self:get_ms_time()
+  self.deltatime = (current_time - self.previous_time) / 1000
+
+  self.previous_time = current_time
 
   SDL_RenderPresent(self.renderer)
 end
