@@ -18,6 +18,7 @@ Note that Nene is made to use only one window.
 global Nene.CoreState = @record{
   initialized: boolean,
   quit: boolean,
+  deltatime: number,
   window: *SDL_Window,
   renderer: *SDL_Renderer,
   keyboard_state: span(uint8),
@@ -26,7 +27,7 @@ global Nene.CoreState = @record{
   previous_time: uint32,
   camera: Nene.Camera,
   default_font: Nene.Font,
-  --screen_texture: Nene.Txture, -- (added later through meta-programming)
+  --screen_texture: Nene.Texture, -- (added later through meta-programming)
   --current_render_target: Nene.Texture, -- (added later through meta-programming)
 }
 ```
@@ -179,6 +180,12 @@ clears the screen with the `given` color
 function Nene.CoreState:render_clear(color: Nene.Color)
 ```
 
+## Nene.CoreState:render_draw_line (function)
+renders a line from `origin` to `destination` with the given `color`
+```lua
+function Nene.CoreState:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
+```
+
 ## Nene.CoreState:render_draw_rect (function)
 renders a `rectangle` on the screen, with the given `color`; it will be filled if `use_lines` is `false`.
 ```lua
@@ -189,13 +196,6 @@ function Nene.CoreState:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: b
 get the current time relative to SDL initialization (done at the `init` method)
 ```lua
 function Nene.CoreState:get_ms_time()
-```
-
-## Nene.CoreState:get_deltatime (function)
-get the current delta time relative to the time of previous frame  
-in other words, the difference of time between the current and previous frame.
-```lua
-function Nene.CoreState:get_deltatime()
 ```
 
 ## Nene.CoreState:render_screen (function)
