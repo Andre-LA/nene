@@ -1,6 +1,3 @@
--- TODO:
--- review this module with proper math algorithms
-
 require 'nene.core'
 require 'math'
 
@@ -13,6 +10,12 @@ global Nene.Math.Vec2 = @record{
 
 local Vec2 = Nene.Math.Vec2
 ## Vec2.value.is_vec2 = true
+
+global Nene.Math.Vec2.zero: Nene.Math.Vec2 = { x = 0, y = 0}
+
+function Nene.Math.Vec2.__eq(l: Nene.Math.Vec2, r: Nene.Math.Vec2): boolean
+  return l.x == r.x and l.y == r.y
+end
 
 function Nene.Math.Vec2.__len(v: Nene.Math.Vec2): number
   return math.sqrt( (v.x * v.x) + (v.y * v.y) )
@@ -36,6 +39,25 @@ end
 
 function Nene.Math.Vec2.__div(l: Nene.Math.Vec2, r: Nene.Math.Vec2): Nene.Math.Vec2
   return (@Nene.Math.Vec2){ x = l.x / r.x, y = l.y / r.y }
+end
+
+function Nene.Math.Vec2.__unm(v: Nene.Math.Vec2): Nene.Math.Vec2
+  return (@Nene.Math.Vec2){ x = -v.x, y = -v.y }
+end
+
+function Nene.Math.Vec2.dot(l: Nene.Math.Vec2, r: Nene.Math.Vec2): number
+  return l.x * r.x + l.y * r.y
+end
+
+function Nene.Math.Vec2.normalized(v: Nene.Math.Vec2): Nene.Math.Vec2
+  local r: Nene.Math.Vec2 = Nene.Math.Vec2.zero
+
+  local v_len = #v
+  if v_len ~= 0 then
+    r = { x = v.x / v_len, y = v.y / v_len }
+  end
+
+  return r
 end
 
 ## local decl_rect = function(name, T)
