@@ -9,7 +9,7 @@ global Nene.Math.Vec2 = @record{
 }
 
 local Vec2 = Nene.Math.Vec2
-## Vec2.value.is_vec2 = true
+## Vec2.value.is_vec = true
 
 global Vec2.zero: Vec2 = { x = 0, y = 0}
 

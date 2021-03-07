@@ -44,7 +44,7 @@ function Nene.Texture:draw(nene_state: Nene.CoreState, color: Nene.Color, source
     src = &src_rect
   ## end
 
-  ## if not destination.type.is_niltype and (destination.type.is_vec2 or destination.type.is_rect) then
+  ## if not destination.type.is_niltype and (destination.type.is_vec or destination.type.is_rect) then
     local dest_rect: SDL_Rect = {x = destination.x, y = destination.y, w = self.width, h = self.height}
 
     ## if destination.type.is_rect then
