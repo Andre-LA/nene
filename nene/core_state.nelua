@@ -532,13 +532,13 @@ function Nene.init(
     return false, IMG_GetError(), (@Nene.CoreState){}
   end
 
-  local mixer_init_result = Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG
-  if mixer_init_result == 0 then
+  local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
+  if mix_openaudio < 0 then
     return false, Mix_GetError(), (@Nene.CoreState){}
   end
 
-  local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
-  if mix_openaudio < 0 then
+  local mixer_init_result = Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG
+  if mixer_init_result == 0 then
     return false, Mix_GetError(), (@Nene.CoreState){}
   end
 
