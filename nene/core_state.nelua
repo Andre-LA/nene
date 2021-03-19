@@ -269,6 +269,13 @@ function Nene.CoreState:get_scancode(scancode: SDL_Scancode, is_down: facultativ
   ## end
 end
 
+--- returns the mouse coordinates relative to window and a bitmask state of mouse buttons
+function Nene.CoreState:get_mouse_state(): (Nene.Math.Vec2, uint32)
+  local x: cint, y: cint;
+  local mbuttons = SDL_GetMouseState(&x, &y)
+  return (@Nene.Math.Vec2){=x, =y}, mbuttons
+end
+
 --- try to load a font from a file
 --- it returns:
 --- * a boolean that indicates the success or failure of procedure
