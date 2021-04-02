@@ -564,7 +564,7 @@ function Nene.init(
   ## end
 
   local ok, errmsg, default_font = new_state:load_font(default_font_path, default_font_ptsize)
-  check(ok, errmsg)
+  assert(ok, errmsg)
 
   local screen_texture = Nene.Texture.new(SDL_CreateTexture(renderer,
                                                             SDL_PIXELFORMAT_RGBA8888,
@@ -573,6 +573,7 @@ function Nene.init(
                                                             math.ifloor(screen_size.y)))
 
   SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
 
   new_state = {
     initialized = true,
