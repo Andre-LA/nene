@@ -120,6 +120,12 @@ when `is_down` argument is also given:
 function Nene.CoreState:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean) <comptime>): boolean
 ```
 
+## Nene.CoreState:get_mouse_state (function)
+returns the mouse coordinates relative to window and a bitmask state of mouse buttons
+```lua
+function Nene.CoreState:get_mouse_state(): (Nene.Math.Vec2, uint32)
+```
+
 ## Nene.CoreState:load_font (function)
 try to load a font from a file  
 it returns:  
