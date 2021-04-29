@@ -9,7 +9,7 @@ function doc_chunk.tostring(doc)
   local result = {'# ' .. doc.filename }
 
   local fmt = [[
-## %s (%s)
+## %s
 %s
 ```lua
 %s
@@ -17,7 +17,7 @@ function doc_chunk.tostring(doc)
 ]]
 
   for i, doc_item in ipairs(doc) do
-    local doc_content = string.format(fmt, doc_item.title, doc_item.type, doc_item.doc, doc_item.code)
+    local doc_content = string.format(fmt, doc_item.title, doc_item.doc, doc_item.code)
     table.insert(result, doc_content)
   end
 
@@ -57,6 +57,7 @@ local function doc_file(file, filename)
     local doc_match = file_line:match('%-%-%-%s?(.*)')
     local gl_rec_match = file_line:match('global (.-) = @record')
     local function_match = file_line:match('function (.-)%s?%(')
+    local is_macro_match = file_line:match('^## function (.-)%s?%(')
     local newlineonly = file_line == ''
 
     local function print_status()
@@ -113,7 +114,7 @@ local function doc_file(file, filename)
         add_doc_content()
       elseif gl_rec_match then
         add_rec_content()
-      elseif function_match then
+      elseif function_match and not is_macro_match then
         add_function_content()
       elseif not newlineonly then
         add_newline_content()
@@ -125,7 +126,7 @@ local function doc_file(file, filename)
         add_doc_content()
       elseif gl_rec_match then
         add_rec_content()
-      elseif function_match then
+      elseif function_match and not is_macro_match then
         add_function_content()
       end
     end
@@ -134,7 +135,7 @@ local function doc_file(file, filename)
       file_doc:insert(
         doc_title,
         doc_type,
-        table.concat(doc_lines, '  \n'),
+        table.concat(doc_lines, ' \n'),
         table.concat(doc_code_lines, '\n')
       )
 
