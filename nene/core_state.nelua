@@ -340,7 +340,7 @@ end
 --- * [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
 --- * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
 --- * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
-function Nene.init(
+function Nene.Core.init(
   title: string,
   window_size_x: integer, window_size_y: integer,
   pos_x: facultative(integer), pos_y: facultative(integer),
@@ -378,28 +378,28 @@ function Nene.init(
 
   local img_init_result = IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG
   if img_init_result == 0 then
-    return false, IMG_GetError(), (@Nene.CoreState){}
+    return false, IMG_GetError(), (@Nene.Core){}
   end
 
   local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
   if mix_openaudio < 0 then
-    return false, Mix_GetError(), (@Nene.CoreState){}
+    return false, Mix_GetError(), (@Nene.Core){}
   end
 
   local mixer_init_result = Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG
   if mixer_init_result == 0 then
-    return false, Mix_GetError(), (@Nene.CoreState){}
+    return false, Mix_GetError(), (@Nene.Core){}
   end
 
   local ttf_init_result = TTF_Init()
   if ttf_init_result < 0 then
-    return false, TTF_GetError(), (@Nene.CoreState){}
+    return false, TTF_GetError(), (@Nene.Core){}
   end
 
   SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
 
-  Core.initialized = true
+  Nene.Core.initialized = true
 
   new_state = {
     =window,
