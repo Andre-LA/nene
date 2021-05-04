@@ -4,23 +4,11 @@ require 'sdl2_image'
 require 'sdl2_mixer'
 
 require 'span'
-require 'string'
 
 require 'nene.core'
 
 require 'nene.colors'
 require 'nene.math'
-
-## local macros = {}
-
-## function macros.fn_warn_sdl_error(fn_name, fn_msg)
-  ## staticassert(type(fn_name) == 'string', 'macros.fn_warn_sdl_error: the given fn_name is not a string')
-  ## staticassert(type(fn_msg) == 'string', 'macros.fn_warn_sdl_error: the given fn_msg is not a string')
-
-  local warn_msg = string.format(#[fn_name..': '..fn_msg..'. (SDL error: %s)']#, SDL_GetError())
-  warn(warn_msg)
-  warn_msg:destroy()
-## end
 
 --- The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
 --- Nene.Math and Nene.Color).
@@ -260,7 +248,7 @@ function Nene.Core:render_clear(color: Nene.Color)
   self:set_render_draw_color(color)
 
   if SDL_RenderClear(self.renderer) ~= 0 then
-    ## macros.fn_warn_sdl_error('Nene.Core.render_clear', 'could not clear the rendering target')
+    ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_clear', 'could not clear the rendering target')
   end
 end
 
@@ -279,7 +267,7 @@ function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Ma
                                                                          math.ifloor(destination.y)
 
   if SDL_RenderDrawLine(self.renderer, origin_px, origin_py, dest_px, dest_py) ~= 0 then
-    ## macros.fn_warn_sdl_error('Nene.Core.render_draw_line', "could not render a line")
+    ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_draw_line', "could not render a line")
   end
 end
 
@@ -301,11 +289,11 @@ function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolea
 
   if use_lines then
     if SDL_RenderDrawRect(self.renderer, sdl_rect) ~= 0 then
-      ## macros.fn_warn_sdl_error('Nene.Core.render_draw_rect', "could not render a rectangle")
+      ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_draw_rect', "could not render a rectangle")
     end
   else
     if SDL_RenderFillRect(self.renderer, sdl_rect) ~= 0 then
-      ## macros.fn_warn_sdl_error('Nene.Core.render_draw_rect', "could not render a filled rectangle")
+      ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_draw_rect', "could not render a filled rectangle")
     end
   end
 end
