@@ -1,15 +1,18 @@
 require 'sdl2'
 
 require 'nene.math'
+require 'nene.core_state'
 
---- just a wrap of SDL_Texture, the `_data` field
---- should never be directly accessed, instead, use
---- the methods, which do checks
+--- just a wraps a `pointer(SDL_Texture)`, the `_data` field should never be directly accessed,
+--- use methods instead, which do `check`s.
+---
+--- Related SDL documentation:
+--- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 global Nene.Texture = @record{
-  _data: *SDL_Texture,   -- internal data, don't use it, use methods `get` and `apply_sdltex` instead
+  _data: *SDL_Texture,  -- internal data, don't use it, use methods `get` and `apply_sdltex` instead
   initialized: boolean, -- internal data, used to check if the texture is initialized
-  width: uinteger,       -- width in pixels of the texture
-  height: uinteger,      -- height in pixels of the texture
+  width: uinteger,      -- width of the texture in pixels
+  height: uinteger,     -- height of the texture in pixels
 }
 
 ## local function texture_check_macro(fn_name)
@@ -19,7 +22,7 @@ global Nene.Texture = @record{
 
 --- get the internal data
 ---
---- Related:
+--- Related SDL documentation:
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 function Nene.Texture:get(): *SDL_Texture
   ## texture_check_macro('Nene.Texture.get')
@@ -27,6 +30,9 @@ function Nene.Texture:get(): *SDL_Texture
 end
 
 --- free the internal data
+---
+--- Related SDL documentation:
+--- * [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
 function Nene.Texture:destroy()
   ## texture_check_macro('Nene.Texture.destroy')
 
@@ -36,41 +42,46 @@ function Nene.Texture:destroy()
   self.initialized = false
 end
 
---- draw the texture with the `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
+--- draw the texture with a `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
 --- you can optionally pass the `source` rectangle if you want to draw a slice of the texture.
---- However, you need pass a `CoreState` since it requires an initialized SDL to work.
+--- Note that you need pass an initialized `Nene.Core`.
+---
+--- Related Nene documentation:
+--- * [Nene.Core.set_texture_color_modulation](docs/core_state.md#nenecorestateset_texture_color_modulation)
+--- * [Nene.Core.render_copy](docs/core_state.md#nenecorestaterender_copy)
 function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
   ## texture_check_macro('Nene.Texture.draw')
 
-  local src: *SDL_Rect, dest: *SDL_Rect;
+  Nene.Core.set_texture_color_modulation(self._data, color)
 
-  ## if not source.type.is_niltype then
-  local src_rect: SDL_Rect = {x = source.x, y = source.y, w = source.w, h = source.h}
-  src = &src_rect
-  ## end
-
-  ## if not destination.type.is_niltype and (destination.type.is_vec or destination.type.is_rect) then
-    local dest_rect: SDL_Rect = {x = destination.x, y = destination.y, w = self.width, h = self.height}
+  ## if not destination.type.is_niltype then
+    local dest: Nene.Math.Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
 
     ## if destination.type.is_rect then
-      dest_rect.w = destination.w
-      dest_rect.h = destination.h
+      dest.w, dest.h = destination.w, destination.h
     ## end
 
-    dest = &dest_rect
+    nene_state:render_copy(self._data, src, dest)
+  ## else
+    nene_state:render_copy(self._data, src, nil)
   ## end
-
-  SDL_SetTextureColorMod(self._data, color.r, color.g, color.b)
-  SDL_RenderCopy(nene_state.renderer, self._data, src, dest)
 end
 
+--- Applies a new internal texture (with a `pointer(SDL_Texture)`).
+--- If the texture is initialized, then it will destroy itself before applying this new SDL_Texture.
+--- It also updates the information fields (like `width` and `height`).
+---
+--- Related Nene documentation:
+--- * [Nene.Core.query_texture_size](docs/core_state.md#nenecorestatequery_texture_size)
 function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
+  check(new_tex ~= nilptr, "Can't apply a nil SDL_Texture")
+
   if self.initialized then
     self:destroy()
   end
 
   local fmt: uint32, access: cint, w: cint, h: cint;
-  local ok = SDL_QueryTexture(new_tex, &fmt, &access, &w, &h)
+  local w, h = Nene.Core.query_texture_size(new_tex)
 
   self._data = new_tex
   self.initialized = true
@@ -78,9 +89,9 @@ function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
   self.height = h
 end
 
-function Nene.Texture.new(new_tex: *SDL_Texture): Nene.Texture
+--- Returns a `Nene.Texture` with the given `tex` applied.
+function Nene.Texture.new(tex: *SDL_Texture): Nene.Texture
   local new: Nene.Texture = {}
-  new:apply_sdltex(new_tex)
-
+  new:apply_sdltex(tex)
   return new
 end
