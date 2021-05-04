@@ -298,6 +298,68 @@ function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolea
   end
 end
 
+--- Set the color modulation of the given `texture` with the given `color`.
+---
+--- Related SDL documentation:
+--- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+--- * [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
+function Nene.Core.set_texture_color_modulation(data: *SDL_Texture, color: Nene.Color)
+  check(Nene.Core.initialized, 'Core State variable is not initialized')
+
+  local mod_result = SDL_SetTextureColorMod(data, color.r, color.g, color.b)
+
+  if mod_result ~= 0 then
+    if mod_result == -1 then
+      ## Nene.macros.fn_warn_sdl_error('Nene.Core.set_texture_color_modulation', 'color modulation is not supported by the renderer')
+    else
+      ## Nene.macros.fn_warn_sdl_error('Nene.Core.set_texture_color_modulation', 'could not set texture modulation')
+    end
+  end
+end
+
+--- queries the size of the given `texture` and returns it size in pixels in the first and second return values.
+--- a third value is also returned, which is `true` if the operation was successful, `false` otherwise.
+function Nene.Core.query_texture_size(texture: *SDL_Texture): (uinteger, uinteger, boolean)
+  local fmt: uint32, access: cint, w: cint, h: cint;
+
+  -- devnote: is returning ok really useful?
+  local ok = SDL_QueryTexture(texture, &fmt, &access, &w, &h) == 0
+  if not ok then
+    ## Nene.macros.fn_warn_sdl_error('Nene.Core.query_texture_size', 'could not query texture')
+  end
+
+  return w, h, ok
+end
+
+--- Copies a Texture on the rendering target.
+---
+--- By default the whole texture is copied unless the `source` rectangle is given,
+--- in this case only the "source" part of the texture will be copied.
+---
+--- By default the texture will be copied on the whole rendering target unless the `destination` rectangle is given,
+--- in this case it will be copied at this "destination" part of the rendering target.
+---
+--- Related SDL documentation:
+--- * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
+--- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.Rect), destination: facultative(Nene.Math.Rect))
+  check(Nene.Core.initialized, 'Core State variable is not initialized')
+
+  local src: *SDL_Rect, dest: *SDL_Rect;
+
+  ## if not source.type.is_niltype then
+  local src_rect: SDL_Rect = {x = source.x, y = source.y, w = source.w, h = source.h}
+  src = &src_rect
+  ## end
+
+  ## if not destination.type.is_niltype then
+    local dest_rect: SDL_Rect = {x = destination.x, y = destination.y, w = destination.w, h = destination.h}
+    dest = &dest_rect
+  ## end
+
+  SDL_RenderCopy(nene_state.renderer, self._data, src, dest)
+end
+
 --- presents the SDL's composed backbuffer (any rendering operation is done on the SDL's backbuffer,
 --- this function presents it).
 ---
