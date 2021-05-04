@@ -57,7 +57,7 @@ local function doc_file(file, filename)
     local doc_match = file_line:match('%-%-%-%s?(.*)')
     local gl_rec_match = file_line:match('global (.-) = @record')
     local function_match = file_line:match('function (.-)%s?%(')
-    local is_macro_match = file_line:match('^## function (.-)%s?%(')
+    local is_macro_match = file_line:match('^## (.-)function (.-)%s?%(')
     local newlineonly = file_line == ''
 
     local function print_status()

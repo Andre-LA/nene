@@ -14,12 +14,6 @@ global Nene.Texture = @record{
 }
 ```
 
-## texture_check_macro
-
-```lua
-## local function texture_check_macro(fn_name)
-```
-
 ## Nene.Texture:get
 get the internal data 
  
