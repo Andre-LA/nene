@@ -38,8 +38,8 @@ you can optionally pass the `source` rectangle if you want to draw a slice of th
 Note that you need pass an initialized `Nene.Core`. 
  
 Related Nene documentation: 
-* [Nene.Core.set_texture_color_modulation](docs/core_state.md#nenecorestateset_texture_color_modulation) 
-* [Nene.Core.render_copy](docs/core_state.md#nenecorestaterender_copy)
+* [Nene.Core.set_texture_color_modulation](core_state.md#nenecorestateset_texture_color_modulation) 
+* [Nene.Core.render_copy](core_state.md#nenecorestaterender_copy)
 ```lua
 function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
 ```
@@ -50,7 +50,7 @@ If the texture is initialized, then it will destroy itself before applying this 
 It also updates the information fields (like `width` and `height`). 
  
 Related Nene documentation: 
-* [Nene.Core.query_texture_size](docs/core_state.md#nenecorestatequery_texture_size)
+* [Nene.Core.query_texture_size](core_state.md#nenecorestatequery_texture_size)
 ```lua
 function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
 ```
