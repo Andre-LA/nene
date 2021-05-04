@@ -1,80 +1,31 @@
 # nene/core_state.nelua
-## Nene.CoreState (record)
-instead of a internal state, the state is  
-exported and should be used externally.  
-  
-Also, great part of the SDL API only works after initialization  
-so, the ideia is that a Nene.CoreState lives just as the SDL  
-after initialization and before quit.  
-  
-SDL functions that should be only used after initialization  
-should be abstracted as a Nene.CoreState method, the functions  
-  
-that doesn't contains this limitation should be a Nene  
-function instead (which is something that needs a review).  
-  
-Note that Nene is made to use only one window.
+## Nene.Core
+The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except 
+Nene.Math and Nene.Color). 
+Most of the `Core`'s functions comes from SDL2 actually.
 ```lua
-global Nene.CoreState = @record{
-  initialized: boolean,
-  quit: boolean,
-  deltatime: number,
-  window: *SDL_Window,
-  renderer: *SDL_Renderer,
-  keyboard_state: span(uint8),
-  prev_keyboard_state: vector(uint8),
-  current_music: Nene.Music,
-  previous_time: uint32,
-  camera: Nene.Camera,
-  default_font: Nene.Font,
-  --screen_texture: Nene.Texture, -- (added later through meta-programming)
-  --current_render_target: Nene.Texture, -- (added later through meta-programming)
+global Nene.Core = @record{
+  quit: boolean,           -- `true` when the application will quit, `false` otherwise;
+  window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
+  renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
+  keyboard_state: [(SDL_NUM_SCANCODES)]uint8,      -- holds the state of keyboard in the current frame
+  prev_keyboard_state: [(SDL_NUM_SCANCODES)]uint8, -- holds the state of keyboard in the previous frame
 }
 ```
 
-## Nene.CoreState:set_render_target (function)
-Set `target_tex` texture as a render target
+## 
+Nene's core must be initialized before used, `check`s are used to enforce this
 ```lua
-function Nene.CoreState:set_render_target(target_tex: facultative(Nene.Texture))
+global Nene.Core.initialized: boolean = false
 ```
 
-## Nene.CoreState:get_window_size (function)
-Get the size of current window
+## Nene.Core.EventsCallbacks
+The callbacks that can be passed on `Core:pool_events` method 
+ 
+Related SDL documentation: 
+* [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 ```lua
-function Nene.CoreState:get_window_size(): Nene.Math.Vec2
-```
-
-## Nene.CoreState:get_render_target_dimensions (function)
-Get the dimensions of the current render target
-```lua
-function Nene.CoreState:get_render_target_dimensions(): Nene.Math.Vec2
-```
-
-## Nene.CoreState:get_render_pos (function)
-Get a proper drawing origin position (left-up point) considering the  
-camera's position and the window's screen size
-```lua
-function Nene.CoreState:get_render_pos(pos: Nene.Math.Vec2): Nene.Math.Vec2
-```
-
-## Nene.CoreState:play_music (function)
-plays the current music  
-when `true` is passed on `loop` parameter, the music will loop forever;  
-when an `integer` is passed on `loop` parameter, the music will loop `loop` times
-```lua
-function Nene.CoreState:play_music(music: Nene.Music, loop: overload(boolean, integer, niltype))
-```
-
-## Nene.CoreState:stop_music (function)
-stops the current music
-```lua
-function Nene.CoreState:stop_music()
-```
-
-## Nene.Callbacks (record)
-The callbacks that should be passed on `pool_events`
-```lua
-global Nene.Callbacks = @record{
+global Nene.Core.EventsCallbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
   edit_cb    : function(edit    : SDL_TextEditingEvent),      -- edit text editing event data
@@ -101,141 +52,178 @@ global Nene.Callbacks = @record{
 }
 ```
 
-## Nene.CoreState:pool_events (function)
-You should call this method at the start of each game loop tick, it:  
-1. Pools all SDL events  
-2. Calls the respective callbacks if `evt_callbacks` is given  
-3. Updates the internal state data  
-4. Set the game screen as render target
+## Nene.Core:pool_events
+You should call this method at the start of each game loop tick, it: 
+1. Pools all SDL events; 
+2. Updates the `self.quit` boolean value, it becomes `true` when the appplication will quit (see SDL_QuitEvent); 
+3. Calls the respective callbacks if `evt_callbacks` is given. 
+ 
+Related SDL documentation: 
+* [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent) 
+* [SDL_Event](https://wiki.libsdl.org/SDL_Event) 
+* [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)
 ```lua
-function Nene.CoreState:pool_events(evt_callbacks: facultative(Nene.Callbacks))
+function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
 ```
 
-## Nene.CoreState:get_scancode (function)
-when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);  
-when `is_down` argument is also given:  
-    * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);  
-    * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
+## Nene.Core:get_window_size
+Get the size of the current window. 
+ 
+Related SDL documentation: 
+* [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
 ```lua
-function Nene.CoreState:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean) <comptime>): boolean
+function Nene.Core:get_window_size(): (cint, cint)
 ```
 
-## Nene.CoreState:get_mouse_state (function)
-returns the mouse coordinates relative to window and a bitmask state of mouse buttons
+## Nene.Core:ms_since_init
+get the current time in milliseconds since SDL initialization (done at the `Core.init` method) 
+ 
+Related SDL documentation: 
+* [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
 ```lua
-function Nene.CoreState:get_mouse_state(): (Nene.Math.Vec2, uint32)
+function Nene.Core:ms_since_init()
 ```
 
-## Nene.CoreState:load_font (function)
-try to load a font from a file  
-it returns:  
-* a boolean that indicates the success or failure of procedure  
-* an error message string, it will be an empty string on success  
-* the font, properly initialized on success
+## Nene.Core:get_scancode
+when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed); 
+ 
+when `is_down` argument is also given: 
+    * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame); 
+    * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't). 
+ 
+Related SDL documentation: 
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode) 
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 ```lua
-function Nene.CoreState:load_font(filename: string, ptsize: integer): (boolean, string, Nene.Font)
+function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
 ```
 
-## Nene.CoreState:load_sound (function)
-try to load a sound from a file,  
-it returns:  
-* a boolean that indicates the success or failure of procedure  
-* an error message string, it will be an empty string on success  
-* the sound, properly initialized on success
+## Nene.Core:get_mouse_state
+returns the mouse coordinates relative to window and a bitmask state of mouse buttons. 
+ 
+Related SDL documentation: 
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
 ```lua
-function Nene.CoreState:load_sound(filename: string): (boolean, string, Nene.Sound)
+function Nene.Core:get_mouse_state(): (Nene.Math.Vec2, uint32)
 ```
 
-## Nene.CoreState:load_music (function)
-try to load a music from a file,  
-it returns:  
-* a boolean that indicates the success or failure of procedure  
-* an error message string, it will be an empty string on success  
-* the music, properly initialized on success
+## Nene.Core:set_render_draw_color
+Set rendering draw color 
+ 
+Related SDL documentation: 
+* [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
 ```lua
-function Nene.CoreState:load_music(filename: string): (boolean, string, Nene.Music)
+function Nene.Core:set_render_draw_color(color: Nene.Color)
 ```
 
-## Nene.CoreState:load_texture (function)
-try to load a texture from a file  
-it returns:  
-* a boolean that indicates the success or failure of procedure  
-* an error message string, it will be a empty string on success  
-* the texture, properly initialized on success
+## Nene.Core:render_clear
+it clears the rendering target with the given `color`. 
+ 
+Related SDL documentation: 
+* [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 ```lua
-function Nene.CoreState:load_texture(filename: string): (boolean, string, Nene.Texture)
+function Nene.Core:render_clear(color: Nene.Color)
 ```
 
-## Nene.CoreState:render_draw_atlas_frame (function)
-Draw an `atlas`'s `frame` at a specific `position`.  
-if a value of type `SpriteSheet` or `Tilemap` is passed at the `atlas` argument,  
-the respective atlas of these types will be used.
+## Nene.Core:render_draw_line
+renders a line from `origin` to `destination` with the given `color`. 
+ 
+Related SDL documentation: 
+* [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
 ```lua
-function Nene.CoreState:render_draw_atlas_frame(
+function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
 ```
 
-## Nene.CoreState:render_draw_tilemap (function)
-renders a whole `tilemap` in the given `position` using the given `color` tint.
+## Nene.Core:render_draw_rect
+renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`. 
+ 
+Related SDL documentation: 
+* [SDL_Rect](https://wiki.libsdl.org/SDL_Rect) 
+* [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect) 
+* [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
 ```lua
-function Nene.CoreState:render_draw_tilemap(tilemap: Nene.Tilemap, position: Nene.Math.Vec2, color: Nene.Color)
+function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
 ```
 
-## Nene.CoreState:render_clear (function)
-clears the screen with the `given` color
+## Nene.Core.set_texture_color_modulation
+Set the color modulation of the given `texture` with the given `color`. 
+ 
+Related SDL documentation: 
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
+* [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
 ```lua
-function Nene.CoreState:render_clear(color: Nene.Color)
+function Nene.Core.set_texture_color_modulation(data: *SDL_Texture, color: Nene.Color)
 ```
 
-## Nene.CoreState:render_draw_line (function)
-renders a line from `origin` to `destination` with the given `color`
+## Nene.Core.query_texture_size
+queries the size of the given `texture` and returns it size in pixels in the first and second return values. 
+a third value is also returned, which is `true` if the operation was successful, `false` otherwise.
 ```lua
-function Nene.CoreState:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
+function Nene.Core.query_texture_size(texture: *SDL_Texture): (uinteger, uinteger, boolean)
 ```
 
-## Nene.CoreState:render_draw_rect (function)
-renders a `rectangle` on the screen, with the given `color`; it will be filled if `use_lines` is `false`.
+## Nene.Core:render_copy
+Copies a Texture on the rendering target. 
+ 
+By default the whole texture is copied unless the `source` rectangle is given, 
+in this case only the "source" part of the texture will be copied. 
+ 
+By default the texture will be copied on the whole rendering target unless the `destination` rectangle is given, 
+in this case it will be copied at this "destination" part of the rendering target. 
+ 
+Related SDL documentation: 
+* [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy) 
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 ```lua
-function Nene.CoreState:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
+function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.Rect), destination: facultative(Nene.Math.Rect))
 ```
 
-## Nene.CoreState:get_ms_time (function)
-get the current time relative to SDL initialization (done at the `init` method)
+## Nene.Core:render_present
+presents the SDL's composed backbuffer (any rendering operation is done on the SDL's backbuffer, 
+this function presents it). 
+ 
+This also does some modification on the state, preparing it for the next frame. 
+ 
+Related SDL documentation: 
+* [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
 ```lua
-function Nene.CoreState:get_ms_time()
+function Nene.Core:render_present()
 ```
 
-## Nene.CoreState:render_screen (function)
-renders the screen an resets the SDL render target.  
-you can still draw after calling this function, like GUI drawing.
+## Nene.Core.init
+try to initialize and return a new initilized core state. 
+ 
+returns: 
+  * a boolean that indicates true on success 
+  * a string error message on failure (or empty otherwise) 
+  * a new state, only filled on success 
+notes: 
+  * You always should first check if the initialization 
+  succeeded before trying to use the state 
+ 
+Related SDL documentation: 
+* [SDL_Init](https://wiki.libsdl.org/SDL_Init) 
+* [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow) 
+* [SDL_CreateRenderer](https://wiki.libsdl.org/SDL_CreateRenderer) 
+* [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL_SetRenderDrawBlendMode) 
+* [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html) 
+* [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html) 
+* [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
 ```lua
-function Nene.CoreState:render_screen()
+function Nene.Core.init(
 ```
 
-## Nene.CoreState:render_present (function)
-presents the SDL's composed backbuffer (any rendering operation  
-is done on the SDL's backbuffer, this function presents it)  
-  
-This also does some modification on the state, preparing it for the next frame.
+## Nene.Core:terminate
+Finalize application and quits all SDL subsystems 
+ 
+Related SDL documentation: 
+* [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer) 
+* [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow) 
+* [TTF_Quit](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_10.html) 
+* [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html) 
+* [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html) 
+* [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html) 
+* [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
 ```lua
-function Nene.CoreState:render_present()
-```
-
-## Nene.init (function)
-try to initialize and return a new initilized  
-core state.  
-returns:  
-  * a boolean that indicates true on success  
-  * a string error message on failure (or empty otherwise)  
-  * a new state, only filled on success  
-notes:  
-  You always should first check if the initialization  
-  succeeded before trying to use the state
-```lua
-function Nene.init(
-```
-
-## Nene.CoreState:terminate (function)
-Finalize application and quits all SDL subsystems
-```lua
-function Nene.CoreState:terminate()
+function Nene.Core:terminate()
 ```

@@ -1,45 +1,68 @@
 # nene/texture.nelua
-## Nene.Texture (record)
-just a wrap of SDL_Texture, the `_data` field  
-should never be directly accessed, instead, use  
-the methods, which do checks
+## Nene.Texture
+just a wraps a `pointer(SDL_Texture)`, the `_data` field should never be directly accessed, 
+use methods instead, which do `check`s. 
+ 
+Related SDL documentation: 
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 ```lua
 global Nene.Texture = @record{
-  _data: *SDL_Texture,
-  width: uinteger,
-  height: uinteger,
-  initialized: boolean,
+  _data: *SDL_Texture,  -- internal data, don't use it, use methods `get` and `apply_sdltex` instead
+  initialized: boolean, -- internal data, used to check if the texture is initialized
+  width: uinteger,      -- width of the texture in pixels
+  height: uinteger,     -- height of the texture in pixels
 }
 ```
 
-## Nene.Texture:get (function)
-get the internal data
+## texture_check_macro
+
+```lua
+## local function texture_check_macro(fn_name)
+```
+
+## Nene.Texture:get
+get the internal data 
+ 
+Related SDL documentation: 
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 ```lua
 function Nene.Texture:get(): *SDL_Texture
 ```
 
-## Nene.Texture:free (function)
-free the internal data
+## Nene.Texture:destroy
+free the internal data 
+ 
+Related SDL documentation: 
+* [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
 ```lua
-function Nene.Texture:free()
+function Nene.Texture:destroy()
 ```
 
-## Nene.Texture:draw (function)
-draw the texture with the `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),  
-you can optionally pass the `source` rectangle if you want to draw a slice of the texture.  
-However, you need pass a `CoreState` since it requires an initialized SDL to work.
+## Nene.Texture:draw
+draw the texture with a `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen), 
+you can optionally pass the `source` rectangle if you want to draw a slice of the texture. 
+Note that you need pass an initialized `Nene.Core`. 
+ 
+Related Nene documentation: 
+* [Nene.Core.set_texture_color_modulation](docs/core_state.md#nenecorestateset_texture_color_modulation) 
+* [Nene.Core.render_copy](docs/core_state.md#nenecorestaterender_copy)
 ```lua
-function Nene.Texture:draw(nene_state: Nene.CoreState, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
+function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
 ```
 
-## Nene.Texture:apply_sdltex (function)
-
+## Nene.Texture:apply_sdltex
+Applies a new internal texture (with a `pointer(SDL_Texture)`). 
+If the texture is initialized, then it will destroy itself before applying this new SDL_Texture. 
+It also updates the information fields (like `width` and `height`). 
+ 
+Related Nene documentation: 
+* [Nene.Core.query_texture_size](docs/core_state.md#nenecorestatequery_texture_size)
 ```lua
 function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
 ```
 
-## Nene.Texture.new (function)
-
+## Nene.Texture.new
+Returns a `Nene.Texture` with the given `tex` applied.
 ```lua
-function Nene.Texture.new(new_tex: *SDL_Texture): Nene.Texture
+function Nene.Texture.new(tex: *SDL_Texture): Nene.Texture
 ```
