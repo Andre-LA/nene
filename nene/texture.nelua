@@ -47,8 +47,8 @@ end
 --- Note that you need pass an initialized `Nene.Core`.
 ---
 --- Related Nene documentation:
---- * [Nene.Core.set_texture_color_modulation](docs/core_state.md#nenecorestateset_texture_color_modulation)
---- * [Nene.Core.render_copy](docs/core_state.md#nenecorestaterender_copy)
+--- * [Nene.Core.set_texture_color_modulation](core_state.md#nenecoreset_texture_color_modulation)
+--- * [Nene.Core.render_copy](core_state.md#nenecorerender_copy)
 function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
   ## texture_check_macro('Nene.Texture.draw')
 
@@ -72,7 +72,7 @@ end
 --- It also updates the information fields (like `width` and `height`).
 ---
 --- Related Nene documentation:
---- * [Nene.Core.query_texture_size](docs/core_state.md#nenecorestatequery_texture_size)
+--- * [Nene.Core.query_texture_size](core_state.md#nenecorequery_texture_size)
 function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
   check(new_tex ~= nilptr, "Can't apply a nil SDL_Texture")
 
