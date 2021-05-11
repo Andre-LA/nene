@@ -1,0 +1,114 @@
+require 'sdl2'
+require 'nene.colors'
+require 'nene.core'
+
+global Nene.SDLWrapper = @record{}
+
+-- [[ SDL_Texture related functions [[
+
+--- Wrapper of `SDL_DestroyTexture`
+---
+--- Destroys the given `texture`
+---
+--- Related SDL documentation:
+--- * [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
+function Nene.SDLWrapper.destroy_texture(texture: *SDL_Texture)
+  check(Nene.initialized, 'Nene is not initialized')
+  check(texture, 'texture is nilptr')
+
+  SDL_DestroyTexture(texture)
+
+  if texture == nilptr then
+    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.destroy_texture', 'texture is nilptr, thus invalid')
+  end
+end
+
+--- Wrapper of `SDL_SetTextureColorMod`.
+---
+--- Set the color modulation of the given `texture` with the given `color`.
+---
+--- Related SDL documentation:
+--- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+--- * [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
+function Nene.SDLWrapper.set_texture_color_modulation(texture: *SDL_Texture, color: Nene.Color): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  check(texture, 'texture is nilptr')
+
+  local mod_result = SDL_SetTextureColorMod(texture, color.r, color.g, color.b)
+
+  switch mod_result do
+  case 0 then
+    return true
+  case -1 then
+    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.set_texture_color_modulation', 'color modulation is not supported by the renderer')
+    return false
+  else
+    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.set_texture_color_modulation', 'could not set texture modulation')
+    return false
+  end
+end
+
+--- Wrapper of `SDL_QueryTexture`.
+---
+--- Queries the size of the given `texture` and returns it size in pixels in the first and second return values.
+--- a third value is also returned, which is `true` if the operation was successful, `false` otherwise.
+---
+--- Related SDL documentation:
+--- * [SDL_QueryTexture](https://wiki.libsdl.org/SDL_QueryTexture)
+function Nene.SDLWrapper.query_texture_size(texture: *SDL_Texture): (cint, cint, boolean)
+  check(Nene.initialized, 'Nene is not initialized')
+  check(texture, 'texture is nilptr')
+
+  local fmt: uint32, access: cint, w: cint, h: cint;
+
+  local ok = SDL_QueryTexture(texture, &fmt, &access, &w, &h)
+  if not ok then
+    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.query_texture_size', 'could not query texture')
+  end
+
+  return w, h, ok
+end
+
+-- ]] SDL_Texture related functions ]]
+
+--- Wrapper of `SDL_GetWindowSize`
+---
+--- Get the size of the current window
+---
+--- Related SDL documentation:
+--- * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
+function Nene.SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint, boolean)
+  check(Nene.initialized, 'Nene is not initialized')
+  check(window, 'window is nilptr')
+
+  local ww: cint, wh: cint;
+  local ok = SDL_GetWindowSize(window, &ww, &wh) ~= 0
+
+  if not ok then
+    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.get_window_size', 'could not get the size of the current window')
+  end
+
+  return ww, wh, ok
+end
+
+--- Wrapper of `SDL_GetTicks`
+---
+--- Returns the number of milliseconds since SDL initialization.
+---
+--- Related SDL documentation:
+--- * [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
+function Nene.SDLWrapper.get_ticks(): uint32
+  check(Nene.initialized, 'Nene is not initialized')
+  return SDL_GetTicks()
+end
+
+--- Wrapper of `SDL_FreeSurface`.
+---
+--- Related SDL documentation:
+--- * [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
+function Nene.SDLWrapper.free_surface(surface: *SDL_Surface)
+  --check(Nene.initialized, 'Nene is not initialized')
+  check(surface, 'surface is nilptr')
+
+  SDL_FreeSurface(surface)
+end

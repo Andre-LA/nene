@@ -1,0 +1,25 @@
+require 'sdl2'
+require 'sdl2_ttf'
+
+require 'nene.colors'
+require 'nene.core'
+
+global Nene.TTFWrapper = @record{}
+
+--- Wrapper of `TTF_RenderUTF8_Solid`.
+---
+--- Related SDL_TTF documentation:
+--- * [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
+function Nene.TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: Nene.Color): (*SDL_Surface, boolean)
+  check(Nene.initialized, 'Nene is not initialized')
+  check(font, 'font is nilptr')
+
+  local text_surface = TTF_RenderUTF8_Solid(font, text, color)
+  local ok = text_surface ~= nilptr
+
+  if not ok then
+    ## Nene.macros.fn_warn_ttf_error('Nene.TTFWrapper.ttf_render_utf8_solid', 'could not create a surface from text')
+  end
+
+  return text_surface, ok
+end
