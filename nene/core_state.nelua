@@ -21,9 +21,6 @@ global Nene.Core = @record{
   prev_keyboard_state: [(SDL_NUM_SCANCODES)]uint8, -- holds the state of keyboard in the previous frame
 }
 
---- Nene's core must be initialized before used, `check`s are used to enforce this
-global Nene.Core.initialized: boolean = false
-
 --- The callbacks that can be passed on `Core:pool_events` method
 ---
 --- Related SDL documentation:
@@ -64,7 +61,7 @@ global Nene.Core.EventsCallbacks = @record{
 --- * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 --- * [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)
 function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   local evt: SDL_Event;
 
@@ -175,7 +172,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
 function Nene.Core:get_window_size(): (cint, cint)
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   local ww: cint, wh: cint;
   SDL_GetWindowSize(self.window, &ww, &wh)
@@ -187,8 +184,8 @@ end
 --- Related SDL documentation:
 --- * [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
 function Nene.Core:ms_since_init()
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
   return SDL_GetTicks()
+  check(Nene.initialized, 'Nene is not initialized')
 end
 
 --- when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);
@@ -201,7 +198,7 @@ end
 --- * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 --- * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
   check(scancode < SDL_Scancode.SDL_NUM_SCANCODES)
 
   ## if is_down.type.is_niltype then
@@ -233,7 +230,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
 function Nene.Core:set_render_draw_color(color: Nene.Color)
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   SDL_SetRenderDrawColor(self.renderer, color.r, color.g, color.b, color.a)
 end
@@ -243,7 +240,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 function Nene.Core:render_clear(color: Nene.Color)
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   self:set_render_draw_color(color)
 
@@ -257,7 +254,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
 function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   self:set_render_draw_color(color)
 
@@ -278,7 +275,7 @@ end
 --- * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
 --- * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
 function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   local sdl_rect: SDL_Rect = {
     x = rectangle.x, y = rectangle.y,
@@ -343,7 +340,7 @@ end
 --- * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.Rect), destination: facultative(Nene.Math.Rect))
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
 
   local src: *SDL_Rect, dest: *SDL_Rect;
 
@@ -368,7 +365,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
 function Nene.Core:render_present()
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
+  check(Nene.initialized, 'Nene is not initialized')
   SDL_RenderPresent(self.renderer)
 end
 
@@ -396,7 +393,7 @@ function Nene.Core.init(
   pos_x: facultative(integer), pos_y: facultative(integer),
   flags: facultative(uint32)
 ): (boolean, string, Nene.Core)
-  check(Nene.Core.initialized, "Cannot re-initialize Nene")
+  check(Nene.initialized, "Cannot re-initialize Nene")
   check(window_size_x > 0 and window_size_y > 0, 'cannot create a window with `0` as a size parameter')
 
   local new_state: Nene.Core = {}
@@ -449,7 +446,7 @@ function Nene.Core.init(
   SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
 
-  Nene.Core.initialized = true
+  Nene.initialized = true
 
   new_state = {
     =window,
@@ -470,8 +467,8 @@ end
 --- * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
 --- * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
 function Nene.Core:terminate()
-  check(Nene.Core.initialized, 'Nene is not initialized')
-  Nene.Core.initialized = false
+  check(Nene.initialized, 'Nene is not initialized')
+  Nene.initialized = false
 
   SDL_DestroyRenderer(self.renderer)
   self.renderer = nilptr

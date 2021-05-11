@@ -2,6 +2,11 @@ require 'string'
 
 global Nene = @record{}
 
+--- Nene's core must be initialized before used, `check`s are used to enforce this
+---
+--- Initialization is done using the `Nene.Core.init` function
+global Nene.initialized: boolean = false
+
 ## Nene.macros = {}
 
 ## function Nene.macros.fn_warn_sdl_error(fn_name, fn_msg)
