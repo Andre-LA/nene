@@ -6,12 +6,13 @@ require 'sdl2_mixer'
 require 'span'
 
 require 'nene.core'
+require 'nene.sdl_wrapper'
 
 require 'nene.colors'
 require 'nene.math'
 
 --- The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
---- Nene.Math and Nene.Color).
+--- `Nene.Math`, `Nene.Color` and `Nene.SDLWrapper`).
 --- Most of the `Core`'s functions comes from SDL2 actually.
 global Nene.Core = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
@@ -174,9 +175,8 @@ end
 function Nene.Core:get_window_size(): (cint, cint)
   check(Nene.initialized, 'Nene is not initialized')
 
-  local ww: cint, wh: cint;
-  SDL_GetWindowSize(self.window, &ww, &wh)
-  return ww, wh
+  local w, h = Nene.SDLWrapper.get_window_size(self.window)
+  return w, h
 end
 
 --- get the current time in milliseconds since SDL initialization (done at the `Core.init` method)
@@ -184,8 +184,8 @@ end
 --- Related SDL documentation:
 --- * [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
 function Nene.Core:ms_since_init()
-  return SDL_GetTicks()
   check(Nene.initialized, 'Nene is not initialized')
+  return Nene.SDLWrapper.get_ticks()
 end
 
 --- when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);
@@ -295,39 +295,7 @@ function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolea
   end
 end
 
---- Set the color modulation of the given `texture` with the given `color`.
----
---- Related SDL documentation:
---- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
---- * [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
-function Nene.Core.set_texture_color_modulation(data: *SDL_Texture, color: Nene.Color)
-  check(Nene.Core.initialized, 'Core State variable is not initialized')
-
-  local mod_result = SDL_SetTextureColorMod(data, color.r, color.g, color.b)
-
-  if mod_result ~= 0 then
-    if mod_result == -1 then
-      ## Nene.macros.fn_warn_sdl_error('Nene.Core.set_texture_color_modulation', 'color modulation is not supported by the renderer')
-    else
-      ## Nene.macros.fn_warn_sdl_error('Nene.Core.set_texture_color_modulation', 'could not set texture modulation')
-    end
-  end
-end
-
---- queries the size of the given `texture` and returns it size in pixels in the first and second return values.
---- a third value is also returned, which is `true` if the operation was successful, `false` otherwise.
-function Nene.Core.query_texture_size(texture: *SDL_Texture): (uinteger, uinteger, boolean)
-  local fmt: uint32, access: cint, w: cint, h: cint;
-
-  -- devnote: is returning ok really useful?
-  local ok = SDL_QueryTexture(texture, &fmt, &access, &w, &h) == 0
-  if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.Core.query_texture_size', 'could not query texture')
-  end
-
-  return w, h, ok
-end
-
+--- Wrapper of `SDL_RenderCopy`.
 --- Copies a Texture on the rendering target.
 ---
 --- By default the whole texture is copied unless the `source` rectangle is given,
@@ -350,11 +318,35 @@ function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.
   ## end
 
   ## if not destination.type.is_niltype then
-    local dest_rect: SDL_Rect = {x = destination.x, y = destination.y, w = destination.w, h = destination.h}
-    dest = &dest_rect
+  local dest_rect: SDL_Rect = {x = destination.x, y = destination.y, w = destination.w, h = destination.h}
+  dest = &dest_rect
   ## end
 
-  SDL_RenderCopy(nene_state.renderer, self._data, src, dest)
+  if SDL_RenderCopy(self.renderer, tex, src, dest) ~= 0 then
+    ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_copy', 'could not copy the texture to the rendering target')
+  end
+end
+
+--- Wrapper of `SDL_CreateTextureFromSurface`.
+---
+--- Creates a Texture from the given surface.
+---
+--- Related SDL_TTF documentation:
+--- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+--- * [SDL_Surface](https://wiki.libsdl.org/SDL_Surface)
+--- * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
+  check(surface_ref ~= nilptr, "cannot create a texture from a nilptr")
+
+  local ok = true
+  local texture = SDL_CreateTextureFromSurface(self.renderer, surface_ref)
+
+  if not texture then
+    ok = false
+    ## Nene.macros.fn_warn_ttf_error('Nene.Core.create_texture_from_surface', 'could not create texture from surface')
+  end
+
+  return texture, ok
 end
 
 --- presents the SDL's composed backbuffer (any rendering operation is done on the SDL's backbuffer,

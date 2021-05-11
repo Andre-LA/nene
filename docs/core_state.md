@@ -1,7 +1,7 @@
 # nene/core_state.nelua
 ## Nene.Core
 The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except 
-Nene.Math and Nene.Color). 
+`Nene.Math`, `Nene.Color` and `Nene.SDLWrapper`). 
 Most of the `Core`'s functions comes from SDL2 actually.
 ```lua
 global Nene.Core = @record{
@@ -11,12 +11,6 @@ global Nene.Core = @record{
   keyboard_state: [(SDL_NUM_SCANCODES)]uint8,      -- holds the state of keyboard in the current frame
   prev_keyboard_state: [(SDL_NUM_SCANCODES)]uint8, -- holds the state of keyboard in the previous frame
 }
-```
-
-## 
-Nene's core must be initialized before used, `check`s are used to enforce this
-```lua
-global Nene.Core.initialized: boolean = false
 ```
 
 ## Nene.Core.EventsCallbacks
@@ -145,24 +139,8 @@ Related SDL documentation:
 function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
 ```
 
-## Nene.Core.set_texture_color_modulation
-Set the color modulation of the given `texture` with the given `color`. 
- 
-Related SDL documentation: 
-* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
-* [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
-```lua
-function Nene.Core.set_texture_color_modulation(data: *SDL_Texture, color: Nene.Color)
-```
-
-## Nene.Core.query_texture_size
-queries the size of the given `texture` and returns it size in pixels in the first and second return values. 
-a third value is also returned, which is `true` if the operation was successful, `false` otherwise.
-```lua
-function Nene.Core.query_texture_size(texture: *SDL_Texture): (uinteger, uinteger, boolean)
-```
-
 ## Nene.Core:render_copy
+Wrapper of `SDL_RenderCopy`. 
 Copies a Texture on the rendering target. 
  
 By default the whole texture is copied unless the `source` rectangle is given, 
@@ -176,6 +154,19 @@ Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 ```lua
 function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.Rect), destination: facultative(Nene.Math.Rect))
+```
+
+## Nene.Core:create_texture_from_surface
+Wrapper of `SDL_CreateTextureFromSurface`. 
+ 
+Creates a Texture from the given surface. 
+ 
+Related SDL_TTF documentation: 
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
+* [SDL_Surface](https://wiki.libsdl.org/SDL_Surface) 
+* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+```lua
+function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
 ```
 
 ## Nene.Core:render_present

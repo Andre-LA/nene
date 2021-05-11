@@ -9,12 +9,46 @@ global Nene.initialized: boolean = false
 
 ## Nene.macros = {}
 
-## function Nene.macros.fn_warn_sdl_error(fn_name, fn_msg)
+## local function check_args(fn_name, fn_msg)
   ## staticassert(type(fn_name) == 'string', 'macros.fn_warn_sdl_error: the given fn_name is not a string')
   ## staticassert(type(fn_msg) == 'string', 'macros.fn_warn_sdl_error: the given fn_msg is not a string')
+## end
+
+## function Nene.macros.fn_warn_sdl_error(fn_name, fn_msg)
+  ## check_args(fn_name, fn_msg)
 
   do
     local warn_msg = string.format(#[fn_name..': '..fn_msg..'. (SDL error: %s)']#, SDL_GetError())
+    warn(warn_msg)
+    warn_msg:destroy()
+  end
+## end
+
+## function Nene.macros.fn_warn_ttf_error(fn_name, fn_msg)
+  ## check_args(fn_name, fn_msg)
+
+  do
+    local warn_msg = string.format(#[fn_name..': '..fn_msg..'. (SDL_TTF error: %s)']#, TTF_GetError())
+    warn(warn_msg)
+    warn_msg:destroy()
+  end
+## end
+
+## function Nene.macros.fn_warn_img_error(fn_name, fn_msg)
+  ## check_args(fn_name, fn_msg)
+
+  do
+    local warn_msg = string.format(#[fn_name..': '..fn_msg..'. (SDL_image error: %s)']#, IMG_GetError())
+    warn(warn_msg)
+    warn_msg:destroy()
+  end
+## end
+
+## function Nene.macros.fn_warn_mix_error(fn_name, fn_msg)
+  ## check_args(fn_name, fn_msg)
+
+  do
+    local warn_msg = string.format(#[fn_name..': '..fn_msg..'. (SDL_mixer error: %s)']#, Mix_GetError())
     warn(warn_msg)
     warn_msg:destroy()
   end
