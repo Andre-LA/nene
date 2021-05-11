@@ -50,8 +50,12 @@ global Nene.Music = @record{
 }
 ```
 
-## Nene.Music:free
-
+## Nene.Music:destroy
+Destroy the music, it will halts it if playing, it also wait if it's still fading out. 
+ 
+Related SDL_mixer documentation: 
+* [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56) 
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 ```lua
-function Nene.Music:free()
+function Nene.Music:destroy()
 ```

@@ -64,7 +64,12 @@ global Nene.Music = @record{
   id: usize,
 }
 
-function Nene.Music:free()
+--- Destroy the music, it will halts it if playing, it also wait if it's still fading out.
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
+--- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+function Nene.Music:destroy()
   check(Nene.initialized, 'Nene is not initialized')
   Nene.MixWrapper.free_music(self._data)
   self._data = nilptr
