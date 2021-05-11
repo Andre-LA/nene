@@ -1,4 +1,4 @@
-require 'sdl2_mixer'
+require 'nene.mix_wrapper'
 require 'nene.core'
 
 global Nene.Sound = @record{
@@ -6,11 +6,17 @@ global Nene.Sound = @record{
   channel: integer, -- -1 when no channel is being used
 }
 
--- plays the sound
--- when `true` is passed as argument, the sound will loop forever;
--- when a integer is passed as a argument, the sound will loop `loop` times
+--- plays the sound.
+--- * if `true` is passed on `loop` argument, the sound will loop forever;
+--- * if an `integer` is passed, the sound will loop `loop` times
+--- * if `nil` is passed, it will play one time, but it will not loop.
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
+--- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 function Nene.Sound:play(loop: overload(boolean, integer, niltype))
-  check(self._data ~= nilptr, 'play: Cannot play a nilptr sound')
+  check(Nene.initialized, 'Nene is not initialized')
+  check(self._data ~= nilptr, 'Cannot play a nilptr sound')
   local loops = 0
 
   ## if loop.type.is_boolean then
@@ -22,25 +28,35 @@ function Nene.Sound:play(loop: overload(boolean, integer, niltype))
   self.channel = Mix_PlayChannel(-1, self._data, loops)
 end
 
--- stops the sound
+--- stops the sound
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
+--- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 function Nene.Sound:stop()
+  check(Nene.initialized, 'Nene is not initialized')
+
   if self.channel >= 0 then
-    Mix_HaltChannel(self.channel)
+    Nene.MixWrapper.halt_channel(self.channel)
     self.channel = -1
+  else
+    warn'Nene.Sound.stop: trying to stop an uninitialized sound'
   end
 end
 
--- free the sound's memory, is recommended to first stop the sound, use `stop_and_free` instead
-function Nene.Sound:free()
+--- Destroy the sound, it will first stop it and then free the sound's memory.
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
+--- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+function Nene.Sound:destroy()
+  check(Nene.initialized, 'Nene is not initialized')
   check(self._data ~= nilptr, 'free: cannot free a nilptr sound')
-  Mix_FreeChunk(self._data)
-  self._data = nilptr
-end
 
--- stops and free the sound's memory
-function Nene.Sound:stop_and_free()
   self:stop()
-  self:free()
+
+  Nene.MixWrapper.free_chunk(self._data)
+  self._data = nilptr
 end
 
 global Nene.Music = @record{
@@ -49,6 +65,7 @@ global Nene.Music = @record{
 }
 
 function Nene.Music:free()
-  Mix_FreeMusic(self._data)
+  check(Nene.initialized, 'Nene is not initialized')
+  Nene.MixWrapper.free_music(self._data)
   self._data = nilptr
 end

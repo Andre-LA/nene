@@ -1,6 +1,5 @@
-require 'sdl2'
-
 require 'nene.math'
+require 'nene.sdl_wrapper'
 require 'nene.core_state'
 
 --- just a wraps a `pointer(SDL_Texture)`, the `_data` field should never be directly accessed,
@@ -36,7 +35,7 @@ end
 function Nene.Texture:destroy()
   ## texture_check_macro('Nene.Texture.destroy')
 
-  SDL_DestroyTexture(self._data)
+  Nene.SDLWrapper.destroy_texture(self._data)
 
   self._data = nilptr
   self.initialized = false
@@ -52,19 +51,23 @@ end
 function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
   ## texture_check_macro('Nene.Texture.draw')
 
-  Nene.Core.set_texture_color_modulation(self._data, color)
+  Nene.SDLWrapper.set_texture_color_modulation(self._data, color)
 
-  ## if not destination.type.is_niltype then
-    local dest: Nene.Math.Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
-
-    ## if destination.type.is_rect then
-      dest.w, dest.h = destination.w, destination.h
-    ## end
-
-    nene_state:render_copy(self._data, src, dest)
-  ## else
-    nene_state:render_copy(self._data, src, nil)
+  ## if destination.type.is_rect then
+  local dest: Nene.Math.Rect = { x = destination.x, y = destination.y, w = destination.w, h = destination.h }
+  ## elseif not destination.type.is_vec then
+  local dest: Nene.Math.Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
+  ## elseif destination.type.is_niltype then
+  local dest = nil
   ## end
+
+  ## if source.type.is_rect then
+  local src: Nene.Math.Rect = { x = source.x, y = source.y, w = source.w, h = source.h }
+  ## elseif source.type.is_niltype then
+  local src = nil
+  ## end
+
+  nene_state:render_copy(self._data, src, dest)
 end
 
 --- Applies a new internal texture (with a `pointer(SDL_Texture)`).
@@ -81,7 +84,7 @@ function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
   end
 
   local fmt: uint32, access: cint, w: cint, h: cint;
-  local w, h = Nene.Core.query_texture_size(new_tex)
+  local w, h = Nene.SDLWrapper.query_texture_size(new_tex)
 
   self._data = new_tex
   self.initialized = true
