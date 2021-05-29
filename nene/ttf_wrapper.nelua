@@ -1,16 +1,43 @@
 require 'sdl2'
 require 'sdl2_ttf'
 
-require 'nene.colors'
 require 'nene.core'
 
 global Nene.TTFWrapper = @record{}
+
+--- Wrapper of `TTF_Init`
+---
+--- Initialize SDL_ttf library.
+--- This function doesn't check if `Nene` is initialized.
+---
+--- Related SDL_ttf documentation:
+--- * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
+function Nene.TTFWrapper.ttf_init(): boolean
+  local ok = TTF_Init() ~= 0
+
+  if not ok then
+    ## Nene.macros.fn_warn_ttf_error('Nene.TTFWrapper.ttf_init', 'could not initialize SDL_ttf')
+  end
+
+  return ok
+end
+
+--- Wrapper of `TTF_Quit`
+---
+--- Shutdown and cleanup SDL_ttf library.
+---
+--- Related SDL documentation:
+--- * [TTF_Quit](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_10.html)
+function Nene.TTFWrapper.ttf_quit()
+  check(Nene.initialized, 'Nene is not initialized')
+  TTF_Quit()
+end
 
 --- Wrapper of `TTF_RenderUTF8_Solid`.
 ---
 --- Related SDL_TTF documentation:
 --- * [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
-function Nene.TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: Nene.Color): (*SDL_Surface, boolean)
+function Nene.TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: SDL_Color): (*SDL_Surface, boolean)
   check(Nene.initialized, 'Nene is not initialized')
   check(font, 'font is nilptr')
 

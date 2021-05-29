@@ -1,0 +1,43 @@
+require 'sdl2'
+require 'sdl2_image'
+
+require 'nene.core'
+
+global Nene.ImgWrapper = @record{}
+
+
+--- Wrapper of `IMG_Init`
+---
+--- Initialize SDL_image loading support.
+--- This function doesn't check if `Nene` is initialized.
+---
+--- It returns an `ok` (boolean) success status and the bitmask that `IMG_Init` returns.
+--- The `ok` status is true when the bitmask returned by `IMG_Init` is equals to `flags` argument.
+---
+--- Related SDL_ttf documentation:
+--- * [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
+function Nene.ImgWrapper.img_init(flags: cint): (boolean, cint)
+  local img_result = IMG_Init(flags)
+  local ok = img_result & flags ~= flags
+
+  if not ok then
+    if img_result == 0 then
+      ## Nene.macros.fn_warn_img_error('Nene.ImgWrapper.img_init', "could not initialize SDL_image'")
+    else
+      ## Nene.macros.fn_warn_img_error('Nene.ImgWrapper.img_init', "SDL_image loading support wasn't initialized as expected'")
+    end
+  end
+
+  return ok, img_result
+end
+
+--!- Wrapper of `IMG_Quit`
+--!-
+--!- Shutdown and cleanup SDL_image loading support.
+--!-
+--!- Related SDL documentation:
+--!- * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
+function Nene.ImgWrapper.img_quit()
+  check(Nene.initialized, 'Nene is not initialized')
+  IMG_Quit()
+end

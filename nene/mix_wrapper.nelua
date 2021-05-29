@@ -1,12 +1,73 @@
 require 'sdl2'
 require 'sdl2_mixer'
-
-require 'nene.colors'
 require 'nene.core'
 
 global Nene.MixWrapper = @record{}
 
+--- Wrapper of `Mix_Init`
+---
+--- Initialize SDL_mixer loading support.
+--- This function doesn't check if `Nene` is initialized.
+---
+--- It returns an `ok` (boolean) success status and the bitmask that `Mix_Init` returns.
+--- The `ok` status is true when the bitmask returned by `Mix_Init` is equals to `flags` argument.
+---
+--- Related SDL_ttf documentation:
+--- * [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
+function Nene.MixWrapper.mix_init(flags: cint): (boolean, cint)
+  local mix_result = Mix_Init(flags)
+  local ok = mix_result & flags ~= flags
+
+  if not ok then
+    ## Nene.macros.fn_warn_mix_error('Nene.MixWrapper.mix_init', "SDL_mixer loading support wasn't initialized as expected'")
+  end
+
+  return ok, mix_result
+end
+
+--- Wrapper of `Mix_Quit`
+---
+--- Shutdown and cleanup SDL_mixer loading support.
+--- This function will call `Mix_Quit` _n_ times until `Mix_Init(0)` returns non-zero.
+---
+--- Related SDL documentation:
+--- * [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
+function Nene.MixWrapper.mix_quit()
+  check(Nene.initialized, 'Nene is not initialized')
+  while Mix_Init(0) ~= 0 do
+    Mix_Quit()
+  end
+end
+
 -- [[ Mix_Chunk related functions [[
+
+--- Wrapper of `Mix_OpenAudio`
+---
+--- Initialize SDL_mixer library.
+--- This function doesn't check if `Nene` is initialized.
+---
+--- Related SDL_ttf documentation:
+--- * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
+function Nene.MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
+    local ok = Mix_OpenAudio(frequency, format, channels, chunksize)
+
+  if not ok then
+    ## Nene.macros.fn_warn_mix_error('Nene.MixWrapper.open_audio', "could not initialize SDL_mixer")
+  end
+
+  return ok
+end
+
+--- Wrapper of `Mix_CloseAudio`
+---
+--- Shutdown and cleanup SDL_mixer library.
+---
+--- Related SDL documentation:
+--- * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
+function Nene.MixWrapper.close_audio()
+  check(Nene.initialized, 'Nene is not initialized')
+  Mix_CloseAudio()
+end
 
 --- Wrapper of `Mix_PlayChannel`
 ---
