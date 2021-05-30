@@ -1,15 +1,18 @@
-require 'sdl2'
-require 'sdl2_ttf'
-require 'sdl2_image'
-require 'sdl2_mixer'
-
 require 'span'
 
 require 'nene.core'
 require 'nene.sdl_wrapper'
+require 'nene.ttf_wrapper'
+require 'nene.mix_wrapper'
+require 'nene.img_wrapper'
 
 require 'nene.colors'
 require 'nene.math'
+
+local SDLWrapper, TTFWrapper, MixWrapper, ImgWrapper = Nene.SDLWrapper,
+                                                       Nene.TTFWrapper,
+                                                       Nene.MixWrapper,
+                                                       Nene.ImgWrapper
 
 --- The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
 --- `Nene.Math`, `Nene.Color` and `Nene.SDLWrapper`).
@@ -18,8 +21,8 @@ global Nene.Core = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
-  keyboard_state: [(SDL_NUM_SCANCODES)]uint8,      -- holds the state of keyboard in the current frame
-  prev_keyboard_state: [(SDL_NUM_SCANCODES)]uint8, -- holds the state of keyboard in the previous frame
+  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- holds the state of keyboard in the previous frame (`true` means "pressed")
 }
 
 --- The callbacks that can be passed on `Core:pool_events` method
@@ -61,6 +64,8 @@ global Nene.Core.EventsCallbacks = @record{
 --- * [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent)
 --- * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 --- * [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)
+--- * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+--- * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
   check(Nene.initialized, 'Nene is not initialized')
 
@@ -72,8 +77,8 @@ function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallba
     end
   end
 
-  while SDL_PollEvent(&evt) == 1 do
-    if evt.type == SDL_QUIT	 then
+  while Nene.SDLWrapper.poll_event(evt) do
+    if evt.type == SDL_QUIT	then
       self.quit = true
     end
 
@@ -152,18 +157,10 @@ function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallba
   end
 
   do -- update current keyboard_state
-    local kb_state: span(uint8) = (do
-      local kb_state_len: cint;
-      local kb_state_arr = SDL_GetKeyboardState(&kb_state_len)
-
-      return (@span(uint8)){
-        data = kb_state_arr,
-        size = kb_state_len
-      }
-    end)
+    local kb_state = SDLWrapper.get_keyboard_state()
 
     for i = 0, < #kb_state do
-      self.keyboard_state = kb_state[i]
+      self.keyboard_state = kb_state[i] == 1
     end
   end
 end
@@ -175,17 +172,8 @@ end
 function Nene.Core:get_window_size(): (cint, cint)
   check(Nene.initialized, 'Nene is not initialized')
 
-  local w, h = Nene.SDLWrapper.get_window_size(self.window)
+  local w, h = SDLWrapper.get_window_size(self.window)
   return w, h
-end
-
---- get the current time in milliseconds since SDL initialization (done at the `Core.init` method)
----
---- Related SDL documentation:
---- * [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
-function Nene.Core:ms_since_init()
-  check(Nene.initialized, 'Nene is not initialized')
-  return Nene.SDLWrapper.get_ticks()
 end
 
 --- when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);
@@ -199,13 +187,13 @@ end
 --- * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
   check(Nene.initialized, 'Nene is not initialized')
-  check(scancode < SDL_Scancode.SDL_NUM_SCANCODES)
+  check(scancode < SDL_Scancode.SDL_NUM_SCANCODES, 'Invalid scancode')
 
   ## if is_down.type.is_niltype then
-    return self.keyboard_state[scancode] == 1
+    return self.keyboard_state[scancode]
   ## else
-    local currently_pressed = self.keyboard_state[scancode] == 1
-    local previously_pressed = self.prev_keyboard_state[scancode] == 1
+    local currently_pressed = self.keyboard_state[scancode]
+    local previously_pressed = self.prev_keyboard_state[scancode]
 
     if is_down.value then
       return currently_pressed and not previously_pressed
@@ -215,41 +203,40 @@ function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boo
   ## end
 end
 
---- returns the mouse coordinates relative to window and a bitmask state of mouse buttons.
----
---- Related SDL documentation:
---- * [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
-function Nene.Core:get_mouse_state(): (Nene.Math.Vec2, uint32)
-  local x: cint, y: cint;
-  local mbuttons = SDL_GetMouseState(&x, &y)
-  return (@Nene.Math.Vec2){=x, =y}, mbuttons
-end
-
 --- Set rendering draw color
 ---
+--- Related Nene documentation:
+--- * [Nene.Color](colors.md)
+---
 --- Related SDL documentation:
+--- * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
+--- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
 function Nene.Core:set_render_draw_color(color: Nene.Color)
   check(Nene.initialized, 'Nene is not initialized')
-
-  SDL_SetRenderDrawColor(self.renderer, color.r, color.g, color.b, color.a)
+  SDLWrapper.set_render_draw_color(self.renderer, color.r, color.g, color.b, color.a)
 end
 
 --- it clears the rendering target with the given `color`.
 ---
+--- Related Nene documentation:
+--- * [Nene.Color](colors.md)
+--- * [Nene.Core.set_render_draw_color](core_state.md)
+---
 --- Related SDL documentation:
+--- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 function Nene.Core:render_clear(color: Nene.Color)
   check(Nene.initialized, 'Nene is not initialized')
-
   self:set_render_draw_color(color)
-
-  if SDL_RenderClear(self.renderer) ~= 0 then
-    ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_clear', 'could not clear the rendering target')
-  end
+  SDLWrapper.render_clear(self.renderer)
 end
 
 --- renders a line from `origin` to `destination` with the given `color`.
+---
+--- Related Nene documentation:
+--- * [Nene.Math.Vec2](math.md#nenemathvec2)
+--- * [Nene.Color](colors.md)
 ---
 --- Related SDL documentation:
 --- * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
@@ -263,9 +250,7 @@ function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Ma
                                                                          math.ifloor(destination.x),
                                                                          math.ifloor(destination.y)
 
-  if SDL_RenderDrawLine(self.renderer, origin_px, origin_py, dest_px, dest_py) ~= 0 then
-    ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_draw_line', "could not render a line")
-  end
+  SDLWrapper.render_draw_line(self.renderer, origin_px, origin_py, dest_px, dest_py)
 end
 
 --- renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
@@ -285,13 +270,9 @@ function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolea
   self:set_render_draw_color(color)
 
   if use_lines then
-    if SDL_RenderDrawRect(self.renderer, sdl_rect) ~= 0 then
-      ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_draw_rect', "could not render a rectangle")
-    end
+    SDLWrapper.render_draw_rect(self.renderer, sdl_rect)
   else
-    if SDL_RenderFillRect(self.renderer, sdl_rect) ~= 0 then
-      ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_draw_rect', "could not render a filled rectangle")
-    end
+    SDLWrapper.render_fill_rect(self.renderer, sdl_rect)
   end
 end
 
@@ -322,9 +303,7 @@ function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.
   dest = &dest_rect
   ## end
 
-  if SDL_RenderCopy(self.renderer, tex, src, dest) ~= 0 then
-    ## Nene.macros.fn_warn_sdl_error('Nene.Core.render_copy', 'could not copy the texture to the rendering target')
-  end
+  SDLWrapper.render_copy(self.renderer, tex, src, dest)
 end
 
 --- Wrapper of `SDL_CreateTextureFromSurface`.
@@ -339,7 +318,7 @@ function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL
   check(surface_ref ~= nilptr, "cannot create a texture from a nilptr")
 
   local ok = true
-  local texture = SDL_CreateTextureFromSurface(self.renderer, surface_ref)
+  local texture = SDLWrapper.create_texture_from_surface(self.renderer, surface_ref)
 
   if not texture then
     ok = false
@@ -358,7 +337,7 @@ end
 --- * [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
 function Nene.Core:render_present()
   check(Nene.initialized, 'Nene is not initialized')
-  SDL_RenderPresent(self.renderer)
+  SDLWrapper.render_present(self.renderer)
 end
 
 --- try to initialize and return a new initilized core state.
@@ -384,59 +363,60 @@ function Nene.Core.init(
   window_size_x: integer, window_size_y: integer,
   pos_x: facultative(integer), pos_y: facultative(integer),
   flags: facultative(uint32)
-): (boolean, string, Nene.Core)
+): (boolean, Nene.Core)
   check(Nene.initialized, "Cannot re-initialize Nene")
   check(window_size_x > 0 and window_size_y > 0, 'cannot create a window with `0` as a size parameter')
 
   local new_state: Nene.Core = {}
 
-  local sdl_init_result = SDL_Init(SDL_INIT_VIDEO)
-  if sdl_init_result < 0 then
-    return false, SDL_GetError(), new_state
+  local sdl_init_result = SDLWrapper.sdl_init(SDL_INIT_VIDEO)
+  if not sdl_init_result then
+    return false, new_state
   end
 
+  -- shadowing arguments with default settings
   ## if pos_x.type.is_niltype then
-    local pos_x = SDL_WINDOWPOS_UNDEFINED
+  local pos_x = SDL_WINDOWPOS_UNDEFINED
   ## end
   ## if pos_y.type.is_niltype then
-    local pos_y = SDL_WINDOWPOS_UNDEFINED
+  local pos_y = SDL_WINDOWPOS_UNDEFINED
   ## end
   ## if flags.type.is_niltype then
-    local flags = SDL_WINDOW_SHOWN
+  local flags = SDL_WINDOW_SHOWN
   ## end
 
-  local window = SDL_CreateWindow(title, pos_x, pos_y, window_size_x, window_size_y, flags)
+  local window = SDLWrapper.create_window(title, pos_x, pos_y, window_size_x, window_size_y, flags)
   if not window then
-    return false, SDL_GetError(), new_state
+    return false, new_state
   end
 
-  local renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
+  local renderer = SDLWrapper.create_renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
   if not renderer then
-    return false, SDL_GetError(), new_state
+    return false, new_state
   end
 
-  local img_init_result = IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG
-  if img_init_result == 0 then
-    return false, IMG_GetError(), (@Nene.Core){}
+  local img_init_result = ImgWrapper.img_init(IMG_INIT_PNG)
+  if not img_init_result then
+    return false, new_state
   end
 
-  local mix_openaudio = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
-  if mix_openaudio < 0 then
-    return false, Mix_GetError(), (@Nene.Core){}
+  local mix_openaudio = MixWrapper.open_audio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)
+  if not mix_openaudio then
+    return false, new_state
   end
 
-  local mixer_init_result = Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG
-  if mixer_init_result == 0 then
-    return false, Mix_GetError(), (@Nene.Core){}
+  local mixer_init_result = MixWrapper.mix_init(MIX_INIT_OGG)
+  if not mixer_init_result then
+    return false, new_state
   end
 
-  local ttf_init_result = TTF_Init()
-  if ttf_init_result < 0 then
-    return false, TTF_GetError(), (@Nene.Core){}
+  local ttf_init_result = TTFWrapper.ttf_init()
+  if not ttf_init_result then
+    return false, new_state
   end
 
-  SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff)
-  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
+  SDLWrapper.set_render_draw_color(renderer, 0xff, 0xff, 0xff, 0xff)
+  SDLWrapper.set_render_draw_blend_mode(renderer, SDL_BLENDMODE_BLEND)
 
   Nene.initialized = true
 
@@ -445,7 +425,7 @@ function Nene.Core.init(
     =renderer,
   }
 
-  return true, "", new_state
+  return true, new_state
 end
 
 --- Finalize application and quits all SDL subsystems
@@ -462,18 +442,18 @@ function Nene.Core:terminate()
   check(Nene.initialized, 'Nene is not initialized')
   Nene.initialized = false
 
-  SDL_DestroyRenderer(self.renderer)
+  SDLWrapper.destroy_renderer(self.renderer)
   self.renderer = nilptr
 
-  SDL_DestroyWindow(self.window)
+  SDLWrapper.destroy_window(self.window)
   self.window = nilptr
 
-  TTF_Quit()
+  TTFWrapper.ttf_quit()
 
-  Mix_Quit()
-  Mix_CloseAudio()
+  MixWrapper.mix_quit()
+  MixWrapper.close_audio()
 
-  IMG_Quit()
+  ImgWrapper.img_quit()
 
-  SDL_Quit()
+  SDLWrapper.sdl_quit()
 end

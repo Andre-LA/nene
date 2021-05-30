@@ -8,7 +8,7 @@ require 'nene.texture'
 --require 'nene.font'
 
 
---- A ready-to-use main state record, it already contains the core and does extra management to make game development easy.
+--- A ready-to-use main state record, it already contains the core and does extra management to make game development easier.
 --- The `Core.Main` module isn't required by any other module, and can be replaced by your own "Main" module if you wish.
 global Nene.Main = @record{
   core: Nene.Core, -- nene core state
@@ -19,23 +19,19 @@ global Nene.Main = @record{
     --fonts: resourcepool(Nene.Font),
   }
 }
+local Main = @Nene.Main
 
 --- initializes the main state, it also does some `assert`s to ensure that everything properly initialized.
-function Nene.Main.init(title: string, window_size_x: integer, window_size_y: integer): Nene.Main
-  local ok, err, core = Nene.Core.init(title, window_size_x, window_size_y)
-  assert(ok, err)
+function Main.init(title: string, window_size_x: integer, window_size_y: integer): Nene.Main
+  local ok, core = Nene.Core.init(title, window_size_x, window_size_y)
+  assert(ok, 'core initialization failed')
 
-  local result: Nene.Main = {
-    =core
-  }
-
-  return result
+  return (@Nene.Main){ =core }
 end
 
 --- Finalize application by freeing all resources and terminating the core
-function Nene.Main:terminate()
+function Main:terminate()
   -- free resources
-  local Main = @Nene.Main
 
   ## for i, field in ipairs(Main.value.fields.resources.type.fields) do
     for i = 0, < #self.resources.#|field.name|#.items do
