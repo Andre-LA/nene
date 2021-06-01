@@ -12,5 +12,20 @@
 -- * move some functions from CoreState to respective records, passing CoreState as argument
 -- * rename Nene.CoreState to Nene.State
 
+-- basic
 require 'nene.core'
+require 'nene.colors'
+require 'nene.math'
 require 'nene.core_state'
+
+-- features
+require 'nene.text_texture'
+
+-- require 'animation'
+-- require 'audio'
+-- require 'camera'
+-- require 'font'
+-- require 'spritesheet'
+-- require 'texture_atlas'
+-- require 'texture'
+-- require 'tilemap'
