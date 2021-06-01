@@ -46,7 +46,7 @@ function Nene.TextTexture:update_text(nene_state: Nene.Core, text: string, color
     if text_texture then
       self.texture:apply_sdltex(text_texture)
     else
-      ## Nene.macros.fn_warn_ttf_error('Nene.TextTexture.update_text', 'could not create a texture from surface')
+      warn'Nene.TextTexture.update_text: could not update text texture'
     end
   end
 end
@@ -69,7 +69,7 @@ end
 --- Related Nene documentation:
 --- * [Nene.TextTexture.update_text](#nenetexttextureupdate_text)
 function Nene.TextTexture.new(nene_state: Nene.Core, initial_text: string, color: Nene.Color, font: Nene.Font): Nene.TextTexture
-  local new: Nene.TextTexture = {}
+  local new: Nene.TextTexture;
   new:update_text(nene_state, initial_text, color, font)
   return new
 end
