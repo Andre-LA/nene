@@ -5,6 +5,12 @@ require 'nene.core'
 
 global Nene.TTFWrapper = @record{}
 
+##[[
+local function warn_msg(fn_name, msg)
+  Nene.macros.warn_sdl_msg_macro('Nene.TTFWrapper.'..fn_name, msg, 'SDL_TTF', 'TTF_GetError')
+end
+]]
+
 --- Wrapper of `TTF_Init`
 ---
 --- Initialize SDL_ttf library.
@@ -13,10 +19,10 @@ global Nene.TTFWrapper = @record{}
 --- Related SDL_ttf documentation:
 --- * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
 function Nene.TTFWrapper.ttf_init(): boolean
-  local ok = TTF_Init() ~= 0
+  local ok = TTF_Init() == 0
 
   if not ok then
-    ## Nene.macros.fn_warn_ttf_error('Nene.TTFWrapper.ttf_init', 'could not initialize SDL_ttf')
+    ## warn_msg('ttf_init', 'could not initialize SDL_ttf')
   end
 
   return ok
@@ -45,7 +51,7 @@ function Nene.TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, co
   local ok = text_surface ~= nilptr
 
   if not ok then
-    ## Nene.macros.fn_warn_ttf_error('Nene.TTFWrapper.ttf_render_utf8_solid', 'could not create a surface from text')
+    ## warn_msg('ttf_render_utf8_solid', 'could not create a surface from text')
   end
 
   return text_surface, ok

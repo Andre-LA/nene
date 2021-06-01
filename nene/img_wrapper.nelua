@@ -5,6 +5,11 @@ require 'nene.core'
 
 global Nene.ImgWrapper = @record{}
 
+##[[
+local function warn_msg(fn_name, msg)
+  Nene.macros.warn_sdl_msg_macro('Nene.ImgWrapper.'..fn_name, msg, 'SDL_image', 'IMG_GetError')
+end
+]]
 
 --- Wrapper of `IMG_Init`
 ---
@@ -18,13 +23,13 @@ global Nene.ImgWrapper = @record{}
 --- * [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
 function Nene.ImgWrapper.img_init(flags: cint): (boolean, cint)
   local img_result = IMG_Init(flags)
-  local ok = img_result & flags ~= flags
+  local ok = img_result & flags == flags
 
   if not ok then
     if img_result == 0 then
-      ## Nene.macros.fn_warn_img_error('Nene.ImgWrapper.img_init', "could not initialize SDL_image'")
+      ## warn_msg('img_init', "could not initialize SDL_image")
     else
-      ## Nene.macros.fn_warn_img_error('Nene.ImgWrapper.img_init', "SDL_image loading support wasn't initialized as expected'")
+      ## warn_msg('img_init', "SDL_image loading support wasn't initialized as expected")
     end
   end
 

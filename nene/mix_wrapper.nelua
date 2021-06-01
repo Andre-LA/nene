@@ -4,6 +4,12 @@ require 'nene.core'
 
 global Nene.MixWrapper = @record{}
 
+##[[
+local function warn_msg(fn_name, msg)
+  Nene.macros.warn_sdl_msg_macro('Nene.MixWrapper.'..fn_name, msg, 'SDL_mixer', 'Mix_GetError')
+end
+]]
+
 --- Wrapper of `Mix_Init`
 ---
 --- Initialize SDL_mixer loading support.
@@ -16,10 +22,10 @@ global Nene.MixWrapper = @record{}
 --- * [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
 function Nene.MixWrapper.mix_init(flags: cint): (boolean, cint)
   local mix_result = Mix_Init(flags)
-  local ok = mix_result & flags ~= flags
+  local ok = mix_result & flags == flags
 
   if not ok then
-    ## Nene.macros.fn_warn_mix_error('Nene.MixWrapper.mix_init', "SDL_mixer loading support wasn't initialized as expected'")
+    ## warn_msg('mix_init', "SDL_mixer loading support wasn't initialized as expected")
   end
 
   return ok, mix_result
@@ -52,7 +58,7 @@ function Nene.MixWrapper.open_audio(frequency: cint, format: uint16, channels: c
     local ok = Mix_OpenAudio(frequency, format, channels, chunksize)
 
   if not ok then
-    ## Nene.macros.fn_warn_mix_error('Nene.MixWrapper.open_audio', "could not initialize SDL_mixer")
+    ## warn_msg('open_audio', "could not initialize SDL_mixer")
   end
 
   return ok
@@ -85,7 +91,7 @@ function Nene.MixWrapper.play_channel(channel: cint, chunk: *Mix_Chunk, loop: ci
   local ok = channel ~= -1
 
   if not ok then
-    ## Nene.macros.fn_warn_mix_error('Nene.MixWrapper.play_channel', 'could not play the chunk on the channel')
+    ## warn_msg('play_channel', 'could not play the chunk on the channel')
   end
 
   return channel, ok

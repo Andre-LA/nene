@@ -3,6 +3,12 @@ require 'nene.core'
 
 global Nene.SDLWrapper = @record{}
 
+##[[
+local function warn_msg(fn_name, msg)
+  Nene.macros.warn_sdl_msg_macro('Nene.SDLWrapper.'..fn_name, msg, 'SDL', 'SDL_GetError')
+end
+]]
+
 --- Wrapper of `SDL_Init`
 ---
 --- Initialize SDL library, please also read the SDL_Init documentation on _Remarks_ section for details.
@@ -12,10 +18,10 @@ global Nene.SDLWrapper = @record{}
 function Nene.SDLWrapper.sdl_init(flags: uint32): boolean
   check(not Nene.initialized, 'Nene is already initialized')
 
-  local ok = SDL_Init(flags) ~= 0
+  local ok = SDL_Init(flags) == 0
 
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.sdl_init', 'could not initialize SDL')
+    ## warn_msg('sdl_init', 'could not initialize SDL')
   end
 
   return ok
@@ -51,7 +57,7 @@ function Nene.SDLWrapper.create_texture_from_surface(renderer: *SDL_Renderer, su
   local ok = texture ~= nilptr
 
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.create_texture_from_surface', 'could not create texture from surface')
+    ## warn_msg('create_texture_from_surface', 'could not create texture from surface')
   end
 
   return texture, ok
@@ -70,7 +76,7 @@ function Nene.SDLWrapper.destroy_texture(texture: *SDL_Texture)
   SDL_DestroyTexture(texture)
 
   if texture == nilptr then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.destroy_texture', 'texture is nilptr, thus invalid')
+    ## warn_msg('destroy_texture', 'texture is nilptr, thus invalid')
   end
 end
 
@@ -91,10 +97,10 @@ function Nene.SDLWrapper.set_texture_color_modulation(texture: *SDL_Texture, col
   case 0 then
     return true
   case -1 then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.set_texture_color_modulation', 'color modulation is not supported by the renderer')
+    ## warn_msg('set_texture_color_modulation', 'color modulation is not supported by the renderer')
     return false
   else
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.set_texture_color_modulation', 'could not set texture modulation')
+    ## warn_msg('set_texture_color_modulation', 'could not set texture modulation')
     return false
   end
 end
@@ -114,7 +120,7 @@ function Nene.SDLWrapper.query_texture_size(texture: *SDL_Texture): (cint, cint,
 
   local ok = SDL_QueryTexture(texture, &fmt, &access, &w, &h)
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.query_texture_size', 'could not query texture')
+    ## warn_msg('query_texture_size', 'could not query texture')
   end
 
   return w, h, ok
@@ -210,7 +216,7 @@ function Nene.SDLWrapper.create_window(title: cstring, x: cint, y: cint, w: cint
   local ok = window ~= nilptr
 
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.create_window', 'could not create window')
+    ## warn_msg('create_window', 'could not create window')
   end
 
   return window, ok
@@ -236,18 +242,14 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
-function Nene.SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint, boolean)
+function Nene.SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint)
   check(Nene.initialized, 'Nene is not initialized')
   check(window, 'window is nilptr')
 
   local ww: cint, wh: cint;
-  local ok = SDL_GetWindowSize(window, &ww, &wh) ~= 0
+  SDL_GetWindowSize(window, &ww, &wh)
 
-  if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.get_window_size', 'could not get the size of the current window')
-  end
-
-  return ww, wh, ok
+  return ww, wh
 end
 
 -- ]] Window related functions ]]
@@ -270,7 +272,7 @@ function Nene.SDLWrapper.create_renderer(window: *SDL_Window, index: cint, flags
   local ok = renderer ~= nilptr
 
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.create_renderer', 'could not create renderer')
+    ## warn_msg('create_renderer', 'could not create renderer')
   end
 
   return renderer, ok
@@ -303,9 +305,9 @@ function Nene.SDLWrapper.set_render_draw_color(renderer: *SDL_Renderer, r: uint8
   check(Nene.initialized, 'Nene is not initialized')
   check(renderer ~= nilptr, 'renderer is nilptr')
 
-  local ok = SDL_SetRenderDrawColor(renderer, r, g, b, a) ~= 0
+  local ok = SDL_SetRenderDrawColor(renderer, r, g, b, a) == 0
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.set_render_draw_color', 'could not set the rendering draw color')
+    ## warn_msg('set_render_draw_color', 'could not set the rendering draw color')
   end
 
   return ok
@@ -324,9 +326,9 @@ function Nene.SDLWrapper.set_render_draw_blend_mode(renderer: *SDL_Renderer, ble
   check(Nene.initialized, 'Nene is not initialized')
   check(renderer ~= nilptr, 'renderer is nilptr')
 
-  local ok = SDL_SetRenderDrawBlendMode(renderer, blend_mode) ~= 0
+  local ok = SDL_SetRenderDrawBlendMode(renderer, blend_mode) == 0
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.set_render_draw_blend_mode', 'could not set drawing blend mode')
+    ## warn_msg('set_render_draw_blend_mode', 'could not set drawing blend mode')
   end
 
   return ok
@@ -343,9 +345,9 @@ function Nene.SDLWrapper.render_clear(renderer: *SDL_Renderer): boolean
   check(Nene.initialized, 'Nene is not initialized')
   check(renderer ~= nilptr, 'renderer is nilptr')
 
-  local ok = SDL_RenderClear(renderer) ~= 0
+  local ok = SDL_RenderClear(renderer) == 0
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.render_clear', 'could not clear the rendering target')
+    ## warn_msg('render_clear', 'could not clear the rendering target')
   end
 
   return ok
@@ -377,9 +379,9 @@ function Nene.SDLWrapper.render_draw_line(renderer: *SDL_Renderer, x1: cint, y1:
   check(Nene.initialized, 'Nene is not initialized')
   check(renderer ~= nilptr, 'renderer is nilptr')
 
-  local ok = SDL_RenderDrawLine(renderer, x1, y1, x2, y2) ~= 0
+  local ok = SDL_RenderDrawLine(renderer, x1, y1, x2, y2) == 0
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.render_draw_line', 'could not draw a line')
+    ## warn_msg('render_draw_line', 'could not draw a line')
   end
 
   return ok
@@ -398,9 +400,9 @@ function Nene.SDLWrapper.render_draw_rect(renderer: *SDL_Renderer, rect: *SDL_Re
   check(Nene.initialized, 'Nene is not initialized')
   check(renderer ~= nilptr, 'renderer is nilptr')
 
-  local ok = SDL_RenderDrawRect(renderer, rect) ~= 0
+  local ok = SDL_RenderDrawRect(renderer, rect) == 0
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.render_draw_rect', 'could not draw rectangle lines')
+    ## warn_msg('render_draw_rect', 'could not draw rectangle lines')
   end
 
   return ok
@@ -417,9 +419,32 @@ function Nene.SDLWrapper.render_fill_rect(renderer: *SDL_Renderer, rect: *SDL_Re
   check(Nene.initialized, 'Nene is not initialized')
   check(renderer ~= nilptr, 'renderer is nilptr')
 
-  local ok = SDL_RenderFillRect(renderer, rect) ~= 0
+  local ok = SDL_RenderFillRect(renderer, rect) == 0
   if not ok then
-    ## Nene.macros.fn_warn_sdl_error('Nene.SDLWrapper.render_fill_rect', 'could not draw a filled rectangle')
+    ## warn_msg('render_fill_rect', 'could not draw a filled rectangle')
+  end
+
+  return ok
+end
+
+--- Wrapper of `SDL_RenderCopy`
+---
+--- Copy a portion of the texture to the current rendering target.
+--- You can pass `nilptr` to both `srcrect` and `dstrect` variables.
+---
+--- Related SDL documentation:
+--- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+--- * [SDL_Rect](https://wiki.libsdl.org/SDL_Rect)
+--- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+--- * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
+function Nene.SDLWrapper.render_copy(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  check(renderer ~= nilptr, 'renderer is nilptr')
+  check(texture ~= nilptr, 'texture is nilptr')
+
+  local ok = SDL_RenderCopy(renderer, texture, srcrect, dstrect) == 0
+  if not ok then
+    ## warn_msg('render_copy', 'could not copy texture to rendering target')
   end
 
   return ok
