@@ -160,7 +160,7 @@ function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallba
     local kb_state = SDLWrapper.get_keyboard_state()
 
     for i = 0, < #kb_state do
-      self.keyboard_state = kb_state[i] == 1
+      self.keyboard_state[i] = kb_state[i] == 1
     end
   end
 end
@@ -315,6 +315,7 @@ end
 --- * [SDL_Surface](https://wiki.libsdl.org/SDL_Surface)
 --- * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
 function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
+  check(Nene.initialized, 'Nene is not initialized')
   check(surface_ref ~= nilptr, "cannot create a texture from a nilptr")
 
   local ok = true
@@ -322,7 +323,7 @@ function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL
 
   if not texture then
     ok = false
-    ## Nene.macros.fn_warn_ttf_error('Nene.Core.create_texture_from_surface', 'could not create texture from surface')
+    warn'Nene.Core.create_texture_from_surface: could not create texture from the given surface'
   end
 
   return texture, ok
@@ -364,15 +365,8 @@ function Nene.Core.init(
   pos_x: facultative(integer), pos_y: facultative(integer),
   flags: facultative(uint32)
 ): (boolean, Nene.Core)
-  check(Nene.initialized, "Cannot re-initialize Nene")
+  check(not Nene.initialized, "Cannot re-initialize Nene")
   check(window_size_x > 0 and window_size_y > 0, 'cannot create a window with `0` as a size parameter')
-
-  local new_state: Nene.Core = {}
-
-  local sdl_init_result = SDLWrapper.sdl_init(SDL_INIT_VIDEO)
-  if not sdl_init_result then
-    return false, new_state
-  end
 
   -- shadowing arguments with default settings
   ## if pos_x.type.is_niltype then
@@ -385,13 +379,11 @@ function Nene.Core.init(
   local flags = SDL_WINDOW_SHOWN
   ## end
 
-  local window = SDLWrapper.create_window(title, pos_x, pos_y, window_size_x, window_size_y, flags)
-  if not window then
-    return false, new_state
-  end
+  local new_state: Nene.Core
 
-  local renderer = SDLWrapper.create_renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
-  if not renderer then
+  -- init libraries
+  local sdl_init_result = SDLWrapper.sdl_init(SDL_INIT_VIDEO)
+  if not sdl_init_result then
     return false, new_state
   end
 
@@ -415,11 +407,26 @@ function Nene.Core.init(
     return false, new_state
   end
 
+  -- libraries initialized, so Nene is considered initialized while nothing
+  -- go wrong
+  Nene.initialized = true
+
+  local window = SDLWrapper.create_window(title, pos_x, pos_y, window_size_x, window_size_y, flags)
+  if not window then
+    Nene.initialized = false
+    return false, new_state
+  end
+
+  local renderer = SDLWrapper.create_renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
+  if not renderer then
+    Nene.initialized = false
+    return false, new_state
+  end
+
   SDLWrapper.set_render_draw_color(renderer, 0xff, 0xff, 0xff, 0xff)
   SDLWrapper.set_render_draw_blend_mode(renderer, SDL_BLENDMODE_BLEND)
 
-  Nene.initialized = true
-
+  -- everything setup!
   new_state = {
     =window,
     =renderer,
