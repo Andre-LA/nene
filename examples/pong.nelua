@@ -1,11 +1,19 @@
-require 'nene'
+require 'math'
 require 'string'
+
+-- you can require each nene module individually,
+-- here, we are requiring all modules at once for the sake of simplicity
+require 'nene'
+
+-- basic pong example!
+-- this one will use `Nene.Core` instead of `Nene.Main` since no resources (like textures and sounds) will be used.
+local Rect, Vec2, TextTexture = Nene.Math.Rect, Nene.Math.Vec2, Nene.TextTexture
 
 -- general game settings
 local SETTINGS: record{
-  winsize: Nene.Math.Vec2,
+  winsize: Vec2,
   racket: record{
-    size: Nene.Math.Vec2,
+    size: Vec2,
     velocity: integer,
   },
   ball: record{
@@ -24,66 +32,59 @@ local SETTINGS: record{
   }
 }
 
--- [[ Game code [[
+-- nene core initialization
+local ok, nene_core = Nene.Core.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
+assert(ok, 'core state initialization failed')
+
+-- pong code:
 
 -- racket record
 local Racket = @record{
   pos_y: integer,
-  is_player_one: boolean,
   points: integer,
 }
 
--- return an initialized racket
-function Racket.new(is_player_one: boolean): Racket
-  return (@Racket){ pos_y = 200, =is_player_one }
-end
-
 -- return the rect of the racket
-function Racket:get_rect(): Nene.Math.Rect
-  return (@Nene.Math.Rect){
-    x = self.is_player_one and 20 or SETTINGS.winsize.x - SETTINGS.racket.size.x - 20,
+function Racket:get_rect(is_player_one: boolean): Rect
+  return (@Rect){
+    x = math.ifloor(is_player_one and 20 or SETTINGS.winsize.x - SETTINGS.racket.size.x - 20),
     y = self.pos_y,
-    w = SETTINGS.racket.size.x,
-    h = SETTINGS.racket.size.y,
+    w = SETTINGS.racket.size.x, h = SETTINGS.racket.size.y
   }
 end
 
 -- racket's gameplay code
-function Racket:update(nene_state: Nene.CoreState)
+function Racket:update(is_player_one: boolean <comptime>)
+  -- input
   local is_up, is_down = false, false
 
-  if self.is_player_one then
-    is_up, is_down = nene_state:get_scancode(SDL_SCANCODE_W), nene_state:get_scancode(SDL_SCANCODE_S)
-  else
-    is_up, is_down = nene_state:get_scancode(SDL_SCANCODE_I), nene_state:get_scancode(SDL_SCANCODE_K)
-  end
+  ## if is_player_one.value then
+    is_up, is_down = nene_core:get_scancode(SDL_SCANCODE_W), nene_core:get_scancode(SDL_SCANCODE_S)
+  ## else
+    is_up, is_down = nene_core:get_scancode(SDL_SCANCODE_I), nene_core:get_scancode(SDL_SCANCODE_K)
+  ## end
 
+  -- movement
+  local ylimit <const> = SETTINGS.winsize.y - SETTINGS.racket.size.y
   if is_up then
-    self.pos_y = self.pos_y - SETTINGS.racket.velocity
+    self.pos_y = math.clamp(self.pos_y - SETTINGS.racket.velocity, 0, ylimit)
   end
   if is_down then
-    self.pos_y = self.pos_y + SETTINGS.racket.velocity
-  end
-
-  if self.pos_y < 0 then
-    self.pos_y = 0
-  elseif self.pos_y + SETTINGS.racket.size.y > SETTINGS.winsize.y then
-    self.pos_y = SETTINGS.winsize.y - SETTINGS.racket.size.y
+    self.pos_y = math.clamp(self.pos_y + SETTINGS.racket.velocity, 0, ylimit)
   end
 end
 
 -- draw a racket
-function Racket:draw(nene_state: Nene.CoreState)
-  nene_state:render_draw_rect(self:get_rect(), false, Nene.Palette.yellow)
+function Racket:draw(is_player_one: boolean)
+  nene_core:render_draw_rect(self:get_rect(is_player_one), false, Nene.Palette.yellow)
 end
 
 -- ball record
 local Ball = @record{
-  pos: Nene.Math.Vec2,
-  direction: Nene.Math.Vec2,
+  pos: Vec2,
+  direction: Vec2,
 }
 
--- return an initialized ball
 function Ball.new()
   return (@Ball){
     pos = { SETTINGS.winsize.x // 2, SETTINGS.winsize.y // 2 },
@@ -92,40 +93,43 @@ function Ball.new()
 end
 
 -- return the ball's rect
-function Ball:get_rect(): Nene.Math.Rect
-  return (@Nene.Math.Rect){
-    x = self.pos.x,
-    y = self.pos.y,
-    w = SETTINGS.ball.size,
-    h = SETTINGS.ball.size,
+function Ball:get_rect(): Rect
+  return (@Rect){
+    x = self.pos.x, y = self.pos.y,
+    w = SETTINGS.ball.size, h = SETTINGS.ball.size,
   }
 end
 
 -- ball's gameplay code
-function Ball:update(racket_1: *Racket, racket_2: *Racket)
+function Ball:update(racket_1: Racket, racket_2: Racket)
   self.pos = self.pos + self.direction * SETTINGS.ball.velocity
-  local ball_rect = self:get_rect()
 
-  -- invert direction when intersecting window corners
-  local intersected_window_left = self.pos.x < 0
-  local intersected_window_right = self.pos.x + SETTINGS.ball.size > SETTINGS.winsize.x
+  -- does intersected limits?
+  local on_left_side <const> = self.pos.x < 0
+  local on_right_side <const> = self.pos.x + SETTINGS.ball.size > SETTINGS.winsize.x
+  local on_up_side <const> = self.pos.y < 0
+  local on_down_side <const> = self.pos.y + SETTINGS.ball.size > SETTINGS.winsize.y
 
-  if intersected_window_left or intersected_window_right then
-    if intersected_window_left then
+  -- invert horizontal direction when intersecting left or right side and add points to the winner player
+  if on_left_side or on_right_side then
+    self.direction.x = -self.direction.x
+
+    if on_left_side then
       racket_2.points = racket_2.points + 1
     else
       racket_1.points = racket_1.points + 1
     end
-
-    self.direction.x = -self.direction.x
   end
 
-  if self.pos.y < 0 or self.pos.y + SETTINGS.ball.size > SETTINGS.winsize.y then
+  -- invert vertical direction when intersecting up or down side
+  if on_down_side or on_up_side then
     self.direction.y = -self.direction.y
   end
 
-  -- invert direction when intersecting rackets
-  local r1_rect, r2_rect = racket_1:get_rect(), racket_2:get_rect()
+  local ball_rect = self:get_rect()
+
+  -- invert horizontal direction when intersecting rackets
+  local r1_rect, r2_rect = racket_1:get_rect(true), racket_2:get_rect(false)
   local is_r1_intersecting, is_r2_intersecting = ball_rect:is_rect_intersecting(r1_rect), ball_rect:is_rect_intersecting(r2_rect)
 
   if is_r1_intersecting or is_r2_intersecting then
@@ -134,64 +138,50 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket)
   end
 end
 
-function Ball:draw(nene_state: Nene.CoreState)
-  nene_state:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
-end
--- ]] Game code ]]
-
--- [[ Application code [[
-
-local ok, errmsg, nene_state = Nene.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y, 'resources/monogram_extended.ttf', 32)
-check(ok, errmsg)
-
-local pl_1, pl_2 = Racket.new(true), Racket.new(false)
-local ball = Ball.new()
-
-local r1_text, r2_text = Nene.TextTexture.new(nene_state, '0', Nene.Palette.white),
-                         Nene.TextTexture.new(nene_state, '0', Nene.Palette.white)
-
-local function update_points(pts_text: *Nene.TextTexture, points: integer, prev_points: integer)
-  if points == prev_points then
-    return
-  end
-
-  local pts_str = tostring(points)
-  defer pts_str:destroy() end
-
-  pts_text:update_text(nene_state, pts_str, Nene.Palette.white)
+function Ball:draw()
+  nene_core:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
 end
 
--- Game Loop:
+-- local function update_points(pts_text: *TextTexture, points: integer)
+--   local pts_str = tostring(points)
+--   defer pts_str:destroy() end
+--   pts_text:update_text(pts_str, Nene.Palette.white)
+-- end
+
+-- setup:
+local pl_1: Racket, pl_2: Racket, ball = {}, {}, Ball.new()
+--local r1_text, r2_text = TextTexture.new(nene_core, '0', Nene.Palette.white),
+--                         TextTexture.new(nene_core, '0', Nene.Palette.white)
+
+-- game loop:
 repeat
-  nene_state:pool_events()
-
-  local new = nene_state:get_ms_time()
+  nene_core:pool_events()
 
   do -- update step
     local r1_pts_before, r2_pts_before = pl_1.points, pl_2.points
 
     ball:update(pl_1, pl_2)
-    pl_1:update(nene_state)
-    pl_2:update(nene_state)
+    pl_1:update(true)
+    pl_2:update(false)
 
-    update_points(r1_text, pl_1.points, r1_pts_before)
-    update_points(r2_text, pl_2.points, r2_pts_before)
+    -- if r1_pts_before ~= pl_1.points then
+    --   update_points(r1_text, pl_1.points)
+    -- end
+    -- if r2_pts_before ~= pl_2.points then
+    --   update_points(r2_text, pl_2.points)
+    -- end
   end
 
   do -- draw step
-    nene_state:render_clear(Nene.Palette.bg)
+    nene_core:render_clear(Nene.Palette.bg)
 
-    pl_1:draw(nene_state)
-    pl_2:draw(nene_state)
-    ball:draw(nene_state)
+    pl_1:draw(true)
+    pl_2:draw(false)
+    ball:draw()
 
-    nene_state:render_screen()
+    --r1_text:draw(nene_core, {10, 0}, Nene.Palette.white)
+    --r2_text:draw(nene_core, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
 
-    r1_text:draw(nene_state, {10, 0}, Nene.Palette.white)
-    r2_text:draw(nene_state, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
-
-    nene_state:render_present()
+    nene_core:render_present()
   end
-until nene_state.quit
-
--- ]] Application code ]]
+until nene_core.quit
