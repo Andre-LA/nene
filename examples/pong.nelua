@@ -1,3 +1,5 @@
+-- basic pong example!
+
 require 'math'
 require 'string'
 
@@ -5,8 +7,6 @@ require 'string'
 -- here, we are requiring all modules at once for the sake of simplicity
 require 'nene'
 
--- basic pong example!
--- this one will use `Nene.Core` instead of `Nene.Main` since no resources (like textures and sounds) will be used.
 local Rect, Vec2, TextTexture = Nene.Math.Rect, Nene.Math.Vec2, Nene.TextTexture
 
 -- general game settings
@@ -32,10 +32,6 @@ local SETTINGS: record{
   }
 }
 
--- nene core initialization
-local ok, nene_core = Nene.Core.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
-assert(ok, 'core state initialization failed')
-
 -- pong code:
 
 -- racket record
@@ -54,7 +50,7 @@ function Racket:get_rect(is_player_one: boolean): Rect
 end
 
 -- racket's gameplay code
-function Racket:update(is_player_one: boolean <comptime>)
+function Racket:update(nene_core: Nene.Core, is_player_one: boolean <comptime>)
   -- input
   local is_up, is_down = false, false
 
@@ -66,16 +62,18 @@ function Racket:update(is_player_one: boolean <comptime>)
 
   -- movement
   local ylimit <const> = SETTINGS.winsize.y - SETTINGS.racket.size.y
+
   if is_up then
     self.pos_y = math.clamp(self.pos_y - SETTINGS.racket.velocity, 0, ylimit)
   end
+
   if is_down then
     self.pos_y = math.clamp(self.pos_y + SETTINGS.racket.velocity, 0, ylimit)
   end
 end
 
 -- draw a racket
-function Racket:draw(is_player_one: boolean)
+function Racket:draw(nene_core: Nene.Core, is_player_one: boolean)
   nene_core:render_draw_rect(self:get_rect(is_player_one), false, Nene.Palette.yellow)
 end
 
@@ -101,7 +99,7 @@ function Ball:get_rect(): Rect
 end
 
 -- ball's gameplay code
-function Ball:update(racket_1: Racket, racket_2: Racket)
+function Ball:update(racket_1: *Racket, racket_2: *Racket)
   self.pos = self.pos + self.direction * SETTINGS.ball.velocity
 
   -- does intersected limits?
@@ -113,12 +111,8 @@ function Ball:update(racket_1: Racket, racket_2: Racket)
   -- invert horizontal direction when intersecting left or right side and add points to the winner player
   if on_left_side or on_right_side then
     self.direction.x = -self.direction.x
-
-    if on_left_side then
-      racket_2.points = racket_2.points + 1
-    else
-      racket_1.points = racket_1.points + 1
-    end
+    local winner_racket = on_left_side and racket_2 or racket_1
+    winner_racket.points = winner_racket.points + 1
   end
 
   -- invert vertical direction when intersecting up or down side
@@ -138,50 +132,72 @@ function Ball:update(racket_1: Racket, racket_2: Racket)
   end
 end
 
-function Ball:draw()
+function Ball:draw(nene_core: Nene.Core)
   nene_core:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
 end
 
--- local function update_points(pts_text: *TextTexture, points: integer)
---   local pts_str = tostring(points)
---   defer pts_str:destroy() end
---   pts_text:update_text(pts_str, Nene.Palette.white)
--- end
+local function update_points(nene_core: Nene.Core, pts_text: *TextTexture, points: integer, font: Nene.Font)
+  local pts_str = tostring(points)
+  defer pts_str:destroy() end
+  pts_text:update_text(nene_core, pts_str, Nene.Palette.white, font)
+end
 
--- setup:
-local pl_1: Racket, pl_2: Racket, ball = {}, {}, Ball.new()
---local r1_text, r2_text = TextTexture.new(nene_core, '0', Nene.Palette.white),
---                         TextTexture.new(nene_core, '0', Nene.Palette.white)
+local function game()
+  -- nene setup:
+  -- nene core initialization
+  -- this example will use `Nene.Core` directly instead of `Nene.Main` since only simple feature will be used.
+  local ok, nene_core = Nene.Core.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
+  assert(ok, 'core state initialization failed')
+  defer nene_core:terminate() end
 
--- game loop:
-repeat
-  nene_core:pool_events()
+  -- game setup:
+  local pl_1: Racket, pl_2: Racket, ball = {}, {}, Ball.new()
+  local font = Nene.Font.load('resources/monogram_extended.ttf', 72)
+  defer font:destroy() end
 
-  do -- update step
-    local r1_pts_before, r2_pts_before = pl_1.points, pl_2.points
-
-    ball:update(pl_1, pl_2)
-    pl_1:update(true)
-    pl_2:update(false)
-
-    -- if r1_pts_before ~= pl_1.points then
-    --   update_points(r1_text, pl_1.points)
-    -- end
-    -- if r2_pts_before ~= pl_2.points then
-    --   update_points(r2_text, pl_2.points)
-    -- end
+  local r1_text, r2_text = TextTexture.new(nene_core, '0', Nene.Palette.white, font),
+                           TextTexture.new(nene_core, '0', Nene.Palette.white, font)
+  defer
+    r1_text:destroy()
+    r2_text:destroy()
   end
 
-  do -- draw step
-    nene_core:render_clear(Nene.Palette.bg)
+  -- game loop:
+  repeat
+    nene_core:pool_events()
 
-    pl_1:draw(true)
-    pl_2:draw(false)
-    ball:draw()
+    do -- update step
+      local prev_r1_points, prev_r2_points = pl_1.points, pl_2.points
 
-    --r1_text:draw(nene_core, {10, 0}, Nene.Palette.white)
-    --r2_text:draw(nene_core, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
+      pl_1:update(nene_core, true)
+      pl_2:update(nene_core, false)
+      ball:update(pl_1, pl_2)
 
-    nene_core:render_present()
-  end
-until nene_core.quit
+      if prev_r1_points ~= pl_1.points then
+        update_points(nene_core, r1_text, pl_1.points, font)
+      end
+      if prev_r2_points ~= pl_2.points then
+        update_points(nene_core, r2_text, pl_2.points, font)
+      end
+    end
+
+    do -- draw step
+      -- draw background
+      nene_core:render_clear(Nene.Palette.bg)
+
+      -- draw rackets and ball
+      pl_1:draw(nene_core, true)
+      pl_2:draw(nene_core, false)
+      ball:draw(nene_core)
+
+      -- draw points texts
+      r1_text:draw(nene_core, {10, 0}, Nene.Palette.white)
+      r2_text:draw(nene_core, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
+
+      -- present the "drawing result"
+      nene_core:render_present()
+    end
+  until nene_core.quit
+end
+
+game()
