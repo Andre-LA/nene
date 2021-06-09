@@ -48,26 +48,16 @@ end
 --- Related Nene documentation:
 --- * [Nene.Core.set_texture_color_modulation](core_state.md#nenecoreset_texture_color_modulation)
 --- * [Nene.Core.render_copy](core_state.md#nenecorerender_copy)
-function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
+function Nene.Texture:draw(nene_core: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
   ## texture_check_macro('Nene.Texture.draw')
 
   Nene.SDLWrapper.set_texture_color_modulation(self._data, color)
 
-  ## if destination.type.is_rect then
-  local dest: Nene.Math.Rect = { x = destination.x, y = destination.y, w = destination.w, h = destination.h }
-  ## elseif not destination.type.is_vec then
-  local dest: Nene.Math.Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
-  ## elseif destination.type.is_niltype then
-  local dest = nil
+  ## if destination.type.is_vec then -- shadow the vec2 destination with a rect destination
+  local destination: Nene.Math.Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
   ## end
 
-  ## if source.type.is_rect then
-  local src: Nene.Math.Rect = { x = source.x, y = source.y, w = source.w, h = source.h }
-  ## elseif source.type.is_niltype then
-  local src = nil
-  ## end
-
-  nene_state:render_copy(self._data, src, dest)
+  nene_core:render_copy(self._data, source, destination)
 end
 
 --- Applies a new internal texture (with a `pointer(SDL_Texture)`).
