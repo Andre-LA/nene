@@ -1,18 +1,28 @@
-require 'sdl2_ttf'
-
 require 'hashmap'
 
 require 'nene.core'
 require 'nene.math'
+require 'nene.ttf_wrapper'
 
+local TTFWrapper = Nene.TTFWrapper
+
+--- Wraps a reference to a font
 global Nene.Font = @record{
   _data: *TTF_Font,
 }
 
-function Nene.Font:free()
-  check(self._data ~= nilptr, 'cannot free a not initialized font')
-  TTF_CloseFont(self._data)
-  self._data = nilptr
+function Nene.Font.load(filename: string, ptsize: cint): (Nene.Font, boolean)
+  local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)
+  return (@Nene.Font){ _data = ttf_font }, ok
 end
 
+function Nene.Font:get(): *TTF_Font
+  check(self._data ~= nilptr, 'cannot get an unitilialized font')
+  return self._data
+end
 
+function Nene.Font:destroy()
+  check(self._data ~= nilptr, 'cannot free a not initialized font')
+  TTFWrapper.close_font(self._data)
+  self._data = nilptr
+end
