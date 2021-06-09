@@ -447,7 +447,6 @@ end
 --- * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
 function Nene.Core:terminate()
   check(Nene.initialized, 'Nene is not initialized')
-  Nene.initialized = false
 
   SDLWrapper.destroy_renderer(self.renderer)
   self.renderer = nilptr
@@ -463,4 +462,6 @@ function Nene.Core:terminate()
   ImgWrapper.img_quit()
 
   SDLWrapper.sdl_quit()
+
+  Nene.initialized = false
 end
