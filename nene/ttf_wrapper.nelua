@@ -56,3 +56,35 @@ function Nene.TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, co
 
   return text_surface, ok
 end
+
+--- Wrapper of `TTF_OpenFont`.
+---
+--- Load `file` for use as a font with `ptsize`.
+---
+--- Related SDL_TTF documentation:
+--- * [TTF_OpenFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_14.html)
+function Nene.TTFWrapper.open_font(file: cstring, ptsize: cint): (*TTF_Font, boolean)
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local font = TTF_OpenFont(file, ptsize)
+  local ok = font ~= nilptr
+
+  if not ok then
+    ## warn_msg('open_font', 'could not open the font from the given file')
+  end
+
+  return font, ok
+end
+
+--- Wrapper of `TTF_CloseFont`.
+---
+--- Free the memory used by `font` and free `font` as well.
+---
+--- Related SDL_TTF documentation:
+--- * [TTF_CloseFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_18.html)
+function Nene.TTFWrapper.close_font(font: *TTF_Font)
+  check(Nene.initialized, 'Nene is not initialized')
+  check(font, 'font is nilptr')
+
+  TTF_CloseFont(font)
+end
