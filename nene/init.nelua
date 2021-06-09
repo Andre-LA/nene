@@ -19,12 +19,12 @@ require 'nene.math'
 require 'nene.core_state'
 
 -- features
+require 'nene.font'
 require 'nene.text_texture'
 
 -- require 'animation'
 -- require 'audio'
 -- require 'camera'
--- require 'font'
 -- require 'spritesheet'
 -- require 'texture_atlas'
 -- require 'texture'
