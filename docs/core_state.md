@@ -8,8 +8,8 @@ global Nene.Core = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
-  keyboard_state: [(SDL_NUM_SCANCODES)]uint8,      -- holds the state of keyboard in the current frame
-  prev_keyboard_state: [(SDL_NUM_SCANCODES)]uint8, -- holds the state of keyboard in the previous frame
+  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- holds the state of keyboard in the previous frame (`true` means "pressed")
 }
 ```
 
@@ -55,7 +55,9 @@ You should call this method at the start of each game loop tick, it:
 Related SDL documentation: 
 * [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent) 
 * [SDL_Event](https://wiki.libsdl.org/SDL_Event) 
-* [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)
+* [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent) 
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState) 
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 ```lua
 function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
 ```
@@ -67,15 +69,6 @@ Related SDL documentation:
 * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
 ```lua
 function Nene.Core:get_window_size(): (cint, cint)
-```
-
-## Nene.Core:ms_since_init
-get the current time in milliseconds since SDL initialization (done at the `Core.init` method) 
- 
-Related SDL documentation: 
-* [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
-```lua
-function Nene.Core:ms_since_init()
 ```
 
 ## Nene.Core:get_scancode
@@ -92,19 +85,15 @@ Related SDL documentation:
 function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
 ```
 
-## Nene.Core:get_mouse_state
-returns the mouse coordinates relative to window and a bitmask state of mouse buttons. 
- 
-Related SDL documentation: 
-* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
-```lua
-function Nene.Core:get_mouse_state(): (Nene.Math.Vec2, uint32)
-```
-
 ## Nene.Core:set_render_draw_color
 Set rendering draw color 
  
+Related Nene documentation: 
+* [Nene.Color](colors.md) 
+ 
 Related SDL documentation: 
+* [SDL_Color](https://wiki.libsdl.org/SDL_Color) 
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
 ```lua
 function Nene.Core:set_render_draw_color(color: Nene.Color)
@@ -113,7 +102,12 @@ function Nene.Core:set_render_draw_color(color: Nene.Color)
 ## Nene.Core:render_clear
 it clears the rendering target with the given `color`. 
  
+Related Nene documentation: 
+* [Nene.Color](colors.md) 
+* [Nene.Core.set_render_draw_color](core_state.md) 
+ 
 Related SDL documentation: 
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 ```lua
 function Nene.Core:render_clear(color: Nene.Color)
@@ -121,6 +115,10 @@ function Nene.Core:render_clear(color: Nene.Color)
 
 ## Nene.Core:render_draw_line
 renders a line from `origin` to `destination` with the given `color`. 
+ 
+Related Nene documentation: 
+* [Nene.Math.Vec2](math.md#nenemathvec2) 
+* [Nene.Color](colors.md) 
  
 Related SDL documentation: 
 * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)

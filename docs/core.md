@@ -12,3 +12,9 @@ Initialization is done using the `Nene.Core.init` function
 ```lua
 global Nene.initialized: boolean = false
 ```
+
+## check_args
+
+```lua
+local function check_args(fn_name, fn_msg, lib_name, lib_get_error_fn)
+```

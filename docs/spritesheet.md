@@ -1,5 +1,5 @@
 # nene/spritesheet.nelua
-## Nene.SpriteSheet (record)
+## Nene.SpriteSheet
 
 ```lua
 global Nene.SpriteSheet = @record{
@@ -8,7 +8,7 @@ global Nene.SpriteSheet = @record{
 }
 ```
 
-## Nene.SpriteSheet:get_named_animation_range (function)
+## Nene.SpriteSheet:get_named_animation_range
 
 ```lua
 function Nene.SpriteSheet:get_named_animation_range(name: string): (boolean, Nene.AnimationRange)

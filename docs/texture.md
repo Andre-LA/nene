@@ -41,7 +41,7 @@ Related Nene documentation:
 * [Nene.Core.set_texture_color_modulation](core_state.md#nenecoreset_texture_color_modulation) 
 * [Nene.Core.render_copy](core_state.md#nenecorerender_copy)
 ```lua
-function Nene.Texture:draw(nene_state: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
+function Nene.Texture:draw(nene_core: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
 ```
 
 ## Nene.Texture:apply_sdltex

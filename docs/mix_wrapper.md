@@ -5,6 +5,62 @@
 global Nene.MixWrapper = @record{}
 ```
 
+## warn_msg
+
+```lua
+local function warn_msg(fn_name, msg)
+```
+
+## Nene.MixWrapper.mix_init
+Wrapper of `Mix_Init` 
+ 
+Initialize SDL_mixer loading support. 
+This function doesn't check if `Nene` is initialized. 
+ 
+It returns an `ok` (boolean) success status and the bitmask that `Mix_Init` returns. 
+The `ok` status is true when the bitmask returned by `Mix_Init` is equals to `flags` argument. 
+ 
+Related SDL_ttf documentation: 
+* [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
+```lua
+function Nene.MixWrapper.mix_init(flags: cint): (boolean, cint)
+```
+
+## Nene.MixWrapper.mix_quit
+Wrapper of `Mix_Quit` 
+ 
+Shutdown and cleanup SDL_mixer loading support. 
+This function will call `Mix_Quit` _n_ times until `Mix_Init(0)` returns non-zero. 
+ 
+Related SDL documentation: 
+* [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
+```lua
+function Nene.MixWrapper.mix_quit()
+```
+
+## Nene.MixWrapper.open_audio
+Wrapper of `Mix_OpenAudio` 
+ 
+Initialize SDL_mixer library. 
+This function doesn't check if `Nene` is initialized. 
+ 
+Related SDL_ttf documentation: 
+* [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
+```lua
+function Nene.MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
+```
+
+## Nene.MixWrapper.close_audio
+Wrapper of `Mix_CloseAudio` 
+ 
+Shutdown and cleanup SDL_mixer library. 
+ 
+Related SDL documentation: 
+* [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
+```lua
+function Nene.MixWrapper.close_audio()
+```
+
 ## Nene.MixWrapper.play_channel
 Wrapper of `Mix_PlayChannel` 
  
