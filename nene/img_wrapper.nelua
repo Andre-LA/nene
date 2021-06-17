@@ -1,5 +1,5 @@
-require 'sdl2'
-require 'sdl2_image'
+require 'nene.sdl2'
+require 'nene.sdl2_image'
 
 require 'nene.core'
 

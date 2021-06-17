@@ -1,4 +1,4 @@
-require 'sdl2'
+require 'nene.sdl2'
 require 'nene.core'
 
 global Nene.Color = @SDL_Color

@@ -1,5 +1,5 @@
-require 'sdl2'
-require 'sdl2_mixer'
+require 'nene.sdl2'
+require 'nene.sdl2_mixer'
 require 'nene.core'
 
 global Nene.MixWrapper = @record{}
