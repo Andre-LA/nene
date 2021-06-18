@@ -1,6 +1,6 @@
 # nene/audio.nelua
 ## Nene.Sound
-
+Holds a sound associated with a sound channel
 ```lua
 global Nene.Sound = @record{
   _data: *Mix_Chunk,
@@ -8,11 +8,37 @@ global Nene.Sound = @record{
 }
 ```
 
+## Sound:get
+returns internal data, it checks if internal data is `nilptr`. 
+ 
+Related SDL_mixer documentation: 
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+```lua
+function Sound:get(): *Mix_Chunk
+```
+
+## Sound.load
+try to load a sound from a file. 
+ 
+it returns: 
+* `Nene.Sound` value, with internal data properly initialized if load is successful 
+* a boolean which is `true` when the load succeeds. 
+ 
+Related SDL_mixer documentation: 
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85) 
+* [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+```lua
+function Sound.load(filename: string): (Nene.Sound, boolean)
+```
+
 ## Nene.Sound:play
-plays the sound. 
+plays the loaded sound. 
 * if `true` is passed on `loop` argument, the sound will loop forever; 
 * if an `integer` is passed, the sound will loop `loop` times 
-* if `nil` is passed, it will play one time, but it will not loop. 
+* if `nil` is passed, it will play only one time. 
+ 
+When there is no sound loaded (that is, the internal data is `nilptr`), then this method 
+does nothing, though it also `check`s if the internal is `nilptr` (unless the `nochecks` pragma is enabled) 
  
 Related SDL_mixer documentation: 
 * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28) 
@@ -22,7 +48,7 @@ function Nene.Sound:play(loop: overload(boolean, integer, niltype))
 ```
 
 ## Nene.Sound:stop
-stops the sound 
+stops the sound. 
  
 Related SDL_mixer documentation: 
 * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34) 
@@ -48,6 +74,15 @@ global Nene.Music = @record{
   _data: *Mix_Music,
   id: usize,
 }
+```
+
+## Music:get
+returns internal data, it checks if internal data is `nilptr`. 
+ 
+Related SDL_mixer documentation: 
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+```lua
+function Music:get(): *Mix_Music
 ```
 
 ## Nene.Music:destroy

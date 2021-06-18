@@ -1,4 +1,4 @@
-# nene/sdl_wrapper.nelua
+# nene/wrappers/sdl.nelua
 ## Nene.SDLWrapper
 
 ```lua

@@ -1,4 +1,4 @@
-# nene/ttf_wrapper.nelua
+# nene/wrappers/ttf.nelua
 ## Nene.TTFWrapper
 
 ```lua

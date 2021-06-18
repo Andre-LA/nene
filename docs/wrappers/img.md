@@ -1,4 +1,4 @@
-# nene/img_wrapper.nelua
+# nene/wrappers/img.nelua
 ## Nene.ImgWrapper
 
 ```lua
@@ -27,7 +27,12 @@ function Nene.ImgWrapper.img_init(flags: cint): (boolean, cint)
 ```
 
 ## Nene.ImgWrapper.img_quit
-
+Wrapper of `IMG_Quit` 
+ 
+Shutdown and cleanup SDL_image loading support. 
+ 
+Related SDL documentation: 
+* [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
 ```lua
 function Nene.ImgWrapper.img_quit()
 ```

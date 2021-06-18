@@ -1,4 +1,4 @@
-# nene/mix_wrapper.nelua
+# nene/wrappers/mix.nelua
 ## Nene.MixWrapper
 
 ```lua
@@ -36,6 +36,18 @@ Related SDL documentation:
 * [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
 ```lua
 function Nene.MixWrapper.mix_quit()
+```
+
+## Nene.MixWrapper.load_wav
+Wrapper of `Mix_LoadWAV` 
+ 
+Load a file at `file` to use as a sample. 
+ 
+Related SDL_mixer documentation: 
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85) 
+* [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+```lua
+function Nene.MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
 ```
 
 ## Nene.MixWrapper.open_audio

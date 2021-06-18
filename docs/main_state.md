@@ -5,12 +5,6 @@ The `Core.Main` module isn't required by any other module, and can be replaced b
 ```lua
 global Nene.Main = @record{
   core: Nene.Core, -- nene core state
-  resources: record{
-    textures: resourcepool(Nene.Texture),
-    --musics: resourcepool(Nene.Music),
-    --sounds: resourcepool(Nene.Sound),
-    --fonts: resourcepool(Nene.Font),
-  }
 }
 local Main = @Nene.Main
 ```

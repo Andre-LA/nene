@@ -151,16 +151,26 @@ local function doc_file(file, filename)
   return file_doc
 end
 
-for filename in lfs.dir'nene' do
-  if filename ~= '.' and filename ~= '..' then
-    print('documenting '..filename..'...')
+local function doc_filepath(path, filename)
+  print('documenting ' .. path .. filename .. '...')
 
-    local in_file = io.open('nene/'..filename)
-    local doc = doc_file(in_file, 'nene/'..filename)
-    in_file:close()
+  local in_file = io.open(path..filename)
+  local doc = doc_file(in_file, path..filename)
+  in_file:close()
 
-    local out_file = io.open('docs/'..(filename:gsub('%.nelua', '.md')), 'w+')
-    out_file:write(tostring(doc))
-    out_file:close()
+  local out_file = io.open('docs/'..(path:gsub('nene/', ''))..(filename:gsub('%.nelua', '.md')), 'w+')
+  out_file:write(tostring(doc))
+  out_file:close()
+end
+
+local function doc_path(path)
+  for filename in lfs.dir(path) do
+    if filename:sub(-6) == '.nelua' then
+      doc_filepath(path..'/', filename)
+    end
   end
 end
+
+doc_path'nene'
+doc_path'nene/wrappers'
+
