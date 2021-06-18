@@ -1,5 +1,5 @@
 require 'nene.math'
-require 'nene.sdl_wrapper'
+require 'nene.wrappers.sdl'
 require 'nene.core_state'
 
 --- just a wraps a `pointer(SDL_Texture)`, the `_data` field should never be directly accessed,

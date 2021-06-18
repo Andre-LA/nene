@@ -1,4 +1,4 @@
-require 'nene.mix_wrapper'
+require 'nene.wrappers.mix'
 require 'nene.core'
 
 global Nene.Sound = @record{

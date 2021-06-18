@@ -1,5 +1,5 @@
-require 'nene.sdl_wrapper'
-require 'nene.ttf_wrapper'
+require 'nene.wrappers.sdl'
+require 'nene.wrappers.ttf'
 
 require 'nene.core'
 require 'nene.colors'

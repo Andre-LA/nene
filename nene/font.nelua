@@ -2,7 +2,7 @@ require 'hashmap'
 
 require 'nene.core'
 require 'nene.math'
-require 'nene.ttf_wrapper'
+require 'nene.wrappers.ttf'
 
 local TTFWrapper = Nene.TTFWrapper
 

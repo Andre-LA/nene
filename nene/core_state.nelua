@@ -1,10 +1,10 @@
 require 'span'
 
 require 'nene.core'
-require 'nene.sdl_wrapper'
-require 'nene.ttf_wrapper'
-require 'nene.mix_wrapper'
-require 'nene.img_wrapper'
+require 'nene.wrappers.sdl'
+require 'nene.wrappers.ttf'
+require 'nene.wrappers.mix'
+require 'nene.wrappers.img'
 
 require 'nene.colors'
 require 'nene.math'

@@ -36,12 +36,12 @@ function Nene.ImgWrapper.img_init(flags: cint): (boolean, cint)
   return ok, img_result
 end
 
---!- Wrapper of `IMG_Quit`
---!-
---!- Shutdown and cleanup SDL_image loading support.
---!-
---!- Related SDL documentation:
---!- * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
+--- Wrapper of `IMG_Quit`
+---
+--- Shutdown and cleanup SDL_image loading support.
+---
+--- Related SDL documentation:
+--- * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
 function Nene.ImgWrapper.img_quit()
   check(Nene.initialized, 'Nene is not initialized')
   IMG_Quit()
