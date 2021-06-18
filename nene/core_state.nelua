@@ -179,8 +179,8 @@ end
 --- when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed);
 ---
 --- when `is_down` argument is also given:
----     * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
----     * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
+--- * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
+--- * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
 ---
 --- Related SDL documentation:
 --- * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
