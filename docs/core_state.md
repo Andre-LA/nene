@@ -1,8 +1,5 @@
 # nene/core_state.nelua
 ## Nene.Core
-The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except 
-`Nene.Math`, `Nene.Color` and `Nene.SDLWrapper`). 
-Most of the `Core`'s functions comes from SDL2 actually.
 ```lua
 global Nene.Core = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
@@ -12,12 +9,11 @@ global Nene.Core = @record{
   prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- holds the state of keyboard in the previous frame (`true` means "pressed")
 }
 ```
+The core state of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except 
+`Nene.Math`, `Nene.Color` and `Nene.SDLWrapper`). 
+Most of the `Core`'s functions comes from SDL2 actually.
 
 ## Nene.Core.EventsCallbacks
-The callbacks that can be passed on `Core:pool_events` method 
- 
-Related SDL documentation: 
-* [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 ```lua
 global Nene.Core.EventsCallbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
@@ -45,8 +41,15 @@ global Nene.Core.EventsCallbacks = @record{
   drop_cb    : function(drop    : SDL_DropEvent)              -- drag and drop event data
 }
 ```
+The callbacks that can be passed on `Core:pool_events` method 
+ 
+Related SDL documentation: 
+* [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 
 ## Nene.Core:pool_events
+```lua
+function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
+```
 You should call this method at the start of each game loop tick, it: 
 1. Pools all SDL events; 
 2. Updates the `self.quit` boolean value, it becomes `true` when the appplication will quit (see SDL_QuitEvent); 
@@ -58,34 +61,34 @@ Related SDL documentation:
 * [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent) 
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState) 
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
-```lua
-function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
-```
 
 ## Nene.Core:get_window_size
+```lua
+function Nene.Core:get_window_size(): (cint, cint)
+```
 Get the size of the current window. 
  
 Related SDL documentation: 
 * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
-```lua
-function Nene.Core:get_window_size(): (cint, cint)
-```
 
 ## Nene.Core:get_scancode
-when only the `scancode` argument is given, it returns the state of that `scancode` (that is, if is currently pressed); 
+```lua
+function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
+```
+Returns the state of `scancode`. 
  
-when `is_down` argument is also given: 
 * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame); 
 * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't). 
+* if `is_down` is `nil`, then it returns if is simply currently pressed. 
  
 Related SDL documentation: 
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode) 
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
-```lua
-function Nene.Core:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
-```
 
 ## Nene.Core:set_render_draw_color
+```lua
+function Nene.Core:set_render_draw_color(color: Nene.Color)
+```
 Set rendering draw color 
  
 Related Nene documentation: 
@@ -95,11 +98,11 @@ Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color) 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
-```lua
-function Nene.Core:set_render_draw_color(color: Nene.Color)
-```
 
 ## Nene.Core:render_clear
+```lua
+function Nene.Core:render_clear(color: Nene.Color)
+```
 it clears the rendering target with the given `color`. 
  
 Related Nene documentation: 
@@ -109,11 +112,11 @@ Related Nene documentation:
 Related SDL documentation: 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
-```lua
-function Nene.Core:render_clear(color: Nene.Color)
-```
 
 ## Nene.Core:render_draw_line
+```lua
+function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
+```
 renders a line from `origin` to `destination` with the given `color`. 
  
 Related Nene documentation: 
@@ -122,22 +125,22 @@ Related Nene documentation:
  
 Related SDL documentation: 
 * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
-```lua
-function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
-```
 
 ## Nene.Core:render_draw_rect
+```lua
+function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
+```
 renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`. 
  
 Related SDL documentation: 
 * [SDL_Rect](https://wiki.libsdl.org/SDL_Rect) 
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect) 
 * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
-```lua
-function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
-```
 
 ## Nene.Core:render_copy
+```lua
+function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.Rect), destination: facultative(Nene.Math.Rect))
+```
 Wrapper of `SDL_RenderCopy`. 
 Copies a Texture on the rendering target. 
  
@@ -150,11 +153,11 @@ in this case it will be copied at this "destination" part of the rendering targe
 Related SDL documentation: 
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy) 
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
-```lua
-function Nene.Core:render_copy(tex: *SDL_Texture, source: facultative(Nene.Math.Rect), destination: facultative(Nene.Math.Rect))
-```
 
 ## Nene.Core:create_texture_from_surface
+```lua
+function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
+```
 Wrapper of `SDL_CreateTextureFromSurface`. 
  
 Creates a Texture from the given surface. 
@@ -163,11 +166,11 @@ Related SDL_TTF documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
 * [SDL_Surface](https://wiki.libsdl.org/SDL_Surface) 
 * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
-```lua
-function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
-```
 
 ## Nene.Core:render_present
+```lua
+function Nene.Core:render_present()
+```
 presents the SDL's composed backbuffer (any rendering operation is done on the SDL's backbuffer, 
 this function presents it). 
  
@@ -175,11 +178,11 @@ This also does some modification on the state, preparing it for the next frame.
  
 Related SDL documentation: 
 * [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
-```lua
-function Nene.Core:render_present()
-```
 
 ## Nene.Core.init
+```lua
+function Nene.Core.init(
+```
 try to initialize and return a new initilized core state. 
  
 returns: 
@@ -198,11 +201,11 @@ Related SDL documentation:
 * [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html) 
 * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html) 
 * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
-```lua
-function Nene.Core.init(
-```
 
 ## Nene.Core:terminate
+```lua
+function Nene.Core:terminate()
+```
 Finalize application and quits all SDL subsystems 
  
 Related SDL documentation: 
@@ -213,6 +216,3 @@ Related SDL documentation:
 * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html) 
 * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html) 
 * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
-```lua
-function Nene.Core:terminate()
-```

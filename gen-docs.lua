@@ -10,14 +10,14 @@ function doc_chunk.tostring(doc)
 
   local fmt = [[
 ## %s
-%s
 ```lua
 %s
 ```
+%s
 ]]
 
   for i, doc_item in ipairs(doc) do
-    local doc_content = string.format(fmt, doc_item.title, doc_item.doc, doc_item.code)
+    local doc_content = string.format(fmt, doc_item.title, doc_item.code, doc_item.doc)
     table.insert(result, doc_content)
   end
 
