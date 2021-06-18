@@ -13,6 +13,8 @@ The core state of Nene, it contains pointers made by SDL2, and doesn't requires 
 `Nene.Math`, `Nene.Color` and `Nene.SDLWrapper`). 
 Most of the `Core`'s functions comes from SDL2 actually.
 
+---
+
 ## Nene.Core.EventsCallbacks
 ```lua
 global Nene.Core.EventsCallbacks = @record{
@@ -46,6 +48,8 @@ The callbacks that can be passed on `Core:pool_events` method
 Related SDL documentation: 
 * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 
+---
+
 ## Nene.Core:pool_events
 ```lua
 function Nene.Core:pool_events(evt_callbacks: facultative(Nene.Core.EventsCallbacks))
@@ -62,6 +66,8 @@ Related SDL documentation:
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState) 
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 
+---
+
 ## Nene.Core:get_window_size
 ```lua
 function Nene.Core:get_window_size(): (cint, cint)
@@ -70,6 +76,8 @@ Get the size of the current window.
  
 Related SDL documentation: 
 * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
+
+---
 
 ## Nene.Core:get_scancode
 ```lua
@@ -85,6 +93,8 @@ Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode) 
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 
+---
+
 ## Nene.Core:set_render_draw_color
 ```lua
 function Nene.Core:set_render_draw_color(color: Nene.Color)
@@ -98,6 +108,8 @@ Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color) 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
+
+---
 
 ## Nene.Core:render_clear
 ```lua
@@ -113,6 +125,8 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 
+---
+
 ## Nene.Core:render_draw_line
 ```lua
 function Nene.Core:render_draw_line(origin: Nene.Math.Vec2, destination: Nene.Math.Vec2, color: Nene.Color)
@@ -126,6 +140,8 @@ Related Nene documentation:
 Related SDL documentation: 
 * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
 
+---
+
 ## Nene.Core:render_draw_rect
 ```lua
 function Nene.Core:render_draw_rect(rectangle: Nene.Math.Rect, use_lines: boolean, color: Nene.Color)
@@ -136,6 +152,8 @@ Related SDL documentation:
 * [SDL_Rect](https://wiki.libsdl.org/SDL_Rect) 
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect) 
 * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
+
+---
 
 ## Nene.Core:render_copy
 ```lua
@@ -154,6 +172,8 @@ Related SDL documentation:
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy) 
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 
+---
+
 ## Nene.Core:create_texture_from_surface
 ```lua
 function Nene.Core:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
@@ -167,6 +187,8 @@ Related SDL_TTF documentation:
 * [SDL_Surface](https://wiki.libsdl.org/SDL_Surface) 
 * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
 
+---
+
 ## Nene.Core:render_present
 ```lua
 function Nene.Core:render_present()
@@ -178,6 +200,8 @@ This also does some modification on the state, preparing it for the next frame.
  
 Related SDL documentation: 
 * [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
+
+---
 
 ## Nene.Core.init
 ```lua
@@ -202,6 +226,8 @@ Related SDL documentation:
 * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html) 
 * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
 
+---
+
 ## Nene.Core:terminate
 ```lua
 function Nene.Core:terminate()
@@ -216,3 +242,5 @@ Related SDL documentation:
 * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html) 
 * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html) 
 * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
+
+---

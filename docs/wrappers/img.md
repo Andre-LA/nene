@@ -5,11 +5,15 @@ global Nene.ImgWrapper = @record{}
 ```
 
 
+---
+
 ## warn_msg
 ```lua
 local function warn_msg(fn_name, msg)
 ```
 
+
+---
 
 ## Nene.ImgWrapper.img_init
 ```lua
@@ -26,6 +30,8 @@ The `ok` status is true when the bitmask returned by `IMG_Init` is equals to `fl
 Related SDL_ttf documentation: 
 * [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
 
+---
+
 ## Nene.ImgWrapper.img_quit
 ```lua
 function Nene.ImgWrapper.img_quit()
@@ -36,3 +42,5 @@ Shutdown and cleanup SDL_image loading support.
  
 Related SDL documentation: 
 * [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
+
+---

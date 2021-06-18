@@ -5,11 +5,15 @@ global Nene.MixWrapper = @record{}
 ```
 
 
+---
+
 ## warn_msg
 ```lua
 local function warn_msg(fn_name, msg)
 ```
 
+
+---
 
 ## Nene.MixWrapper.mix_init
 ```lua
@@ -26,6 +30,8 @@ The `ok` status is true when the bitmask returned by `Mix_Init` is equals to `fl
 Related SDL_ttf documentation: 
 * [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
 
+---
+
 ## Nene.MixWrapper.mix_quit
 ```lua
 function Nene.MixWrapper.mix_quit()
@@ -37,6 +43,8 @@ This function will call `Mix_Quit` _n_ times until `Mix_Init(0)` returns non-zer
  
 Related SDL documentation: 
 * [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
+
+---
 
 ## Nene.MixWrapper.load_wav
 ```lua
@@ -50,6 +58,8 @@ Related SDL_mixer documentation:
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85) 
 * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
 
+---
+
 ## Nene.MixWrapper.open_audio
 ```lua
 function Nene.MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
@@ -62,6 +72,8 @@ This function doesn't check if `Nene` is initialized.
 Related SDL_ttf documentation: 
 * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
 
+---
+
 ## Nene.MixWrapper.close_audio
 ```lua
 function Nene.MixWrapper.close_audio()
@@ -72,6 +84,8 @@ Shutdown and cleanup SDL_mixer library.
  
 Related SDL documentation: 
 * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
+
+---
 
 ## Nene.MixWrapper.play_channel
 ```lua
@@ -86,6 +100,8 @@ Related SDL_mixer documentation:
 * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28) 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 
+---
+
 ## Nene.MixWrapper.halt_channel
 ```lua
 function Nene.MixWrapper.halt_channel(channel: cint)
@@ -97,6 +113,8 @@ Stops the playing `channel`, if `-1` is passed, then it halts all channels.
 Related SDL_mixer documentation: 
 * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34) 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+
+---
 
 ## Nene.MixWrapper.free_chunk
 ```lua
@@ -110,6 +128,8 @@ Related SDL_mixer documentation:
 * [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24) 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 
+---
+
 ## Nene.MixWrapper.free_music
 ```lua
 function Nene.MixWrapper.free_music(music: *Mix_Music)
@@ -121,3 +141,5 @@ Free the music memory.
 Related SDL_mixer documentation: 
 * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56) 
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+
+---

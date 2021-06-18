@@ -14,6 +14,8 @@ use methods instead, which do `check`s.
 Related SDL documentation: 
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 
+---
+
 ## Nene.Texture:get
 ```lua
 function Nene.Texture:get(): *SDL_Texture
@@ -23,6 +25,8 @@ get the internal data
 Related SDL documentation: 
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 
+---
+
 ## Nene.Texture:destroy
 ```lua
 function Nene.Texture:destroy()
@@ -31,6 +35,8 @@ free the internal data
  
 Related SDL documentation: 
 * [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
+
+---
 
 ## Nene.Texture:draw
 ```lua
@@ -44,6 +50,8 @@ Related Nene documentation:
 * [Nene.Core.set_texture_color_modulation](core_state.md#nenecoreset_texture_color_modulation) 
 * [Nene.Core.render_copy](core_state.md#nenecorerender_copy)
 
+---
+
 ## Nene.Texture:apply_sdltex
 ```lua
 function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
@@ -55,8 +63,12 @@ It also updates the information fields (like `width` and `height`).
 Related Nene documentation: 
 * [Nene.Core.query_texture_size](core_state.md#nenecorequery_texture_size)
 
+---
+
 ## Nene.Texture.new
 ```lua
 function Nene.Texture.new(tex: *SDL_Texture): Nene.Texture
 ```
 Returns a `Nene.Texture` with the given `tex` applied.
+
+---

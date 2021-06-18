@@ -8,6 +8,8 @@ global Nene.Sound = @record{
 ```
 Holds a sound associated with a sound channel
 
+---
+
 ## Sound:get
 ```lua
 function Sound:get(): *Mix_Chunk
@@ -16,6 +18,8 @@ returns internal data, it checks if internal data is `nilptr`.
  
 Related SDL_mixer documentation: 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+
+---
 
 ## Sound.load
 ```lua
@@ -30,6 +34,8 @@ it returns:
 Related SDL_mixer documentation: 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85) 
 * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+
+---
 
 ## Nene.Sound:play
 ```lua
@@ -47,6 +53,8 @@ Related SDL_mixer documentation:
 * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28) 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 
+---
+
 ## Nene.Sound:stop
 ```lua
 function Nene.Sound:stop()
@@ -56,6 +64,8 @@ stops the sound.
 Related SDL_mixer documentation: 
 * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34) 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+
+---
 
 ## Nene.Sound:destroy
 ```lua
@@ -67,6 +77,8 @@ Related SDL_mixer documentation:
 * [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24) 
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 
+---
+
 ## Nene.Music
 ```lua
 global Nene.Music = @record{
@@ -75,6 +87,8 @@ global Nene.Music = @record{
 }
 ```
 
+
+---
 
 ## Music:get
 ```lua
@@ -85,6 +99,8 @@ returns internal data, it checks if internal data is `nilptr`.
 Related SDL_mixer documentation: 
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 
+---
+
 ## Nene.Music:destroy
 ```lua
 function Nene.Music:destroy()
@@ -94,3 +110,5 @@ Destroy the music, it will halts it if playing, it also wait if it's still fadin
 Related SDL_mixer documentation: 
 * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56) 
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+
+---

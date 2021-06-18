@@ -5,11 +5,15 @@ global Nene.SDLWrapper = @record{}
 ```
 
 
+---
+
 ## warn_msg
 ```lua
 local function warn_msg(fn_name, msg)
 ```
 
+
+---
 
 ## Nene.SDLWrapper.sdl_init
 ```lua
@@ -22,6 +26,8 @@ Initialize SDL library, please also read the SDL_Init documentation on _Remarks_
 Related SDL documentation: 
 * [SDL_Init](https://wiki.libsdl.org/SDL_Init)
 
+---
+
 ## Nene.SDLWrapper.sdl_quit
 ```lua
 function Nene.SDLWrapper.sdl_quit()
@@ -32,6 +38,8 @@ Quit SDL, cleaning up all initialized subsystems.
  
 Related SDL documentation: 
 * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
+
+---
 
 ## Nene.SDLWrapper.create_texture_from_surface
 ```lua
@@ -47,6 +55,8 @@ Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
 * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
 
+---
+
 ## Nene.SDLWrapper.destroy_texture
 ```lua
 function Nene.SDLWrapper.destroy_texture(texture: *SDL_Texture)
@@ -57,6 +67,8 @@ Destroys the given `texture`
  
 Related SDL documentation: 
 * [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
+
+---
 
 ## Nene.SDLWrapper.set_texture_color_modulation
 ```lua
@@ -70,6 +82,8 @@ Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
 * [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
 
+---
+
 ## Nene.SDLWrapper.query_texture_size
 ```lua
 function Nene.SDLWrapper.query_texture_size(texture: *SDL_Texture): (cint, cint, boolean)
@@ -82,6 +96,8 @@ a third value is also returned, which is `true` if the operation was successful,
 Related SDL documentation: 
 * [SDL_QueryTexture](https://wiki.libsdl.org/SDL_QueryTexture)
 
+---
+
 ## Nene.SDLWrapper.get_ticks
 ```lua
 function Nene.SDLWrapper.get_ticks(): uint32
@@ -93,6 +109,8 @@ Returns the number of milliseconds since SDL initialization.
 Related SDL documentation: 
 * [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
 
+---
+
 ## Nene.SDLWrapper.free_surface
 ```lua
 function Nene.SDLWrapper.free_surface(surface: *SDL_Surface)
@@ -101,6 +119,8 @@ Wrapper of `SDL_FreeSurface`.
  
 Related SDL documentation: 
 * [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
+
+---
 
 ## Nene.SDLWrapper.get_keyboard_state
 ```lua
@@ -117,6 +137,8 @@ Related SDL documentation:
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState) 
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 
+---
+
 ## Nene.SDLWrapper.get_mouse_state
 ```lua
 function Nene.SDLWrapper.get_mouse_state(): (uint32, cint, cint)
@@ -127,6 +149,8 @@ Returns a bitmask which each bit represents a mouse button and the mouse's posit
  
 Related SDL documentation: 
 * [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
+
+---
 
 ## Nene.SDLWrapper.poll_event
 ```lua
@@ -142,6 +166,8 @@ if `event` is `nilptr`, then it only return if there is a pending event, but it 
 Related SDL documentation: 
 * [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent)
 
+---
+
 ## Nene.SDLWrapper.create_window
 ```lua
 function Nene.SDLWrapper.create_window(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): (*SDL_Window, boolean)
@@ -153,6 +179,8 @@ Create a window at the `x` and `y` position, with `w` and `h` dimensions and wit
 Related SDL documentation: 
 * [SDL_Window](https://wiki.libsdl.org/SDL_Window) 
 * [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow)
+
+---
 
 ## Nene.SDLWrapper.destroy_window
 ```lua
@@ -166,6 +194,8 @@ Related SDL documentation:
 * [SDL_Window](https://wiki.libsdl.org/SDL_Window) 
 * [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow)
 
+---
+
 ## Nene.SDLWrapper.get_window_size
 ```lua
 function Nene.SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint)
@@ -176,6 +206,8 @@ Get the size of the current window
  
 Related SDL documentation: 
 * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
+
+---
 
 ## Nene.SDLWrapper.create_renderer
 ```lua
@@ -190,6 +222,8 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_CreateRenderer](https://wiki.libsdl.org/SDL_CreateRenderer)
 
+---
+
 ## Nene.SDLWrapper.destroy_renderer
 ```lua
 function Nene.SDLWrapper.destroy_renderer(renderer: *SDL_Renderer)
@@ -202,6 +236,8 @@ Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer)
+
+---
 
 ## Nene.SDLWrapper.set_render_draw_color
 ```lua
@@ -216,6 +252,8 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
 
+---
+
 ## Nene.SDLWrapper.set_render_draw_blend_mode
 ```lua
 function Nene.SDLWrapper.set_render_draw_blend_mode(renderer: *SDL_Renderer, blend_mode: SDL_BlendMode): boolean
@@ -229,6 +267,8 @@ Related SDL documentation:
 * [SDL_BlendMode](https://wiki.libsdl.org/SDL_BlendMode) 
 * [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL_SetRenderDrawBlendMode)
 
+---
+
 ## Nene.SDLWrapper.render_clear
 ```lua
 function Nene.SDLWrapper.render_clear(renderer: *SDL_Renderer): boolean
@@ -240,6 +280,8 @@ Clears the rendering target with the given `color`.
 Related SDL documentation: 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
+
+---
 
 ## Nene.SDLWrapper.render_present
 ```lua
@@ -254,6 +296,8 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
 
+---
+
 ## Nene.SDLWrapper.render_draw_line
 ```lua
 function Nene.SDLWrapper.render_draw_line(renderer: *SDL_Renderer, x1: cint, y1: cint, x2: cint, y2: cint): boolean
@@ -265,6 +309,8 @@ Draw a line on the current rendering target.
 Related SDL documentation: 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
+
+---
 
 ## Nene.SDLWrapper.render_draw_rect
 ```lua
@@ -278,6 +324,8 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
 
+---
+
 ## Nene.SDLWrapper.render_fill_rect
 ```lua
 function Nene.SDLWrapper.render_fill_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
@@ -289,6 +337,8 @@ Draw a filled rectangle on the current rendering target.
 Related SDL documentation: 
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer) 
 * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
+
+---
 
 ## Nene.SDLWrapper.render_copy
 ```lua
@@ -304,3 +354,5 @@ Related SDL documentation:
 * [SDL_Rect](https://wiki.libsdl.org/SDL_Rect) 
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture) 
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
+
+---

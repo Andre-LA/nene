@@ -14,6 +14,8 @@ function doc_chunk.tostring(doc)
 %s
 ```
 %s
+
+---
 ]]
 
   for i, doc_item in ipairs(doc) do

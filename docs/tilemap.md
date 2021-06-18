@@ -17,6 +17,8 @@ it contains just two fields:
   some tiles of the tilemap, this should be used on empty 
   space tiles (like the space of a room);
 
+---
+
 ## Nene.Tilemap:get_position_from_index
 ```lua
 function Nene.Tilemap:get_position_from_index(index: usize): Nene.Math.Vec2
@@ -41,3 +43,5 @@ core_state:render_draw_atlas_frame($tilemap.atlas, frame, position + tile_pos, c
 ``` 
 **However, it can be a little more tricky if you're using "skip" tiles, but you don't actually need to code any code for that** 
 There is already on the `Nene.CoreState` a function called `render_draw_tilemap` which already does the tilemap's rendering
+
+---
