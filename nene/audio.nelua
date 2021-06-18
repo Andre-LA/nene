@@ -1,34 +1,74 @@
 require 'nene.wrappers.mix'
 require 'nene.core'
 
+local MixWrapper = Nene.MixWrapper
+
+--- Holds a sound associated with a sound channel
 global Nene.Sound = @record{
   _data: *Mix_Chunk,
   channel: integer, -- -1 when no channel is being used
 }
 
---- plays the sound.
+local Sound = @Nene.Sound
+
+--- returns internal data, it checks if internal data is `nilptr`.
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+function Sound:get(): *Mix_Chunk
+  check(self._data ~= nilptr, 'Sound.get: Sound internal data is `nilptr`')
+  return self._data
+end
+
+--- try to load a sound from a file.
+---
+--- it returns:
+--- * `Nene.Sound` value, with internal data properly initialized if load is successful
+--- * a boolean which is `true` when the load succeeds.
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--- * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+function Sound.load(filename: string): (Nene.Sound, boolean)
+  local sound_data, ok = MixWrapper.load_wav(filename)
+
+  local new_sound: Nene.Sound = {
+    _data = sound_data,
+    channel = -1
+  }
+
+  return new_sound, ok
+end
+
+--- plays the loaded sound.
 --- * if `true` is passed on `loop` argument, the sound will loop forever;
 --- * if an `integer` is passed, the sound will loop `loop` times
---- * if `nil` is passed, it will play one time, but it will not loop.
+--- * if `nil` is passed, it will play only one time.
+---
+--- When there is no sound loaded (that is, the internal data is `nilptr`), then this method
+--- does nothing, though it also `check`s if the internal is `nilptr` (unless the `nochecks` pragma is enabled)
 ---
 --- Related SDL_mixer documentation:
 --- * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
 --- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 function Nene.Sound:play(loop: overload(boolean, integer, niltype))
   check(Nene.initialized, 'Nene is not initialized')
-  check(self._data ~= nilptr, 'Cannot play a nilptr sound')
-  local loops = 0
+  local data = self:get()
 
-  ## if loop.type.is_boolean then
-    loops = loop and -1 or 0
-  ## elseif loop.type.is_integral then
-    loops = ĺoop
-  ## end
+  if data ~= nilptr then
+    local loops = 0
 
-  self.channel = Mix_PlayChannel(-1, self._data, loops)
+    ## if loop.type.is_boolean then
+      loops = loop and -1 or 0
+    ## elseif loop.type.is_integral then
+      loops = ĺoop
+    ## end
+
+    self.channel = MixWrapper.play_channel(-1, data, loops)
+  end
 end
 
---- stops the sound
+--- stops the sound.
 ---
 --- Related SDL_mixer documentation:
 --- * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
@@ -51,11 +91,11 @@ end
 --- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 function Nene.Sound:destroy()
   check(Nene.initialized, 'Nene is not initialized')
-  check(self._data ~= nilptr, 'free: cannot free a nilptr sound')
+  local data = self:get()
 
   self:stop()
 
-  Nene.MixWrapper.free_chunk(self._data)
+  Nene.MixWrapper.free_chunk(data)
   self._data = nilptr
 end
 
@@ -64,6 +104,17 @@ global Nene.Music = @record{
   id: usize,
 }
 
+local Music = @Nene.Music
+
+--- returns internal data, it checks if internal data is `nilptr`.
+---
+--- Related SDL_mixer documentation:
+--- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+function Music:get(): *Mix_Music
+  check(self._data ~= nilptr, 'Sound.get: Sound internal data is `nilptr`')
+  return self._data
+end
+
 --- Destroy the music, it will halts it if playing, it also wait if it's still fading out.
 ---
 --- Related SDL_mixer documentation:
@@ -71,6 +122,8 @@ global Nene.Music = @record{
 --- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 function Nene.Music:destroy()
   check(Nene.initialized, 'Nene is not initialized')
-  Nene.MixWrapper.free_music(self._data)
+  local data = self:get()
+
+  Nene.MixWrapper.free_music(data)
   self._data = nilptr
 end
