@@ -7,21 +7,29 @@ require 'nene.font'
 require 'nene.texture'
 require 'nene.math'
 
+local TTFWrapper, SDLWrapper, Color, Font, Vec2, Rect = Nene.TTFWrapper,
+                                                        Nene.SDLWrapper,
+                                                        Nene.Color,
+                                                        Nene.Font,
+                                                        Nene.Math.Vec2,
+                                                        Nene.Math.Rect
+
 --- Owns a internal `Nene.Texture` with a text, this text is also stored as a string on the `text` field.
 --- Use `update_text` method to easily to update both `text` and the texture with a new text.
 ---
 --- Related Nene documentation:
 --- * [Nene.Texture](texture.md#nenetexture)
-global Nene.TextTexture = @record{
+local TextTexture = @record{
   texture: Nene.Texture,
   text: string,
 }
+global Nene.TextTexture = @TextTexture
 
 --- Destroy the TextTexture
 ---
 --- Related Nene documentation:
 --- * [Nene.Texture.destroy](texture.md#nenetexturedestroy)
-function Nene.TextTexture:destroy()
+function TextTexture:destroy()
   self.text = ''
   self.texture:destroy()
 end
@@ -35,11 +43,12 @@ end
 --- * [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
 --- * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
 --- * [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
-function Nene.TextTexture:update_text(nene_core: Nene.Core, text: string, color: Nene.Color, font: Nene.Font)
-  local text_surface, ok = Nene.TTFWrapper.ttf_render_utf8_solid(font:get(), text, color)
+function TextTexture:update_text(nene_core: Nene.Core, text: string, color: Color, font: Font)
+  local text_surface, ok = TTFWrapper.ttf_render_utf8_solid(font:get(), text, color)
+
   if ok then
     local text_texture = nene_core:create_texture_from_surface(text_surface)
-    Nene.SDLWrapper.free_surface(text_surface)
+    SDLWrapper.free_surface(text_surface)
 
     if text_texture then
       self.texture:apply_sdltex(text_texture)
@@ -54,8 +63,8 @@ end
 ---
 --- Related Nene documentation:
 --- * [Nene.Texture.draw](texture.md#nenetexturedraw)
-function Nene.TextTexture:draw(nene_core: Nene.Core, pos: Nene.Math.Vec2, color: Nene.Color)
-  local dest: Nene.Math.Rect = {
+function TextTexture:draw(nene_core: Nene.Core, pos: Vec2, color: Color)
+  local dest: Rect = {
     x = math.ifloor(pos.x), y = math.ifloor(pos.y),
     w = self.texture.width, h = self.texture.height
   }
@@ -67,8 +76,8 @@ end
 ---
 --- Related Nene documentation:
 --- * [Nene.TextTexture.update_text](#nenetexttextureupdate_text)
-function Nene.TextTexture.new(nene_core: Nene.Core, initial_text: string, color: Nene.Color, font: Nene.Font): Nene.TextTexture
-  local new: Nene.TextTexture;
+function TextTexture.new(nene_core: Nene.Core, initial_text: string, color: Color, font: Font): TextTexture
+  local new: TextTexture;
   new:update_text(nene_core, initial_text, color, font)
   return new
 end

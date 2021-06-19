@@ -2,13 +2,13 @@ require 'nene.core'
 require 'math'
 
 global Nene.Math = @record{}
+local Math = @Nene.Math
 
-global Nene.Math.Vec2 = @record{
+local Vec2 = @record{
   x: number,
   y: number
 }
-
-local Vec2 = Nene.Math.Vec2
+global Nene.Math.Vec2 = @Vec2
 ## Vec2.value.is_vec = true
 
 global Vec2.zero: Vec2 = { x = 0, y = 0}
@@ -65,13 +65,13 @@ end
 
   local T: type = #[T]#
 
-  global Nene.Math.#|name|# = @record{
+  local RectT = @record{
     x: T,
     y: T,
     w: T,
     h: T
   }
-  local RectT = Nene.Math.#|name|#
+  global Math.#|name|# = RectT
 
   function RectT:get_intersection(other_rect: RectT): RectT
     local max_px = math.max(self.x, other_rect.x)
@@ -79,8 +79,8 @@ end
     local min_xw = math.min(self.x + self.w, other_rect.x + other_rect.w)
     local min_yh = math.min(self.y + self.h, other_rect.y + other_rect.h)
 
-    local pmin: Nene.Math.Vec2 = { max_px, max_py }
-    local pmax: Nene.Math.Vec2 = { min_xw, min_yh }
+    local pmin: Vec2 = { max_px, max_py }
+    local pmax: Vec2 = { min_xw, min_yh }
 
     return (@RectT){
       x = pmin.x, y = pmin.y,
@@ -88,7 +88,7 @@ end
     }
   end
 
-  function RectT:is_point_intersecting(point: Nene.Math.Vec2): boolean
+  function RectT:is_point_intersecting(point: Vec2): boolean
     return (
       point.x >= self.x and
       point.x <= self.x + self.w and
@@ -99,12 +99,12 @@ end
 
   function RectT:is_rect_intersecting(other: RectT): boolean
     local intersection_test = self:get_intersection(other)
-    local test_point: Nene.Math.Vec2 = { intersection_test.x, intersection_test.y }
+    local test_point: Vec2 = { intersection_test.x, intersection_test.y }
     return self:is_point_intersecting(test_point) and other:is_point_intersecting(test_point)
   end
 
-  function RectT:get_center(): Nene.Math.Vec2
-    return (@Nene.Math.Vec2){
+  function RectT:get_center(): Vec2
+    return (@Vec2){
       x = self.x + (self.w / 2),
       y = self.y + (self.h / 2),
     }
@@ -116,15 +116,15 @@ end
 ## decl_rect('Rectf', number)
 ## decl_rect('Rect', integer)
 
-function Nene.Math.Rectf:to_rect(): Nene.Math.Rect
-  return (@Nene.Math.Rect){
+function Math.Rectf:to_rect(): Math.Rect
+  return (@Math.Rect){
     x = math.ifloor(self.x), y = math.ifloor(self.y),
     w = math.ifloor(self.w), h = math.ifloor(self.h)
   }
 end
 
-function Nene.Math.Rect:to_rectf(): Nene.Math.Rectf
-  return (@Nene.Math.Rectf){
+function Math.Rect:to_rectf(): Math.Rectf
+  return (@Math.Rectf){
     x = self.x, y = self.y,
     w = self.w, h = self.h
   }

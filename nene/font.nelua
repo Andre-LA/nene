@@ -7,21 +7,22 @@ require 'nene.wrappers.ttf'
 local TTFWrapper = Nene.TTFWrapper
 
 --- Wraps a reference to a font
-global Nene.Font = @record{
+local Font = @record{
   _data: *TTF_Font,
 }
+global Nene.Font = @Font
 
-function Nene.Font.load(filename: string, ptsize: cint): (Nene.Font, boolean)
+function Font.load(filename: string, ptsize: cint): (Font, boolean)
   local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)
-  return (@Nene.Font){ _data = ttf_font }, ok
+  return (@Font){ _data = ttf_font }, ok
 end
 
-function Nene.Font:get(): *TTF_Font
+function Font:get(): *TTF_Font
   check(self._data ~= nilptr, 'cannot get an unitilialized font')
   return self._data
 end
 
-function Nene.Font:destroy()
+function Font:destroy()
   check(self._data ~= nilptr, 'cannot free a not initialized font')
   TTFWrapper.close_font(self._data)
   self._data = nilptr

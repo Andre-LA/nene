@@ -2,17 +2,20 @@ require 'nene.math'
 require 'nene.wrappers.sdl'
 require 'nene.core_state'
 
+local Vec2, Rect, Color = Nene.Math.Vec2, Nene.Math.Rect, Nene.Color
+
 --- just a wraps a `pointer(SDL_Texture)`, the `_data` field should never be directly accessed,
 --- use methods instead, which do `check`s.
 ---
 --- Related SDL documentation:
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
-global Nene.Texture = @record{
+local Texture = @record{
   _data: *SDL_Texture,  -- internal data, don't use it, use methods `get` and `apply_sdltex` instead
   initialized: boolean, -- internal data, used to check if the texture is initialized
   width: uinteger,      -- width of the texture in pixels
   height: uinteger,     -- height of the texture in pixels
 }
+global Nene.Texture = @Texture
 
 ## local function texture_check_macro(fn_name)
   check(self.initialized, #[fn_name..": Texture isn't initialized"]#)
@@ -23,7 +26,7 @@ global Nene.Texture = @record{
 ---
 --- Related SDL documentation:
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
-function Nene.Texture:get(): *SDL_Texture
+function Texture:get(): *SDL_Texture
   ## texture_check_macro('Nene.Texture.get')
   return self._data
 end
@@ -32,7 +35,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
-function Nene.Texture:destroy()
+function Texture:destroy()
   ## texture_check_macro('Nene.Texture.destroy')
 
   Nene.SDLWrapper.destroy_texture(self._data)
@@ -48,13 +51,13 @@ end
 --- Related Nene documentation:
 --- * [Nene.Core.set_texture_color_modulation](core_state.md#nenecoreset_texture_color_modulation)
 --- * [Nene.Core.render_copy](core_state.md#nenecorerender_copy)
-function Nene.Texture:draw(nene_core: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
+function Texture:draw(nene_core: Nene.Core, color: Color, source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
   ## texture_check_macro('Nene.Texture.draw')
 
   Nene.SDLWrapper.set_texture_color_modulation(self._data, color)
 
   ## if destination.type.is_vec then -- shadow the vec2 destination with a rect destination
-  local destination: Nene.Math.Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
+  local destination: Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
   ## end
 
   nene_core:render_copy(self._data, source, destination)
@@ -66,7 +69,7 @@ end
 ---
 --- Related Nene documentation:
 --- * [Nene.Core.query_texture_size](core_state.md#nenecorequery_texture_size)
-function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
+function Texture:apply_sdltex(new_tex: *SDL_Texture)
   check(new_tex ~= nilptr, "Can't apply a nil SDL_Texture")
 
   if self.initialized then
@@ -83,8 +86,8 @@ function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
 end
 
 --- Returns a `Nene.Texture` with the given `tex` applied.
-function Nene.Texture.new(tex: *SDL_Texture): Nene.Texture
-  local new: Nene.Texture = {}
+function Texture.new(tex: *SDL_Texture): Texture
+  local new: Texture = {}
   new:apply_sdltex(tex)
   return new
 end
