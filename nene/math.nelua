@@ -129,3 +129,27 @@ function Math.Rect:to_rectf(): Math.Rectf
     w = self.w, h = self.h
   }
 end
+
+--- This record is intended to generate rectangles from an infinite grid. This grid is mathematical, it doesn't really exists.
+local Grid = @record{
+  rect_size: record{ width: integer, height: integer }, -- the size of the rectangles
+  gap: record{ x: integer, y: integer } -- the gap between rectagles
+}
+global Nene.Math.Grid = @Grid
+
+--- Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
+function Grid.gen_rect(self: Grid, column: integer, row: integer): Math.Rect
+  return (@Math.Rect){
+    x = self.rect_size.width * column + self.gap.x * column,
+    y = self.rect_size.height * row + self.gap.y * row,
+    w = self.rect_size.width,
+    h = self.rect_size.height,
+  }
+end
+
+--- Returns the the column and row from a `n`th cell, note that this function is 0-indexed (so, the first cell is `0`, not `1`).
+---
+--- Is necessary to also give how many cells fit on a line.
+function Grid.get_nth_cell_column_row(n: isize, cells_per_line: isize): (isize, isize)
+  return n % cells_per_line, n // cells_per_line
+end
