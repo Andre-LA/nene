@@ -41,7 +41,7 @@ global Nene.Tilemap = @Tilemap
 --- Related Nene documentation:
 --- * [Nene.Tilemap.get_tile_pos](#nenetilemapget_tile_pos)
 --- * [Nene.Math.Grid.get_nth_cell_column_row](math.md#nenemathgridget_nth_cell_column_row)
-function Nene.Tilemap:get_tile_column_row(index: usize): (isize, isize)
+function Tilemap:get_tile_column_row(index: usize): (isize, isize)
   return Grid.get_nth_cell_column_row(index, self.width)
 end
 
@@ -79,8 +79,8 @@ end
 --- * [Nene.Tilemap.get_tile_column_row](#nenetilemapget_tile_column_row)
 --- * [Nene.Math.Vec2](math.md#nenemathvec2)
 --- * [Nene.Math.Grid](math.md#nenemathgrid)
- function Nene.Tilemap:get_tile_pos(column: isize, row: isize, tileset: Grid): Vec2
-   return (@Nene.Math.Vec2){
+ function Tilemap:get_tile_pos(column: isize, row: isize, tileset: Grid): Vec2
+   return (@Vec2){
      x = column * tileset.rect_size.width,
      y = row * tileset.rect_size.height
    }

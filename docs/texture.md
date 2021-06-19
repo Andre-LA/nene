@@ -1,12 +1,13 @@
 # nene/texture.nelua
-## Nene.Texture
+## Texture
 ```lua
-global Nene.Texture = @record{
+local Texture = @record{
   _data: *SDL_Texture,  -- internal data, don't use it, use methods `get` and `apply_sdltex` instead
   initialized: boolean, -- internal data, used to check if the texture is initialized
   width: uinteger,      -- width of the texture in pixels
   height: uinteger,     -- height of the texture in pixels
 }
+global Nene.Texture = @Texture
 ```
 just a wraps a `pointer(SDL_Texture)`, the `_data` field should never be directly accessed, 
 use methods instead, which do `check`s. 
@@ -16,9 +17,9 @@ Related SDL documentation:
 
 ---
 
-## Nene.Texture:get
+## Texture:get
 ```lua
-function Nene.Texture:get(): *SDL_Texture
+function Texture:get(): *SDL_Texture
 ```
 get the internal data 
  
@@ -27,9 +28,9 @@ Related SDL documentation:
 
 ---
 
-## Nene.Texture:destroy
+## Texture:destroy
 ```lua
-function Nene.Texture:destroy()
+function Texture:destroy()
 ```
 free the internal data 
  
@@ -38,9 +39,9 @@ Related SDL documentation:
 
 ---
 
-## Nene.Texture:draw
+## Texture:draw
 ```lua
-function Nene.Texture:draw(nene_core: Nene.Core, color: Nene.Color, source: facultative(Nene.Math.Rect), destination: overload(Nene.Math.Vec2, Nene.Math.Rect, niltype))
+function Texture:draw(nene_core: Nene.Core, color: Color, source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
 ```
 draw the texture with a `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen), 
 you can optionally pass the `source` rectangle if you want to draw a slice of the texture. 
@@ -52,9 +53,9 @@ Related Nene documentation:
 
 ---
 
-## Nene.Texture:apply_sdltex
+## Texture:apply_sdltex
 ```lua
-function Nene.Texture:apply_sdltex(new_tex: *SDL_Texture)
+function Texture:apply_sdltex(new_tex: *SDL_Texture)
 ```
 Applies a new internal texture (with a `pointer(SDL_Texture)`). 
 If the texture is initialized, then it will destroy itself before applying this new SDL_Texture. 
@@ -65,9 +66,9 @@ Related Nene documentation:
 
 ---
 
-## Nene.Texture.new
+## Texture.new
 ```lua
-function Nene.Texture.new(tex: *SDL_Texture): Nene.Texture
+function Texture.new(tex: *SDL_Texture): Texture
 ```
 Returns a `Nene.Texture` with the given `tex` applied.
 

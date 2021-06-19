@@ -1,10 +1,11 @@
 # nene/text_texture.nelua
-## Nene.TextTexture
+## TextTexture
 ```lua
-global Nene.TextTexture = @record{
+local TextTexture = @record{
   texture: Nene.Texture,
   text: string,
 }
+global Nene.TextTexture = @TextTexture
 ```
 Owns a internal `Nene.Texture` with a text, this text is also stored as a string on the `text` field. 
 Use `update_text` method to easily to update both `text` and the texture with a new text. 
@@ -14,9 +15,9 @@ Related Nene documentation:
 
 ---
 
-## Nene.TextTexture:destroy
+## TextTexture:destroy
 ```lua
-function Nene.TextTexture:destroy()
+function TextTexture:destroy()
 ```
 Destroy the TextTexture 
  
@@ -25,13 +26,14 @@ Related Nene documentation:
 
 ---
 
-## Nene.TextTexture:update_text
+## TextTexture:update_text
 ```lua
-function Nene.TextTexture:update_text(nene_core: Nene.Core, text: string, color: Nene.Color, font: Nene.Font)
+function TextTexture:update_text(nene_core: Nene.Core, text: string, color: Color, font: Font)
 ```
 Updates the texture with a new `text`, with the given `font`. 
  
 Related Nene documentation: 
+* [Nene.Texture.create_texture_from_surface](core_state.md#nenecorecreate_texture_from_surface) 
 * [Nene.Texture.apply_sdltex](texture.md#nenetextureapply_sdltex) 
  
 Related SDL and SDL_TTF documentation: 
@@ -41,9 +43,9 @@ Related SDL and SDL_TTF documentation:
 
 ---
 
-## Nene.TextTexture:draw
+## TextTexture:draw
 ```lua
-function Nene.TextTexture:draw(nene_core: Nene.Core, pos: Nene.Math.Vec2, color: Nene.Color)
+function TextTexture:draw(nene_core: Nene.Core, pos: Vec2, color: Color)
 ```
 Draw the texture at the given `pos`ition with the given `color` tint. 
  
@@ -52,9 +54,9 @@ Related Nene documentation:
 
 ---
 
-## Nene.TextTexture.new
+## TextTexture.new
 ```lua
-function Nene.TextTexture.new(nene_core: Nene.Core, initial_text: string, color: Nene.Color, font: Nene.Font): Nene.TextTexture
+function TextTexture.new(nene_core: Nene.Core, initial_text: string, color: Color, font: Font): TextTexture
 ```
 Creates a new initialized `Nene.TextTexture` with an `initial_text` with the given `color` with the given `font`. 
  

@@ -1,10 +1,11 @@
 # nene/audio.nelua
-## Nene.Sound
+## Sound
 ```lua
-global Nene.Sound = @record{
+local Sound = @record{
   _data: *Mix_Chunk,
   channel: integer, -- -1 when no channel is being used
 }
+global Nene.Sound = @Sound
 ```
 Holds a sound associated with a sound channel
 
@@ -23,7 +24,7 @@ Related SDL_mixer documentation:
 
 ## Sound.load
 ```lua
-function Sound.load(filename: string): (Nene.Sound, boolean)
+function Sound.load(filename: string): (Sound, boolean)
 ```
 try to load a sound from a file. 
  
@@ -37,9 +38,9 @@ Related SDL_mixer documentation:
 
 ---
 
-## Nene.Sound:play
+## Sound:play
 ```lua
-function Nene.Sound:play(loop: overload(boolean, integer, niltype))
+function Sound:play(loop: overload(boolean, integer, niltype))
 ```
 plays the loaded sound. 
 * if `true` is passed on `loop` argument, the sound will loop forever; 
@@ -55,9 +56,9 @@ Related SDL_mixer documentation:
 
 ---
 
-## Nene.Sound:stop
+## Sound:stop
 ```lua
-function Nene.Sound:stop()
+function Sound:stop()
 ```
 stops the sound. 
  
@@ -67,9 +68,9 @@ Related SDL_mixer documentation:
 
 ---
 
-## Nene.Sound:destroy
+## Sound:destroy
 ```lua
-function Nene.Sound:destroy()
+function Sound:destroy()
 ```
 Destroy the sound, it will first stop it and then free the sound's memory. 
  
@@ -79,12 +80,13 @@ Related SDL_mixer documentation:
 
 ---
 
-## Nene.Music
+## Music
 ```lua
-global Nene.Music = @record{
+local Music = @record{
   _data: *Mix_Music,
   id: usize,
 }
+global Nene.Music = @Music
 ```
 
 
@@ -101,9 +103,9 @@ Related SDL_mixer documentation:
 
 ---
 
-## Nene.Music:destroy
+## Music:destroy
 ```lua
-function Nene.Music:destroy()
+function Music:destroy()
 ```
 Destroy the music, it will halts it if playing, it also wait if it's still fading out. 
  
