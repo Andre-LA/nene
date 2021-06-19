@@ -37,6 +37,7 @@ end
 --- Updates the texture with a new `text`, with the given `font`.
 ---
 --- Related Nene documentation:
+--- * [Nene.Texture.create_texture_from_surface](core_state.md#nenecorecreate_texture_from_surface)
 --- * [Nene.Texture.apply_sdltex](texture.md#nenetextureapply_sdltex)
 ---
 --- Related SDL and SDL_TTF documentation:
