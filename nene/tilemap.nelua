@@ -15,11 +15,10 @@ left to right, top to bottom direction.
 * when the entry value is `0`, then it's a empty space, othewise it refers to a tile from the tileset (`1` = "1st tile", and so on),
 just as tilemap it starts from top-left and goes from left to right, top to bottom.
 ]]
-local Tilemap = @record{
+global Tilemap = @record{
   width: uinteger,
   map: vector(isize),
 }
-global Nene.Tilemap = @Tilemap
 ## Tilemap.value.is_tilemap = true
 
 --[[
