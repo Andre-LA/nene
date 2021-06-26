@@ -1,24 +1,31 @@
 local nldoc = require 'nldoc'
 
+local symbol_template = [[
+### $(name)
+
+```lua
+$(code)
+```
+
+$(text)
+
+]]
+
 local function doc(filename, path)
   local emitter = nldoc.Emitter.create()
 
   if string.find(filename, '.nelua') then
-    print('documenting '..filename..'...')
-    print('PATH :', path)
+    print('documenting '..path..filename..'..')
 
-    nldoc.generate_doc(emitter, 'nene/'..path..filename)
+    nldoc.generate_doc(emitter, 'nene/'..path..filename, { symbol_template = symbol_template })
 
     local outfilename = filename:gsub('.nelua', '.md')
-
-    print('writing to: ', 'docs/'..path..outfilename)
     nldoc.write_file('docs/'..path..outfilename, emitter:generate())
   end
 end
 
 local function doc_dir(dirname)
   local path = string.gsub(dirname, 'nene/', '')
-  print('PATH IS ', path)
 
   for filename in lfs.dir(dirname) do
     doc(filename, path)
