@@ -1,6 +1,6 @@
 ### SDLWrapper
 
-```nelua
+```lua
 global SDLWrapper = @record{}
 ```
 
@@ -8,7 +8,7 @@ The `SDLWrapper` namespace
 
 ### SDLWrapper.sdl_init
 
-```nelua
+```lua
 function SDLWrapper.sdl_init(flags: uint32): boolean
 ```
 
@@ -21,7 +21,7 @@ Related SDL documentation:
 
 ### SDLWrapper.sdl_quit
 
-```nelua
+```lua
 function SDLWrapper.sdl_quit()
 ```
 
@@ -34,7 +34,7 @@ Related SDL documentation:
 
 ### SDLWrapper.create_texture_from_surface
 
-```nelua
+```lua
 function SDLWrapper.create_texture_from_surface(renderer: *SDL_Renderer, surface: *SDL_Surface): (*SDL_Texture, boolean)
 ```
 
@@ -50,7 +50,7 @@ Related SDL documentation:
 
 ### SDLWrapper.destroy_texture
 
-```nelua
+```lua
 function SDLWrapper.destroy_texture(texture: *SDL_Texture)
 ```
 
@@ -63,7 +63,7 @@ Related SDL documentation:
 
 ### SDLWrapper.set_texture_color_modulation
 
-```nelua
+```lua
 function SDLWrapper.set_texture_color_modulation(texture: *SDL_Texture, color: SDL_Color): boolean
 ```
 
@@ -77,7 +77,7 @@ Related SDL documentation:
 
 ### SDLWrapper.query_texture_size
 
-```nelua
+```lua
 function SDLWrapper.query_texture_size(texture: *SDL_Texture): (cint, cint, boolean)
 ```
 
@@ -91,7 +91,7 @@ Related SDL documentation:
 
 ### SDLWrapper.get_ticks
 
-```nelua
+```lua
 function SDLWrapper.get_ticks(): uint32
 ```
 
@@ -104,7 +104,7 @@ Related SDL documentation:
 
 ### SDLWrapper.free_surface
 
-```nelua
+```lua
 function SDLWrapper.free_surface(surface: *SDL_Surface)
 ```
 
@@ -115,7 +115,7 @@ Related SDL documentation:
 
 ### SDLWrapper.get_keyboard_state
 
-```nelua
+```lua
 function SDLWrapper.get_keyboard_state(): span(uint8)
 ```
 
@@ -132,7 +132,7 @@ Related SDL documentation:
 
 ### SDLWrapper.get_mouse_state
 
-```nelua
+```lua
 function SDLWrapper.get_mouse_state(): (uint32, cint, cint)
 ```
 
@@ -145,7 +145,7 @@ Related SDL documentation:
 
 ### SDLWrapper.poll_event
 
-```nelua
+```lua
 function SDLWrapper.poll_event(event: *SDL_Event): boolean
 ```
 
@@ -161,7 +161,7 @@ Related SDL documentation:
 
 ### SDLWrapper.create_window
 
-```nelua
+```lua
 function SDLWrapper.create_window(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): (*SDL_Window, boolean)
 ```
 
@@ -175,7 +175,7 @@ Related SDL documentation:
 
 ### SDLWrapper.destroy_window
 
-```nelua
+```lua
 function SDLWrapper.destroy_window(window: *SDL_Window)
 ```
 
@@ -189,7 +189,7 @@ Related SDL documentation:
 
 ### SDLWrapper.get_window_size
 
-```nelua
+```lua
 function SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint)
 ```
 
@@ -202,7 +202,7 @@ Related SDL documentation:
 
 ### SDLWrapper.create_renderer
 
-```nelua
+```lua
 function SDLWrapper.create_renderer(window: *SDL_Window, index: cint, flags: uint32): (*SDL_Renderer, boolean)
 ```
 
@@ -217,7 +217,7 @@ Related SDL documentation:
 
 ### SDLWrapper.destroy_renderer
 
-```nelua
+```lua
 function SDLWrapper.destroy_renderer(renderer: *SDL_Renderer)
 ```
 
@@ -232,7 +232,7 @@ Related SDL documentation:
 
 ### SDLWrapper.set_render_draw_color
 
-```nelua
+```lua
 function SDLWrapper.set_render_draw_color(renderer: *SDL_Renderer, r: uint8, g: uint8, b: uint8, a: uint8): boolean
 ```
 
@@ -247,7 +247,7 @@ Related SDL documentation:
 
 ### SDLWrapper.set_render_draw_blend_mode
 
-```nelua
+```lua
 function SDLWrapper.set_render_draw_blend_mode(renderer: *SDL_Renderer, blend_mode: SDL_BlendMode): boolean
 ```
 
@@ -262,7 +262,7 @@ Related SDL documentation:
 
 ### SDLWrapper.render_clear
 
-```nelua
+```lua
 function SDLWrapper.render_clear(renderer: *SDL_Renderer): boolean
 ```
 
@@ -276,7 +276,7 @@ Related SDL documentation:
 
 ### SDLWrapper.render_present
 
-```nelua
+```lua
 function SDLWrapper.render_present(renderer: *SDL_Renderer)
 ```
 
@@ -291,7 +291,7 @@ Related SDL documentation:
 
 ### SDLWrapper.render_draw_line
 
-```nelua
+```lua
 function SDLWrapper.render_draw_line(renderer: *SDL_Renderer, x1: cint, y1: cint, x2: cint, y2: cint): boolean
 ```
 
@@ -305,7 +305,7 @@ Related SDL documentation:
 
 ### SDLWrapper.render_draw_rect
 
-```nelua
+```lua
 function SDLWrapper.render_draw_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
 ```
 
@@ -319,7 +319,7 @@ Related SDL documentation:
 
 ### SDLWrapper.render_fill_rect
 
-```nelua
+```lua
 function SDLWrapper.render_fill_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
 ```
 
@@ -333,7 +333,7 @@ Related SDL documentation:
 
 ### SDLWrapper.render_copy
 
-```nelua
+```lua
 function SDLWrapper.render_copy(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect): boolean
 ```
 

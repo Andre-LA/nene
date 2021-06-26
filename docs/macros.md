@@ -1,6 +1,6 @@
 ### macros
 
-```nelua
+```lua
 global macros = @record{}
 ```
 

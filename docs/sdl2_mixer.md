@@ -1,6 +1,6 @@
 ### Mix_Linked_Version
 
-```nelua
+```lua
 global function Mix_Linked_Version(): *SDL_version
 ```
 
@@ -8,7 +8,7 @@ global function Mix_Linked_Version(): *SDL_version
 
 ### MIX_InitFlags
 
-```nelua
+```lua
 global MIX_InitFlags: type = @enum(cint){
   MIX_INIT_FLAC = 1,
   MIX_INIT_MOD = 2,
@@ -23,7 +23,7 @@ global MIX_InitFlags: type = @enum(cint){
 
 ### Mix_Init
 
-```nelua
+```lua
 global function Mix_Init(flags: cint): cint
 ```
 
@@ -31,7 +31,7 @@ global function Mix_Init(flags: cint): cint
 
 ### Mix_Quit
 
-```nelua
+```lua
 global function Mix_Quit()
 ```
 
@@ -39,7 +39,7 @@ global function Mix_Quit()
 
 ### Mix_Chunk
 
-```nelua
+```lua
 global Mix_Chunk: type = @record{
   allocated: cint,
   abuf: *uint8,
@@ -52,7 +52,7 @@ global Mix_Chunk: type = @record{
 
 ### Mix_Fading
 
-```nelua
+```lua
 global Mix_Fading: type = @enum(cint){
   MIX_NO_FADING = 0,
   MIX_FADING_OUT = 1,
@@ -64,7 +64,7 @@ global Mix_Fading: type = @enum(cint){
 
 ### Mix_MusicType
 
-```nelua
+```lua
 global Mix_MusicType: type = @enum(cint){
   MUS_NONE = 0,
   MUS_CMD = 1,
@@ -84,7 +84,7 @@ global Mix_MusicType: type = @enum(cint){
 
 ### Mix_Music
 
-```nelua
+```lua
 global Mix_Music: type = @record{}
 ```
 
@@ -92,7 +92,7 @@ global Mix_Music: type = @record{}
 
 ### Mix_OpenAudio
 
-```nelua
+```lua
 global function Mix_OpenAudio(frequency: cint, format: uint16, channels: cint, chunksize: cint): cint
 ```
 
@@ -100,7 +100,7 @@ global function Mix_OpenAudio(frequency: cint, format: uint16, channels: cint, c
 
 ### Mix_OpenAudioDevice
 
-```nelua
+```lua
 global function Mix_OpenAudioDevice(frequency: cint, format: uint16, channels: cint, chunksize: cint, device: cstring, allowed_changes: cint): cint
 ```
 
@@ -108,7 +108,7 @@ global function Mix_OpenAudioDevice(frequency: cint, format: uint16, channels: c
 
 ### Mix_AllocateChannels
 
-```nelua
+```lua
 global function Mix_AllocateChannels(numchans: cint): cint
 ```
 
@@ -116,7 +116,7 @@ global function Mix_AllocateChannels(numchans: cint): cint
 
 ### Mix_QuerySpec
 
-```nelua
+```lua
 global function Mix_QuerySpec(frequency: *cint, format: *uint16, channels: *cint): cint
 ```
 
@@ -124,7 +124,7 @@ global function Mix_QuerySpec(frequency: *cint, format: *uint16, channels: *cint
 
 ### Mix_LoadWAV_RW
 
-```nelua
+```lua
 global function Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: cint): *Mix_Chunk
 ```
 
@@ -132,7 +132,7 @@ global function Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: cint): *Mix_Chunk
 
 ### Mix_LoadMUS
 
-```nelua
+```lua
 global function Mix_LoadMUS(file: cstring): *Mix_Music
 ```
 
@@ -140,7 +140,7 @@ global function Mix_LoadMUS(file: cstring): *Mix_Music
 
 ### Mix_LoadMUS_RW
 
-```nelua
+```lua
 global function Mix_LoadMUS_RW(src: *SDL_RWops, freesrc: cint): *Mix_Music
 ```
 
@@ -148,7 +148,7 @@ global function Mix_LoadMUS_RW(src: *SDL_RWops, freesrc: cint): *Mix_Music
 
 ### Mix_LoadMUSType_RW
 
-```nelua
+```lua
 global function Mix_LoadMUSType_RW(src: *SDL_RWops, type: Mix_MusicType, freesrc: cint): *Mix_Music
 ```
 
@@ -156,7 +156,7 @@ global function Mix_LoadMUSType_RW(src: *SDL_RWops, type: Mix_MusicType, freesrc
 
 ### Mix_QuickLoad_WAV
 
-```nelua
+```lua
 global function Mix_QuickLoad_WAV(mem: *uint8): *Mix_Chunk
 ```
 
@@ -164,7 +164,7 @@ global function Mix_QuickLoad_WAV(mem: *uint8): *Mix_Chunk
 
 ### Mix_QuickLoad_RAW
 
-```nelua
+```lua
 global function Mix_QuickLoad_RAW(mem: *uint8, len: uint32): *Mix_Chunk
 ```
 
@@ -172,7 +172,7 @@ global function Mix_QuickLoad_RAW(mem: *uint8, len: uint32): *Mix_Chunk
 
 ### Mix_FreeChunk
 
-```nelua
+```lua
 global function Mix_FreeChunk(chunk: *Mix_Chunk)
 ```
 
@@ -180,7 +180,7 @@ global function Mix_FreeChunk(chunk: *Mix_Chunk)
 
 ### Mix_FreeMusic
 
-```nelua
+```lua
 global function Mix_FreeMusic(music: *Mix_Music)
 ```
 
@@ -188,7 +188,7 @@ global function Mix_FreeMusic(music: *Mix_Music)
 
 ### Mix_GetNumChunkDecoders
 
-```nelua
+```lua
 global function Mix_GetNumChunkDecoders(): cint
 ```
 
@@ -196,7 +196,7 @@ global function Mix_GetNumChunkDecoders(): cint
 
 ### Mix_GetChunkDecoder
 
-```nelua
+```lua
 global function Mix_GetChunkDecoder(index: cint): cstring
 ```
 
@@ -204,7 +204,7 @@ global function Mix_GetChunkDecoder(index: cint): cstring
 
 ### Mix_HasChunkDecoder
 
-```nelua
+```lua
 global function Mix_HasChunkDecoder(name: cstring): SDL_bool
 ```
 
@@ -212,7 +212,7 @@ global function Mix_HasChunkDecoder(name: cstring): SDL_bool
 
 ### Mix_GetNumMusicDecoders
 
-```nelua
+```lua
 global function Mix_GetNumMusicDecoders(): cint
 ```
 
@@ -220,7 +220,7 @@ global function Mix_GetNumMusicDecoders(): cint
 
 ### Mix_GetMusicDecoder
 
-```nelua
+```lua
 global function Mix_GetMusicDecoder(index: cint): cstring
 ```
 
@@ -228,7 +228,7 @@ global function Mix_GetMusicDecoder(index: cint): cstring
 
 ### Mix_HasMusicDecoder
 
-```nelua
+```lua
 global function Mix_HasMusicDecoder(name: cstring): SDL_bool
 ```
 
@@ -236,7 +236,7 @@ global function Mix_HasMusicDecoder(name: cstring): SDL_bool
 
 ### Mix_GetMusicType
 
-```nelua
+```lua
 global function Mix_GetMusicType(music: *Mix_Music): Mix_MusicType
 ```
 
@@ -244,7 +244,7 @@ global function Mix_GetMusicType(music: *Mix_Music): Mix_MusicType
 
 ### Mix_SetPostMix
 
-```nelua
+```lua
 global function Mix_SetPostMix(mix_func: function(pointer, *uint8, cint), arg: pointer)
 ```
 
@@ -252,7 +252,7 @@ global function Mix_SetPostMix(mix_func: function(pointer, *uint8, cint), arg: p
 
 ### Mix_HookMusic
 
-```nelua
+```lua
 global function Mix_HookMusic(mix_func: function(pointer, *uint8, cint), arg: pointer)
 ```
 
@@ -260,7 +260,7 @@ global function Mix_HookMusic(mix_func: function(pointer, *uint8, cint), arg: po
 
 ### Mix_HookMusicFinished
 
-```nelua
+```lua
 global function Mix_HookMusicFinished(music_finished: function())
 ```
 
@@ -268,7 +268,7 @@ global function Mix_HookMusicFinished(music_finished: function())
 
 ### Mix_GetMusicHookData
 
-```nelua
+```lua
 global function Mix_GetMusicHookData(): pointer
 ```
 
@@ -276,7 +276,7 @@ global function Mix_GetMusicHookData(): pointer
 
 ### Mix_ChannelFinished
 
-```nelua
+```lua
 global function Mix_ChannelFinished(channel_finished: function(cint))
 ```
 
@@ -284,7 +284,7 @@ global function Mix_ChannelFinished(channel_finished: function(cint))
 
 ### Mix_EffectFunc_t
 
-```nelua
+```lua
 global Mix_EffectFunc_t: type = @function(cint, pointer, cint, pointer)
 ```
 
@@ -292,7 +292,7 @@ global Mix_EffectFunc_t: type = @function(cint, pointer, cint, pointer)
 
 ### Mix_EffectDone_t
 
-```nelua
+```lua
 global Mix_EffectDone_t: type = @function(cint, pointer)
 ```
 
@@ -300,7 +300,7 @@ global Mix_EffectDone_t: type = @function(cint, pointer)
 
 ### Mix_RegisterEffect
 
-```nelua
+```lua
 global function Mix_RegisterEffect(chan: cint, f: Mix_EffectFunc_t, d: Mix_EffectDone_t, arg: pointer): cint
 ```
 
@@ -308,7 +308,7 @@ global function Mix_RegisterEffect(chan: cint, f: Mix_EffectFunc_t, d: Mix_Effec
 
 ### Mix_UnregisterEffect
 
-```nelua
+```lua
 global function Mix_UnregisterEffect(channel: cint, f: Mix_EffectFunc_t): cint
 ```
 
@@ -316,7 +316,7 @@ global function Mix_UnregisterEffect(channel: cint, f: Mix_EffectFunc_t): cint
 
 ### Mix_UnregisterAllEffects
 
-```nelua
+```lua
 global function Mix_UnregisterAllEffects(channel: cint): cint
 ```
 
@@ -324,7 +324,7 @@ global function Mix_UnregisterAllEffects(channel: cint): cint
 
 ### Mix_SetPanning
 
-```nelua
+```lua
 global function Mix_SetPanning(channel: cint, left: uint8, right: uint8): cint
 ```
 
@@ -332,7 +332,7 @@ global function Mix_SetPanning(channel: cint, left: uint8, right: uint8): cint
 
 ### Mix_SetPosition
 
-```nelua
+```lua
 global function Mix_SetPosition(channel: cint, angle: int16, distance: uint8): cint
 ```
 
@@ -340,7 +340,7 @@ global function Mix_SetPosition(channel: cint, angle: int16, distance: uint8): c
 
 ### Mix_SetDistance
 
-```nelua
+```lua
 global function Mix_SetDistance(channel: cint, distance: uint8): cint
 ```
 
@@ -348,7 +348,7 @@ global function Mix_SetDistance(channel: cint, distance: uint8): cint
 
 ### Mix_SetReverseStereo
 
-```nelua
+```lua
 global function Mix_SetReverseStereo(channel: cint, flip: cint): cint
 ```
 
@@ -356,7 +356,7 @@ global function Mix_SetReverseStereo(channel: cint, flip: cint): cint
 
 ### Mix_ReserveChannels
 
-```nelua
+```lua
 global function Mix_ReserveChannels(num: cint): cint
 ```
 
@@ -364,7 +364,7 @@ global function Mix_ReserveChannels(num: cint): cint
 
 ### Mix_GroupChannel
 
-```nelua
+```lua
 global function Mix_GroupChannel(which: cint, tag: cint): cint
 ```
 
@@ -372,7 +372,7 @@ global function Mix_GroupChannel(which: cint, tag: cint): cint
 
 ### Mix_GroupChannels
 
-```nelua
+```lua
 global function Mix_GroupChannels(from: cint, to: cint, tag: cint): cint
 ```
 
@@ -380,7 +380,7 @@ global function Mix_GroupChannels(from: cint, to: cint, tag: cint): cint
 
 ### Mix_GroupAvailable
 
-```nelua
+```lua
 global function Mix_GroupAvailable(tag: cint): cint
 ```
 
@@ -388,7 +388,7 @@ global function Mix_GroupAvailable(tag: cint): cint
 
 ### Mix_GroupCount
 
-```nelua
+```lua
 global function Mix_GroupCount(tag: cint): cint
 ```
 
@@ -396,7 +396,7 @@ global function Mix_GroupCount(tag: cint): cint
 
 ### Mix_GroupOldest
 
-```nelua
+```lua
 global function Mix_GroupOldest(tag: cint): cint
 ```
 
@@ -404,7 +404,7 @@ global function Mix_GroupOldest(tag: cint): cint
 
 ### Mix_GroupNewer
 
-```nelua
+```lua
 global function Mix_GroupNewer(tag: cint): cint
 ```
 
@@ -412,7 +412,7 @@ global function Mix_GroupNewer(tag: cint): cint
 
 ### Mix_PlayChannelTimed
 
-```nelua
+```lua
 global function Mix_PlayChannelTimed(channel: cint, chunk: *Mix_Chunk, loops: cint, ticks: cint): cint
 ```
 
@@ -420,7 +420,7 @@ global function Mix_PlayChannelTimed(channel: cint, chunk: *Mix_Chunk, loops: ci
 
 ### Mix_PlayMusic
 
-```nelua
+```lua
 global function Mix_PlayMusic(music: *Mix_Music, loops: cint): cint
 ```
 
@@ -428,7 +428,7 @@ global function Mix_PlayMusic(music: *Mix_Music, loops: cint): cint
 
 ### Mix_FadeInMusic
 
-```nelua
+```lua
 global function Mix_FadeInMusic(music: *Mix_Music, loops: cint, ms: cint): cint
 ```
 
@@ -436,7 +436,7 @@ global function Mix_FadeInMusic(music: *Mix_Music, loops: cint, ms: cint): cint
 
 ### Mix_FadeInMusicPos
 
-```nelua
+```lua
 global function Mix_FadeInMusicPos(music: *Mix_Music, loops: cint, ms: cint, position: float64): cint
 ```
 
@@ -444,7 +444,7 @@ global function Mix_FadeInMusicPos(music: *Mix_Music, loops: cint, ms: cint, pos
 
 ### Mix_FadeInChannelTimed
 
-```nelua
+```lua
 global function Mix_FadeInChannelTimed(channel: cint, chunk: *Mix_Chunk, loops: cint, ms: cint, ticks: cint): cint
 ```
 
@@ -452,7 +452,7 @@ global function Mix_FadeInChannelTimed(channel: cint, chunk: *Mix_Chunk, loops: 
 
 ### Mix_Volume
 
-```nelua
+```lua
 global function Mix_Volume(channel: cint, volume: cint): cint
 ```
 
@@ -460,7 +460,7 @@ global function Mix_Volume(channel: cint, volume: cint): cint
 
 ### Mix_VolumeChunk
 
-```nelua
+```lua
 global function Mix_VolumeChunk(chunk: *Mix_Chunk, volume: cint): cint
 ```
 
@@ -468,7 +468,7 @@ global function Mix_VolumeChunk(chunk: *Mix_Chunk, volume: cint): cint
 
 ### Mix_VolumeMusic
 
-```nelua
+```lua
 global function Mix_VolumeMusic(volume: cint): cint
 ```
 
@@ -476,7 +476,7 @@ global function Mix_VolumeMusic(volume: cint): cint
 
 ### Mix_HaltChannel
 
-```nelua
+```lua
 global function Mix_HaltChannel(channel: cint): cint
 ```
 
@@ -484,7 +484,7 @@ global function Mix_HaltChannel(channel: cint): cint
 
 ### Mix_HaltGroup
 
-```nelua
+```lua
 global function Mix_HaltGroup(tag: cint): cint
 ```
 
@@ -492,7 +492,7 @@ global function Mix_HaltGroup(tag: cint): cint
 
 ### Mix_HaltMusic
 
-```nelua
+```lua
 global function Mix_HaltMusic(): cint
 ```
 
@@ -500,7 +500,7 @@ global function Mix_HaltMusic(): cint
 
 ### Mix_ExpireChannel
 
-```nelua
+```lua
 global function Mix_ExpireChannel(channel: cint, ticks: cint): cint
 ```
 
@@ -508,7 +508,7 @@ global function Mix_ExpireChannel(channel: cint, ticks: cint): cint
 
 ### Mix_FadeOutChannel
 
-```nelua
+```lua
 global function Mix_FadeOutChannel(which: cint, ms: cint): cint
 ```
 
@@ -516,7 +516,7 @@ global function Mix_FadeOutChannel(which: cint, ms: cint): cint
 
 ### Mix_FadeOutGroup
 
-```nelua
+```lua
 global function Mix_FadeOutGroup(tag: cint, ms: cint): cint
 ```
 
@@ -524,7 +524,7 @@ global function Mix_FadeOutGroup(tag: cint, ms: cint): cint
 
 ### Mix_FadeOutMusic
 
-```nelua
+```lua
 global function Mix_FadeOutMusic(ms: cint): cint
 ```
 
@@ -532,7 +532,7 @@ global function Mix_FadeOutMusic(ms: cint): cint
 
 ### Mix_FadingMusic
 
-```nelua
+```lua
 global function Mix_FadingMusic(): Mix_Fading
 ```
 
@@ -540,7 +540,7 @@ global function Mix_FadingMusic(): Mix_Fading
 
 ### Mix_FadingChannel
 
-```nelua
+```lua
 global function Mix_FadingChannel(which: cint): Mix_Fading
 ```
 
@@ -548,7 +548,7 @@ global function Mix_FadingChannel(which: cint): Mix_Fading
 
 ### Mix_Pause
 
-```nelua
+```lua
 global function Mix_Pause(channel: cint)
 ```
 
@@ -556,7 +556,7 @@ global function Mix_Pause(channel: cint)
 
 ### Mix_Resume
 
-```nelua
+```lua
 global function Mix_Resume(channel: cint)
 ```
 
@@ -564,7 +564,7 @@ global function Mix_Resume(channel: cint)
 
 ### Mix_Paused
 
-```nelua
+```lua
 global function Mix_Paused(channel: cint): cint
 ```
 
@@ -572,7 +572,7 @@ global function Mix_Paused(channel: cint): cint
 
 ### Mix_PauseMusic
 
-```nelua
+```lua
 global function Mix_PauseMusic()
 ```
 
@@ -580,7 +580,7 @@ global function Mix_PauseMusic()
 
 ### Mix_ResumeMusic
 
-```nelua
+```lua
 global function Mix_ResumeMusic()
 ```
 
@@ -588,7 +588,7 @@ global function Mix_ResumeMusic()
 
 ### Mix_RewindMusic
 
-```nelua
+```lua
 global function Mix_RewindMusic()
 ```
 
@@ -596,7 +596,7 @@ global function Mix_RewindMusic()
 
 ### Mix_PausedMusic
 
-```nelua
+```lua
 global function Mix_PausedMusic(): cint
 ```
 
@@ -604,7 +604,7 @@ global function Mix_PausedMusic(): cint
 
 ### Mix_SetMusicPosition
 
-```nelua
+```lua
 global function Mix_SetMusicPosition(position: float64): cint
 ```
 
@@ -612,7 +612,7 @@ global function Mix_SetMusicPosition(position: float64): cint
 
 ### Mix_Playing
 
-```nelua
+```lua
 global function Mix_Playing(channel: cint): cint
 ```
 
@@ -620,7 +620,7 @@ global function Mix_Playing(channel: cint): cint
 
 ### Mix_PlayingMusic
 
-```nelua
+```lua
 global function Mix_PlayingMusic(): cint
 ```
 
@@ -628,7 +628,7 @@ global function Mix_PlayingMusic(): cint
 
 ### Mix_SetMusicCMD
 
-```nelua
+```lua
 global function Mix_SetMusicCMD(command: cstring): cint
 ```
 
@@ -636,7 +636,7 @@ global function Mix_SetMusicCMD(command: cstring): cint
 
 ### Mix_SetSynchroValue
 
-```nelua
+```lua
 global function Mix_SetSynchroValue(value: cint): cint
 ```
 
@@ -644,7 +644,7 @@ global function Mix_SetSynchroValue(value: cint): cint
 
 ### Mix_GetSynchroValue
 
-```nelua
+```lua
 global function Mix_GetSynchroValue(): cint
 ```
 
@@ -652,7 +652,7 @@ global function Mix_GetSynchroValue(): cint
 
 ### Mix_SetSoundFonts
 
-```nelua
+```lua
 global function Mix_SetSoundFonts(paths: cstring): cint
 ```
 
@@ -660,7 +660,7 @@ global function Mix_SetSoundFonts(paths: cstring): cint
 
 ### Mix_GetSoundFonts
 
-```nelua
+```lua
 global function Mix_GetSoundFonts(): cstring
 ```
 
@@ -668,7 +668,7 @@ global function Mix_GetSoundFonts(): cstring
 
 ### Mix_EachSoundFont
 
-```nelua
+```lua
 global function Mix_EachSoundFont(Function: function(cstring, pointer): cint, data: pointer): cint
 ```
 
@@ -676,7 +676,7 @@ global function Mix_EachSoundFont(Function: function(cstring, pointer): cint, da
 
 ### Mix_GetChunk
 
-```nelua
+```lua
 global function Mix_GetChunk(channel: cint): *Mix_Chunk
 ```
 
@@ -684,7 +684,7 @@ global function Mix_GetChunk(channel: cint): *Mix_Chunk
 
 ### Mix_CloseAudio
 
-```nelua
+```lua
 global function Mix_CloseAudio()
 ```
 
@@ -692,7 +692,7 @@ global function Mix_CloseAudio()
 
 ### SDL_MIXER_MAJOR_VERSION
 
-```nelua
+```lua
 global SDL_MIXER_MAJOR_VERSION: cint
 ```
 
@@ -700,7 +700,7 @@ global SDL_MIXER_MAJOR_VERSION: cint
 
 ### SDL_MIXER_MINOR_VERSION
 
-```nelua
+```lua
 global SDL_MIXER_MINOR_VERSION: cint
 ```
 
@@ -708,7 +708,7 @@ global SDL_MIXER_MINOR_VERSION: cint
 
 ### SDL_MIXER_PATCHLEVEL
 
-```nelua
+```lua
 global SDL_MIXER_PATCHLEVEL: cint
 ```
 
@@ -716,7 +716,7 @@ global SDL_MIXER_PATCHLEVEL: cint
 
 ### SDL_MIXER_COMPILEDVERSION
 
-```nelua
+```lua
 global SDL_MIXER_COMPILEDVERSION: cint
 ```
 
@@ -724,7 +724,7 @@ global SDL_MIXER_COMPILEDVERSION: cint
 
 ### MIX_CHANNELS
 
-```nelua
+```lua
 global MIX_CHANNELS: cint
 ```
 
@@ -732,7 +732,7 @@ global MIX_CHANNELS: cint
 
 ### MIX_DEFAULT_FREQUENCY
 
-```nelua
+```lua
 global MIX_DEFAULT_FREQUENCY: cint
 ```
 
@@ -740,7 +740,7 @@ global MIX_DEFAULT_FREQUENCY: cint
 
 ### MIX_DEFAULT_FORMAT
 
-```nelua
+```lua
 global MIX_DEFAULT_FORMAT: cint
 ```
 
@@ -748,7 +748,7 @@ global MIX_DEFAULT_FORMAT: cint
 
 ### MIX_DEFAULT_CHANNELS
 
-```nelua
+```lua
 global MIX_DEFAULT_CHANNELS: cint
 ```
 
@@ -756,7 +756,7 @@ global MIX_DEFAULT_CHANNELS: cint
 
 ### MIX_MAX_VOLUME
 
-```nelua
+```lua
 global MIX_MAX_VOLUME: cint
 ```
 
@@ -764,7 +764,7 @@ global MIX_MAX_VOLUME: cint
 
 ### MIX_CHANNEL_POST
 
-```nelua
+```lua
 global MIX_CHANNEL_POST: cint
 ```
 
@@ -772,7 +772,7 @@ global MIX_CHANNEL_POST: cint
 
 ### MIX_EFFECTSMAXSPEED
 
-```nelua
+```lua
 global MIX_EFFECTSMAXSPEED: cstring
 ```
 
@@ -780,7 +780,7 @@ global MIX_EFFECTSMAXSPEED: cstring
 
 ### SDL_MIXER_VERSION_ATLEAST
 
-```nelua
+```lua
 global function SDL_MIXER_VERSION_ATLEAST(x: cint, y: cint, z: cint): SDL_bool
 ```
 
@@ -788,7 +788,7 @@ global function SDL_MIXER_VERSION_ATLEAST(x: cint, y: cint, z: cint): SDL_bool
 
 ### SDL_MIXER_VERSION
 
-```nelua
+```lua
 global function SDL_MIXER_VERSION(x: *SDL_version)
 ```
 
@@ -796,7 +796,7 @@ global function SDL_MIXER_VERSION(x: *SDL_version)
 
 ### Mix_PlayChannel
 
-```nelua
+```lua
 global function Mix_PlayChannel(channel: cint, chunk: *Mix_Chunk, loops: cint): cint
 ```
 
@@ -804,7 +804,7 @@ global function Mix_PlayChannel(channel: cint, chunk: *Mix_Chunk, loops: cint): 
 
 ### Mix_FadeInChannel
 
-```nelua
+```lua
 global function Mix_FadeInChannel(channel: cint, chunk: *Mix_Chunk, loops: cint, ms: cint): cint
 ```
 
@@ -812,7 +812,7 @@ global function Mix_FadeInChannel(channel: cint, chunk: *Mix_Chunk, loops: cint,
 
 ### Mix_LoadWAV
 
-```nelua
+```lua
 global function Mix_LoadWAV(file: cstring): *Mix_Chunk
 ```
 
@@ -820,7 +820,7 @@ global function Mix_LoadWAV(file: cstring): *Mix_Chunk
 
 ### Mix_SetError
 
-```nelua
+```lua
 global function Mix_SetError(fmt: cstring, ...: cvarargs): cint
 ```
 
@@ -828,7 +828,7 @@ global function Mix_SetError(fmt: cstring, ...: cvarargs): cint
 
 ### Mix_GetError
 
-```nelua
+```lua
 global function Mix_GetError(): cstring
 ```
 
@@ -836,7 +836,7 @@ global function Mix_GetError(): cstring
 
 ### Mix_ClearError
 
-```nelua
+```lua
 global function Mix_ClearError(): void
 ```
 

@@ -1,6 +1,6 @@
 ### SDL_GetPlatform
 
-```nelua
+```lua
 global function SDL_GetPlatform(): cstring
 ```
 
@@ -8,7 +8,7 @@ global function SDL_GetPlatform(): cstring
 
 ### SDL_bool
 
-```nelua
+```lua
 global SDL_bool: type = @enum(cint){
   SDL_FALSE = 0,
   SDL_TRUE = 1
@@ -19,7 +19,7 @@ global SDL_bool: type = @enum(cint){
 
 ### SDL_malloc
 
-```nelua
+```lua
 global function SDL_malloc(size: csize): pointer
 ```
 
@@ -27,7 +27,7 @@ global function SDL_malloc(size: csize): pointer
 
 ### SDL_calloc
 
-```nelua
+```lua
 global function SDL_calloc(nmemb: csize, size: csize): pointer
 ```
 
@@ -35,7 +35,7 @@ global function SDL_calloc(nmemb: csize, size: csize): pointer
 
 ### SDL_realloc
 
-```nelua
+```lua
 global function SDL_realloc(mem: pointer, size: csize): pointer
 ```
 
@@ -43,7 +43,7 @@ global function SDL_realloc(mem: pointer, size: csize): pointer
 
 ### SDL_free
 
-```nelua
+```lua
 global function SDL_free(mem: pointer)
 ```
 
@@ -51,7 +51,7 @@ global function SDL_free(mem: pointer)
 
 ### SDL_malloc_func
 
-```nelua
+```lua
 global SDL_malloc_func: type = @function(csize): pointer
 ```
 
@@ -59,7 +59,7 @@ global SDL_malloc_func: type = @function(csize): pointer
 
 ### SDL_calloc_func
 
-```nelua
+```lua
 global SDL_calloc_func: type = @function(csize, csize): pointer
 ```
 
@@ -67,7 +67,7 @@ global SDL_calloc_func: type = @function(csize, csize): pointer
 
 ### SDL_realloc_func
 
-```nelua
+```lua
 global SDL_realloc_func: type = @function(pointer, csize): pointer
 ```
 
@@ -75,7 +75,7 @@ global SDL_realloc_func: type = @function(pointer, csize): pointer
 
 ### SDL_free_func
 
-```nelua
+```lua
 global SDL_free_func: type = @function(pointer)
 ```
 
@@ -83,7 +83,7 @@ global SDL_free_func: type = @function(pointer)
 
 ### SDL_GetMemoryFunctions
 
-```nelua
+```lua
 global function SDL_GetMemoryFunctions(malloc_func: *SDL_malloc_func, calloc_func: *SDL_calloc_func, realloc_func: *SDL_realloc_func, free_func: *SDL_free_func)
 ```
 
@@ -91,7 +91,7 @@ global function SDL_GetMemoryFunctions(malloc_func: *SDL_malloc_func, calloc_fun
 
 ### SDL_SetMemoryFunctions
 
-```nelua
+```lua
 global function SDL_SetMemoryFunctions(malloc_func: SDL_malloc_func, calloc_func: SDL_calloc_func, realloc_func: SDL_realloc_func, free_func: SDL_free_func): cint
 ```
 
@@ -99,7 +99,7 @@ global function SDL_SetMemoryFunctions(malloc_func: SDL_malloc_func, calloc_func
 
 ### SDL_GetNumAllocations
 
-```nelua
+```lua
 global function SDL_GetNumAllocations(): cint
 ```
 
@@ -107,7 +107,7 @@ global function SDL_GetNumAllocations(): cint
 
 ### SDL_getenv
 
-```nelua
+```lua
 global function SDL_getenv(name: cstring): cstring
 ```
 
@@ -115,7 +115,7 @@ global function SDL_getenv(name: cstring): cstring
 
 ### SDL_setenv
 
-```nelua
+```lua
 global function SDL_setenv(name: cstring, value: cstring, overwrite: cint): cint
 ```
 
@@ -123,7 +123,7 @@ global function SDL_setenv(name: cstring, value: cstring, overwrite: cint): cint
 
 ### SDL_qsort
 
-```nelua
+```lua
 global function SDL_qsort(base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint)
 ```
 
@@ -131,7 +131,7 @@ global function SDL_qsort(base: pointer, nmemb: csize, size: csize, compare: fun
 
 ### SDL_abs
 
-```nelua
+```lua
 global function SDL_abs(x: cint): cint
 ```
 
@@ -139,7 +139,7 @@ global function SDL_abs(x: cint): cint
 
 ### SDL_isdigit
 
-```nelua
+```lua
 global function SDL_isdigit(x: cint): cint
 ```
 
@@ -147,7 +147,7 @@ global function SDL_isdigit(x: cint): cint
 
 ### SDL_isspace
 
-```nelua
+```lua
 global function SDL_isspace(x: cint): cint
 ```
 
@@ -155,7 +155,7 @@ global function SDL_isspace(x: cint): cint
 
 ### SDL_isupper
 
-```nelua
+```lua
 global function SDL_isupper(x: cint): cint
 ```
 
@@ -163,7 +163,7 @@ global function SDL_isupper(x: cint): cint
 
 ### SDL_islower
 
-```nelua
+```lua
 global function SDL_islower(x: cint): cint
 ```
 
@@ -171,7 +171,7 @@ global function SDL_islower(x: cint): cint
 
 ### SDL_toupper
 
-```nelua
+```lua
 global function SDL_toupper(x: cint): cint
 ```
 
@@ -179,7 +179,7 @@ global function SDL_toupper(x: cint): cint
 
 ### SDL_tolower
 
-```nelua
+```lua
 global function SDL_tolower(x: cint): cint
 ```
 
@@ -187,7 +187,7 @@ global function SDL_tolower(x: cint): cint
 
 ### SDL_crc32
 
-```nelua
+```lua
 global function SDL_crc32(crc: uint32, data: pointer, len: csize): uint32
 ```
 
@@ -195,7 +195,7 @@ global function SDL_crc32(crc: uint32, data: pointer, len: csize): uint32
 
 ### SDL_memset
 
-```nelua
+```lua
 global function SDL_memset(dst: pointer, c: cint, len: csize): pointer
 ```
 
@@ -203,7 +203,7 @@ global function SDL_memset(dst: pointer, c: cint, len: csize): pointer
 
 ### SDL_memset4
 
-```nelua
+```lua
 global function SDL_memset4(dst: pointer, val: uint32, dwords: csize)
 ```
 
@@ -211,7 +211,7 @@ global function SDL_memset4(dst: pointer, val: uint32, dwords: csize)
 
 ### SDL_memcpy
 
-```nelua
+```lua
 global function SDL_memcpy(dst: pointer, src: pointer, len: csize): pointer
 ```
 
@@ -219,7 +219,7 @@ global function SDL_memcpy(dst: pointer, src: pointer, len: csize): pointer
 
 ### SDL_memmove
 
-```nelua
+```lua
 global function SDL_memmove(dst: pointer, src: pointer, len: csize): pointer
 ```
 
@@ -227,7 +227,7 @@ global function SDL_memmove(dst: pointer, src: pointer, len: csize): pointer
 
 ### SDL_memcmp
 
-```nelua
+```lua
 global function SDL_memcmp(s1: pointer, s2: pointer, len: csize): cint
 ```
 
@@ -235,7 +235,7 @@ global function SDL_memcmp(s1: pointer, s2: pointer, len: csize): cint
 
 ### SDL_wcslen
 
-```nelua
+```lua
 global function SDL_wcslen(wstr: *cint): csize
 ```
 
@@ -243,7 +243,7 @@ global function SDL_wcslen(wstr: *cint): csize
 
 ### SDL_wcslcpy
 
-```nelua
+```lua
 global function SDL_wcslcpy(dst: *cint, src: *cint, maxlen: csize): csize
 ```
 
@@ -251,7 +251,7 @@ global function SDL_wcslcpy(dst: *cint, src: *cint, maxlen: csize): csize
 
 ### SDL_wcslcat
 
-```nelua
+```lua
 global function SDL_wcslcat(dst: *cint, src: *cint, maxlen: csize): csize
 ```
 
@@ -259,7 +259,7 @@ global function SDL_wcslcat(dst: *cint, src: *cint, maxlen: csize): csize
 
 ### SDL_wcsdup
 
-```nelua
+```lua
 global function SDL_wcsdup(wstr: *cint): *cint
 ```
 
@@ -267,7 +267,7 @@ global function SDL_wcsdup(wstr: *cint): *cint
 
 ### SDL_wcsstr
 
-```nelua
+```lua
 global function SDL_wcsstr(haystack: *cint, needle: *cint): *cint
 ```
 
@@ -275,7 +275,7 @@ global function SDL_wcsstr(haystack: *cint, needle: *cint): *cint
 
 ### SDL_wcscmp
 
-```nelua
+```lua
 global function SDL_wcscmp(str1: *cint, str2: *cint): cint
 ```
 
@@ -283,7 +283,7 @@ global function SDL_wcscmp(str1: *cint, str2: *cint): cint
 
 ### SDL_wcsncmp
 
-```nelua
+```lua
 global function SDL_wcsncmp(str1: *cint, str2: *cint, maxlen: csize): cint
 ```
 
@@ -291,7 +291,7 @@ global function SDL_wcsncmp(str1: *cint, str2: *cint, maxlen: csize): cint
 
 ### SDL_wcscasecmp
 
-```nelua
+```lua
 global function SDL_wcscasecmp(str1: *cint, str2: *cint): cint
 ```
 
@@ -299,7 +299,7 @@ global function SDL_wcscasecmp(str1: *cint, str2: *cint): cint
 
 ### SDL_wcsncasecmp
 
-```nelua
+```lua
 global function SDL_wcsncasecmp(str1: *cint, str2: *cint, len: csize): cint
 ```
 
@@ -307,7 +307,7 @@ global function SDL_wcsncasecmp(str1: *cint, str2: *cint, len: csize): cint
 
 ### SDL_strlen
 
-```nelua
+```lua
 global function SDL_strlen(str: cstring): csize
 ```
 
@@ -315,7 +315,7 @@ global function SDL_strlen(str: cstring): csize
 
 ### SDL_strlcpy
 
-```nelua
+```lua
 global function SDL_strlcpy(dst: cstring, src: cstring, maxlen: csize): csize
 ```
 
@@ -323,7 +323,7 @@ global function SDL_strlcpy(dst: cstring, src: cstring, maxlen: csize): csize
 
 ### SDL_utf8strlcpy
 
-```nelua
+```lua
 global function SDL_utf8strlcpy(dst: cstring, src: cstring, dst_bytes: csize): csize
 ```
 
@@ -331,7 +331,7 @@ global function SDL_utf8strlcpy(dst: cstring, src: cstring, dst_bytes: csize): c
 
 ### SDL_strlcat
 
-```nelua
+```lua
 global function SDL_strlcat(dst: cstring, src: cstring, maxlen: csize): csize
 ```
 
@@ -339,7 +339,7 @@ global function SDL_strlcat(dst: cstring, src: cstring, maxlen: csize): csize
 
 ### SDL_strdup
 
-```nelua
+```lua
 global function SDL_strdup(str: cstring): cstring
 ```
 
@@ -347,7 +347,7 @@ global function SDL_strdup(str: cstring): cstring
 
 ### SDL_strrev
 
-```nelua
+```lua
 global function SDL_strrev(str: cstring): cstring
 ```
 
@@ -355,7 +355,7 @@ global function SDL_strrev(str: cstring): cstring
 
 ### SDL_strupr
 
-```nelua
+```lua
 global function SDL_strupr(str: cstring): cstring
 ```
 
@@ -363,7 +363,7 @@ global function SDL_strupr(str: cstring): cstring
 
 ### SDL_strlwr
 
-```nelua
+```lua
 global function SDL_strlwr(str: cstring): cstring
 ```
 
@@ -371,7 +371,7 @@ global function SDL_strlwr(str: cstring): cstring
 
 ### SDL_strchr
 
-```nelua
+```lua
 global function SDL_strchr(str: cstring, c: cint): cstring
 ```
 
@@ -379,7 +379,7 @@ global function SDL_strchr(str: cstring, c: cint): cstring
 
 ### SDL_strrchr
 
-```nelua
+```lua
 global function SDL_strrchr(str: cstring, c: cint): cstring
 ```
 
@@ -387,7 +387,7 @@ global function SDL_strrchr(str: cstring, c: cint): cstring
 
 ### SDL_strstr
 
-```nelua
+```lua
 global function SDL_strstr(haystack: cstring, needle: cstring): cstring
 ```
 
@@ -395,7 +395,7 @@ global function SDL_strstr(haystack: cstring, needle: cstring): cstring
 
 ### SDL_strtokr
 
-```nelua
+```lua
 global function SDL_strtokr(s1: cstring, s2: cstring, saveptr: *cstring): cstring
 ```
 
@@ -403,7 +403,7 @@ global function SDL_strtokr(s1: cstring, s2: cstring, saveptr: *cstring): cstrin
 
 ### SDL_utf8strlen
 
-```nelua
+```lua
 global function SDL_utf8strlen(str: cstring): csize
 ```
 
@@ -411,7 +411,7 @@ global function SDL_utf8strlen(str: cstring): csize
 
 ### SDL_itoa
 
-```nelua
+```lua
 global function SDL_itoa(value: cint, str: cstring, radix: cint): cstring
 ```
 
@@ -419,7 +419,7 @@ global function SDL_itoa(value: cint, str: cstring, radix: cint): cstring
 
 ### SDL_uitoa
 
-```nelua
+```lua
 global function SDL_uitoa(value: cuint, str: cstring, radix: cint): cstring
 ```
 
@@ -427,7 +427,7 @@ global function SDL_uitoa(value: cuint, str: cstring, radix: cint): cstring
 
 ### SDL_ltoa
 
-```nelua
+```lua
 global function SDL_ltoa(value: clong, str: cstring, radix: cint): cstring
 ```
 
@@ -435,7 +435,7 @@ global function SDL_ltoa(value: clong, str: cstring, radix: cint): cstring
 
 ### SDL_ultoa
 
-```nelua
+```lua
 global function SDL_ultoa(value: culong, str: cstring, radix: cint): cstring
 ```
 
@@ -443,7 +443,7 @@ global function SDL_ultoa(value: culong, str: cstring, radix: cint): cstring
 
 ### SDL_lltoa
 
-```nelua
+```lua
 global function SDL_lltoa(value: int64, str: cstring, radix: cint): cstring
 ```
 
@@ -451,7 +451,7 @@ global function SDL_lltoa(value: int64, str: cstring, radix: cint): cstring
 
 ### SDL_ulltoa
 
-```nelua
+```lua
 global function SDL_ulltoa(value: uint64, str: cstring, radix: cint): cstring
 ```
 
@@ -459,7 +459,7 @@ global function SDL_ulltoa(value: uint64, str: cstring, radix: cint): cstring
 
 ### SDL_atoi
 
-```nelua
+```lua
 global function SDL_atoi(str: cstring): cint
 ```
 
@@ -467,7 +467,7 @@ global function SDL_atoi(str: cstring): cint
 
 ### SDL_atof
 
-```nelua
+```lua
 global function SDL_atof(str: cstring): float64
 ```
 
@@ -475,7 +475,7 @@ global function SDL_atof(str: cstring): float64
 
 ### SDL_strtol
 
-```nelua
+```lua
 global function SDL_strtol(str: cstring, endp: *cstring, base: cint): clong
 ```
 
@@ -483,7 +483,7 @@ global function SDL_strtol(str: cstring, endp: *cstring, base: cint): clong
 
 ### SDL_strtoul
 
-```nelua
+```lua
 global function SDL_strtoul(str: cstring, endp: *cstring, base: cint): culong
 ```
 
@@ -491,7 +491,7 @@ global function SDL_strtoul(str: cstring, endp: *cstring, base: cint): culong
 
 ### SDL_strtoll
 
-```nelua
+```lua
 global function SDL_strtoll(str: cstring, endp: *cstring, base: cint): int64
 ```
 
@@ -499,7 +499,7 @@ global function SDL_strtoll(str: cstring, endp: *cstring, base: cint): int64
 
 ### SDL_strtoull
 
-```nelua
+```lua
 global function SDL_strtoull(str: cstring, endp: *cstring, base: cint): uint64
 ```
 
@@ -507,7 +507,7 @@ global function SDL_strtoull(str: cstring, endp: *cstring, base: cint): uint64
 
 ### SDL_strtod
 
-```nelua
+```lua
 global function SDL_strtod(str: cstring, endp: *cstring): float64
 ```
 
@@ -515,7 +515,7 @@ global function SDL_strtod(str: cstring, endp: *cstring): float64
 
 ### SDL_strcmp
 
-```nelua
+```lua
 global function SDL_strcmp(str1: cstring, str2: cstring): cint
 ```
 
@@ -523,7 +523,7 @@ global function SDL_strcmp(str1: cstring, str2: cstring): cint
 
 ### SDL_strncmp
 
-```nelua
+```lua
 global function SDL_strncmp(str1: cstring, str2: cstring, maxlen: csize): cint
 ```
 
@@ -531,7 +531,7 @@ global function SDL_strncmp(str1: cstring, str2: cstring, maxlen: csize): cint
 
 ### SDL_strcasecmp
 
-```nelua
+```lua
 global function SDL_strcasecmp(str1: cstring, str2: cstring): cint
 ```
 
@@ -539,7 +539,7 @@ global function SDL_strcasecmp(str1: cstring, str2: cstring): cint
 
 ### SDL_strncasecmp
 
-```nelua
+```lua
 global function SDL_strncasecmp(str1: cstring, str2: cstring, len: csize): cint
 ```
 
@@ -547,7 +547,7 @@ global function SDL_strncasecmp(str1: cstring, str2: cstring, len: csize): cint
 
 ### SDL_sscanf
 
-```nelua
+```lua
 global function SDL_sscanf(text: cstring, fmt: cstring, ...: cvarargs): cint
 ```
 
@@ -555,7 +555,7 @@ global function SDL_sscanf(text: cstring, fmt: cstring, ...: cvarargs): cint
 
 ### SDL_vsscanf
 
-```nelua
+```lua
 global function SDL_vsscanf(text: cstring, fmt: cstring, ap: cvalist): cint
 ```
 
@@ -563,7 +563,7 @@ global function SDL_vsscanf(text: cstring, fmt: cstring, ap: cvalist): cint
 
 ### SDL_snprintf
 
-```nelua
+```lua
 global function SDL_snprintf(text: cstring, maxlen: csize, fmt: cstring, ...: cvarargs): cint
 ```
 
@@ -571,7 +571,7 @@ global function SDL_snprintf(text: cstring, maxlen: csize, fmt: cstring, ...: cv
 
 ### SDL_vsnprintf
 
-```nelua
+```lua
 global function SDL_vsnprintf(text: cstring, maxlen: csize, fmt: cstring, ap: cvalist): cint
 ```
 
@@ -579,7 +579,7 @@ global function SDL_vsnprintf(text: cstring, maxlen: csize, fmt: cstring, ap: cv
 
 ### SDL_acos
 
-```nelua
+```lua
 global function SDL_acos(x: float64): float64
 ```
 
@@ -587,7 +587,7 @@ global function SDL_acos(x: float64): float64
 
 ### SDL_acosf
 
-```nelua
+```lua
 global function SDL_acosf(x: float32): float32
 ```
 
@@ -595,7 +595,7 @@ global function SDL_acosf(x: float32): float32
 
 ### SDL_asin
 
-```nelua
+```lua
 global function SDL_asin(x: float64): float64
 ```
 
@@ -603,7 +603,7 @@ global function SDL_asin(x: float64): float64
 
 ### SDL_asinf
 
-```nelua
+```lua
 global function SDL_asinf(x: float32): float32
 ```
 
@@ -611,7 +611,7 @@ global function SDL_asinf(x: float32): float32
 
 ### SDL_atan
 
-```nelua
+```lua
 global function SDL_atan(x: float64): float64
 ```
 
@@ -619,7 +619,7 @@ global function SDL_atan(x: float64): float64
 
 ### SDL_atanf
 
-```nelua
+```lua
 global function SDL_atanf(x: float32): float32
 ```
 
@@ -627,7 +627,7 @@ global function SDL_atanf(x: float32): float32
 
 ### SDL_atan2
 
-```nelua
+```lua
 global function SDL_atan2(x: float64, y: float64): float64
 ```
 
@@ -635,7 +635,7 @@ global function SDL_atan2(x: float64, y: float64): float64
 
 ### SDL_atan2f
 
-```nelua
+```lua
 global function SDL_atan2f(x: float32, y: float32): float32
 ```
 
@@ -643,7 +643,7 @@ global function SDL_atan2f(x: float32, y: float32): float32
 
 ### SDL_ceil
 
-```nelua
+```lua
 global function SDL_ceil(x: float64): float64
 ```
 
@@ -651,7 +651,7 @@ global function SDL_ceil(x: float64): float64
 
 ### SDL_ceilf
 
-```nelua
+```lua
 global function SDL_ceilf(x: float32): float32
 ```
 
@@ -659,7 +659,7 @@ global function SDL_ceilf(x: float32): float32
 
 ### SDL_copysign
 
-```nelua
+```lua
 global function SDL_copysign(x: float64, y: float64): float64
 ```
 
@@ -667,7 +667,7 @@ global function SDL_copysign(x: float64, y: float64): float64
 
 ### SDL_copysignf
 
-```nelua
+```lua
 global function SDL_copysignf(x: float32, y: float32): float32
 ```
 
@@ -675,7 +675,7 @@ global function SDL_copysignf(x: float32, y: float32): float32
 
 ### SDL_cos
 
-```nelua
+```lua
 global function SDL_cos(x: float64): float64
 ```
 
@@ -683,7 +683,7 @@ global function SDL_cos(x: float64): float64
 
 ### SDL_cosf
 
-```nelua
+```lua
 global function SDL_cosf(x: float32): float32
 ```
 
@@ -691,7 +691,7 @@ global function SDL_cosf(x: float32): float32
 
 ### SDL_exp
 
-```nelua
+```lua
 global function SDL_exp(x: float64): float64
 ```
 
@@ -699,7 +699,7 @@ global function SDL_exp(x: float64): float64
 
 ### SDL_expf
 
-```nelua
+```lua
 global function SDL_expf(x: float32): float32
 ```
 
@@ -707,7 +707,7 @@ global function SDL_expf(x: float32): float32
 
 ### SDL_fabs
 
-```nelua
+```lua
 global function SDL_fabs(x: float64): float64
 ```
 
@@ -715,7 +715,7 @@ global function SDL_fabs(x: float64): float64
 
 ### SDL_fabsf
 
-```nelua
+```lua
 global function SDL_fabsf(x: float32): float32
 ```
 
@@ -723,7 +723,7 @@ global function SDL_fabsf(x: float32): float32
 
 ### SDL_floor
 
-```nelua
+```lua
 global function SDL_floor(x: float64): float64
 ```
 
@@ -731,7 +731,7 @@ global function SDL_floor(x: float64): float64
 
 ### SDL_floorf
 
-```nelua
+```lua
 global function SDL_floorf(x: float32): float32
 ```
 
@@ -739,7 +739,7 @@ global function SDL_floorf(x: float32): float32
 
 ### SDL_trunc
 
-```nelua
+```lua
 global function SDL_trunc(x: float64): float64
 ```
 
@@ -747,7 +747,7 @@ global function SDL_trunc(x: float64): float64
 
 ### SDL_truncf
 
-```nelua
+```lua
 global function SDL_truncf(x: float32): float32
 ```
 
@@ -755,7 +755,7 @@ global function SDL_truncf(x: float32): float32
 
 ### SDL_fmod
 
-```nelua
+```lua
 global function SDL_fmod(x: float64, y: float64): float64
 ```
 
@@ -763,7 +763,7 @@ global function SDL_fmod(x: float64, y: float64): float64
 
 ### SDL_fmodf
 
-```nelua
+```lua
 global function SDL_fmodf(x: float32, y: float32): float32
 ```
 
@@ -771,7 +771,7 @@ global function SDL_fmodf(x: float32, y: float32): float32
 
 ### SDL_log
 
-```nelua
+```lua
 global function SDL_log(x: float64): float64
 ```
 
@@ -779,7 +779,7 @@ global function SDL_log(x: float64): float64
 
 ### SDL_logf
 
-```nelua
+```lua
 global function SDL_logf(x: float32): float32
 ```
 
@@ -787,7 +787,7 @@ global function SDL_logf(x: float32): float32
 
 ### SDL_log10
 
-```nelua
+```lua
 global function SDL_log10(x: float64): float64
 ```
 
@@ -795,7 +795,7 @@ global function SDL_log10(x: float64): float64
 
 ### SDL_log10f
 
-```nelua
+```lua
 global function SDL_log10f(x: float32): float32
 ```
 
@@ -803,7 +803,7 @@ global function SDL_log10f(x: float32): float32
 
 ### SDL_pow
 
-```nelua
+```lua
 global function SDL_pow(x: float64, y: float64): float64
 ```
 
@@ -811,7 +811,7 @@ global function SDL_pow(x: float64, y: float64): float64
 
 ### SDL_powf
 
-```nelua
+```lua
 global function SDL_powf(x: float32, y: float32): float32
 ```
 
@@ -819,7 +819,7 @@ global function SDL_powf(x: float32, y: float32): float32
 
 ### SDL_scalbn
 
-```nelua
+```lua
 global function SDL_scalbn(x: float64, n: cint): float64
 ```
 
@@ -827,7 +827,7 @@ global function SDL_scalbn(x: float64, n: cint): float64
 
 ### SDL_scalbnf
 
-```nelua
+```lua
 global function SDL_scalbnf(x: float32, n: cint): float32
 ```
 
@@ -835,7 +835,7 @@ global function SDL_scalbnf(x: float32, n: cint): float32
 
 ### SDL_sin
 
-```nelua
+```lua
 global function SDL_sin(x: float64): float64
 ```
 
@@ -843,7 +843,7 @@ global function SDL_sin(x: float64): float64
 
 ### SDL_sinf
 
-```nelua
+```lua
 global function SDL_sinf(x: float32): float32
 ```
 
@@ -851,7 +851,7 @@ global function SDL_sinf(x: float32): float32
 
 ### SDL_sqrt
 
-```nelua
+```lua
 global function SDL_sqrt(x: float64): float64
 ```
 
@@ -859,7 +859,7 @@ global function SDL_sqrt(x: float64): float64
 
 ### SDL_sqrtf
 
-```nelua
+```lua
 global function SDL_sqrtf(x: float32): float32
 ```
 
@@ -867,7 +867,7 @@ global function SDL_sqrtf(x: float32): float32
 
 ### SDL_tan
 
-```nelua
+```lua
 global function SDL_tan(x: float64): float64
 ```
 
@@ -875,7 +875,7 @@ global function SDL_tan(x: float64): float64
 
 ### SDL_tanf
 
-```nelua
+```lua
 global function SDL_tanf(x: float32): float32
 ```
 
@@ -883,7 +883,7 @@ global function SDL_tanf(x: float32): float32
 
 ### _SDL_iconv_t
 
-```nelua
+```lua
 global _SDL_iconv_t: type = @record{}
 ```
 
@@ -891,7 +891,7 @@ global _SDL_iconv_t: type = @record{}
 
 ### SDL_iconv_t
 
-```nelua
+```lua
 global SDL_iconv_t: type = @*_SDL_iconv_t
 ```
 
@@ -899,7 +899,7 @@ global SDL_iconv_t: type = @*_SDL_iconv_t
 
 ### SDL_iconv_open
 
-```nelua
+```lua
 global function SDL_iconv_open(tocode: cstring, fromcode: cstring): SDL_iconv_t
 ```
 
@@ -907,7 +907,7 @@ global function SDL_iconv_open(tocode: cstring, fromcode: cstring): SDL_iconv_t
 
 ### SDL_iconv_close
 
-```nelua
+```lua
 global function SDL_iconv_close(cd: SDL_iconv_t): cint
 ```
 
@@ -915,7 +915,7 @@ global function SDL_iconv_close(cd: SDL_iconv_t): cint
 
 ### SDL_iconv
 
-```nelua
+```lua
 global function SDL_iconv(cd: SDL_iconv_t, inbuf: *cstring, inbytesleft: *csize, outbuf: *cstring, outbytesleft: *csize): csize
 ```
 
@@ -923,7 +923,7 @@ global function SDL_iconv(cd: SDL_iconv_t, inbuf: *cstring, inbytesleft: *csize,
 
 ### SDL_iconv_string
 
-```nelua
+```lua
 global function SDL_iconv_string(tocode: cstring, fromcode: cstring, inbuf: cstring, inbytesleft: csize): cstring
 ```
 
@@ -931,7 +931,7 @@ global function SDL_iconv_string(tocode: cstring, fromcode: cstring, inbuf: cstr
 
 ### SDL_memcpy4
 
-```nelua
+```lua
 global function SDL_memcpy4(dst: pointer, src: pointer, dwords: csize): pointer
 ```
 
@@ -939,7 +939,7 @@ global function SDL_memcpy4(dst: pointer, src: pointer, dwords: csize): pointer
 
 ### SDL_main_func
 
-```nelua
+```lua
 global SDL_main_func: type = @function(cint, *cstring): cint
 ```
 
@@ -947,7 +947,7 @@ global SDL_main_func: type = @function(cint, *cstring): cint
 
 ### SDL_main
 
-```nelua
+```lua
 global function SDL_main(argc: cint, argv: *cstring): cint
 ```
 
@@ -955,7 +955,7 @@ global function SDL_main(argc: cint, argv: *cstring): cint
 
 ### SDL_SetMainReady
 
-```nelua
+```lua
 global function SDL_SetMainReady()
 ```
 
@@ -963,7 +963,7 @@ global function SDL_SetMainReady()
 
 ### SDL_AssertState
 
-```nelua
+```lua
 global SDL_AssertState: type = @enum(cint){
   SDL_ASSERTION_RETRY = 0,
   SDL_ASSERTION_BREAK = 1,
@@ -977,7 +977,7 @@ global SDL_AssertState: type = @enum(cint){
 
 ### SDL_AssertData
 
-```nelua
+```lua
 global SDL_AssertData: type = @record{}
 ```
 
@@ -985,7 +985,7 @@ global SDL_AssertData: type = @record{}
 
 ### SDL_ReportAssertion
 
-```nelua
+```lua
 global function SDL_ReportAssertion(a1: *SDL_AssertData, a2: cstring, a3: cstring, a4: cint): SDL_AssertState
 ```
 
@@ -993,7 +993,7 @@ global function SDL_ReportAssertion(a1: *SDL_AssertData, a2: cstring, a3: cstrin
 
 ### SDL_AssertionHandler
 
-```nelua
+```lua
 global SDL_AssertionHandler: type = @function(*SDL_AssertData, pointer): SDL_AssertState
 ```
 
@@ -1001,7 +1001,7 @@ global SDL_AssertionHandler: type = @function(*SDL_AssertData, pointer): SDL_Ass
 
 ### SDL_SetAssertionHandler
 
-```nelua
+```lua
 global function SDL_SetAssertionHandler(handler: SDL_AssertionHandler, userdata: pointer)
 ```
 
@@ -1009,7 +1009,7 @@ global function SDL_SetAssertionHandler(handler: SDL_AssertionHandler, userdata:
 
 ### SDL_GetDefaultAssertionHandler
 
-```nelua
+```lua
 global function SDL_GetDefaultAssertionHandler(): SDL_AssertionHandler
 ```
 
@@ -1017,7 +1017,7 @@ global function SDL_GetDefaultAssertionHandler(): SDL_AssertionHandler
 
 ### SDL_GetAssertionHandler
 
-```nelua
+```lua
 global function SDL_GetAssertionHandler(puserdata: *pointer): SDL_AssertionHandler
 ```
 
@@ -1025,7 +1025,7 @@ global function SDL_GetAssertionHandler(puserdata: *pointer): SDL_AssertionHandl
 
 ### SDL_GetAssertionReport
 
-```nelua
+```lua
 global function SDL_GetAssertionReport(): *SDL_AssertData
 ```
 
@@ -1033,7 +1033,7 @@ global function SDL_GetAssertionReport(): *SDL_AssertData
 
 ### SDL_ResetAssertionReport
 
-```nelua
+```lua
 global function SDL_ResetAssertionReport()
 ```
 
@@ -1041,7 +1041,7 @@ global function SDL_ResetAssertionReport()
 
 ### SDL_AtomicTryLock
 
-```nelua
+```lua
 global function SDL_AtomicTryLock(lock: *cint): SDL_bool
 ```
 
@@ -1049,7 +1049,7 @@ global function SDL_AtomicTryLock(lock: *cint): SDL_bool
 
 ### SDL_AtomicLock
 
-```nelua
+```lua
 global function SDL_AtomicLock(lock: *cint)
 ```
 
@@ -1057,7 +1057,7 @@ global function SDL_AtomicLock(lock: *cint)
 
 ### SDL_AtomicUnlock
 
-```nelua
+```lua
 global function SDL_AtomicUnlock(lock: *cint)
 ```
 
@@ -1065,7 +1065,7 @@ global function SDL_AtomicUnlock(lock: *cint)
 
 ### SDL_MemoryBarrierReleaseFunction
 
-```nelua
+```lua
 global function SDL_MemoryBarrierReleaseFunction()
 ```
 
@@ -1073,7 +1073,7 @@ global function SDL_MemoryBarrierReleaseFunction()
 
 ### SDL_MemoryBarrierAcquireFunction
 
-```nelua
+```lua
 global function SDL_MemoryBarrierAcquireFunction()
 ```
 
@@ -1081,7 +1081,7 @@ global function SDL_MemoryBarrierAcquireFunction()
 
 ### SDL_atomic_t
 
-```nelua
+```lua
 global SDL_atomic_t: type = @record{
   value: cint
 }
@@ -1091,7 +1091,7 @@ global SDL_atomic_t: type = @record{
 
 ### SDL_AtomicCAS
 
-```nelua
+```lua
 global function SDL_AtomicCAS(a: *SDL_atomic_t, oldval: cint, newval: cint): SDL_bool
 ```
 
@@ -1099,7 +1099,7 @@ global function SDL_AtomicCAS(a: *SDL_atomic_t, oldval: cint, newval: cint): SDL
 
 ### SDL_AtomicSet
 
-```nelua
+```lua
 global function SDL_AtomicSet(a: *SDL_atomic_t, v: cint): cint
 ```
 
@@ -1107,7 +1107,7 @@ global function SDL_AtomicSet(a: *SDL_atomic_t, v: cint): cint
 
 ### SDL_AtomicGet
 
-```nelua
+```lua
 global function SDL_AtomicGet(a: *SDL_atomic_t): cint
 ```
 
@@ -1115,7 +1115,7 @@ global function SDL_AtomicGet(a: *SDL_atomic_t): cint
 
 ### SDL_AtomicAdd
 
-```nelua
+```lua
 global function SDL_AtomicAdd(a: *SDL_atomic_t, v: cint): cint
 ```
 
@@ -1123,7 +1123,7 @@ global function SDL_AtomicAdd(a: *SDL_atomic_t, v: cint): cint
 
 ### SDL_AtomicCASPtr
 
-```nelua
+```lua
 global function SDL_AtomicCASPtr(a: *pointer, oldval: pointer, newval: pointer): SDL_bool
 ```
 
@@ -1131,7 +1131,7 @@ global function SDL_AtomicCASPtr(a: *pointer, oldval: pointer, newval: pointer):
 
 ### SDL_AtomicSetPtr
 
-```nelua
+```lua
 global function SDL_AtomicSetPtr(a: *pointer, v: pointer): pointer
 ```
 
@@ -1139,7 +1139,7 @@ global function SDL_AtomicSetPtr(a: *pointer, v: pointer): pointer
 
 ### SDL_AtomicGetPtr
 
-```nelua
+```lua
 global function SDL_AtomicGetPtr(a: *pointer): pointer
 ```
 
@@ -1147,7 +1147,7 @@ global function SDL_AtomicGetPtr(a: *pointer): pointer
 
 ### SDL_SetError
 
-```nelua
+```lua
 global function SDL_SetError(fmt: cstring, ...: cvarargs): cint
 ```
 
@@ -1155,7 +1155,7 @@ global function SDL_SetError(fmt: cstring, ...: cvarargs): cint
 
 ### SDL_GetError
 
-```nelua
+```lua
 global function SDL_GetError(): cstring
 ```
 
@@ -1163,7 +1163,7 @@ global function SDL_GetError(): cstring
 
 ### SDL_GetErrorMsg
 
-```nelua
+```lua
 global function SDL_GetErrorMsg(errstr: cstring, maxlen: cint): cstring
 ```
 
@@ -1171,7 +1171,7 @@ global function SDL_GetErrorMsg(errstr: cstring, maxlen: cint): cstring
 
 ### SDL_ClearError
 
-```nelua
+```lua
 global function SDL_ClearError()
 ```
 
@@ -1179,7 +1179,7 @@ global function SDL_ClearError()
 
 ### SDL_errorcode
 
-```nelua
+```lua
 global SDL_errorcode: type = @enum(cint){
   SDL_ENOMEM = 0,
   SDL_EFREAD = 1,
@@ -1194,7 +1194,7 @@ global SDL_errorcode: type = @enum(cint){
 
 ### SDL_Error
 
-```nelua
+```lua
 global function SDL_Error(code: SDL_errorcode): cint
 ```
 
@@ -1202,7 +1202,7 @@ global function SDL_Error(code: SDL_errorcode): cint
 
 ### SDL_Swap16
 
-```nelua
+```lua
 global function SDL_Swap16(x: uint16): uint16
 ```
 
@@ -1210,7 +1210,7 @@ global function SDL_Swap16(x: uint16): uint16
 
 ### SDL_Swap32
 
-```nelua
+```lua
 global function SDL_Swap32(x: uint32): uint32
 ```
 
@@ -1218,7 +1218,7 @@ global function SDL_Swap32(x: uint32): uint32
 
 ### SDL_Swap64
 
-```nelua
+```lua
 global function SDL_Swap64(x: uint64): uint64
 ```
 
@@ -1226,7 +1226,7 @@ global function SDL_Swap64(x: uint64): uint64
 
 ### SDL_SwapFloat
 
-```nelua
+```lua
 global function SDL_SwapFloat(x: float32): float32
 ```
 
@@ -1234,7 +1234,7 @@ global function SDL_SwapFloat(x: float32): float32
 
 ### SDL_mutex
 
-```nelua
+```lua
 global SDL_mutex: type = @record{}
 ```
 
@@ -1242,7 +1242,7 @@ global SDL_mutex: type = @record{}
 
 ### SDL_CreateMutex
 
-```nelua
+```lua
 global function SDL_CreateMutex(): *SDL_mutex
 ```
 
@@ -1250,7 +1250,7 @@ global function SDL_CreateMutex(): *SDL_mutex
 
 ### SDL_LockMutex
 
-```nelua
+```lua
 global function SDL_LockMutex(mutex: *SDL_mutex): cint
 ```
 
@@ -1258,7 +1258,7 @@ global function SDL_LockMutex(mutex: *SDL_mutex): cint
 
 ### SDL_TryLockMutex
 
-```nelua
+```lua
 global function SDL_TryLockMutex(mutex: *SDL_mutex): cint
 ```
 
@@ -1266,7 +1266,7 @@ global function SDL_TryLockMutex(mutex: *SDL_mutex): cint
 
 ### SDL_UnlockMutex
 
-```nelua
+```lua
 global function SDL_UnlockMutex(mutex: *SDL_mutex): cint
 ```
 
@@ -1274,7 +1274,7 @@ global function SDL_UnlockMutex(mutex: *SDL_mutex): cint
 
 ### SDL_DestroyMutex
 
-```nelua
+```lua
 global function SDL_DestroyMutex(mutex: *SDL_mutex)
 ```
 
@@ -1282,7 +1282,7 @@ global function SDL_DestroyMutex(mutex: *SDL_mutex)
 
 ### SDL_semaphore
 
-```nelua
+```lua
 global SDL_semaphore: type = @record{}
 ```
 
@@ -1290,7 +1290,7 @@ global SDL_semaphore: type = @record{}
 
 ### SDL_sem
 
-```nelua
+```lua
 global SDL_sem: type = @SDL_semaphore
 ```
 
@@ -1298,7 +1298,7 @@ global SDL_sem: type = @SDL_semaphore
 
 ### SDL_CreateSemaphore
 
-```nelua
+```lua
 global function SDL_CreateSemaphore(initial_value: uint32): *SDL_sem
 ```
 
@@ -1306,7 +1306,7 @@ global function SDL_CreateSemaphore(initial_value: uint32): *SDL_sem
 
 ### SDL_DestroySemaphore
 
-```nelua
+```lua
 global function SDL_DestroySemaphore(sem: *SDL_sem)
 ```
 
@@ -1314,7 +1314,7 @@ global function SDL_DestroySemaphore(sem: *SDL_sem)
 
 ### SDL_SemWait
 
-```nelua
+```lua
 global function SDL_SemWait(sem: *SDL_sem): cint
 ```
 
@@ -1322,7 +1322,7 @@ global function SDL_SemWait(sem: *SDL_sem): cint
 
 ### SDL_SemTryWait
 
-```nelua
+```lua
 global function SDL_SemTryWait(sem: *SDL_sem): cint
 ```
 
@@ -1330,7 +1330,7 @@ global function SDL_SemTryWait(sem: *SDL_sem): cint
 
 ### SDL_SemWaitTimeout
 
-```nelua
+```lua
 global function SDL_SemWaitTimeout(sem: *SDL_sem, ms: uint32): cint
 ```
 
@@ -1338,7 +1338,7 @@ global function SDL_SemWaitTimeout(sem: *SDL_sem, ms: uint32): cint
 
 ### SDL_SemPost
 
-```nelua
+```lua
 global function SDL_SemPost(sem: *SDL_sem): cint
 ```
 
@@ -1346,7 +1346,7 @@ global function SDL_SemPost(sem: *SDL_sem): cint
 
 ### SDL_SemValue
 
-```nelua
+```lua
 global function SDL_SemValue(sem: *SDL_sem): uint32
 ```
 
@@ -1354,7 +1354,7 @@ global function SDL_SemValue(sem: *SDL_sem): uint32
 
 ### SDL_cond
 
-```nelua
+```lua
 global SDL_cond: type = @record{}
 ```
 
@@ -1362,7 +1362,7 @@ global SDL_cond: type = @record{}
 
 ### SDL_CreateCond
 
-```nelua
+```lua
 global function SDL_CreateCond(): *SDL_cond
 ```
 
@@ -1370,7 +1370,7 @@ global function SDL_CreateCond(): *SDL_cond
 
 ### SDL_DestroyCond
 
-```nelua
+```lua
 global function SDL_DestroyCond(cond: *SDL_cond)
 ```
 
@@ -1378,7 +1378,7 @@ global function SDL_DestroyCond(cond: *SDL_cond)
 
 ### SDL_CondSignal
 
-```nelua
+```lua
 global function SDL_CondSignal(cond: *SDL_cond): cint
 ```
 
@@ -1386,7 +1386,7 @@ global function SDL_CondSignal(cond: *SDL_cond): cint
 
 ### SDL_CondBroadcast
 
-```nelua
+```lua
 global function SDL_CondBroadcast(cond: *SDL_cond): cint
 ```
 
@@ -1394,7 +1394,7 @@ global function SDL_CondBroadcast(cond: *SDL_cond): cint
 
 ### SDL_CondWait
 
-```nelua
+```lua
 global function SDL_CondWait(cond: *SDL_cond, mutex: *SDL_mutex): cint
 ```
 
@@ -1402,7 +1402,7 @@ global function SDL_CondWait(cond: *SDL_cond, mutex: *SDL_mutex): cint
 
 ### SDL_CondWaitTimeout
 
-```nelua
+```lua
 global function SDL_CondWaitTimeout(cond: *SDL_cond, mutex: *SDL_mutex, ms: uint32): cint
 ```
 
@@ -1410,7 +1410,7 @@ global function SDL_CondWaitTimeout(cond: *SDL_cond, mutex: *SDL_mutex, ms: uint
 
 ### SDL_Thread
 
-```nelua
+```lua
 global SDL_Thread: type = @record{}
 ```
 
@@ -1418,7 +1418,7 @@ global SDL_Thread: type = @record{}
 
 ### SDL_ThreadPriority
 
-```nelua
+```lua
 global SDL_ThreadPriority: type = @enum(cint){
   SDL_THREAD_PRIORITY_LOW = 0,
   SDL_THREAD_PRIORITY_NORMAL = 1,
@@ -1431,7 +1431,7 @@ global SDL_ThreadPriority: type = @enum(cint){
 
 ### SDL_ThreadFunction
 
-```nelua
+```lua
 global SDL_ThreadFunction: type = @function(pointer): cint
 ```
 
@@ -1439,7 +1439,7 @@ global SDL_ThreadFunction: type = @function(pointer): cint
 
 ### SDL_CreateThread
 
-```nelua
+```lua
 global function SDL_CreateThread(fn: SDL_ThreadFunction, name: cstring, data: pointer): *SDL_Thread
 ```
 
@@ -1447,7 +1447,7 @@ global function SDL_CreateThread(fn: SDL_ThreadFunction, name: cstring, data: po
 
 ### SDL_CreateThreadWithStackSize
 
-```nelua
+```lua
 global function SDL_CreateThreadWithStackSize(fn: SDL_ThreadFunction, name: cstring, stacksize: csize, data: pointer): *SDL_Thread
 ```
 
@@ -1455,7 +1455,7 @@ global function SDL_CreateThreadWithStackSize(fn: SDL_ThreadFunction, name: cstr
 
 ### SDL_GetThreadName
 
-```nelua
+```lua
 global function SDL_GetThreadName(thread: *SDL_Thread): cstring
 ```
 
@@ -1463,7 +1463,7 @@ global function SDL_GetThreadName(thread: *SDL_Thread): cstring
 
 ### SDL_ThreadID
 
-```nelua
+```lua
 global function SDL_ThreadID(): culong
 ```
 
@@ -1471,7 +1471,7 @@ global function SDL_ThreadID(): culong
 
 ### SDL_GetThreadID
 
-```nelua
+```lua
 global function SDL_GetThreadID(thread: *SDL_Thread): culong
 ```
 
@@ -1479,7 +1479,7 @@ global function SDL_GetThreadID(thread: *SDL_Thread): culong
 
 ### SDL_SetThreadPriority
 
-```nelua
+```lua
 global function SDL_SetThreadPriority(priority: SDL_ThreadPriority): cint
 ```
 
@@ -1487,7 +1487,7 @@ global function SDL_SetThreadPriority(priority: SDL_ThreadPriority): cint
 
 ### SDL_WaitThread
 
-```nelua
+```lua
 global function SDL_WaitThread(thread: *SDL_Thread, status: *cint)
 ```
 
@@ -1495,7 +1495,7 @@ global function SDL_WaitThread(thread: *SDL_Thread, status: *cint)
 
 ### SDL_DetachThread
 
-```nelua
+```lua
 global function SDL_DetachThread(thread: *SDL_Thread)
 ```
 
@@ -1503,7 +1503,7 @@ global function SDL_DetachThread(thread: *SDL_Thread)
 
 ### SDL_TLSCreate
 
-```nelua
+```lua
 global function SDL_TLSCreate(): cuint
 ```
 
@@ -1511,7 +1511,7 @@ global function SDL_TLSCreate(): cuint
 
 ### SDL_TLSGet
 
-```nelua
+```lua
 global function SDL_TLSGet(id: cuint): pointer
 ```
 
@@ -1519,7 +1519,7 @@ global function SDL_TLSGet(id: cuint): pointer
 
 ### SDL_TLSSet
 
-```nelua
+```lua
 global function SDL_TLSSet(id: cuint, value: pointer, destructor: function(pointer)): cint
 ```
 
@@ -1527,7 +1527,7 @@ global function SDL_TLSSet(id: cuint, value: pointer, destructor: function(point
 
 ### SDL_RWops
 
-```nelua
+```lua
 global SDL_RWops: type = @record{}
 ```
 
@@ -1535,7 +1535,7 @@ global SDL_RWops: type = @record{}
 
 ### SDL_RWFromFile
 
-```nelua
+```lua
 global function SDL_RWFromFile(file: cstring, mode: cstring): *SDL_RWops
 ```
 
@@ -1543,7 +1543,7 @@ global function SDL_RWFromFile(file: cstring, mode: cstring): *SDL_RWops
 
 ### SDL_RWFromFP
 
-```nelua
+```lua
 global function SDL_RWFromFP(fp: *FILE, autoclose: SDL_bool): *SDL_RWops
 ```
 
@@ -1551,7 +1551,7 @@ global function SDL_RWFromFP(fp: *FILE, autoclose: SDL_bool): *SDL_RWops
 
 ### SDL_RWFromMem
 
-```nelua
+```lua
 global function SDL_RWFromMem(mem: pointer, size: cint): *SDL_RWops
 ```
 
@@ -1559,7 +1559,7 @@ global function SDL_RWFromMem(mem: pointer, size: cint): *SDL_RWops
 
 ### SDL_RWFromConstMem
 
-```nelua
+```lua
 global function SDL_RWFromConstMem(mem: pointer, size: cint): *SDL_RWops
 ```
 
@@ -1567,7 +1567,7 @@ global function SDL_RWFromConstMem(mem: pointer, size: cint): *SDL_RWops
 
 ### SDL_AllocRW
 
-```nelua
+```lua
 global function SDL_AllocRW(): *SDL_RWops
 ```
 
@@ -1575,7 +1575,7 @@ global function SDL_AllocRW(): *SDL_RWops
 
 ### SDL_FreeRW
 
-```nelua
+```lua
 global function SDL_FreeRW(area: *SDL_RWops)
 ```
 
@@ -1583,7 +1583,7 @@ global function SDL_FreeRW(area: *SDL_RWops)
 
 ### SDL_RWsize
 
-```nelua
+```lua
 global function SDL_RWsize(context: *SDL_RWops): int64
 ```
 
@@ -1591,7 +1591,7 @@ global function SDL_RWsize(context: *SDL_RWops): int64
 
 ### SDL_RWseek
 
-```nelua
+```lua
 global function SDL_RWseek(context: *SDL_RWops, offset: int64, whence: cint): int64
 ```
 
@@ -1599,7 +1599,7 @@ global function SDL_RWseek(context: *SDL_RWops, offset: int64, whence: cint): in
 
 ### SDL_RWtell
 
-```nelua
+```lua
 global function SDL_RWtell(context: *SDL_RWops): int64
 ```
 
@@ -1607,7 +1607,7 @@ global function SDL_RWtell(context: *SDL_RWops): int64
 
 ### SDL_RWread
 
-```nelua
+```lua
 global function SDL_RWread(context: *SDL_RWops, ptr: pointer, size: csize, maxnum: csize): csize
 ```
 
@@ -1615,7 +1615,7 @@ global function SDL_RWread(context: *SDL_RWops, ptr: pointer, size: csize, maxnu
 
 ### SDL_RWwrite
 
-```nelua
+```lua
 global function SDL_RWwrite(context: *SDL_RWops, ptr: pointer, size: csize, num: csize): csize
 ```
 
@@ -1623,7 +1623,7 @@ global function SDL_RWwrite(context: *SDL_RWops, ptr: pointer, size: csize, num:
 
 ### SDL_RWclose
 
-```nelua
+```lua
 global function SDL_RWclose(context: *SDL_RWops): cint
 ```
 
@@ -1631,7 +1631,7 @@ global function SDL_RWclose(context: *SDL_RWops): cint
 
 ### SDL_LoadFile_RW
 
-```nelua
+```lua
 global function SDL_LoadFile_RW(src: *SDL_RWops, datasize: *csize, freesrc: cint): pointer
 ```
 
@@ -1639,7 +1639,7 @@ global function SDL_LoadFile_RW(src: *SDL_RWops, datasize: *csize, freesrc: cint
 
 ### SDL_LoadFile
 
-```nelua
+```lua
 global function SDL_LoadFile(file: cstring, datasize: *csize): pointer
 ```
 
@@ -1647,7 +1647,7 @@ global function SDL_LoadFile(file: cstring, datasize: *csize): pointer
 
 ### SDL_ReadU8
 
-```nelua
+```lua
 global function SDL_ReadU8(src: *SDL_RWops): uint8
 ```
 
@@ -1655,7 +1655,7 @@ global function SDL_ReadU8(src: *SDL_RWops): uint8
 
 ### SDL_ReadLE16
 
-```nelua
+```lua
 global function SDL_ReadLE16(src: *SDL_RWops): uint16
 ```
 
@@ -1663,7 +1663,7 @@ global function SDL_ReadLE16(src: *SDL_RWops): uint16
 
 ### SDL_ReadBE16
 
-```nelua
+```lua
 global function SDL_ReadBE16(src: *SDL_RWops): uint16
 ```
 
@@ -1671,7 +1671,7 @@ global function SDL_ReadBE16(src: *SDL_RWops): uint16
 
 ### SDL_ReadLE32
 
-```nelua
+```lua
 global function SDL_ReadLE32(src: *SDL_RWops): uint32
 ```
 
@@ -1679,7 +1679,7 @@ global function SDL_ReadLE32(src: *SDL_RWops): uint32
 
 ### SDL_ReadBE32
 
-```nelua
+```lua
 global function SDL_ReadBE32(src: *SDL_RWops): uint32
 ```
 
@@ -1687,7 +1687,7 @@ global function SDL_ReadBE32(src: *SDL_RWops): uint32
 
 ### SDL_ReadLE64
 
-```nelua
+```lua
 global function SDL_ReadLE64(src: *SDL_RWops): uint64
 ```
 
@@ -1695,7 +1695,7 @@ global function SDL_ReadLE64(src: *SDL_RWops): uint64
 
 ### SDL_ReadBE64
 
-```nelua
+```lua
 global function SDL_ReadBE64(src: *SDL_RWops): uint64
 ```
 
@@ -1703,7 +1703,7 @@ global function SDL_ReadBE64(src: *SDL_RWops): uint64
 
 ### SDL_WriteU8
 
-```nelua
+```lua
 global function SDL_WriteU8(dst: *SDL_RWops, value: uint8): csize
 ```
 
@@ -1711,7 +1711,7 @@ global function SDL_WriteU8(dst: *SDL_RWops, value: uint8): csize
 
 ### SDL_WriteLE16
 
-```nelua
+```lua
 global function SDL_WriteLE16(dst: *SDL_RWops, value: uint16): csize
 ```
 
@@ -1719,7 +1719,7 @@ global function SDL_WriteLE16(dst: *SDL_RWops, value: uint16): csize
 
 ### SDL_WriteBE16
 
-```nelua
+```lua
 global function SDL_WriteBE16(dst: *SDL_RWops, value: uint16): csize
 ```
 
@@ -1727,7 +1727,7 @@ global function SDL_WriteBE16(dst: *SDL_RWops, value: uint16): csize
 
 ### SDL_WriteLE32
 
-```nelua
+```lua
 global function SDL_WriteLE32(dst: *SDL_RWops, value: uint32): csize
 ```
 
@@ -1735,7 +1735,7 @@ global function SDL_WriteLE32(dst: *SDL_RWops, value: uint32): csize
 
 ### SDL_WriteBE32
 
-```nelua
+```lua
 global function SDL_WriteBE32(dst: *SDL_RWops, value: uint32): csize
 ```
 
@@ -1743,7 +1743,7 @@ global function SDL_WriteBE32(dst: *SDL_RWops, value: uint32): csize
 
 ### SDL_WriteLE64
 
-```nelua
+```lua
 global function SDL_WriteLE64(dst: *SDL_RWops, value: uint64): csize
 ```
 
@@ -1751,7 +1751,7 @@ global function SDL_WriteLE64(dst: *SDL_RWops, value: uint64): csize
 
 ### SDL_WriteBE64
 
-```nelua
+```lua
 global function SDL_WriteBE64(dst: *SDL_RWops, value: uint64): csize
 ```
 
@@ -1759,7 +1759,7 @@ global function SDL_WriteBE64(dst: *SDL_RWops, value: uint64): csize
 
 ### SDL_AudioCallback
 
-```nelua
+```lua
 global SDL_AudioCallback: type = @function(pointer, *uint8, cint)
 ```
 
@@ -1767,7 +1767,7 @@ global SDL_AudioCallback: type = @function(pointer, *uint8, cint)
 
 ### SDL_AudioSpec
 
-```nelua
+```lua
 global SDL_AudioSpec: type = @record{
   freq: cint,
   format: cushort,
@@ -1785,7 +1785,7 @@ global SDL_AudioSpec: type = @record{
 
 ### SDL_AudioCVT
 
-```nelua
+```lua
 global SDL_AudioCVT: type = @record{}
 ```
 
@@ -1793,7 +1793,7 @@ global SDL_AudioCVT: type = @record{}
 
 ### SDL_AudioFilter
 
-```nelua
+```lua
 global SDL_AudioFilter: type = @function(*SDL_AudioCVT, cushort)
 ```
 
@@ -1801,7 +1801,7 @@ global SDL_AudioFilter: type = @function(*SDL_AudioCVT, cushort)
 
 ### SDL_GetNumAudioDrivers
 
-```nelua
+```lua
 global function SDL_GetNumAudioDrivers(): cint
 ```
 
@@ -1809,7 +1809,7 @@ global function SDL_GetNumAudioDrivers(): cint
 
 ### SDL_GetAudioDriver
 
-```nelua
+```lua
 global function SDL_GetAudioDriver(index: cint): cstring
 ```
 
@@ -1817,7 +1817,7 @@ global function SDL_GetAudioDriver(index: cint): cstring
 
 ### SDL_AudioInit
 
-```nelua
+```lua
 global function SDL_AudioInit(driver_name: cstring): cint
 ```
 
@@ -1825,7 +1825,7 @@ global function SDL_AudioInit(driver_name: cstring): cint
 
 ### SDL_AudioQuit
 
-```nelua
+```lua
 global function SDL_AudioQuit()
 ```
 
@@ -1833,7 +1833,7 @@ global function SDL_AudioQuit()
 
 ### SDL_GetCurrentAudioDriver
 
-```nelua
+```lua
 global function SDL_GetCurrentAudioDriver(): cstring
 ```
 
@@ -1841,7 +1841,7 @@ global function SDL_GetCurrentAudioDriver(): cstring
 
 ### SDL_OpenAudio
 
-```nelua
+```lua
 global function SDL_OpenAudio(desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec): cint
 ```
 
@@ -1849,7 +1849,7 @@ global function SDL_OpenAudio(desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec)
 
 ### SDL_GetNumAudioDevices
 
-```nelua
+```lua
 global function SDL_GetNumAudioDevices(iscapture: cint): cint
 ```
 
@@ -1857,7 +1857,7 @@ global function SDL_GetNumAudioDevices(iscapture: cint): cint
 
 ### SDL_GetAudioDeviceName
 
-```nelua
+```lua
 global function SDL_GetAudioDeviceName(index: cint, iscapture: cint): cstring
 ```
 
@@ -1865,7 +1865,7 @@ global function SDL_GetAudioDeviceName(index: cint, iscapture: cint): cstring
 
 ### SDL_OpenAudioDevice
 
-```nelua
+```lua
 global function SDL_OpenAudioDevice(device: cstring, iscapture: cint, desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec, allowed_changes: cint): cuint
 ```
 
@@ -1873,7 +1873,7 @@ global function SDL_OpenAudioDevice(device: cstring, iscapture: cint, desired: *
 
 ### SDL_AudioStatus
 
-```nelua
+```lua
 global SDL_AudioStatus: type = @enum(cint){
   SDL_AUDIO_STOPPED = 0,
   SDL_AUDIO_PLAYING = 1,
@@ -1885,7 +1885,7 @@ global SDL_AudioStatus: type = @enum(cint){
 
 ### SDL_GetAudioStatus
 
-```nelua
+```lua
 global function SDL_GetAudioStatus(): SDL_AudioStatus
 ```
 
@@ -1893,7 +1893,7 @@ global function SDL_GetAudioStatus(): SDL_AudioStatus
 
 ### SDL_GetAudioDeviceStatus
 
-```nelua
+```lua
 global function SDL_GetAudioDeviceStatus(dev: cuint): SDL_AudioStatus
 ```
 
@@ -1901,7 +1901,7 @@ global function SDL_GetAudioDeviceStatus(dev: cuint): SDL_AudioStatus
 
 ### SDL_PauseAudio
 
-```nelua
+```lua
 global function SDL_PauseAudio(pause_on: cint)
 ```
 
@@ -1909,7 +1909,7 @@ global function SDL_PauseAudio(pause_on: cint)
 
 ### SDL_PauseAudioDevice
 
-```nelua
+```lua
 global function SDL_PauseAudioDevice(dev: cuint, pause_on: cint)
 ```
 
@@ -1917,7 +1917,7 @@ global function SDL_PauseAudioDevice(dev: cuint, pause_on: cint)
 
 ### SDL_LoadWAV_RW
 
-```nelua
+```lua
 global function SDL_LoadWAV_RW(src: *SDL_RWops, freesrc: cint, spec: *SDL_AudioSpec, audio_buf: **uint8, audio_len: *uint32): *SDL_AudioSpec
 ```
 
@@ -1925,7 +1925,7 @@ global function SDL_LoadWAV_RW(src: *SDL_RWops, freesrc: cint, spec: *SDL_AudioS
 
 ### SDL_FreeWAV
 
-```nelua
+```lua
 global function SDL_FreeWAV(audio_buf: *uint8)
 ```
 
@@ -1933,7 +1933,7 @@ global function SDL_FreeWAV(audio_buf: *uint8)
 
 ### SDL_BuildAudioCVT
 
-```nelua
+```lua
 global function SDL_BuildAudioCVT(cvt: *SDL_AudioCVT, src_format: cushort, src_channels: uint8, src_rate: cint, dst_format: cushort, dst_channels: uint8, dst_rate: cint): cint
 ```
 
@@ -1941,7 +1941,7 @@ global function SDL_BuildAudioCVT(cvt: *SDL_AudioCVT, src_format: cushort, src_c
 
 ### SDL_ConvertAudio
 
-```nelua
+```lua
 global function SDL_ConvertAudio(cvt: *SDL_AudioCVT): cint
 ```
 
@@ -1949,7 +1949,7 @@ global function SDL_ConvertAudio(cvt: *SDL_AudioCVT): cint
 
 ### SDL_AudioStream
 
-```nelua
+```lua
 global SDL_AudioStream: type = @record{}
 ```
 
@@ -1957,7 +1957,7 @@ global SDL_AudioStream: type = @record{}
 
 ### SDL_NewAudioStream
 
-```nelua
+```lua
 global function SDL_NewAudioStream(src_format: cushort, src_channels: uint8, src_rate: cint, dst_format: cushort, dst_channels: uint8, dst_rate: cint): *SDL_AudioStream
 ```
 
@@ -1965,7 +1965,7 @@ global function SDL_NewAudioStream(src_format: cushort, src_channels: uint8, src
 
 ### SDL_AudioStreamPut
 
-```nelua
+```lua
 global function SDL_AudioStreamPut(stream: *SDL_AudioStream, buf: pointer, len: cint): cint
 ```
 
@@ -1973,7 +1973,7 @@ global function SDL_AudioStreamPut(stream: *SDL_AudioStream, buf: pointer, len: 
 
 ### SDL_AudioStreamGet
 
-```nelua
+```lua
 global function SDL_AudioStreamGet(stream: *SDL_AudioStream, buf: pointer, len: cint): cint
 ```
 
@@ -1981,7 +1981,7 @@ global function SDL_AudioStreamGet(stream: *SDL_AudioStream, buf: pointer, len: 
 
 ### SDL_AudioStreamAvailable
 
-```nelua
+```lua
 global function SDL_AudioStreamAvailable(stream: *SDL_AudioStream): cint
 ```
 
@@ -1989,7 +1989,7 @@ global function SDL_AudioStreamAvailable(stream: *SDL_AudioStream): cint
 
 ### SDL_AudioStreamFlush
 
-```nelua
+```lua
 global function SDL_AudioStreamFlush(stream: *SDL_AudioStream): cint
 ```
 
@@ -1997,7 +1997,7 @@ global function SDL_AudioStreamFlush(stream: *SDL_AudioStream): cint
 
 ### SDL_AudioStreamClear
 
-```nelua
+```lua
 global function SDL_AudioStreamClear(stream: *SDL_AudioStream)
 ```
 
@@ -2005,7 +2005,7 @@ global function SDL_AudioStreamClear(stream: *SDL_AudioStream)
 
 ### SDL_FreeAudioStream
 
-```nelua
+```lua
 global function SDL_FreeAudioStream(stream: *SDL_AudioStream)
 ```
 
@@ -2013,7 +2013,7 @@ global function SDL_FreeAudioStream(stream: *SDL_AudioStream)
 
 ### SDL_MixAudio
 
-```nelua
+```lua
 global function SDL_MixAudio(dst: *uint8, src: *uint8, len: uint32, volume: cint)
 ```
 
@@ -2021,7 +2021,7 @@ global function SDL_MixAudio(dst: *uint8, src: *uint8, len: uint32, volume: cint
 
 ### SDL_MixAudioFormat
 
-```nelua
+```lua
 global function SDL_MixAudioFormat(dst: *uint8, src: *uint8, format: cushort, len: uint32, volume: cint)
 ```
 
@@ -2029,7 +2029,7 @@ global function SDL_MixAudioFormat(dst: *uint8, src: *uint8, format: cushort, le
 
 ### SDL_QueueAudio
 
-```nelua
+```lua
 global function SDL_QueueAudio(dev: cuint, data: pointer, len: uint32): cint
 ```
 
@@ -2037,7 +2037,7 @@ global function SDL_QueueAudio(dev: cuint, data: pointer, len: uint32): cint
 
 ### SDL_DequeueAudio
 
-```nelua
+```lua
 global function SDL_DequeueAudio(dev: cuint, data: pointer, len: uint32): uint32
 ```
 
@@ -2045,7 +2045,7 @@ global function SDL_DequeueAudio(dev: cuint, data: pointer, len: uint32): uint32
 
 ### SDL_GetQueuedAudioSize
 
-```nelua
+```lua
 global function SDL_GetQueuedAudioSize(dev: cuint): uint32
 ```
 
@@ -2053,7 +2053,7 @@ global function SDL_GetQueuedAudioSize(dev: cuint): uint32
 
 ### SDL_ClearQueuedAudio
 
-```nelua
+```lua
 global function SDL_ClearQueuedAudio(dev: cuint)
 ```
 
@@ -2061,7 +2061,7 @@ global function SDL_ClearQueuedAudio(dev: cuint)
 
 ### SDL_LockAudio
 
-```nelua
+```lua
 global function SDL_LockAudio()
 ```
 
@@ -2069,7 +2069,7 @@ global function SDL_LockAudio()
 
 ### SDL_LockAudioDevice
 
-```nelua
+```lua
 global function SDL_LockAudioDevice(dev: cuint)
 ```
 
@@ -2077,7 +2077,7 @@ global function SDL_LockAudioDevice(dev: cuint)
 
 ### SDL_UnlockAudio
 
-```nelua
+```lua
 global function SDL_UnlockAudio()
 ```
 
@@ -2085,7 +2085,7 @@ global function SDL_UnlockAudio()
 
 ### SDL_UnlockAudioDevice
 
-```nelua
+```lua
 global function SDL_UnlockAudioDevice(dev: cuint)
 ```
 
@@ -2093,7 +2093,7 @@ global function SDL_UnlockAudioDevice(dev: cuint)
 
 ### SDL_CloseAudio
 
-```nelua
+```lua
 global function SDL_CloseAudio()
 ```
 
@@ -2101,7 +2101,7 @@ global function SDL_CloseAudio()
 
 ### SDL_CloseAudioDevice
 
-```nelua
+```lua
 global function SDL_CloseAudioDevice(dev: cuint)
 ```
 
@@ -2109,7 +2109,7 @@ global function SDL_CloseAudioDevice(dev: cuint)
 
 ### SDL_SetClipboardText
 
-```nelua
+```lua
 global function SDL_SetClipboardText(text: cstring): cint
 ```
 
@@ -2117,7 +2117,7 @@ global function SDL_SetClipboardText(text: cstring): cint
 
 ### SDL_GetClipboardText
 
-```nelua
+```lua
 global function SDL_GetClipboardText(): cstring
 ```
 
@@ -2125,7 +2125,7 @@ global function SDL_GetClipboardText(): cstring
 
 ### SDL_HasClipboardText
 
-```nelua
+```lua
 global function SDL_HasClipboardText(): SDL_bool
 ```
 
@@ -2133,7 +2133,7 @@ global function SDL_HasClipboardText(): SDL_bool
 
 ### SDL_GetCPUCount
 
-```nelua
+```lua
 global function SDL_GetCPUCount(): cint
 ```
 
@@ -2141,7 +2141,7 @@ global function SDL_GetCPUCount(): cint
 
 ### SDL_GetCPUCacheLineSize
 
-```nelua
+```lua
 global function SDL_GetCPUCacheLineSize(): cint
 ```
 
@@ -2149,7 +2149,7 @@ global function SDL_GetCPUCacheLineSize(): cint
 
 ### SDL_HasRDTSC
 
-```nelua
+```lua
 global function SDL_HasRDTSC(): SDL_bool
 ```
 
@@ -2157,7 +2157,7 @@ global function SDL_HasRDTSC(): SDL_bool
 
 ### SDL_HasAltiVec
 
-```nelua
+```lua
 global function SDL_HasAltiVec(): SDL_bool
 ```
 
@@ -2165,7 +2165,7 @@ global function SDL_HasAltiVec(): SDL_bool
 
 ### SDL_HasMMX
 
-```nelua
+```lua
 global function SDL_HasMMX(): SDL_bool
 ```
 
@@ -2173,7 +2173,7 @@ global function SDL_HasMMX(): SDL_bool
 
 ### SDL_Has3DNow
 
-```nelua
+```lua
 global function SDL_Has3DNow(): SDL_bool
 ```
 
@@ -2181,7 +2181,7 @@ global function SDL_Has3DNow(): SDL_bool
 
 ### SDL_HasSSE
 
-```nelua
+```lua
 global function SDL_HasSSE(): SDL_bool
 ```
 
@@ -2189,7 +2189,7 @@ global function SDL_HasSSE(): SDL_bool
 
 ### SDL_HasSSE2
 
-```nelua
+```lua
 global function SDL_HasSSE2(): SDL_bool
 ```
 
@@ -2197,7 +2197,7 @@ global function SDL_HasSSE2(): SDL_bool
 
 ### SDL_HasSSE3
 
-```nelua
+```lua
 global function SDL_HasSSE3(): SDL_bool
 ```
 
@@ -2205,7 +2205,7 @@ global function SDL_HasSSE3(): SDL_bool
 
 ### SDL_HasSSE41
 
-```nelua
+```lua
 global function SDL_HasSSE41(): SDL_bool
 ```
 
@@ -2213,7 +2213,7 @@ global function SDL_HasSSE41(): SDL_bool
 
 ### SDL_HasSSE42
 
-```nelua
+```lua
 global function SDL_HasSSE42(): SDL_bool
 ```
 
@@ -2221,7 +2221,7 @@ global function SDL_HasSSE42(): SDL_bool
 
 ### SDL_HasAVX
 
-```nelua
+```lua
 global function SDL_HasAVX(): SDL_bool
 ```
 
@@ -2229,7 +2229,7 @@ global function SDL_HasAVX(): SDL_bool
 
 ### SDL_HasAVX2
 
-```nelua
+```lua
 global function SDL_HasAVX2(): SDL_bool
 ```
 
@@ -2237,7 +2237,7 @@ global function SDL_HasAVX2(): SDL_bool
 
 ### SDL_HasAVX512F
 
-```nelua
+```lua
 global function SDL_HasAVX512F(): SDL_bool
 ```
 
@@ -2245,7 +2245,7 @@ global function SDL_HasAVX512F(): SDL_bool
 
 ### SDL_HasARMSIMD
 
-```nelua
+```lua
 global function SDL_HasARMSIMD(): SDL_bool
 ```
 
@@ -2253,7 +2253,7 @@ global function SDL_HasARMSIMD(): SDL_bool
 
 ### SDL_HasNEON
 
-```nelua
+```lua
 global function SDL_HasNEON(): SDL_bool
 ```
 
@@ -2261,7 +2261,7 @@ global function SDL_HasNEON(): SDL_bool
 
 ### SDL_GetSystemRAM
 
-```nelua
+```lua
 global function SDL_GetSystemRAM(): cint
 ```
 
@@ -2269,7 +2269,7 @@ global function SDL_GetSystemRAM(): cint
 
 ### SDL_SIMDGetAlignment
 
-```nelua
+```lua
 global function SDL_SIMDGetAlignment(): csize
 ```
 
@@ -2277,7 +2277,7 @@ global function SDL_SIMDGetAlignment(): csize
 
 ### SDL_SIMDAlloc
 
-```nelua
+```lua
 global function SDL_SIMDAlloc(len: csize): pointer
 ```
 
@@ -2285,7 +2285,7 @@ global function SDL_SIMDAlloc(len: csize): pointer
 
 ### SDL_SIMDRealloc
 
-```nelua
+```lua
 global function SDL_SIMDRealloc(mem: pointer, len: csize): pointer
 ```
 
@@ -2293,7 +2293,7 @@ global function SDL_SIMDRealloc(mem: pointer, len: csize): pointer
 
 ### SDL_SIMDFree
 
-```nelua
+```lua
 global function SDL_SIMDFree(ptr: pointer)
 ```
 
@@ -2301,7 +2301,7 @@ global function SDL_SIMDFree(ptr: pointer)
 
 ### SDL_PixelType
 
-```nelua
+```lua
 global SDL_PixelType: type = @enum(cint){
   SDL_PIXELTYPE_UNKNOWN = 0,
   SDL_PIXELTYPE_INDEX1 = 1,
@@ -2322,7 +2322,7 @@ global SDL_PixelType: type = @enum(cint){
 
 ### SDL_BitmapOrder
 
-```nelua
+```lua
 global SDL_BitmapOrder: type = @enum(cint){
   SDL_BITMAPORDER_NONE = 0,
   SDL_BITMAPORDER_4321 = 1,
@@ -2334,7 +2334,7 @@ global SDL_BitmapOrder: type = @enum(cint){
 
 ### SDL_PackedOrder
 
-```nelua
+```lua
 global SDL_PackedOrder: type = @enum(cint){
   SDL_PACKEDORDER_NONE = 0,
   SDL_PACKEDORDER_XRGB = 1,
@@ -2352,7 +2352,7 @@ global SDL_PackedOrder: type = @enum(cint){
 
 ### SDL_ArrayOrder
 
-```nelua
+```lua
 global SDL_ArrayOrder: type = @enum(cint){
   SDL_ARRAYORDER_NONE = 0,
   SDL_ARRAYORDER_RGB = 1,
@@ -2368,7 +2368,7 @@ global SDL_ArrayOrder: type = @enum(cint){
 
 ### SDL_PackedLayout
 
-```nelua
+```lua
 global SDL_PackedLayout: type = @enum(cint){
   SDL_PACKEDLAYOUT_NONE = 0,
   SDL_PACKEDLAYOUT_332 = 1,
@@ -2386,7 +2386,7 @@ global SDL_PackedLayout: type = @enum(cint){
 
 ### SDL_PixelFormatEnum
 
-```nelua
+```lua
 global SDL_PixelFormatEnum: type = @enum(cint){
   SDL_PIXELFORMAT_UNKNOWN = 0,
   SDL_PIXELFORMAT_INDEX1LSB = 286261504,
@@ -2445,7 +2445,7 @@ global SDL_PixelFormatEnum: type = @enum(cint){
 
 ### SDL_Color
 
-```nelua
+```lua
 global SDL_Color: type = @record{
   r: uint8,
   g: uint8,
@@ -2458,7 +2458,7 @@ global SDL_Color: type = @record{
 
 ### SDL_Palette
 
-```nelua
+```lua
 global SDL_Palette: type = @record{
   ncolors: cint,
   colors: *SDL_Color,
@@ -2471,7 +2471,7 @@ global SDL_Palette: type = @record{
 
 ### SDL_PixelFormat
 
-```nelua
+```lua
 global SDL_PixelFormat: type = @record{}
 ```
 
@@ -2479,7 +2479,7 @@ global SDL_PixelFormat: type = @record{}
 
 ### SDL_GetPixelFormatName
 
-```nelua
+```lua
 global function SDL_GetPixelFormatName(format: uint32): cstring
 ```
 
@@ -2487,7 +2487,7 @@ global function SDL_GetPixelFormatName(format: uint32): cstring
 
 ### SDL_PixelFormatEnumToMasks
 
-```nelua
+```lua
 global function SDL_PixelFormatEnumToMasks(format: uint32, bpp: *cint, Rmask: *uint32, Gmask: *uint32, Bmask: *uint32, Amask: *uint32): SDL_bool
 ```
 
@@ -2495,7 +2495,7 @@ global function SDL_PixelFormatEnumToMasks(format: uint32, bpp: *cint, Rmask: *u
 
 ### SDL_MasksToPixelFormatEnum
 
-```nelua
+```lua
 global function SDL_MasksToPixelFormatEnum(bpp: cint, Rmask: uint32, Gmask: uint32, Bmask: uint32, Amask: uint32): uint32
 ```
 
@@ -2503,7 +2503,7 @@ global function SDL_MasksToPixelFormatEnum(bpp: cint, Rmask: uint32, Gmask: uint
 
 ### SDL_AllocFormat
 
-```nelua
+```lua
 global function SDL_AllocFormat(pixel_format: uint32): *SDL_PixelFormat
 ```
 
@@ -2511,7 +2511,7 @@ global function SDL_AllocFormat(pixel_format: uint32): *SDL_PixelFormat
 
 ### SDL_FreeFormat
 
-```nelua
+```lua
 global function SDL_FreeFormat(format: *SDL_PixelFormat)
 ```
 
@@ -2519,7 +2519,7 @@ global function SDL_FreeFormat(format: *SDL_PixelFormat)
 
 ### SDL_AllocPalette
 
-```nelua
+```lua
 global function SDL_AllocPalette(ncolors: cint): *SDL_Palette
 ```
 
@@ -2527,7 +2527,7 @@ global function SDL_AllocPalette(ncolors: cint): *SDL_Palette
 
 ### SDL_SetPixelFormatPalette
 
-```nelua
+```lua
 global function SDL_SetPixelFormatPalette(format: *SDL_PixelFormat, palette: *SDL_Palette): cint
 ```
 
@@ -2535,7 +2535,7 @@ global function SDL_SetPixelFormatPalette(format: *SDL_PixelFormat, palette: *SD
 
 ### SDL_SetPaletteColors
 
-```nelua
+```lua
 global function SDL_SetPaletteColors(palette: *SDL_Palette, colors: *SDL_Color, firstcolor: cint, ncolors: cint): cint
 ```
 
@@ -2543,7 +2543,7 @@ global function SDL_SetPaletteColors(palette: *SDL_Palette, colors: *SDL_Color, 
 
 ### SDL_FreePalette
 
-```nelua
+```lua
 global function SDL_FreePalette(palette: *SDL_Palette)
 ```
 
@@ -2551,7 +2551,7 @@ global function SDL_FreePalette(palette: *SDL_Palette)
 
 ### SDL_MapRGB
 
-```nelua
+```lua
 global function SDL_MapRGB(format: *SDL_PixelFormat, r: uint8, g: uint8, b: uint8): uint32
 ```
 
@@ -2559,7 +2559,7 @@ global function SDL_MapRGB(format: *SDL_PixelFormat, r: uint8, g: uint8, b: uint
 
 ### SDL_MapRGBA
 
-```nelua
+```lua
 global function SDL_MapRGBA(format: *SDL_PixelFormat, r: uint8, g: uint8, b: uint8, a: uint8): uint32
 ```
 
@@ -2567,7 +2567,7 @@ global function SDL_MapRGBA(format: *SDL_PixelFormat, r: uint8, g: uint8, b: uin
 
 ### SDL_GetRGB
 
-```nelua
+```lua
 global function SDL_GetRGB(pixel: uint32, format: *SDL_PixelFormat, r: *uint8, g: *uint8, b: *uint8)
 ```
 
@@ -2575,7 +2575,7 @@ global function SDL_GetRGB(pixel: uint32, format: *SDL_PixelFormat, r: *uint8, g
 
 ### SDL_GetRGBA
 
-```nelua
+```lua
 global function SDL_GetRGBA(pixel: uint32, format: *SDL_PixelFormat, r: *uint8, g: *uint8, b: *uint8, a: *uint8)
 ```
 
@@ -2583,7 +2583,7 @@ global function SDL_GetRGBA(pixel: uint32, format: *SDL_PixelFormat, r: *uint8, 
 
 ### SDL_CalculateGammaRamp
 
-```nelua
+```lua
 global function SDL_CalculateGammaRamp(gamma: float32, ramp: *uint16)
 ```
 
@@ -2591,7 +2591,7 @@ global function SDL_CalculateGammaRamp(gamma: float32, ramp: *uint16)
 
 ### SDL_Point
 
-```nelua
+```lua
 global SDL_Point: type = @record{
   x: cint,
   y: cint
@@ -2602,7 +2602,7 @@ global SDL_Point: type = @record{
 
 ### SDL_FPoint
 
-```nelua
+```lua
 global SDL_FPoint: type = @record{
   x: float32,
   y: float32
@@ -2613,7 +2613,7 @@ global SDL_FPoint: type = @record{
 
 ### SDL_Rect
 
-```nelua
+```lua
 global SDL_Rect: type = @record{
   x: cint,
   y: cint,
@@ -2626,7 +2626,7 @@ global SDL_Rect: type = @record{
 
 ### SDL_FRect
 
-```nelua
+```lua
 global SDL_FRect: type = @record{
   x: float32,
   y: float32,
@@ -2639,7 +2639,7 @@ global SDL_FRect: type = @record{
 
 ### SDL_PointInRect
 
-```nelua
+```lua
 global function SDL_PointInRect(p: *SDL_Point, r: *SDL_Rect): SDL_bool
 ```
 
@@ -2647,7 +2647,7 @@ global function SDL_PointInRect(p: *SDL_Point, r: *SDL_Rect): SDL_bool
 
 ### SDL_RectEmpty
 
-```nelua
+```lua
 global function SDL_RectEmpty(r: *SDL_Rect): SDL_bool
 ```
 
@@ -2655,7 +2655,7 @@ global function SDL_RectEmpty(r: *SDL_Rect): SDL_bool
 
 ### SDL_RectEquals
 
-```nelua
+```lua
 global function SDL_RectEquals(a: *SDL_Rect, b: *SDL_Rect): SDL_bool
 ```
 
@@ -2663,7 +2663,7 @@ global function SDL_RectEquals(a: *SDL_Rect, b: *SDL_Rect): SDL_bool
 
 ### SDL_HasIntersection
 
-```nelua
+```lua
 global function SDL_HasIntersection(A: *SDL_Rect, B: *SDL_Rect): SDL_bool
 ```
 
@@ -2671,7 +2671,7 @@ global function SDL_HasIntersection(A: *SDL_Rect, B: *SDL_Rect): SDL_bool
 
 ### SDL_IntersectRect
 
-```nelua
+```lua
 global function SDL_IntersectRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect): SDL_bool
 ```
 
@@ -2679,7 +2679,7 @@ global function SDL_IntersectRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect)
 
 ### SDL_UnionRect
 
-```nelua
+```lua
 global function SDL_UnionRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect)
 ```
 
@@ -2687,7 +2687,7 @@ global function SDL_UnionRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect)
 
 ### SDL_EnclosePoints
 
-```nelua
+```lua
 global function SDL_EnclosePoints(points: *SDL_Point, count: cint, clip: *SDL_Rect, result: *SDL_Rect): SDL_bool
 ```
 
@@ -2695,7 +2695,7 @@ global function SDL_EnclosePoints(points: *SDL_Point, count: cint, clip: *SDL_Re
 
 ### SDL_IntersectRectAndLine
 
-```nelua
+```lua
 global function SDL_IntersectRectAndLine(rect: *SDL_Rect, X1: *cint, Y1: *cint, X2: *cint, Y2: *cint): SDL_bool
 ```
 
@@ -2703,7 +2703,7 @@ global function SDL_IntersectRectAndLine(rect: *SDL_Rect, X1: *cint, Y1: *cint, 
 
 ### SDL_BlendMode
 
-```nelua
+```lua
 global SDL_BlendMode: type = @enum(cint){
   SDL_BLENDMODE_NONE = 0,
   SDL_BLENDMODE_BLEND = 1,
@@ -2718,7 +2718,7 @@ global SDL_BlendMode: type = @enum(cint){
 
 ### SDL_BlendOperation
 
-```nelua
+```lua
 global SDL_BlendOperation: type = @enum(cint){
   SDL_BLENDOPERATION_ADD = 1,
   SDL_BLENDOPERATION_SUBTRACT = 2,
@@ -2732,7 +2732,7 @@ global SDL_BlendOperation: type = @enum(cint){
 
 ### SDL_BlendFactor
 
-```nelua
+```lua
 global SDL_BlendFactor: type = @enum(cint){
   SDL_BLENDFACTOR_ZERO = 1,
   SDL_BLENDFACTOR_ONE = 2,
@@ -2751,7 +2751,7 @@ global SDL_BlendFactor: type = @enum(cint){
 
 ### SDL_ComposeCustomBlendMode
 
-```nelua
+```lua
 global function SDL_ComposeCustomBlendMode(srcColorFactor: SDL_BlendFactor, dstColorFactor: SDL_BlendFactor, colorOperation: SDL_BlendOperation, srcAlphaFactor: SDL_BlendFactor, dstAlphaFactor: SDL_BlendFactor, alphaOperation: SDL_BlendOperation): SDL_BlendMode
 ```
 
@@ -2759,7 +2759,7 @@ global function SDL_ComposeCustomBlendMode(srcColorFactor: SDL_BlendFactor, dstC
 
 ### SDL_BlitMap
 
-```nelua
+```lua
 global SDL_BlitMap: type = @record{}
 ```
 
@@ -2767,7 +2767,7 @@ global SDL_BlitMap: type = @record{}
 
 ### SDL_Surface
 
-```nelua
+```lua
 global SDL_Surface: type = @record{
   flags: uint32,
   format: *SDL_PixelFormat,
@@ -2788,7 +2788,7 @@ global SDL_Surface: type = @record{
 
 ### SDL_blit
 
-```nelua
+```lua
 global SDL_blit: type = @function(*SDL_Surface, *SDL_Rect, *SDL_Surface, *SDL_Rect): cint
 ```
 
@@ -2796,7 +2796,7 @@ global SDL_blit: type = @function(*SDL_Surface, *SDL_Rect, *SDL_Surface, *SDL_Re
 
 ### SDL_YUV_CONVERSION_MODE
 
-```nelua
+```lua
 global SDL_YUV_CONVERSION_MODE: type = @enum(cint){
   SDL_YUV_CONVERSION_JPEG = 0,
   SDL_YUV_CONVERSION_BT601 = 1,
@@ -2809,7 +2809,7 @@ global SDL_YUV_CONVERSION_MODE: type = @enum(cint){
 
 ### SDL_CreateRGBSurface
 
-```nelua
+```lua
 global function SDL_CreateRGBSurface(flags: uint32, width: cint, height: cint, depth: cint, Rmask: uint32, Gmask: uint32, Bmask: uint32, Amask: uint32): *SDL_Surface
 ```
 
@@ -2817,7 +2817,7 @@ global function SDL_CreateRGBSurface(flags: uint32, width: cint, height: cint, d
 
 ### SDL_CreateRGBSurfaceWithFormat
 
-```nelua
+```lua
 global function SDL_CreateRGBSurfaceWithFormat(flags: uint32, width: cint, height: cint, depth: cint, format: uint32): *SDL_Surface
 ```
 
@@ -2825,7 +2825,7 @@ global function SDL_CreateRGBSurfaceWithFormat(flags: uint32, width: cint, heigh
 
 ### SDL_CreateRGBSurfaceFrom
 
-```nelua
+```lua
 global function SDL_CreateRGBSurfaceFrom(pixels: pointer, width: cint, height: cint, depth: cint, pitch: cint, Rmask: uint32, Gmask: uint32, Bmask: uint32, Amask: uint32): *SDL_Surface
 ```
 
@@ -2833,7 +2833,7 @@ global function SDL_CreateRGBSurfaceFrom(pixels: pointer, width: cint, height: c
 
 ### SDL_CreateRGBSurfaceWithFormatFrom
 
-```nelua
+```lua
 global function SDL_CreateRGBSurfaceWithFormatFrom(pixels: pointer, width: cint, height: cint, depth: cint, pitch: cint, format: uint32): *SDL_Surface
 ```
 
@@ -2841,7 +2841,7 @@ global function SDL_CreateRGBSurfaceWithFormatFrom(pixels: pointer, width: cint,
 
 ### SDL_FreeSurface
 
-```nelua
+```lua
 global function SDL_FreeSurface(surface: *SDL_Surface)
 ```
 
@@ -2849,7 +2849,7 @@ global function SDL_FreeSurface(surface: *SDL_Surface)
 
 ### SDL_SetSurfacePalette
 
-```nelua
+```lua
 global function SDL_SetSurfacePalette(surface: *SDL_Surface, palette: *SDL_Palette): cint
 ```
 
@@ -2857,7 +2857,7 @@ global function SDL_SetSurfacePalette(surface: *SDL_Surface, palette: *SDL_Palet
 
 ### SDL_LockSurface
 
-```nelua
+```lua
 global function SDL_LockSurface(surface: *SDL_Surface): cint
 ```
 
@@ -2865,7 +2865,7 @@ global function SDL_LockSurface(surface: *SDL_Surface): cint
 
 ### SDL_UnlockSurface
 
-```nelua
+```lua
 global function SDL_UnlockSurface(surface: *SDL_Surface)
 ```
 
@@ -2873,7 +2873,7 @@ global function SDL_UnlockSurface(surface: *SDL_Surface)
 
 ### SDL_LoadBMP_RW
 
-```nelua
+```lua
 global function SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: cint): *SDL_Surface
 ```
 
@@ -2881,7 +2881,7 @@ global function SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: cint): *SDL_Surface
 
 ### SDL_SaveBMP_RW
 
-```nelua
+```lua
 global function SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: cint): cint
 ```
 
@@ -2889,7 +2889,7 @@ global function SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: 
 
 ### SDL_SetSurfaceRLE
 
-```nelua
+```lua
 global function SDL_SetSurfaceRLE(surface: *SDL_Surface, flag: cint): cint
 ```
 
@@ -2897,7 +2897,7 @@ global function SDL_SetSurfaceRLE(surface: *SDL_Surface, flag: cint): cint
 
 ### SDL_HasSurfaceRLE
 
-```nelua
+```lua
 global function SDL_HasSurfaceRLE(surface: *SDL_Surface): SDL_bool
 ```
 
@@ -2905,7 +2905,7 @@ global function SDL_HasSurfaceRLE(surface: *SDL_Surface): SDL_bool
 
 ### SDL_SetColorKey
 
-```nelua
+```lua
 global function SDL_SetColorKey(surface: *SDL_Surface, flag: cint, key: uint32): cint
 ```
 
@@ -2913,7 +2913,7 @@ global function SDL_SetColorKey(surface: *SDL_Surface, flag: cint, key: uint32):
 
 ### SDL_HasColorKey
 
-```nelua
+```lua
 global function SDL_HasColorKey(surface: *SDL_Surface): SDL_bool
 ```
 
@@ -2921,7 +2921,7 @@ global function SDL_HasColorKey(surface: *SDL_Surface): SDL_bool
 
 ### SDL_GetColorKey
 
-```nelua
+```lua
 global function SDL_GetColorKey(surface: *SDL_Surface, key: *uint32): cint
 ```
 
@@ -2929,7 +2929,7 @@ global function SDL_GetColorKey(surface: *SDL_Surface, key: *uint32): cint
 
 ### SDL_SetSurfaceColorMod
 
-```nelua
+```lua
 global function SDL_SetSurfaceColorMod(surface: *SDL_Surface, r: uint8, g: uint8, b: uint8): cint
 ```
 
@@ -2937,7 +2937,7 @@ global function SDL_SetSurfaceColorMod(surface: *SDL_Surface, r: uint8, g: uint8
 
 ### SDL_GetSurfaceColorMod
 
-```nelua
+```lua
 global function SDL_GetSurfaceColorMod(surface: *SDL_Surface, r: *uint8, g: *uint8, b: *uint8): cint
 ```
 
@@ -2945,7 +2945,7 @@ global function SDL_GetSurfaceColorMod(surface: *SDL_Surface, r: *uint8, g: *uin
 
 ### SDL_SetSurfaceAlphaMod
 
-```nelua
+```lua
 global function SDL_SetSurfaceAlphaMod(surface: *SDL_Surface, alpha: uint8): cint
 ```
 
@@ -2953,7 +2953,7 @@ global function SDL_SetSurfaceAlphaMod(surface: *SDL_Surface, alpha: uint8): cin
 
 ### SDL_GetSurfaceAlphaMod
 
-```nelua
+```lua
 global function SDL_GetSurfaceAlphaMod(surface: *SDL_Surface, alpha: *uint8): cint
 ```
 
@@ -2961,7 +2961,7 @@ global function SDL_GetSurfaceAlphaMod(surface: *SDL_Surface, alpha: *uint8): ci
 
 ### SDL_SetSurfaceBlendMode
 
-```nelua
+```lua
 global function SDL_SetSurfaceBlendMode(surface: *SDL_Surface, blendMode: SDL_BlendMode): cint
 ```
 
@@ -2969,7 +2969,7 @@ global function SDL_SetSurfaceBlendMode(surface: *SDL_Surface, blendMode: SDL_Bl
 
 ### SDL_GetSurfaceBlendMode
 
-```nelua
+```lua
 global function SDL_GetSurfaceBlendMode(surface: *SDL_Surface, blendMode: *SDL_BlendMode): cint
 ```
 
@@ -2977,7 +2977,7 @@ global function SDL_GetSurfaceBlendMode(surface: *SDL_Surface, blendMode: *SDL_B
 
 ### SDL_SetClipRect
 
-```nelua
+```lua
 global function SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect): SDL_bool
 ```
 
@@ -2985,7 +2985,7 @@ global function SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect): SDL_boo
 
 ### SDL_GetClipRect
 
-```nelua
+```lua
 global function SDL_GetClipRect(surface: *SDL_Surface, rect: *SDL_Rect)
 ```
 
@@ -2993,7 +2993,7 @@ global function SDL_GetClipRect(surface: *SDL_Surface, rect: *SDL_Rect)
 
 ### SDL_DuplicateSurface
 
-```nelua
+```lua
 global function SDL_DuplicateSurface(surface: *SDL_Surface): *SDL_Surface
 ```
 
@@ -3001,7 +3001,7 @@ global function SDL_DuplicateSurface(surface: *SDL_Surface): *SDL_Surface
 
 ### SDL_ConvertSurface
 
-```nelua
+```lua
 global function SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, flags: uint32): *SDL_Surface
 ```
 
@@ -3009,7 +3009,7 @@ global function SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, fla
 
 ### SDL_ConvertSurfaceFormat
 
-```nelua
+```lua
 global function SDL_ConvertSurfaceFormat(src: *SDL_Surface, pixel_format: uint32, flags: uint32): *SDL_Surface
 ```
 
@@ -3017,7 +3017,7 @@ global function SDL_ConvertSurfaceFormat(src: *SDL_Surface, pixel_format: uint32
 
 ### SDL_ConvertPixels
 
-```nelua
+```lua
 global function SDL_ConvertPixels(width: cint, height: cint, src_format: uint32, src: pointer, src_pitch: cint, dst_format: uint32, dst: pointer, dst_pitch: cint): cint
 ```
 
@@ -3025,7 +3025,7 @@ global function SDL_ConvertPixels(width: cint, height: cint, src_format: uint32,
 
 ### SDL_FillRect
 
-```nelua
+```lua
 global function SDL_FillRect(dst: *SDL_Surface, rect: *SDL_Rect, color: uint32): cint
 ```
 
@@ -3033,7 +3033,7 @@ global function SDL_FillRect(dst: *SDL_Surface, rect: *SDL_Rect, color: uint32):
 
 ### SDL_FillRects
 
-```nelua
+```lua
 global function SDL_FillRects(dst: *SDL_Surface, rects: *SDL_Rect, count: cint, color: uint32): cint
 ```
 
@@ -3041,7 +3041,7 @@ global function SDL_FillRects(dst: *SDL_Surface, rects: *SDL_Rect, count: cint, 
 
 ### SDL_UpperBlit
 
-```nelua
+```lua
 global function SDL_UpperBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -3049,7 +3049,7 @@ global function SDL_UpperBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_S
 
 ### SDL_LowerBlit
 
-```nelua
+```lua
 global function SDL_LowerBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -3057,7 +3057,7 @@ global function SDL_LowerBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_S
 
 ### SDL_SoftStretch
 
-```nelua
+```lua
 global function SDL_SoftStretch(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -3065,7 +3065,7 @@ global function SDL_SoftStretch(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL
 
 ### SDL_UpperBlitScaled
 
-```nelua
+```lua
 global function SDL_UpperBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -3073,7 +3073,7 @@ global function SDL_UpperBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: 
 
 ### SDL_LowerBlitScaled
 
-```nelua
+```lua
 global function SDL_LowerBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -3081,7 +3081,7 @@ global function SDL_LowerBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: 
 
 ### SDL_SetYUVConversionMode
 
-```nelua
+```lua
 global function SDL_SetYUVConversionMode(mode: SDL_YUV_CONVERSION_MODE)
 ```
 
@@ -3089,7 +3089,7 @@ global function SDL_SetYUVConversionMode(mode: SDL_YUV_CONVERSION_MODE)
 
 ### SDL_GetYUVConversionMode
 
-```nelua
+```lua
 global function SDL_GetYUVConversionMode(): SDL_YUV_CONVERSION_MODE
 ```
 
@@ -3097,7 +3097,7 @@ global function SDL_GetYUVConversionMode(): SDL_YUV_CONVERSION_MODE
 
 ### SDL_GetYUVConversionModeForResolution
 
-```nelua
+```lua
 global function SDL_GetYUVConversionModeForResolution(width: cint, height: cint): SDL_YUV_CONVERSION_MODE
 ```
 
@@ -3105,7 +3105,7 @@ global function SDL_GetYUVConversionModeForResolution(width: cint, height: cint)
 
 ### SDL_DisplayMode
 
-```nelua
+```lua
 global SDL_DisplayMode: type = @record{
   format: uint32,
   w: cint,
@@ -3119,7 +3119,7 @@ global SDL_DisplayMode: type = @record{
 
 ### SDL_Window
 
-```nelua
+```lua
 global SDL_Window: type = @record{}
 ```
 
@@ -3127,7 +3127,7 @@ global SDL_Window: type = @record{}
 
 ### SDL_WindowFlags
 
-```nelua
+```lua
 global SDL_WindowFlags: type = @enum(cint){
   SDL_WINDOW_FULLSCREEN = 1,
   SDL_WINDOW_OPENGL = 2,
@@ -3158,7 +3158,7 @@ global SDL_WindowFlags: type = @enum(cint){
 
 ### SDL_WindowEventID
 
-```nelua
+```lua
 global SDL_WindowEventID: type = @enum(cint){
   SDL_WINDOWEVENT_NONE = 0,
   SDL_WINDOWEVENT_SHOWN = 1,
@@ -3184,7 +3184,7 @@ global SDL_WindowEventID: type = @enum(cint){
 
 ### SDL_DisplayEventID
 
-```nelua
+```lua
 global SDL_DisplayEventID: type = @enum(cint){
   SDL_DISPLAYEVENT_NONE = 0,
   SDL_DISPLAYEVENT_ORIENTATION = 1,
@@ -3197,7 +3197,7 @@ global SDL_DisplayEventID: type = @enum(cint){
 
 ### SDL_DisplayOrientation
 
-```nelua
+```lua
 global SDL_DisplayOrientation: type = @enum(cint){
   SDL_ORIENTATION_UNKNOWN = 0,
   SDL_ORIENTATION_LANDSCAPE = 1,
@@ -3211,7 +3211,7 @@ global SDL_DisplayOrientation: type = @enum(cint){
 
 ### SDL_GLContext
 
-```nelua
+```lua
 global SDL_GLContext: type = @pointer
 ```
 
@@ -3219,7 +3219,7 @@ global SDL_GLContext: type = @pointer
 
 ### SDL_GLattr
 
-```nelua
+```lua
 global SDL_GLattr: type = @enum(cint){
   SDL_GL_RED_SIZE = 0,
   SDL_GL_GREEN_SIZE = 1,
@@ -3255,7 +3255,7 @@ global SDL_GLattr: type = @enum(cint){
 
 ### SDL_GLprofile
 
-```nelua
+```lua
 global SDL_GLprofile: type = @enum(cint){
   SDL_GL_CONTEXT_PROFILE_CORE = 1,
   SDL_GL_CONTEXT_PROFILE_COMPATIBILITY = 2,
@@ -3267,7 +3267,7 @@ global SDL_GLprofile: type = @enum(cint){
 
 ### SDL_GLcontextFlag
 
-```nelua
+```lua
 global SDL_GLcontextFlag: type = @enum(cint){
   SDL_GL_CONTEXT_DEBUG_FLAG = 1,
   SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 2,
@@ -3280,7 +3280,7 @@ global SDL_GLcontextFlag: type = @enum(cint){
 
 ### SDL_GLcontextReleaseFlag
 
-```nelua
+```lua
 global SDL_GLcontextReleaseFlag: type = @enum(cint){
   SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE = 0,
   SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = 1
@@ -3291,7 +3291,7 @@ global SDL_GLcontextReleaseFlag: type = @enum(cint){
 
 ### SDL_GLContextResetNotification
 
-```nelua
+```lua
 global SDL_GLContextResetNotification: type = @enum(cint){
   SDL_GL_CONTEXT_RESET_NO_NOTIFICATION = 0,
   SDL_GL_CONTEXT_RESET_LOSE_CONTEXT = 1
@@ -3302,7 +3302,7 @@ global SDL_GLContextResetNotification: type = @enum(cint){
 
 ### SDL_GetNumVideoDrivers
 
-```nelua
+```lua
 global function SDL_GetNumVideoDrivers(): cint
 ```
 
@@ -3310,7 +3310,7 @@ global function SDL_GetNumVideoDrivers(): cint
 
 ### SDL_GetVideoDriver
 
-```nelua
+```lua
 global function SDL_GetVideoDriver(index: cint): cstring
 ```
 
@@ -3318,7 +3318,7 @@ global function SDL_GetVideoDriver(index: cint): cstring
 
 ### SDL_VideoInit
 
-```nelua
+```lua
 global function SDL_VideoInit(driver_name: cstring): cint
 ```
 
@@ -3326,7 +3326,7 @@ global function SDL_VideoInit(driver_name: cstring): cint
 
 ### SDL_VideoQuit
 
-```nelua
+```lua
 global function SDL_VideoQuit()
 ```
 
@@ -3334,7 +3334,7 @@ global function SDL_VideoQuit()
 
 ### SDL_GetCurrentVideoDriver
 
-```nelua
+```lua
 global function SDL_GetCurrentVideoDriver(): cstring
 ```
 
@@ -3342,7 +3342,7 @@ global function SDL_GetCurrentVideoDriver(): cstring
 
 ### SDL_GetNumVideoDisplays
 
-```nelua
+```lua
 global function SDL_GetNumVideoDisplays(): cint
 ```
 
@@ -3350,7 +3350,7 @@ global function SDL_GetNumVideoDisplays(): cint
 
 ### SDL_GetDisplayName
 
-```nelua
+```lua
 global function SDL_GetDisplayName(displayIndex: cint): cstring
 ```
 
@@ -3358,7 +3358,7 @@ global function SDL_GetDisplayName(displayIndex: cint): cstring
 
 ### SDL_GetDisplayBounds
 
-```nelua
+```lua
 global function SDL_GetDisplayBounds(displayIndex: cint, rect: *SDL_Rect): cint
 ```
 
@@ -3366,7 +3366,7 @@ global function SDL_GetDisplayBounds(displayIndex: cint, rect: *SDL_Rect): cint
 
 ### SDL_GetDisplayUsableBounds
 
-```nelua
+```lua
 global function SDL_GetDisplayUsableBounds(displayIndex: cint, rect: *SDL_Rect): cint
 ```
 
@@ -3374,7 +3374,7 @@ global function SDL_GetDisplayUsableBounds(displayIndex: cint, rect: *SDL_Rect):
 
 ### SDL_GetDisplayDPI
 
-```nelua
+```lua
 global function SDL_GetDisplayDPI(displayIndex: cint, ddpi: *float32, hdpi: *float32, vdpi: *float32): cint
 ```
 
@@ -3382,7 +3382,7 @@ global function SDL_GetDisplayDPI(displayIndex: cint, ddpi: *float32, hdpi: *flo
 
 ### SDL_GetDisplayOrientation
 
-```nelua
+```lua
 global function SDL_GetDisplayOrientation(displayIndex: cint): SDL_DisplayOrientation
 ```
 
@@ -3390,7 +3390,7 @@ global function SDL_GetDisplayOrientation(displayIndex: cint): SDL_DisplayOrient
 
 ### SDL_GetNumDisplayModes
 
-```nelua
+```lua
 global function SDL_GetNumDisplayModes(displayIndex: cint): cint
 ```
 
@@ -3398,7 +3398,7 @@ global function SDL_GetNumDisplayModes(displayIndex: cint): cint
 
 ### SDL_GetDisplayMode
 
-```nelua
+```lua
 global function SDL_GetDisplayMode(displayIndex: cint, modeIndex: cint, mode: *SDL_DisplayMode): cint
 ```
 
@@ -3406,7 +3406,7 @@ global function SDL_GetDisplayMode(displayIndex: cint, modeIndex: cint, mode: *S
 
 ### SDL_GetDesktopDisplayMode
 
-```nelua
+```lua
 global function SDL_GetDesktopDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode): cint
 ```
 
@@ -3414,7 +3414,7 @@ global function SDL_GetDesktopDisplayMode(displayIndex: cint, mode: *SDL_Display
 
 ### SDL_GetCurrentDisplayMode
 
-```nelua
+```lua
 global function SDL_GetCurrentDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode): cint
 ```
 
@@ -3422,7 +3422,7 @@ global function SDL_GetCurrentDisplayMode(displayIndex: cint, mode: *SDL_Display
 
 ### SDL_GetClosestDisplayMode
 
-```nelua
+```lua
 global function SDL_GetClosestDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode, closest: *SDL_DisplayMode): *SDL_DisplayMode
 ```
 
@@ -3430,7 +3430,7 @@ global function SDL_GetClosestDisplayMode(displayIndex: cint, mode: *SDL_Display
 
 ### SDL_GetWindowDisplayIndex
 
-```nelua
+```lua
 global function SDL_GetWindowDisplayIndex(window: *SDL_Window): cint
 ```
 
@@ -3438,7 +3438,7 @@ global function SDL_GetWindowDisplayIndex(window: *SDL_Window): cint
 
 ### SDL_SetWindowDisplayMode
 
-```nelua
+```lua
 global function SDL_SetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint
 ```
 
@@ -3446,7 +3446,7 @@ global function SDL_SetWindowDisplayMode(window: *SDL_Window, mode: *SDL_Display
 
 ### SDL_GetWindowDisplayMode
 
-```nelua
+```lua
 global function SDL_GetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint
 ```
 
@@ -3454,7 +3454,7 @@ global function SDL_GetWindowDisplayMode(window: *SDL_Window, mode: *SDL_Display
 
 ### SDL_GetWindowPixelFormat
 
-```nelua
+```lua
 global function SDL_GetWindowPixelFormat(window: *SDL_Window): uint32
 ```
 
@@ -3462,7 +3462,7 @@ global function SDL_GetWindowPixelFormat(window: *SDL_Window): uint32
 
 ### SDL_CreateWindow
 
-```nelua
+```lua
 global function SDL_CreateWindow(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): *SDL_Window
 ```
 
@@ -3470,7 +3470,7 @@ global function SDL_CreateWindow(title: cstring, x: cint, y: cint, w: cint, h: c
 
 ### SDL_CreateWindowFrom
 
-```nelua
+```lua
 global function SDL_CreateWindowFrom(data: pointer): *SDL_Window
 ```
 
@@ -3478,7 +3478,7 @@ global function SDL_CreateWindowFrom(data: pointer): *SDL_Window
 
 ### SDL_GetWindowID
 
-```nelua
+```lua
 global function SDL_GetWindowID(window: *SDL_Window): uint32
 ```
 
@@ -3486,7 +3486,7 @@ global function SDL_GetWindowID(window: *SDL_Window): uint32
 
 ### SDL_GetWindowFromID
 
-```nelua
+```lua
 global function SDL_GetWindowFromID(id: uint32): *SDL_Window
 ```
 
@@ -3494,7 +3494,7 @@ global function SDL_GetWindowFromID(id: uint32): *SDL_Window
 
 ### SDL_GetWindowFlags
 
-```nelua
+```lua
 global function SDL_GetWindowFlags(window: *SDL_Window): uint32
 ```
 
@@ -3502,7 +3502,7 @@ global function SDL_GetWindowFlags(window: *SDL_Window): uint32
 
 ### SDL_SetWindowTitle
 
-```nelua
+```lua
 global function SDL_SetWindowTitle(window: *SDL_Window, title: cstring)
 ```
 
@@ -3510,7 +3510,7 @@ global function SDL_SetWindowTitle(window: *SDL_Window, title: cstring)
 
 ### SDL_GetWindowTitle
 
-```nelua
+```lua
 global function SDL_GetWindowTitle(window: *SDL_Window): cstring
 ```
 
@@ -3518,7 +3518,7 @@ global function SDL_GetWindowTitle(window: *SDL_Window): cstring
 
 ### SDL_SetWindowIcon
 
-```nelua
+```lua
 global function SDL_SetWindowIcon(window: *SDL_Window, icon: *SDL_Surface)
 ```
 
@@ -3526,7 +3526,7 @@ global function SDL_SetWindowIcon(window: *SDL_Window, icon: *SDL_Surface)
 
 ### SDL_SetWindowData
 
-```nelua
+```lua
 global function SDL_SetWindowData(window: *SDL_Window, name: cstring, userdata: pointer): pointer
 ```
 
@@ -3534,7 +3534,7 @@ global function SDL_SetWindowData(window: *SDL_Window, name: cstring, userdata: 
 
 ### SDL_GetWindowData
 
-```nelua
+```lua
 global function SDL_GetWindowData(window: *SDL_Window, name: cstring): pointer
 ```
 
@@ -3542,7 +3542,7 @@ global function SDL_GetWindowData(window: *SDL_Window, name: cstring): pointer
 
 ### SDL_SetWindowPosition
 
-```nelua
+```lua
 global function SDL_SetWindowPosition(window: *SDL_Window, x: cint, y: cint)
 ```
 
@@ -3550,7 +3550,7 @@ global function SDL_SetWindowPosition(window: *SDL_Window, x: cint, y: cint)
 
 ### SDL_GetWindowPosition
 
-```nelua
+```lua
 global function SDL_GetWindowPosition(window: *SDL_Window, x: *cint, y: *cint)
 ```
 
@@ -3558,7 +3558,7 @@ global function SDL_GetWindowPosition(window: *SDL_Window, x: *cint, y: *cint)
 
 ### SDL_SetWindowSize
 
-```nelua
+```lua
 global function SDL_SetWindowSize(window: *SDL_Window, w: cint, h: cint)
 ```
 
@@ -3566,7 +3566,7 @@ global function SDL_SetWindowSize(window: *SDL_Window, w: cint, h: cint)
 
 ### SDL_GetWindowSize
 
-```nelua
+```lua
 global function SDL_GetWindowSize(window: *SDL_Window, w: *cint, h: *cint)
 ```
 
@@ -3574,7 +3574,7 @@ global function SDL_GetWindowSize(window: *SDL_Window, w: *cint, h: *cint)
 
 ### SDL_GetWindowBordersSize
 
-```nelua
+```lua
 global function SDL_GetWindowBordersSize(window: *SDL_Window, top: *cint, left: *cint, bottom: *cint, right: *cint): cint
 ```
 
@@ -3582,7 +3582,7 @@ global function SDL_GetWindowBordersSize(window: *SDL_Window, top: *cint, left: 
 
 ### SDL_SetWindowMinimumSize
 
-```nelua
+```lua
 global function SDL_SetWindowMinimumSize(window: *SDL_Window, min_w: cint, min_h: cint)
 ```
 
@@ -3590,7 +3590,7 @@ global function SDL_SetWindowMinimumSize(window: *SDL_Window, min_w: cint, min_h
 
 ### SDL_GetWindowMinimumSize
 
-```nelua
+```lua
 global function SDL_GetWindowMinimumSize(window: *SDL_Window, w: *cint, h: *cint)
 ```
 
@@ -3598,7 +3598,7 @@ global function SDL_GetWindowMinimumSize(window: *SDL_Window, w: *cint, h: *cint
 
 ### SDL_SetWindowMaximumSize
 
-```nelua
+```lua
 global function SDL_SetWindowMaximumSize(window: *SDL_Window, max_w: cint, max_h: cint)
 ```
 
@@ -3606,7 +3606,7 @@ global function SDL_SetWindowMaximumSize(window: *SDL_Window, max_w: cint, max_h
 
 ### SDL_GetWindowMaximumSize
 
-```nelua
+```lua
 global function SDL_GetWindowMaximumSize(window: *SDL_Window, w: *cint, h: *cint)
 ```
 
@@ -3614,7 +3614,7 @@ global function SDL_GetWindowMaximumSize(window: *SDL_Window, w: *cint, h: *cint
 
 ### SDL_SetWindowBordered
 
-```nelua
+```lua
 global function SDL_SetWindowBordered(window: *SDL_Window, bordered: SDL_bool)
 ```
 
@@ -3622,7 +3622,7 @@ global function SDL_SetWindowBordered(window: *SDL_Window, bordered: SDL_bool)
 
 ### SDL_SetWindowResizable
 
-```nelua
+```lua
 global function SDL_SetWindowResizable(window: *SDL_Window, resizable: SDL_bool)
 ```
 
@@ -3630,7 +3630,7 @@ global function SDL_SetWindowResizable(window: *SDL_Window, resizable: SDL_bool)
 
 ### SDL_ShowWindow
 
-```nelua
+```lua
 global function SDL_ShowWindow(window: *SDL_Window)
 ```
 
@@ -3638,7 +3638,7 @@ global function SDL_ShowWindow(window: *SDL_Window)
 
 ### SDL_HideWindow
 
-```nelua
+```lua
 global function SDL_HideWindow(window: *SDL_Window)
 ```
 
@@ -3646,7 +3646,7 @@ global function SDL_HideWindow(window: *SDL_Window)
 
 ### SDL_RaiseWindow
 
-```nelua
+```lua
 global function SDL_RaiseWindow(window: *SDL_Window)
 ```
 
@@ -3654,7 +3654,7 @@ global function SDL_RaiseWindow(window: *SDL_Window)
 
 ### SDL_MaximizeWindow
 
-```nelua
+```lua
 global function SDL_MaximizeWindow(window: *SDL_Window)
 ```
 
@@ -3662,7 +3662,7 @@ global function SDL_MaximizeWindow(window: *SDL_Window)
 
 ### SDL_MinimizeWindow
 
-```nelua
+```lua
 global function SDL_MinimizeWindow(window: *SDL_Window)
 ```
 
@@ -3670,7 +3670,7 @@ global function SDL_MinimizeWindow(window: *SDL_Window)
 
 ### SDL_RestoreWindow
 
-```nelua
+```lua
 global function SDL_RestoreWindow(window: *SDL_Window)
 ```
 
@@ -3678,7 +3678,7 @@ global function SDL_RestoreWindow(window: *SDL_Window)
 
 ### SDL_SetWindowFullscreen
 
-```nelua
+```lua
 global function SDL_SetWindowFullscreen(window: *SDL_Window, flags: uint32): cint
 ```
 
@@ -3686,7 +3686,7 @@ global function SDL_SetWindowFullscreen(window: *SDL_Window, flags: uint32): cin
 
 ### SDL_GetWindowSurface
 
-```nelua
+```lua
 global function SDL_GetWindowSurface(window: *SDL_Window): *SDL_Surface
 ```
 
@@ -3694,7 +3694,7 @@ global function SDL_GetWindowSurface(window: *SDL_Window): *SDL_Surface
 
 ### SDL_UpdateWindowSurface
 
-```nelua
+```lua
 global function SDL_UpdateWindowSurface(window: *SDL_Window): cint
 ```
 
@@ -3702,7 +3702,7 @@ global function SDL_UpdateWindowSurface(window: *SDL_Window): cint
 
 ### SDL_UpdateWindowSurfaceRects
 
-```nelua
+```lua
 global function SDL_UpdateWindowSurfaceRects(window: *SDL_Window, rects: *SDL_Rect, numrects: cint): cint
 ```
 
@@ -3710,7 +3710,7 @@ global function SDL_UpdateWindowSurfaceRects(window: *SDL_Window, rects: *SDL_Re
 
 ### SDL_SetWindowGrab
 
-```nelua
+```lua
 global function SDL_SetWindowGrab(window: *SDL_Window, grabbed: SDL_bool)
 ```
 
@@ -3718,7 +3718,7 @@ global function SDL_SetWindowGrab(window: *SDL_Window, grabbed: SDL_bool)
 
 ### SDL_GetWindowGrab
 
-```nelua
+```lua
 global function SDL_GetWindowGrab(window: *SDL_Window): SDL_bool
 ```
 
@@ -3726,7 +3726,7 @@ global function SDL_GetWindowGrab(window: *SDL_Window): SDL_bool
 
 ### SDL_GetGrabbedWindow
 
-```nelua
+```lua
 global function SDL_GetGrabbedWindow(): *SDL_Window
 ```
 
@@ -3734,7 +3734,7 @@ global function SDL_GetGrabbedWindow(): *SDL_Window
 
 ### SDL_SetWindowBrightness
 
-```nelua
+```lua
 global function SDL_SetWindowBrightness(window: *SDL_Window, brightness: float32): cint
 ```
 
@@ -3742,7 +3742,7 @@ global function SDL_SetWindowBrightness(window: *SDL_Window, brightness: float32
 
 ### SDL_GetWindowBrightness
 
-```nelua
+```lua
 global function SDL_GetWindowBrightness(window: *SDL_Window): float32
 ```
 
@@ -3750,7 +3750,7 @@ global function SDL_GetWindowBrightness(window: *SDL_Window): float32
 
 ### SDL_SetWindowOpacity
 
-```nelua
+```lua
 global function SDL_SetWindowOpacity(window: *SDL_Window, opacity: float32): cint
 ```
 
@@ -3758,7 +3758,7 @@ global function SDL_SetWindowOpacity(window: *SDL_Window, opacity: float32): cin
 
 ### SDL_GetWindowOpacity
 
-```nelua
+```lua
 global function SDL_GetWindowOpacity(window: *SDL_Window, out_opacity: *float32): cint
 ```
 
@@ -3766,7 +3766,7 @@ global function SDL_GetWindowOpacity(window: *SDL_Window, out_opacity: *float32)
 
 ### SDL_SetWindowModalFor
 
-```nelua
+```lua
 global function SDL_SetWindowModalFor(modal_window: *SDL_Window, parent_window: *SDL_Window): cint
 ```
 
@@ -3774,7 +3774,7 @@ global function SDL_SetWindowModalFor(modal_window: *SDL_Window, parent_window: 
 
 ### SDL_SetWindowInputFocus
 
-```nelua
+```lua
 global function SDL_SetWindowInputFocus(window: *SDL_Window): cint
 ```
 
@@ -3782,7 +3782,7 @@ global function SDL_SetWindowInputFocus(window: *SDL_Window): cint
 
 ### SDL_SetWindowGammaRamp
 
-```nelua
+```lua
 global function SDL_SetWindowGammaRamp(window: *SDL_Window, red: *uint16, green: *uint16, blue: *uint16): cint
 ```
 
@@ -3790,7 +3790,7 @@ global function SDL_SetWindowGammaRamp(window: *SDL_Window, red: *uint16, green:
 
 ### SDL_GetWindowGammaRamp
 
-```nelua
+```lua
 global function SDL_GetWindowGammaRamp(window: *SDL_Window, red: *uint16, green: *uint16, blue: *uint16): cint
 ```
 
@@ -3798,7 +3798,7 @@ global function SDL_GetWindowGammaRamp(window: *SDL_Window, red: *uint16, green:
 
 ### SDL_HitTestResult
 
-```nelua
+```lua
 global SDL_HitTestResult: type = @enum(cint){
   SDL_HITTEST_NORMAL = 0,
   SDL_HITTEST_DRAGGABLE = 1,
@@ -3817,7 +3817,7 @@ global SDL_HitTestResult: type = @enum(cint){
 
 ### SDL_HitTest
 
-```nelua
+```lua
 global SDL_HitTest: type = @function(*SDL_Window, *SDL_Point, pointer): SDL_HitTestResult
 ```
 
@@ -3825,7 +3825,7 @@ global SDL_HitTest: type = @function(*SDL_Window, *SDL_Point, pointer): SDL_HitT
 
 ### SDL_SetWindowHitTest
 
-```nelua
+```lua
 global function SDL_SetWindowHitTest(window: *SDL_Window, callback: SDL_HitTest, callback_data: pointer): cint
 ```
 
@@ -3833,7 +3833,7 @@ global function SDL_SetWindowHitTest(window: *SDL_Window, callback: SDL_HitTest,
 
 ### SDL_DestroyWindow
 
-```nelua
+```lua
 global function SDL_DestroyWindow(window: *SDL_Window)
 ```
 
@@ -3841,7 +3841,7 @@ global function SDL_DestroyWindow(window: *SDL_Window)
 
 ### SDL_IsScreenSaverEnabled
 
-```nelua
+```lua
 global function SDL_IsScreenSaverEnabled(): SDL_bool
 ```
 
@@ -3849,7 +3849,7 @@ global function SDL_IsScreenSaverEnabled(): SDL_bool
 
 ### SDL_EnableScreenSaver
 
-```nelua
+```lua
 global function SDL_EnableScreenSaver()
 ```
 
@@ -3857,7 +3857,7 @@ global function SDL_EnableScreenSaver()
 
 ### SDL_DisableScreenSaver
 
-```nelua
+```lua
 global function SDL_DisableScreenSaver()
 ```
 
@@ -3865,7 +3865,7 @@ global function SDL_DisableScreenSaver()
 
 ### SDL_GL_LoadLibrary
 
-```nelua
+```lua
 global function SDL_GL_LoadLibrary(path: cstring): cint
 ```
 
@@ -3873,7 +3873,7 @@ global function SDL_GL_LoadLibrary(path: cstring): cint
 
 ### SDL_GL_GetProcAddress
 
-```nelua
+```lua
 global function SDL_GL_GetProcAddress(proc: cstring): pointer
 ```
 
@@ -3881,7 +3881,7 @@ global function SDL_GL_GetProcAddress(proc: cstring): pointer
 
 ### SDL_GL_UnloadLibrary
 
-```nelua
+```lua
 global function SDL_GL_UnloadLibrary()
 ```
 
@@ -3889,7 +3889,7 @@ global function SDL_GL_UnloadLibrary()
 
 ### SDL_GL_ExtensionSupported
 
-```nelua
+```lua
 global function SDL_GL_ExtensionSupported(extension: cstring): SDL_bool
 ```
 
@@ -3897,7 +3897,7 @@ global function SDL_GL_ExtensionSupported(extension: cstring): SDL_bool
 
 ### SDL_GL_ResetAttributes
 
-```nelua
+```lua
 global function SDL_GL_ResetAttributes()
 ```
 
@@ -3905,7 +3905,7 @@ global function SDL_GL_ResetAttributes()
 
 ### SDL_GL_SetAttribute
 
-```nelua
+```lua
 global function SDL_GL_SetAttribute(attr: SDL_GLattr, value: cint): cint
 ```
 
@@ -3913,7 +3913,7 @@ global function SDL_GL_SetAttribute(attr: SDL_GLattr, value: cint): cint
 
 ### SDL_GL_GetAttribute
 
-```nelua
+```lua
 global function SDL_GL_GetAttribute(attr: SDL_GLattr, value: *cint): cint
 ```
 
@@ -3921,7 +3921,7 @@ global function SDL_GL_GetAttribute(attr: SDL_GLattr, value: *cint): cint
 
 ### SDL_GL_CreateContext
 
-```nelua
+```lua
 global function SDL_GL_CreateContext(window: *SDL_Window): SDL_GLContext
 ```
 
@@ -3929,7 +3929,7 @@ global function SDL_GL_CreateContext(window: *SDL_Window): SDL_GLContext
 
 ### SDL_GL_MakeCurrent
 
-```nelua
+```lua
 global function SDL_GL_MakeCurrent(window: *SDL_Window, context: SDL_GLContext): cint
 ```
 
@@ -3937,7 +3937,7 @@ global function SDL_GL_MakeCurrent(window: *SDL_Window, context: SDL_GLContext):
 
 ### SDL_GL_GetCurrentWindow
 
-```nelua
+```lua
 global function SDL_GL_GetCurrentWindow(): *SDL_Window
 ```
 
@@ -3945,7 +3945,7 @@ global function SDL_GL_GetCurrentWindow(): *SDL_Window
 
 ### SDL_GL_GetCurrentContext
 
-```nelua
+```lua
 global function SDL_GL_GetCurrentContext(): SDL_GLContext
 ```
 
@@ -3953,7 +3953,7 @@ global function SDL_GL_GetCurrentContext(): SDL_GLContext
 
 ### SDL_GL_GetDrawableSize
 
-```nelua
+```lua
 global function SDL_GL_GetDrawableSize(window: *SDL_Window, w: *cint, h: *cint)
 ```
 
@@ -3961,7 +3961,7 @@ global function SDL_GL_GetDrawableSize(window: *SDL_Window, w: *cint, h: *cint)
 
 ### SDL_GL_SetSwapInterval
 
-```nelua
+```lua
 global function SDL_GL_SetSwapInterval(interval: cint): cint
 ```
 
@@ -3969,7 +3969,7 @@ global function SDL_GL_SetSwapInterval(interval: cint): cint
 
 ### SDL_GL_GetSwapInterval
 
-```nelua
+```lua
 global function SDL_GL_GetSwapInterval(): cint
 ```
 
@@ -3977,7 +3977,7 @@ global function SDL_GL_GetSwapInterval(): cint
 
 ### SDL_GL_SwapWindow
 
-```nelua
+```lua
 global function SDL_GL_SwapWindow(window: *SDL_Window)
 ```
 
@@ -3985,7 +3985,7 @@ global function SDL_GL_SwapWindow(window: *SDL_Window)
 
 ### SDL_GL_DeleteContext
 
-```nelua
+```lua
 global function SDL_GL_DeleteContext(context: SDL_GLContext)
 ```
 
@@ -3993,7 +3993,7 @@ global function SDL_GL_DeleteContext(context: SDL_GLContext)
 
 ### SDL_Scancode
 
-```nelua
+```lua
 global SDL_Scancode: type = @enum(cint){
   SDL_SCANCODE_UNKNOWN = 0,
   SDL_SCANCODE_A = 4,
@@ -4246,7 +4246,7 @@ global SDL_Scancode: type = @enum(cint){
 
 ### SDL_KeyCode
 
-```nelua
+```lua
 global SDL_KeyCode: type = @enum(cint){
   SDLK_UNKNOWN = 0,
   SDLK_RETURN = 13,
@@ -4495,7 +4495,7 @@ global SDL_KeyCode: type = @enum(cint){
 
 ### SDL_Keymod
 
-```nelua
+```lua
 global SDL_Keymod: type = @enum(cint){
   KMOD_NONE = 0,
   KMOD_LSHIFT = 1,
@@ -4521,7 +4521,7 @@ global SDL_Keymod: type = @enum(cint){
 
 ### SDL_Keysym
 
-```nelua
+```lua
 global SDL_Keysym: type = @record{
   scancode: SDL_Scancode,
   sym: cint,
@@ -4534,7 +4534,7 @@ global SDL_Keysym: type = @record{
 
 ### SDL_GetKeyboardFocus
 
-```nelua
+```lua
 global function SDL_GetKeyboardFocus(): *SDL_Window
 ```
 
@@ -4542,7 +4542,7 @@ global function SDL_GetKeyboardFocus(): *SDL_Window
 
 ### SDL_GetKeyboardState
 
-```nelua
+```lua
 global function SDL_GetKeyboardState(numkeys: *cint): *uint8
 ```
 
@@ -4550,7 +4550,7 @@ global function SDL_GetKeyboardState(numkeys: *cint): *uint8
 
 ### SDL_GetModState
 
-```nelua
+```lua
 global function SDL_GetModState(): SDL_Keymod
 ```
 
@@ -4558,7 +4558,7 @@ global function SDL_GetModState(): SDL_Keymod
 
 ### SDL_SetModState
 
-```nelua
+```lua
 global function SDL_SetModState(modstate: SDL_Keymod)
 ```
 
@@ -4566,7 +4566,7 @@ global function SDL_SetModState(modstate: SDL_Keymod)
 
 ### SDL_GetKeyFromScancode
 
-```nelua
+```lua
 global function SDL_GetKeyFromScancode(scancode: SDL_Scancode): cint
 ```
 
@@ -4574,7 +4574,7 @@ global function SDL_GetKeyFromScancode(scancode: SDL_Scancode): cint
 
 ### SDL_GetScancodeFromKey
 
-```nelua
+```lua
 global function SDL_GetScancodeFromKey(key: cint): SDL_Scancode
 ```
 
@@ -4582,7 +4582,7 @@ global function SDL_GetScancodeFromKey(key: cint): SDL_Scancode
 
 ### SDL_GetScancodeName
 
-```nelua
+```lua
 global function SDL_GetScancodeName(scancode: SDL_Scancode): cstring
 ```
 
@@ -4590,7 +4590,7 @@ global function SDL_GetScancodeName(scancode: SDL_Scancode): cstring
 
 ### SDL_GetScancodeFromName
 
-```nelua
+```lua
 global function SDL_GetScancodeFromName(name: cstring): SDL_Scancode
 ```
 
@@ -4598,7 +4598,7 @@ global function SDL_GetScancodeFromName(name: cstring): SDL_Scancode
 
 ### SDL_GetKeyName
 
-```nelua
+```lua
 global function SDL_GetKeyName(key: cint): cstring
 ```
 
@@ -4606,7 +4606,7 @@ global function SDL_GetKeyName(key: cint): cstring
 
 ### SDL_GetKeyFromName
 
-```nelua
+```lua
 global function SDL_GetKeyFromName(name: cstring): cint
 ```
 
@@ -4614,7 +4614,7 @@ global function SDL_GetKeyFromName(name: cstring): cint
 
 ### SDL_StartTextInput
 
-```nelua
+```lua
 global function SDL_StartTextInput()
 ```
 
@@ -4622,7 +4622,7 @@ global function SDL_StartTextInput()
 
 ### SDL_IsTextInputActive
 
-```nelua
+```lua
 global function SDL_IsTextInputActive(): SDL_bool
 ```
 
@@ -4630,7 +4630,7 @@ global function SDL_IsTextInputActive(): SDL_bool
 
 ### SDL_StopTextInput
 
-```nelua
+```lua
 global function SDL_StopTextInput()
 ```
 
@@ -4638,7 +4638,7 @@ global function SDL_StopTextInput()
 
 ### SDL_SetTextInputRect
 
-```nelua
+```lua
 global function SDL_SetTextInputRect(rect: *SDL_Rect)
 ```
 
@@ -4646,7 +4646,7 @@ global function SDL_SetTextInputRect(rect: *SDL_Rect)
 
 ### SDL_HasScreenKeyboardSupport
 
-```nelua
+```lua
 global function SDL_HasScreenKeyboardSupport(): SDL_bool
 ```
 
@@ -4654,7 +4654,7 @@ global function SDL_HasScreenKeyboardSupport(): SDL_bool
 
 ### SDL_IsScreenKeyboardShown
 
-```nelua
+```lua
 global function SDL_IsScreenKeyboardShown(window: *SDL_Window): SDL_bool
 ```
 
@@ -4662,7 +4662,7 @@ global function SDL_IsScreenKeyboardShown(window: *SDL_Window): SDL_bool
 
 ### SDL_Cursor
 
-```nelua
+```lua
 global SDL_Cursor: type = @record{}
 ```
 
@@ -4670,7 +4670,7 @@ global SDL_Cursor: type = @record{}
 
 ### SDL_SystemCursor
 
-```nelua
+```lua
 global SDL_SystemCursor: type = @enum(cint){
   SDL_SYSTEM_CURSOR_ARROW = 0,
   SDL_SYSTEM_CURSOR_IBEAM = 1,
@@ -4692,7 +4692,7 @@ global SDL_SystemCursor: type = @enum(cint){
 
 ### SDL_MouseWheelDirection
 
-```nelua
+```lua
 global SDL_MouseWheelDirection: type = @enum(cint){
   SDL_MOUSEWHEEL_NORMAL = 0,
   SDL_MOUSEWHEEL_FLIPPED = 1
@@ -4703,7 +4703,7 @@ global SDL_MouseWheelDirection: type = @enum(cint){
 
 ### SDL_GetMouseFocus
 
-```nelua
+```lua
 global function SDL_GetMouseFocus(): *SDL_Window
 ```
 
@@ -4711,7 +4711,7 @@ global function SDL_GetMouseFocus(): *SDL_Window
 
 ### SDL_GetMouseState
 
-```nelua
+```lua
 global function SDL_GetMouseState(x: *cint, y: *cint): uint32
 ```
 
@@ -4719,7 +4719,7 @@ global function SDL_GetMouseState(x: *cint, y: *cint): uint32
 
 ### SDL_GetGlobalMouseState
 
-```nelua
+```lua
 global function SDL_GetGlobalMouseState(x: *cint, y: *cint): uint32
 ```
 
@@ -4727,7 +4727,7 @@ global function SDL_GetGlobalMouseState(x: *cint, y: *cint): uint32
 
 ### SDL_GetRelativeMouseState
 
-```nelua
+```lua
 global function SDL_GetRelativeMouseState(x: *cint, y: *cint): uint32
 ```
 
@@ -4735,7 +4735,7 @@ global function SDL_GetRelativeMouseState(x: *cint, y: *cint): uint32
 
 ### SDL_WarpMouseInWindow
 
-```nelua
+```lua
 global function SDL_WarpMouseInWindow(window: *SDL_Window, x: cint, y: cint)
 ```
 
@@ -4743,7 +4743,7 @@ global function SDL_WarpMouseInWindow(window: *SDL_Window, x: cint, y: cint)
 
 ### SDL_WarpMouseGlobal
 
-```nelua
+```lua
 global function SDL_WarpMouseGlobal(x: cint, y: cint): cint
 ```
 
@@ -4751,7 +4751,7 @@ global function SDL_WarpMouseGlobal(x: cint, y: cint): cint
 
 ### SDL_SetRelativeMouseMode
 
-```nelua
+```lua
 global function SDL_SetRelativeMouseMode(enabled: SDL_bool): cint
 ```
 
@@ -4759,7 +4759,7 @@ global function SDL_SetRelativeMouseMode(enabled: SDL_bool): cint
 
 ### SDL_CaptureMouse
 
-```nelua
+```lua
 global function SDL_CaptureMouse(enabled: SDL_bool): cint
 ```
 
@@ -4767,7 +4767,7 @@ global function SDL_CaptureMouse(enabled: SDL_bool): cint
 
 ### SDL_GetRelativeMouseMode
 
-```nelua
+```lua
 global function SDL_GetRelativeMouseMode(): SDL_bool
 ```
 
@@ -4775,7 +4775,7 @@ global function SDL_GetRelativeMouseMode(): SDL_bool
 
 ### SDL_CreateCursor
 
-```nelua
+```lua
 global function SDL_CreateCursor(data: *uint8, mask: *uint8, w: cint, h: cint, hot_x: cint, hot_y: cint): *SDL_Cursor
 ```
 
@@ -4783,7 +4783,7 @@ global function SDL_CreateCursor(data: *uint8, mask: *uint8, w: cint, h: cint, h
 
 ### SDL_CreateColorCursor
 
-```nelua
+```lua
 global function SDL_CreateColorCursor(surface: *SDL_Surface, hot_x: cint, hot_y: cint): *SDL_Cursor
 ```
 
@@ -4791,7 +4791,7 @@ global function SDL_CreateColorCursor(surface: *SDL_Surface, hot_x: cint, hot_y:
 
 ### SDL_CreateSystemCursor
 
-```nelua
+```lua
 global function SDL_CreateSystemCursor(id: SDL_SystemCursor): *SDL_Cursor
 ```
 
@@ -4799,7 +4799,7 @@ global function SDL_CreateSystemCursor(id: SDL_SystemCursor): *SDL_Cursor
 
 ### SDL_SetCursor
 
-```nelua
+```lua
 global function SDL_SetCursor(cursor: *SDL_Cursor)
 ```
 
@@ -4807,7 +4807,7 @@ global function SDL_SetCursor(cursor: *SDL_Cursor)
 
 ### SDL_GetCursor
 
-```nelua
+```lua
 global function SDL_GetCursor(): *SDL_Cursor
 ```
 
@@ -4815,7 +4815,7 @@ global function SDL_GetCursor(): *SDL_Cursor
 
 ### SDL_GetDefaultCursor
 
-```nelua
+```lua
 global function SDL_GetDefaultCursor(): *SDL_Cursor
 ```
 
@@ -4823,7 +4823,7 @@ global function SDL_GetDefaultCursor(): *SDL_Cursor
 
 ### SDL_FreeCursor
 
-```nelua
+```lua
 global function SDL_FreeCursor(cursor: *SDL_Cursor)
 ```
 
@@ -4831,7 +4831,7 @@ global function SDL_FreeCursor(cursor: *SDL_Cursor)
 
 ### SDL_ShowCursor
 
-```nelua
+```lua
 global function SDL_ShowCursor(toggle: cint): cint
 ```
 
@@ -4839,7 +4839,7 @@ global function SDL_ShowCursor(toggle: cint): cint
 
 ### SDL_Joystick
 
-```nelua
+```lua
 global SDL_Joystick: type = @record{}
 ```
 
@@ -4847,7 +4847,7 @@ global SDL_Joystick: type = @record{}
 
 ### SDL_JoystickGUID
 
-```nelua
+```lua
 global SDL_JoystickGUID: type = @record{
   data: [16]uint8
 }
@@ -4857,7 +4857,7 @@ global SDL_JoystickGUID: type = @record{
 
 ### SDL_JoystickType
 
-```nelua
+```lua
 global SDL_JoystickType: type = @enum(cint){
   SDL_JOYSTICK_TYPE_UNKNOWN = 0,
   SDL_JOYSTICK_TYPE_GAMECONTROLLER = 1,
@@ -4876,7 +4876,7 @@ global SDL_JoystickType: type = @enum(cint){
 
 ### SDL_JoystickPowerLevel
 
-```nelua
+```lua
 global SDL_JoystickPowerLevel: type = @enum(cint){
   SDL_JOYSTICK_POWER_UNKNOWN = -1,
   SDL_JOYSTICK_POWER_EMPTY = 0,
@@ -4892,7 +4892,7 @@ global SDL_JoystickPowerLevel: type = @enum(cint){
 
 ### SDL_LockJoysticks
 
-```nelua
+```lua
 global function SDL_LockJoysticks()
 ```
 
@@ -4900,7 +4900,7 @@ global function SDL_LockJoysticks()
 
 ### SDL_UnlockJoysticks
 
-```nelua
+```lua
 global function SDL_UnlockJoysticks()
 ```
 
@@ -4908,7 +4908,7 @@ global function SDL_UnlockJoysticks()
 
 ### SDL_NumJoysticks
 
-```nelua
+```lua
 global function SDL_NumJoysticks(): cint
 ```
 
@@ -4916,7 +4916,7 @@ global function SDL_NumJoysticks(): cint
 
 ### SDL_JoystickNameForIndex
 
-```nelua
+```lua
 global function SDL_JoystickNameForIndex(device_index: cint): cstring
 ```
 
@@ -4924,7 +4924,7 @@ global function SDL_JoystickNameForIndex(device_index: cint): cstring
 
 ### SDL_JoystickGetDevicePlayerIndex
 
-```nelua
+```lua
 global function SDL_JoystickGetDevicePlayerIndex(device_index: cint): cint
 ```
 
@@ -4932,7 +4932,7 @@ global function SDL_JoystickGetDevicePlayerIndex(device_index: cint): cint
 
 ### SDL_JoystickGetDeviceGUID
 
-```nelua
+```lua
 global function SDL_JoystickGetDeviceGUID(device_index: cint): SDL_JoystickGUID
 ```
 
@@ -4940,7 +4940,7 @@ global function SDL_JoystickGetDeviceGUID(device_index: cint): SDL_JoystickGUID
 
 ### SDL_JoystickGetDeviceVendor
 
-```nelua
+```lua
 global function SDL_JoystickGetDeviceVendor(device_index: cint): uint16
 ```
 
@@ -4948,7 +4948,7 @@ global function SDL_JoystickGetDeviceVendor(device_index: cint): uint16
 
 ### SDL_JoystickGetDeviceProduct
 
-```nelua
+```lua
 global function SDL_JoystickGetDeviceProduct(device_index: cint): uint16
 ```
 
@@ -4956,7 +4956,7 @@ global function SDL_JoystickGetDeviceProduct(device_index: cint): uint16
 
 ### SDL_JoystickGetDeviceProductVersion
 
-```nelua
+```lua
 global function SDL_JoystickGetDeviceProductVersion(device_index: cint): uint16
 ```
 
@@ -4964,7 +4964,7 @@ global function SDL_JoystickGetDeviceProductVersion(device_index: cint): uint16
 
 ### SDL_JoystickGetDeviceType
 
-```nelua
+```lua
 global function SDL_JoystickGetDeviceType(device_index: cint): SDL_JoystickType
 ```
 
@@ -4972,7 +4972,7 @@ global function SDL_JoystickGetDeviceType(device_index: cint): SDL_JoystickType
 
 ### SDL_JoystickGetDeviceInstanceID
 
-```nelua
+```lua
 global function SDL_JoystickGetDeviceInstanceID(device_index: cint): cint
 ```
 
@@ -4980,7 +4980,7 @@ global function SDL_JoystickGetDeviceInstanceID(device_index: cint): cint
 
 ### SDL_JoystickOpen
 
-```nelua
+```lua
 global function SDL_JoystickOpen(device_index: cint): *SDL_Joystick
 ```
 
@@ -4988,7 +4988,7 @@ global function SDL_JoystickOpen(device_index: cint): *SDL_Joystick
 
 ### SDL_JoystickFromInstanceID
 
-```nelua
+```lua
 global function SDL_JoystickFromInstanceID(instance_id: cint): *SDL_Joystick
 ```
 
@@ -4996,7 +4996,7 @@ global function SDL_JoystickFromInstanceID(instance_id: cint): *SDL_Joystick
 
 ### SDL_JoystickFromPlayerIndex
 
-```nelua
+```lua
 global function SDL_JoystickFromPlayerIndex(player_index: cint): *SDL_Joystick
 ```
 
@@ -5004,7 +5004,7 @@ global function SDL_JoystickFromPlayerIndex(player_index: cint): *SDL_Joystick
 
 ### SDL_JoystickAttachVirtual
 
-```nelua
+```lua
 global function SDL_JoystickAttachVirtual(type: SDL_JoystickType, naxes: cint, nbuttons: cint, nhats: cint): cint
 ```
 
@@ -5012,7 +5012,7 @@ global function SDL_JoystickAttachVirtual(type: SDL_JoystickType, naxes: cint, n
 
 ### SDL_JoystickDetachVirtual
 
-```nelua
+```lua
 global function SDL_JoystickDetachVirtual(device_index: cint): cint
 ```
 
@@ -5020,7 +5020,7 @@ global function SDL_JoystickDetachVirtual(device_index: cint): cint
 
 ### SDL_JoystickIsVirtual
 
-```nelua
+```lua
 global function SDL_JoystickIsVirtual(device_index: cint): SDL_bool
 ```
 
@@ -5028,7 +5028,7 @@ global function SDL_JoystickIsVirtual(device_index: cint): SDL_bool
 
 ### SDL_JoystickSetVirtualAxis
 
-```nelua
+```lua
 global function SDL_JoystickSetVirtualAxis(joystick: *SDL_Joystick, axis: cint, value: int16): cint
 ```
 
@@ -5036,7 +5036,7 @@ global function SDL_JoystickSetVirtualAxis(joystick: *SDL_Joystick, axis: cint, 
 
 ### SDL_JoystickSetVirtualButton
 
-```nelua
+```lua
 global function SDL_JoystickSetVirtualButton(joystick: *SDL_Joystick, button: cint, value: uint8): cint
 ```
 
@@ -5044,7 +5044,7 @@ global function SDL_JoystickSetVirtualButton(joystick: *SDL_Joystick, button: ci
 
 ### SDL_JoystickSetVirtualHat
 
-```nelua
+```lua
 global function SDL_JoystickSetVirtualHat(joystick: *SDL_Joystick, hat: cint, value: uint8): cint
 ```
 
@@ -5052,7 +5052,7 @@ global function SDL_JoystickSetVirtualHat(joystick: *SDL_Joystick, hat: cint, va
 
 ### SDL_JoystickName
 
-```nelua
+```lua
 global function SDL_JoystickName(joystick: *SDL_Joystick): cstring
 ```
 
@@ -5060,7 +5060,7 @@ global function SDL_JoystickName(joystick: *SDL_Joystick): cstring
 
 ### SDL_JoystickGetPlayerIndex
 
-```nelua
+```lua
 global function SDL_JoystickGetPlayerIndex(joystick: *SDL_Joystick): cint
 ```
 
@@ -5068,7 +5068,7 @@ global function SDL_JoystickGetPlayerIndex(joystick: *SDL_Joystick): cint
 
 ### SDL_JoystickSetPlayerIndex
 
-```nelua
+```lua
 global function SDL_JoystickSetPlayerIndex(joystick: *SDL_Joystick, player_index: cint)
 ```
 
@@ -5076,7 +5076,7 @@ global function SDL_JoystickSetPlayerIndex(joystick: *SDL_Joystick, player_index
 
 ### SDL_JoystickGetGUID
 
-```nelua
+```lua
 global function SDL_JoystickGetGUID(joystick: *SDL_Joystick): SDL_JoystickGUID
 ```
 
@@ -5084,7 +5084,7 @@ global function SDL_JoystickGetGUID(joystick: *SDL_Joystick): SDL_JoystickGUID
 
 ### SDL_JoystickGetVendor
 
-```nelua
+```lua
 global function SDL_JoystickGetVendor(joystick: *SDL_Joystick): uint16
 ```
 
@@ -5092,7 +5092,7 @@ global function SDL_JoystickGetVendor(joystick: *SDL_Joystick): uint16
 
 ### SDL_JoystickGetProduct
 
-```nelua
+```lua
 global function SDL_JoystickGetProduct(joystick: *SDL_Joystick): uint16
 ```
 
@@ -5100,7 +5100,7 @@ global function SDL_JoystickGetProduct(joystick: *SDL_Joystick): uint16
 
 ### SDL_JoystickGetProductVersion
 
-```nelua
+```lua
 global function SDL_JoystickGetProductVersion(joystick: *SDL_Joystick): uint16
 ```
 
@@ -5108,7 +5108,7 @@ global function SDL_JoystickGetProductVersion(joystick: *SDL_Joystick): uint16
 
 ### SDL_JoystickGetSerial
 
-```nelua
+```lua
 global function SDL_JoystickGetSerial(joystick: *SDL_Joystick): cstring
 ```
 
@@ -5116,7 +5116,7 @@ global function SDL_JoystickGetSerial(joystick: *SDL_Joystick): cstring
 
 ### SDL_JoystickGetType
 
-```nelua
+```lua
 global function SDL_JoystickGetType(joystick: *SDL_Joystick): SDL_JoystickType
 ```
 
@@ -5124,7 +5124,7 @@ global function SDL_JoystickGetType(joystick: *SDL_Joystick): SDL_JoystickType
 
 ### SDL_JoystickGetGUIDString
 
-```nelua
+```lua
 global function SDL_JoystickGetGUIDString(guid: SDL_JoystickGUID, pszGUID: cstring, cbGUID: cint)
 ```
 
@@ -5132,7 +5132,7 @@ global function SDL_JoystickGetGUIDString(guid: SDL_JoystickGUID, pszGUID: cstri
 
 ### SDL_JoystickGetGUIDFromString
 
-```nelua
+```lua
 global function SDL_JoystickGetGUIDFromString(pchGUID: cstring): SDL_JoystickGUID
 ```
 
@@ -5140,7 +5140,7 @@ global function SDL_JoystickGetGUIDFromString(pchGUID: cstring): SDL_JoystickGUI
 
 ### SDL_JoystickGetAttached
 
-```nelua
+```lua
 global function SDL_JoystickGetAttached(joystick: *SDL_Joystick): SDL_bool
 ```
 
@@ -5148,7 +5148,7 @@ global function SDL_JoystickGetAttached(joystick: *SDL_Joystick): SDL_bool
 
 ### SDL_JoystickInstanceID
 
-```nelua
+```lua
 global function SDL_JoystickInstanceID(joystick: *SDL_Joystick): cint
 ```
 
@@ -5156,7 +5156,7 @@ global function SDL_JoystickInstanceID(joystick: *SDL_Joystick): cint
 
 ### SDL_JoystickNumAxes
 
-```nelua
+```lua
 global function SDL_JoystickNumAxes(joystick: *SDL_Joystick): cint
 ```
 
@@ -5164,7 +5164,7 @@ global function SDL_JoystickNumAxes(joystick: *SDL_Joystick): cint
 
 ### SDL_JoystickNumBalls
 
-```nelua
+```lua
 global function SDL_JoystickNumBalls(joystick: *SDL_Joystick): cint
 ```
 
@@ -5172,7 +5172,7 @@ global function SDL_JoystickNumBalls(joystick: *SDL_Joystick): cint
 
 ### SDL_JoystickNumHats
 
-```nelua
+```lua
 global function SDL_JoystickNumHats(joystick: *SDL_Joystick): cint
 ```
 
@@ -5180,7 +5180,7 @@ global function SDL_JoystickNumHats(joystick: *SDL_Joystick): cint
 
 ### SDL_JoystickNumButtons
 
-```nelua
+```lua
 global function SDL_JoystickNumButtons(joystick: *SDL_Joystick): cint
 ```
 
@@ -5188,7 +5188,7 @@ global function SDL_JoystickNumButtons(joystick: *SDL_Joystick): cint
 
 ### SDL_JoystickUpdate
 
-```nelua
+```lua
 global function SDL_JoystickUpdate()
 ```
 
@@ -5196,7 +5196,7 @@ global function SDL_JoystickUpdate()
 
 ### SDL_JoystickEventState
 
-```nelua
+```lua
 global function SDL_JoystickEventState(state: cint): cint
 ```
 
@@ -5204,7 +5204,7 @@ global function SDL_JoystickEventState(state: cint): cint
 
 ### SDL_JoystickGetAxis
 
-```nelua
+```lua
 global function SDL_JoystickGetAxis(joystick: *SDL_Joystick, axis: cint): int16
 ```
 
@@ -5212,7 +5212,7 @@ global function SDL_JoystickGetAxis(joystick: *SDL_Joystick, axis: cint): int16
 
 ### SDL_JoystickGetAxisInitialState
 
-```nelua
+```lua
 global function SDL_JoystickGetAxisInitialState(joystick: *SDL_Joystick, axis: cint, state: *int16): SDL_bool
 ```
 
@@ -5220,7 +5220,7 @@ global function SDL_JoystickGetAxisInitialState(joystick: *SDL_Joystick, axis: c
 
 ### SDL_JoystickGetHat
 
-```nelua
+```lua
 global function SDL_JoystickGetHat(joystick: *SDL_Joystick, hat: cint): uint8
 ```
 
@@ -5228,7 +5228,7 @@ global function SDL_JoystickGetHat(joystick: *SDL_Joystick, hat: cint): uint8
 
 ### SDL_JoystickGetBall
 
-```nelua
+```lua
 global function SDL_JoystickGetBall(joystick: *SDL_Joystick, ball: cint, dx: *cint, dy: *cint): cint
 ```
 
@@ -5236,7 +5236,7 @@ global function SDL_JoystickGetBall(joystick: *SDL_Joystick, ball: cint, dx: *ci
 
 ### SDL_JoystickGetButton
 
-```nelua
+```lua
 global function SDL_JoystickGetButton(joystick: *SDL_Joystick, button: cint): uint8
 ```
 
@@ -5244,7 +5244,7 @@ global function SDL_JoystickGetButton(joystick: *SDL_Joystick, button: cint): ui
 
 ### SDL_JoystickRumble
 
-```nelua
+```lua
 global function SDL_JoystickRumble(joystick: *SDL_Joystick, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint
 ```
 
@@ -5252,7 +5252,7 @@ global function SDL_JoystickRumble(joystick: *SDL_Joystick, low_frequency_rumble
 
 ### SDL_JoystickRumbleTriggers
 
-```nelua
+```lua
 global function SDL_JoystickRumbleTriggers(joystick: *SDL_Joystick, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint
 ```
 
@@ -5260,7 +5260,7 @@ global function SDL_JoystickRumbleTriggers(joystick: *SDL_Joystick, left_rumble:
 
 ### SDL_JoystickHasLED
 
-```nelua
+```lua
 global function SDL_JoystickHasLED(joystick: *SDL_Joystick): SDL_bool
 ```
 
@@ -5268,7 +5268,7 @@ global function SDL_JoystickHasLED(joystick: *SDL_Joystick): SDL_bool
 
 ### SDL_JoystickSetLED
 
-```nelua
+```lua
 global function SDL_JoystickSetLED(joystick: *SDL_Joystick, red: uint8, green: uint8, blue: uint8): cint
 ```
 
@@ -5276,7 +5276,7 @@ global function SDL_JoystickSetLED(joystick: *SDL_Joystick, red: uint8, green: u
 
 ### SDL_JoystickClose
 
-```nelua
+```lua
 global function SDL_JoystickClose(joystick: *SDL_Joystick)
 ```
 
@@ -5284,7 +5284,7 @@ global function SDL_JoystickClose(joystick: *SDL_Joystick)
 
 ### SDL_JoystickCurrentPowerLevel
 
-```nelua
+```lua
 global function SDL_JoystickCurrentPowerLevel(joystick: *SDL_Joystick): SDL_JoystickPowerLevel
 ```
 
@@ -5292,7 +5292,7 @@ global function SDL_JoystickCurrentPowerLevel(joystick: *SDL_Joystick): SDL_Joys
 
 ### SDL_Sensor
 
-```nelua
+```lua
 global SDL_Sensor: type = @record{}
 ```
 
@@ -5300,7 +5300,7 @@ global SDL_Sensor: type = @record{}
 
 ### SDL_SensorType
 
-```nelua
+```lua
 global SDL_SensorType: type = @enum(cint){
   SDL_SENSOR_INVALID = -1,
   SDL_SENSOR_UNKNOWN = 0,
@@ -5313,7 +5313,7 @@ global SDL_SensorType: type = @enum(cint){
 
 ### SDL_LockSensors
 
-```nelua
+```lua
 global function SDL_LockSensors()
 ```
 
@@ -5321,7 +5321,7 @@ global function SDL_LockSensors()
 
 ### SDL_UnlockSensors
 
-```nelua
+```lua
 global function SDL_UnlockSensors()
 ```
 
@@ -5329,7 +5329,7 @@ global function SDL_UnlockSensors()
 
 ### SDL_NumSensors
 
-```nelua
+```lua
 global function SDL_NumSensors(): cint
 ```
 
@@ -5337,7 +5337,7 @@ global function SDL_NumSensors(): cint
 
 ### SDL_SensorGetDeviceName
 
-```nelua
+```lua
 global function SDL_SensorGetDeviceName(device_index: cint): cstring
 ```
 
@@ -5345,7 +5345,7 @@ global function SDL_SensorGetDeviceName(device_index: cint): cstring
 
 ### SDL_SensorGetDeviceType
 
-```nelua
+```lua
 global function SDL_SensorGetDeviceType(device_index: cint): SDL_SensorType
 ```
 
@@ -5353,7 +5353,7 @@ global function SDL_SensorGetDeviceType(device_index: cint): SDL_SensorType
 
 ### SDL_SensorGetDeviceNonPortableType
 
-```nelua
+```lua
 global function SDL_SensorGetDeviceNonPortableType(device_index: cint): cint
 ```
 
@@ -5361,7 +5361,7 @@ global function SDL_SensorGetDeviceNonPortableType(device_index: cint): cint
 
 ### SDL_SensorGetDeviceInstanceID
 
-```nelua
+```lua
 global function SDL_SensorGetDeviceInstanceID(device_index: cint): cint
 ```
 
@@ -5369,7 +5369,7 @@ global function SDL_SensorGetDeviceInstanceID(device_index: cint): cint
 
 ### SDL_SensorOpen
 
-```nelua
+```lua
 global function SDL_SensorOpen(device_index: cint): *SDL_Sensor
 ```
 
@@ -5377,7 +5377,7 @@ global function SDL_SensorOpen(device_index: cint): *SDL_Sensor
 
 ### SDL_SensorFromInstanceID
 
-```nelua
+```lua
 global function SDL_SensorFromInstanceID(instance_id: cint): *SDL_Sensor
 ```
 
@@ -5385,7 +5385,7 @@ global function SDL_SensorFromInstanceID(instance_id: cint): *SDL_Sensor
 
 ### SDL_SensorGetName
 
-```nelua
+```lua
 global function SDL_SensorGetName(sensor: *SDL_Sensor): cstring
 ```
 
@@ -5393,7 +5393,7 @@ global function SDL_SensorGetName(sensor: *SDL_Sensor): cstring
 
 ### SDL_SensorGetType
 
-```nelua
+```lua
 global function SDL_SensorGetType(sensor: *SDL_Sensor): SDL_SensorType
 ```
 
@@ -5401,7 +5401,7 @@ global function SDL_SensorGetType(sensor: *SDL_Sensor): SDL_SensorType
 
 ### SDL_SensorGetNonPortableType
 
-```nelua
+```lua
 global function SDL_SensorGetNonPortableType(sensor: *SDL_Sensor): cint
 ```
 
@@ -5409,7 +5409,7 @@ global function SDL_SensorGetNonPortableType(sensor: *SDL_Sensor): cint
 
 ### SDL_SensorGetInstanceID
 
-```nelua
+```lua
 global function SDL_SensorGetInstanceID(sensor: *SDL_Sensor): cint
 ```
 
@@ -5417,7 +5417,7 @@ global function SDL_SensorGetInstanceID(sensor: *SDL_Sensor): cint
 
 ### SDL_SensorGetData
 
-```nelua
+```lua
 global function SDL_SensorGetData(sensor: *SDL_Sensor, data: *float32, num_values: cint): cint
 ```
 
@@ -5425,7 +5425,7 @@ global function SDL_SensorGetData(sensor: *SDL_Sensor, data: *float32, num_value
 
 ### SDL_SensorClose
 
-```nelua
+```lua
 global function SDL_SensorClose(sensor: *SDL_Sensor)
 ```
 
@@ -5433,7 +5433,7 @@ global function SDL_SensorClose(sensor: *SDL_Sensor)
 
 ### SDL_SensorUpdate
 
-```nelua
+```lua
 global function SDL_SensorUpdate()
 ```
 
@@ -5441,7 +5441,7 @@ global function SDL_SensorUpdate()
 
 ### SDL_GameController
 
-```nelua
+```lua
 global SDL_GameController: type = @record{}
 ```
 
@@ -5449,7 +5449,7 @@ global SDL_GameController: type = @record{}
 
 ### SDL_GameControllerType
 
-```nelua
+```lua
 global SDL_GameControllerType: type = @enum(cint){
   SDL_CONTROLLER_TYPE_UNKNOWN = 0,
   SDL_CONTROLLER_TYPE_XBOX360 = 1,
@@ -5466,7 +5466,7 @@ global SDL_GameControllerType: type = @enum(cint){
 
 ### SDL_GameControllerBindType
 
-```nelua
+```lua
 global SDL_GameControllerBindType: type = @enum(cint){
   SDL_CONTROLLER_BINDTYPE_NONE = 0,
   SDL_CONTROLLER_BINDTYPE_BUTTON = 1,
@@ -5479,7 +5479,7 @@ global SDL_GameControllerBindType: type = @enum(cint){
 
 ### SDL_GameControllerButtonBind
 
-```nelua
+```lua
 global SDL_GameControllerButtonBind: type = @record{
   bindType: SDL_GameControllerBindType,
   value: union{
@@ -5497,7 +5497,7 @@ global SDL_GameControllerButtonBind: type = @record{
 
 ### SDL_GameControllerAddMappingsFromRW
 
-```nelua
+```lua
 global function SDL_GameControllerAddMappingsFromRW(rw: *SDL_RWops, freerw: cint): cint
 ```
 
@@ -5505,7 +5505,7 @@ global function SDL_GameControllerAddMappingsFromRW(rw: *SDL_RWops, freerw: cint
 
 ### SDL_GameControllerAddMapping
 
-```nelua
+```lua
 global function SDL_GameControllerAddMapping(mappingString: cstring): cint
 ```
 
@@ -5513,7 +5513,7 @@ global function SDL_GameControllerAddMapping(mappingString: cstring): cint
 
 ### SDL_GameControllerNumMappings
 
-```nelua
+```lua
 global function SDL_GameControllerNumMappings(): cint
 ```
 
@@ -5521,7 +5521,7 @@ global function SDL_GameControllerNumMappings(): cint
 
 ### SDL_GameControllerMappingForIndex
 
-```nelua
+```lua
 global function SDL_GameControllerMappingForIndex(mapping_index: cint): cstring
 ```
 
@@ -5529,7 +5529,7 @@ global function SDL_GameControllerMappingForIndex(mapping_index: cint): cstring
 
 ### SDL_GameControllerMappingForGUID
 
-```nelua
+```lua
 global function SDL_GameControllerMappingForGUID(guid: SDL_JoystickGUID): cstring
 ```
 
@@ -5537,7 +5537,7 @@ global function SDL_GameControllerMappingForGUID(guid: SDL_JoystickGUID): cstrin
 
 ### SDL_GameControllerMapping
 
-```nelua
+```lua
 global function SDL_GameControllerMapping(gamecontroller: *SDL_GameController): cstring
 ```
 
@@ -5545,7 +5545,7 @@ global function SDL_GameControllerMapping(gamecontroller: *SDL_GameController): 
 
 ### SDL_IsGameController
 
-```nelua
+```lua
 global function SDL_IsGameController(joystick_index: cint): SDL_bool
 ```
 
@@ -5553,7 +5553,7 @@ global function SDL_IsGameController(joystick_index: cint): SDL_bool
 
 ### SDL_GameControllerNameForIndex
 
-```nelua
+```lua
 global function SDL_GameControllerNameForIndex(joystick_index: cint): cstring
 ```
 
@@ -5561,7 +5561,7 @@ global function SDL_GameControllerNameForIndex(joystick_index: cint): cstring
 
 ### SDL_GameControllerTypeForIndex
 
-```nelua
+```lua
 global function SDL_GameControllerTypeForIndex(joystick_index: cint): SDL_GameControllerType
 ```
 
@@ -5569,7 +5569,7 @@ global function SDL_GameControllerTypeForIndex(joystick_index: cint): SDL_GameCo
 
 ### SDL_GameControllerMappingForDeviceIndex
 
-```nelua
+```lua
 global function SDL_GameControllerMappingForDeviceIndex(joystick_index: cint): cstring
 ```
 
@@ -5577,7 +5577,7 @@ global function SDL_GameControllerMappingForDeviceIndex(joystick_index: cint): c
 
 ### SDL_GameControllerOpen
 
-```nelua
+```lua
 global function SDL_GameControllerOpen(joystick_index: cint): *SDL_GameController
 ```
 
@@ -5585,7 +5585,7 @@ global function SDL_GameControllerOpen(joystick_index: cint): *SDL_GameControlle
 
 ### SDL_GameControllerFromInstanceID
 
-```nelua
+```lua
 global function SDL_GameControllerFromInstanceID(joyid: cint): *SDL_GameController
 ```
 
@@ -5593,7 +5593,7 @@ global function SDL_GameControllerFromInstanceID(joyid: cint): *SDL_GameControll
 
 ### SDL_GameControllerFromPlayerIndex
 
-```nelua
+```lua
 global function SDL_GameControllerFromPlayerIndex(player_index: cint): *SDL_GameController
 ```
 
@@ -5601,7 +5601,7 @@ global function SDL_GameControllerFromPlayerIndex(player_index: cint): *SDL_Game
 
 ### SDL_GameControllerName
 
-```nelua
+```lua
 global function SDL_GameControllerName(gamecontroller: *SDL_GameController): cstring
 ```
 
@@ -5609,7 +5609,7 @@ global function SDL_GameControllerName(gamecontroller: *SDL_GameController): cst
 
 ### SDL_GameControllerGetType
 
-```nelua
+```lua
 global function SDL_GameControllerGetType(gamecontroller: *SDL_GameController): SDL_GameControllerType
 ```
 
@@ -5617,7 +5617,7 @@ global function SDL_GameControllerGetType(gamecontroller: *SDL_GameController): 
 
 ### SDL_GameControllerGetPlayerIndex
 
-```nelua
+```lua
 global function SDL_GameControllerGetPlayerIndex(gamecontroller: *SDL_GameController): cint
 ```
 
@@ -5625,7 +5625,7 @@ global function SDL_GameControllerGetPlayerIndex(gamecontroller: *SDL_GameContro
 
 ### SDL_GameControllerSetPlayerIndex
 
-```nelua
+```lua
 global function SDL_GameControllerSetPlayerIndex(gamecontroller: *SDL_GameController, player_index: cint)
 ```
 
@@ -5633,7 +5633,7 @@ global function SDL_GameControllerSetPlayerIndex(gamecontroller: *SDL_GameContro
 
 ### SDL_GameControllerGetVendor
 
-```nelua
+```lua
 global function SDL_GameControllerGetVendor(gamecontroller: *SDL_GameController): uint16
 ```
 
@@ -5641,7 +5641,7 @@ global function SDL_GameControllerGetVendor(gamecontroller: *SDL_GameController)
 
 ### SDL_GameControllerGetProduct
 
-```nelua
+```lua
 global function SDL_GameControllerGetProduct(gamecontroller: *SDL_GameController): uint16
 ```
 
@@ -5649,7 +5649,7 @@ global function SDL_GameControllerGetProduct(gamecontroller: *SDL_GameController
 
 ### SDL_GameControllerGetProductVersion
 
-```nelua
+```lua
 global function SDL_GameControllerGetProductVersion(gamecontroller: *SDL_GameController): uint16
 ```
 
@@ -5657,7 +5657,7 @@ global function SDL_GameControllerGetProductVersion(gamecontroller: *SDL_GameCon
 
 ### SDL_GameControllerGetSerial
 
-```nelua
+```lua
 global function SDL_GameControllerGetSerial(gamecontroller: *SDL_GameController): cstring
 ```
 
@@ -5665,7 +5665,7 @@ global function SDL_GameControllerGetSerial(gamecontroller: *SDL_GameController)
 
 ### SDL_GameControllerGetAttached
 
-```nelua
+```lua
 global function SDL_GameControllerGetAttached(gamecontroller: *SDL_GameController): SDL_bool
 ```
 
@@ -5673,7 +5673,7 @@ global function SDL_GameControllerGetAttached(gamecontroller: *SDL_GameControlle
 
 ### SDL_GameControllerGetJoystick
 
-```nelua
+```lua
 global function SDL_GameControllerGetJoystick(gamecontroller: *SDL_GameController): *SDL_Joystick
 ```
 
@@ -5681,7 +5681,7 @@ global function SDL_GameControllerGetJoystick(gamecontroller: *SDL_GameControlle
 
 ### SDL_GameControllerEventState
 
-```nelua
+```lua
 global function SDL_GameControllerEventState(state: cint): cint
 ```
 
@@ -5689,7 +5689,7 @@ global function SDL_GameControllerEventState(state: cint): cint
 
 ### SDL_GameControllerUpdate
 
-```nelua
+```lua
 global function SDL_GameControllerUpdate()
 ```
 
@@ -5697,7 +5697,7 @@ global function SDL_GameControllerUpdate()
 
 ### SDL_GameControllerAxis
 
-```nelua
+```lua
 global SDL_GameControllerAxis: type = @enum(cint){
   SDL_CONTROLLER_AXIS_INVALID = -1,
   SDL_CONTROLLER_AXIS_LEFTX = 0,
@@ -5714,7 +5714,7 @@ global SDL_GameControllerAxis: type = @enum(cint){
 
 ### SDL_GameControllerGetAxisFromString
 
-```nelua
+```lua
 global function SDL_GameControllerGetAxisFromString(pchString: cstring): SDL_GameControllerAxis
 ```
 
@@ -5722,7 +5722,7 @@ global function SDL_GameControllerGetAxisFromString(pchString: cstring): SDL_Gam
 
 ### SDL_GameControllerGetStringForAxis
 
-```nelua
+```lua
 global function SDL_GameControllerGetStringForAxis(axis: SDL_GameControllerAxis): cstring
 ```
 
@@ -5730,7 +5730,7 @@ global function SDL_GameControllerGetStringForAxis(axis: SDL_GameControllerAxis)
 
 ### SDL_GameControllerGetBindForAxis
 
-```nelua
+```lua
 global function SDL_GameControllerGetBindForAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): SDL_GameControllerButtonBind
 ```
 
@@ -5738,7 +5738,7 @@ global function SDL_GameControllerGetBindForAxis(gamecontroller: *SDL_GameContro
 
 ### SDL_GameControllerHasAxis
 
-```nelua
+```lua
 global function SDL_GameControllerHasAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): SDL_bool
 ```
 
@@ -5746,7 +5746,7 @@ global function SDL_GameControllerHasAxis(gamecontroller: *SDL_GameController, a
 
 ### SDL_GameControllerGetAxis
 
-```nelua
+```lua
 global function SDL_GameControllerGetAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): int16
 ```
 
@@ -5754,7 +5754,7 @@ global function SDL_GameControllerGetAxis(gamecontroller: *SDL_GameController, a
 
 ### SDL_GameControllerButton
 
-```nelua
+```lua
 global SDL_GameControllerButton: type = @enum(cint){
   SDL_CONTROLLER_BUTTON_INVALID = -1,
   SDL_CONTROLLER_BUTTON_A = 0,
@@ -5786,7 +5786,7 @@ global SDL_GameControllerButton: type = @enum(cint){
 
 ### SDL_GameControllerGetButtonFromString
 
-```nelua
+```lua
 global function SDL_GameControllerGetButtonFromString(pchString: cstring): SDL_GameControllerButton
 ```
 
@@ -5794,7 +5794,7 @@ global function SDL_GameControllerGetButtonFromString(pchString: cstring): SDL_G
 
 ### SDL_GameControllerGetStringForButton
 
-```nelua
+```lua
 global function SDL_GameControllerGetStringForButton(button: SDL_GameControllerButton): cstring
 ```
 
@@ -5802,7 +5802,7 @@ global function SDL_GameControllerGetStringForButton(button: SDL_GameControllerB
 
 ### SDL_GameControllerGetBindForButton
 
-```nelua
+```lua
 global function SDL_GameControllerGetBindForButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): SDL_GameControllerButtonBind
 ```
 
@@ -5810,7 +5810,7 @@ global function SDL_GameControllerGetBindForButton(gamecontroller: *SDL_GameCont
 
 ### SDL_GameControllerHasButton
 
-```nelua
+```lua
 global function SDL_GameControllerHasButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): SDL_bool
 ```
 
@@ -5818,7 +5818,7 @@ global function SDL_GameControllerHasButton(gamecontroller: *SDL_GameController,
 
 ### SDL_GameControllerGetButton
 
-```nelua
+```lua
 global function SDL_GameControllerGetButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): uint8
 ```
 
@@ -5826,7 +5826,7 @@ global function SDL_GameControllerGetButton(gamecontroller: *SDL_GameController,
 
 ### SDL_GameControllerGetNumTouchpads
 
-```nelua
+```lua
 global function SDL_GameControllerGetNumTouchpads(gamecontroller: *SDL_GameController): cint
 ```
 
@@ -5834,7 +5834,7 @@ global function SDL_GameControllerGetNumTouchpads(gamecontroller: *SDL_GameContr
 
 ### SDL_GameControllerGetNumTouchpadFingers
 
-```nelua
+```lua
 global function SDL_GameControllerGetNumTouchpadFingers(gamecontroller: *SDL_GameController, touchpad: cint): cint
 ```
 
@@ -5842,7 +5842,7 @@ global function SDL_GameControllerGetNumTouchpadFingers(gamecontroller: *SDL_Gam
 
 ### SDL_GameControllerGetTouchpadFinger
 
-```nelua
+```lua
 global function SDL_GameControllerGetTouchpadFinger(gamecontroller: *SDL_GameController, touchpad: cint, finger: cint, state: *uint8, x: *float32, y: *float32, pressure: *float32): cint
 ```
 
@@ -5850,7 +5850,7 @@ global function SDL_GameControllerGetTouchpadFinger(gamecontroller: *SDL_GameCon
 
 ### SDL_GameControllerHasSensor
 
-```nelua
+```lua
 global function SDL_GameControllerHasSensor(gamecontroller: *SDL_GameController, type: SDL_SensorType): SDL_bool
 ```
 
@@ -5858,7 +5858,7 @@ global function SDL_GameControllerHasSensor(gamecontroller: *SDL_GameController,
 
 ### SDL_GameControllerSetSensorEnabled
 
-```nelua
+```lua
 global function SDL_GameControllerSetSensorEnabled(gamecontroller: *SDL_GameController, type: SDL_SensorType, enabled: SDL_bool): cint
 ```
 
@@ -5866,7 +5866,7 @@ global function SDL_GameControllerSetSensorEnabled(gamecontroller: *SDL_GameCont
 
 ### SDL_GameControllerIsSensorEnabled
 
-```nelua
+```lua
 global function SDL_GameControllerIsSensorEnabled(gamecontroller: *SDL_GameController, type: SDL_SensorType): SDL_bool
 ```
 
@@ -5874,7 +5874,7 @@ global function SDL_GameControllerIsSensorEnabled(gamecontroller: *SDL_GameContr
 
 ### SDL_GameControllerGetSensorData
 
-```nelua
+```lua
 global function SDL_GameControllerGetSensorData(gamecontroller: *SDL_GameController, type: SDL_SensorType, data: *float32, num_values: cint): cint
 ```
 
@@ -5882,7 +5882,7 @@ global function SDL_GameControllerGetSensorData(gamecontroller: *SDL_GameControl
 
 ### SDL_GameControllerRumble
 
-```nelua
+```lua
 global function SDL_GameControllerRumble(gamecontroller: *SDL_GameController, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint
 ```
 
@@ -5890,7 +5890,7 @@ global function SDL_GameControllerRumble(gamecontroller: *SDL_GameController, lo
 
 ### SDL_GameControllerRumbleTriggers
 
-```nelua
+```lua
 global function SDL_GameControllerRumbleTriggers(gamecontroller: *SDL_GameController, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint
 ```
 
@@ -5898,7 +5898,7 @@ global function SDL_GameControllerRumbleTriggers(gamecontroller: *SDL_GameContro
 
 ### SDL_GameControllerHasLED
 
-```nelua
+```lua
 global function SDL_GameControllerHasLED(gamecontroller: *SDL_GameController): SDL_bool
 ```
 
@@ -5906,7 +5906,7 @@ global function SDL_GameControllerHasLED(gamecontroller: *SDL_GameController): S
 
 ### SDL_GameControllerSetLED
 
-```nelua
+```lua
 global function SDL_GameControllerSetLED(gamecontroller: *SDL_GameController, red: uint8, green: uint8, blue: uint8): cint
 ```
 
@@ -5914,7 +5914,7 @@ global function SDL_GameControllerSetLED(gamecontroller: *SDL_GameController, re
 
 ### SDL_GameControllerClose
 
-```nelua
+```lua
 global function SDL_GameControllerClose(gamecontroller: *SDL_GameController)
 ```
 
@@ -5922,7 +5922,7 @@ global function SDL_GameControllerClose(gamecontroller: *SDL_GameController)
 
 ### SDL_TouchDeviceType
 
-```nelua
+```lua
 global SDL_TouchDeviceType: type = @enum(cint){
   SDL_TOUCH_DEVICE_INVALID = -1,
   SDL_TOUCH_DEVICE_DIRECT = 0,
@@ -5935,7 +5935,7 @@ global SDL_TouchDeviceType: type = @enum(cint){
 
 ### SDL_Finger
 
-```nelua
+```lua
 global SDL_Finger: type = @record{
   id: clong,
   x: float32,
@@ -5948,7 +5948,7 @@ global SDL_Finger: type = @record{
 
 ### SDL_GetNumTouchDevices
 
-```nelua
+```lua
 global function SDL_GetNumTouchDevices(): cint
 ```
 
@@ -5956,7 +5956,7 @@ global function SDL_GetNumTouchDevices(): cint
 
 ### SDL_GetTouchDevice
 
-```nelua
+```lua
 global function SDL_GetTouchDevice(index: cint): clong
 ```
 
@@ -5964,7 +5964,7 @@ global function SDL_GetTouchDevice(index: cint): clong
 
 ### SDL_GetTouchDeviceType
 
-```nelua
+```lua
 global function SDL_GetTouchDeviceType(touchID: clong): SDL_TouchDeviceType
 ```
 
@@ -5972,7 +5972,7 @@ global function SDL_GetTouchDeviceType(touchID: clong): SDL_TouchDeviceType
 
 ### SDL_GetNumTouchFingers
 
-```nelua
+```lua
 global function SDL_GetNumTouchFingers(touchID: clong): cint
 ```
 
@@ -5980,7 +5980,7 @@ global function SDL_GetNumTouchFingers(touchID: clong): cint
 
 ### SDL_GetTouchFinger
 
-```nelua
+```lua
 global function SDL_GetTouchFinger(touchID: clong, index: cint): *SDL_Finger
 ```
 
@@ -5988,7 +5988,7 @@ global function SDL_GetTouchFinger(touchID: clong, index: cint): *SDL_Finger
 
 ### SDL_RecordGesture
 
-```nelua
+```lua
 global function SDL_RecordGesture(touchId: clong): cint
 ```
 
@@ -5996,7 +5996,7 @@ global function SDL_RecordGesture(touchId: clong): cint
 
 ### SDL_SaveAllDollarTemplates
 
-```nelua
+```lua
 global function SDL_SaveAllDollarTemplates(dst: *SDL_RWops): cint
 ```
 
@@ -6004,7 +6004,7 @@ global function SDL_SaveAllDollarTemplates(dst: *SDL_RWops): cint
 
 ### SDL_SaveDollarTemplate
 
-```nelua
+```lua
 global function SDL_SaveDollarTemplate(gestureId: clong, dst: *SDL_RWops): cint
 ```
 
@@ -6012,7 +6012,7 @@ global function SDL_SaveDollarTemplate(gestureId: clong, dst: *SDL_RWops): cint
 
 ### SDL_LoadDollarTemplates
 
-```nelua
+```lua
 global function SDL_LoadDollarTemplates(touchId: clong, src: *SDL_RWops): cint
 ```
 
@@ -6020,7 +6020,7 @@ global function SDL_LoadDollarTemplates(touchId: clong, src: *SDL_RWops): cint
 
 ### SDL_EventType
 
-```nelua
+```lua
 global SDL_EventType: type = @enum(cint){
   SDL_FIRSTEVENT = 0,
   SDL_QUIT = 256,
@@ -6085,7 +6085,7 @@ global SDL_EventType: type = @enum(cint){
 
 ### SDL_CommonEvent
 
-```nelua
+```lua
 global SDL_CommonEvent: type = @record{
   type: uint32,
   timestamp: uint32
@@ -6096,7 +6096,7 @@ global SDL_CommonEvent: type = @record{
 
 ### SDL_DisplayEvent
 
-```nelua
+```lua
 global SDL_DisplayEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6113,7 +6113,7 @@ global SDL_DisplayEvent: type = @record{
 
 ### SDL_WindowEvent
 
-```nelua
+```lua
 global SDL_WindowEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6131,7 +6131,7 @@ global SDL_WindowEvent: type = @record{
 
 ### SDL_KeyboardEvent
 
-```nelua
+```lua
 global SDL_KeyboardEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6148,7 +6148,7 @@ global SDL_KeyboardEvent: type = @record{
 
 ### SDL_TextEditingEvent
 
-```nelua
+```lua
 global SDL_TextEditingEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6163,7 +6163,7 @@ global SDL_TextEditingEvent: type = @record{
 
 ### SDL_TextInputEvent
 
-```nelua
+```lua
 global SDL_TextInputEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6176,7 +6176,7 @@ global SDL_TextInputEvent: type = @record{
 
 ### SDL_MouseMotionEvent
 
-```nelua
+```lua
 global SDL_MouseMotionEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6194,7 +6194,7 @@ global SDL_MouseMotionEvent: type = @record{
 
 ### SDL_MouseButtonEvent
 
-```nelua
+```lua
 global SDL_MouseButtonEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6213,7 +6213,7 @@ global SDL_MouseButtonEvent: type = @record{
 
 ### SDL_MouseWheelEvent
 
-```nelua
+```lua
 global SDL_MouseWheelEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6229,7 +6229,7 @@ global SDL_MouseWheelEvent: type = @record{
 
 ### SDL_JoyAxisEvent
 
-```nelua
+```lua
 global SDL_JoyAxisEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6247,7 +6247,7 @@ global SDL_JoyAxisEvent: type = @record{
 
 ### SDL_JoyBallEvent
 
-```nelua
+```lua
 global SDL_JoyBallEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6265,7 +6265,7 @@ global SDL_JoyBallEvent: type = @record{
 
 ### SDL_JoyHatEvent
 
-```nelua
+```lua
 global SDL_JoyHatEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6281,7 +6281,7 @@ global SDL_JoyHatEvent: type = @record{
 
 ### SDL_JoyButtonEvent
 
-```nelua
+```lua
 global SDL_JoyButtonEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6297,7 +6297,7 @@ global SDL_JoyButtonEvent: type = @record{
 
 ### SDL_JoyDeviceEvent
 
-```nelua
+```lua
 global SDL_JoyDeviceEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6309,7 +6309,7 @@ global SDL_JoyDeviceEvent: type = @record{
 
 ### SDL_ControllerAxisEvent
 
-```nelua
+```lua
 global SDL_ControllerAxisEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6327,7 +6327,7 @@ global SDL_ControllerAxisEvent: type = @record{
 
 ### SDL_ControllerButtonEvent
 
-```nelua
+```lua
 global SDL_ControllerButtonEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6343,7 +6343,7 @@ global SDL_ControllerButtonEvent: type = @record{
 
 ### SDL_ControllerDeviceEvent
 
-```nelua
+```lua
 global SDL_ControllerDeviceEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6355,7 +6355,7 @@ global SDL_ControllerDeviceEvent: type = @record{
 
 ### SDL_ControllerTouchpadEvent
 
-```nelua
+```lua
 global SDL_ControllerTouchpadEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6372,7 +6372,7 @@ global SDL_ControllerTouchpadEvent: type = @record{
 
 ### SDL_ControllerSensorEvent
 
-```nelua
+```lua
 global SDL_ControllerSensorEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6386,7 +6386,7 @@ global SDL_ControllerSensorEvent: type = @record{
 
 ### SDL_AudioDeviceEvent
 
-```nelua
+```lua
 global SDL_AudioDeviceEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6402,7 +6402,7 @@ global SDL_AudioDeviceEvent: type = @record{
 
 ### SDL_TouchFingerEvent
 
-```nelua
+```lua
 global SDL_TouchFingerEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6421,7 +6421,7 @@ global SDL_TouchFingerEvent: type = @record{
 
 ### SDL_MultiGestureEvent
 
-```nelua
+```lua
 global SDL_MultiGestureEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6439,7 +6439,7 @@ global SDL_MultiGestureEvent: type = @record{
 
 ### SDL_DollarGestureEvent
 
-```nelua
+```lua
 global SDL_DollarGestureEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6456,7 +6456,7 @@ global SDL_DollarGestureEvent: type = @record{
 
 ### SDL_DropEvent
 
-```nelua
+```lua
 global SDL_DropEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6469,7 +6469,7 @@ global SDL_DropEvent: type = @record{
 
 ### SDL_SensorEvent
 
-```nelua
+```lua
 global SDL_SensorEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6482,7 +6482,7 @@ global SDL_SensorEvent: type = @record{
 
 ### SDL_QuitEvent
 
-```nelua
+```lua
 global SDL_QuitEvent: type = @record{
   type: uint32,
   timestamp: uint32
@@ -6493,7 +6493,7 @@ global SDL_QuitEvent: type = @record{
 
 ### SDL_OSEvent
 
-```nelua
+```lua
 global SDL_OSEvent: type = @record{
   type: uint32,
   timestamp: uint32
@@ -6504,7 +6504,7 @@ global SDL_OSEvent: type = @record{
 
 ### SDL_UserEvent
 
-```nelua
+```lua
 global SDL_UserEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6519,7 +6519,7 @@ global SDL_UserEvent: type = @record{
 
 ### SDL_SysWMmsg
 
-```nelua
+```lua
 global SDL_SysWMmsg: type = @record{}
 ```
 
@@ -6527,7 +6527,7 @@ global SDL_SysWMmsg: type = @record{}
 
 ### SDL_SysWMEvent
 
-```nelua
+```lua
 global SDL_SysWMEvent: type = @record{
   type: uint32,
   timestamp: uint32,
@@ -6539,7 +6539,7 @@ global SDL_SysWMEvent: type = @record{
 
 ### SDL_Event
 
-```nelua
+```lua
 global SDL_Event: type = @union{
   type: uint32,
   common: SDL_CommonEvent,
@@ -6578,7 +6578,7 @@ global SDL_Event: type = @union{
 
 ### SDL_PumpEvents
 
-```nelua
+```lua
 global function SDL_PumpEvents()
 ```
 
@@ -6586,7 +6586,7 @@ global function SDL_PumpEvents()
 
 ### SDL_eventaction
 
-```nelua
+```lua
 global SDL_eventaction: type = @enum(cint){
   SDL_ADDEVENT = 0,
   SDL_PEEKEVENT = 1,
@@ -6598,7 +6598,7 @@ global SDL_eventaction: type = @enum(cint){
 
 ### SDL_PeepEvents
 
-```nelua
+```lua
 global function SDL_PeepEvents(events: *SDL_Event, numevents: cint, action: SDL_eventaction, minType: uint32, maxType: uint32): cint
 ```
 
@@ -6606,7 +6606,7 @@ global function SDL_PeepEvents(events: *SDL_Event, numevents: cint, action: SDL_
 
 ### SDL_HasEvent
 
-```nelua
+```lua
 global function SDL_HasEvent(type: uint32): SDL_bool
 ```
 
@@ -6614,7 +6614,7 @@ global function SDL_HasEvent(type: uint32): SDL_bool
 
 ### SDL_HasEvents
 
-```nelua
+```lua
 global function SDL_HasEvents(minType: uint32, maxType: uint32): SDL_bool
 ```
 
@@ -6622,7 +6622,7 @@ global function SDL_HasEvents(minType: uint32, maxType: uint32): SDL_bool
 
 ### SDL_FlushEvent
 
-```nelua
+```lua
 global function SDL_FlushEvent(type: uint32)
 ```
 
@@ -6630,7 +6630,7 @@ global function SDL_FlushEvent(type: uint32)
 
 ### SDL_FlushEvents
 
-```nelua
+```lua
 global function SDL_FlushEvents(minType: uint32, maxType: uint32)
 ```
 
@@ -6638,7 +6638,7 @@ global function SDL_FlushEvents(minType: uint32, maxType: uint32)
 
 ### SDL_PollEvent
 
-```nelua
+```lua
 global function SDL_PollEvent(event: *SDL_Event): cint
 ```
 
@@ -6646,7 +6646,7 @@ global function SDL_PollEvent(event: *SDL_Event): cint
 
 ### SDL_WaitEvent
 
-```nelua
+```lua
 global function SDL_WaitEvent(event: *SDL_Event): cint
 ```
 
@@ -6654,7 +6654,7 @@ global function SDL_WaitEvent(event: *SDL_Event): cint
 
 ### SDL_WaitEventTimeout
 
-```nelua
+```lua
 global function SDL_WaitEventTimeout(event: *SDL_Event, timeout: cint): cint
 ```
 
@@ -6662,7 +6662,7 @@ global function SDL_WaitEventTimeout(event: *SDL_Event, timeout: cint): cint
 
 ### SDL_PushEvent
 
-```nelua
+```lua
 global function SDL_PushEvent(event: *SDL_Event): cint
 ```
 
@@ -6670,7 +6670,7 @@ global function SDL_PushEvent(event: *SDL_Event): cint
 
 ### SDL_EventFilter
 
-```nelua
+```lua
 global SDL_EventFilter: type = @function(pointer, *SDL_Event): cint
 ```
 
@@ -6678,7 +6678,7 @@ global SDL_EventFilter: type = @function(pointer, *SDL_Event): cint
 
 ### SDL_SetEventFilter
 
-```nelua
+```lua
 global function SDL_SetEventFilter(filter: SDL_EventFilter, userdata: pointer)
 ```
 
@@ -6686,7 +6686,7 @@ global function SDL_SetEventFilter(filter: SDL_EventFilter, userdata: pointer)
 
 ### SDL_GetEventFilter
 
-```nelua
+```lua
 global function SDL_GetEventFilter(filter: *SDL_EventFilter, userdata: *pointer): SDL_bool
 ```
 
@@ -6694,7 +6694,7 @@ global function SDL_GetEventFilter(filter: *SDL_EventFilter, userdata: *pointer)
 
 ### SDL_AddEventWatch
 
-```nelua
+```lua
 global function SDL_AddEventWatch(filter: SDL_EventFilter, userdata: pointer)
 ```
 
@@ -6702,7 +6702,7 @@ global function SDL_AddEventWatch(filter: SDL_EventFilter, userdata: pointer)
 
 ### SDL_DelEventWatch
 
-```nelua
+```lua
 global function SDL_DelEventWatch(filter: SDL_EventFilter, userdata: pointer)
 ```
 
@@ -6710,7 +6710,7 @@ global function SDL_DelEventWatch(filter: SDL_EventFilter, userdata: pointer)
 
 ### SDL_FilterEvents
 
-```nelua
+```lua
 global function SDL_FilterEvents(filter: SDL_EventFilter, userdata: pointer)
 ```
 
@@ -6718,7 +6718,7 @@ global function SDL_FilterEvents(filter: SDL_EventFilter, userdata: pointer)
 
 ### SDL_EventState
 
-```nelua
+```lua
 global function SDL_EventState(type: uint32, state: cint): uint8
 ```
 
@@ -6726,7 +6726,7 @@ global function SDL_EventState(type: uint32, state: cint): uint8
 
 ### SDL_RegisterEvents
 
-```nelua
+```lua
 global function SDL_RegisterEvents(numevents: cint): uint32
 ```
 
@@ -6734,7 +6734,7 @@ global function SDL_RegisterEvents(numevents: cint): uint32
 
 ### SDL_GetBasePath
 
-```nelua
+```lua
 global function SDL_GetBasePath(): cstring
 ```
 
@@ -6742,7 +6742,7 @@ global function SDL_GetBasePath(): cstring
 
 ### SDL_GetPrefPath
 
-```nelua
+```lua
 global function SDL_GetPrefPath(org: cstring, app: cstring): cstring
 ```
 
@@ -6750,7 +6750,7 @@ global function SDL_GetPrefPath(org: cstring, app: cstring): cstring
 
 ### SDL_Haptic
 
-```nelua
+```lua
 global SDL_Haptic: type = @record{}
 ```
 
@@ -6758,7 +6758,7 @@ global SDL_Haptic: type = @record{}
 
 ### SDL_HapticDirection
 
-```nelua
+```lua
 global SDL_HapticDirection: type = @record{
   type: uint8,
   dir: [3]int32
@@ -6769,7 +6769,7 @@ global SDL_HapticDirection: type = @record{
 
 ### SDL_HapticConstant
 
-```nelua
+```lua
 global SDL_HapticConstant: type = @record{
   type: uint16,
   direction: SDL_HapticDirection,
@@ -6789,7 +6789,7 @@ global SDL_HapticConstant: type = @record{
 
 ### SDL_HapticPeriodic
 
-```nelua
+```lua
 global SDL_HapticPeriodic: type = @record{
   type: uint16,
   direction: SDL_HapticDirection,
@@ -6812,7 +6812,7 @@ global SDL_HapticPeriodic: type = @record{
 
 ### SDL_HapticCondition
 
-```nelua
+```lua
 global SDL_HapticCondition: type = @record{
   type: uint16,
   direction: SDL_HapticDirection,
@@ -6833,7 +6833,7 @@ global SDL_HapticCondition: type = @record{
 
 ### SDL_HapticRamp
 
-```nelua
+```lua
 global SDL_HapticRamp: type = @record{
   type: uint16,
   direction: SDL_HapticDirection,
@@ -6854,7 +6854,7 @@ global SDL_HapticRamp: type = @record{
 
 ### SDL_HapticLeftRight
 
-```nelua
+```lua
 global SDL_HapticLeftRight: type = @record{
   type: uint16,
   length: uint32,
@@ -6867,7 +6867,7 @@ global SDL_HapticLeftRight: type = @record{
 
 ### SDL_HapticCustom
 
-```nelua
+```lua
 global SDL_HapticCustom: type = @record{
   type: uint16,
   direction: SDL_HapticDirection,
@@ -6890,7 +6890,7 @@ global SDL_HapticCustom: type = @record{
 
 ### SDL_HapticEffect
 
-```nelua
+```lua
 global SDL_HapticEffect: type = @union{
   type: uint16,
   constant: SDL_HapticConstant,
@@ -6906,7 +6906,7 @@ global SDL_HapticEffect: type = @union{
 
 ### SDL_NumHaptics
 
-```nelua
+```lua
 global function SDL_NumHaptics(): cint
 ```
 
@@ -6914,7 +6914,7 @@ global function SDL_NumHaptics(): cint
 
 ### SDL_HapticName
 
-```nelua
+```lua
 global function SDL_HapticName(device_index: cint): cstring
 ```
 
@@ -6922,7 +6922,7 @@ global function SDL_HapticName(device_index: cint): cstring
 
 ### SDL_HapticOpen
 
-```nelua
+```lua
 global function SDL_HapticOpen(device_index: cint): *SDL_Haptic
 ```
 
@@ -6930,7 +6930,7 @@ global function SDL_HapticOpen(device_index: cint): *SDL_Haptic
 
 ### SDL_HapticOpened
 
-```nelua
+```lua
 global function SDL_HapticOpened(device_index: cint): cint
 ```
 
@@ -6938,7 +6938,7 @@ global function SDL_HapticOpened(device_index: cint): cint
 
 ### SDL_HapticIndex
 
-```nelua
+```lua
 global function SDL_HapticIndex(haptic: *SDL_Haptic): cint
 ```
 
@@ -6946,7 +6946,7 @@ global function SDL_HapticIndex(haptic: *SDL_Haptic): cint
 
 ### SDL_MouseIsHaptic
 
-```nelua
+```lua
 global function SDL_MouseIsHaptic(): cint
 ```
 
@@ -6954,7 +6954,7 @@ global function SDL_MouseIsHaptic(): cint
 
 ### SDL_HapticOpenFromMouse
 
-```nelua
+```lua
 global function SDL_HapticOpenFromMouse(): *SDL_Haptic
 ```
 
@@ -6962,7 +6962,7 @@ global function SDL_HapticOpenFromMouse(): *SDL_Haptic
 
 ### SDL_JoystickIsHaptic
 
-```nelua
+```lua
 global function SDL_JoystickIsHaptic(joystick: *SDL_Joystick): cint
 ```
 
@@ -6970,7 +6970,7 @@ global function SDL_JoystickIsHaptic(joystick: *SDL_Joystick): cint
 
 ### SDL_HapticOpenFromJoystick
 
-```nelua
+```lua
 global function SDL_HapticOpenFromJoystick(joystick: *SDL_Joystick): *SDL_Haptic
 ```
 
@@ -6978,7 +6978,7 @@ global function SDL_HapticOpenFromJoystick(joystick: *SDL_Joystick): *SDL_Haptic
 
 ### SDL_HapticClose
 
-```nelua
+```lua
 global function SDL_HapticClose(haptic: *SDL_Haptic)
 ```
 
@@ -6986,7 +6986,7 @@ global function SDL_HapticClose(haptic: *SDL_Haptic)
 
 ### SDL_HapticNumEffects
 
-```nelua
+```lua
 global function SDL_HapticNumEffects(haptic: *SDL_Haptic): cint
 ```
 
@@ -6994,7 +6994,7 @@ global function SDL_HapticNumEffects(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticNumEffectsPlaying
 
-```nelua
+```lua
 global function SDL_HapticNumEffectsPlaying(haptic: *SDL_Haptic): cint
 ```
 
@@ -7002,7 +7002,7 @@ global function SDL_HapticNumEffectsPlaying(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticQuery
 
-```nelua
+```lua
 global function SDL_HapticQuery(haptic: *SDL_Haptic): cuint
 ```
 
@@ -7010,7 +7010,7 @@ global function SDL_HapticQuery(haptic: *SDL_Haptic): cuint
 
 ### SDL_HapticNumAxes
 
-```nelua
+```lua
 global function SDL_HapticNumAxes(haptic: *SDL_Haptic): cint
 ```
 
@@ -7018,7 +7018,7 @@ global function SDL_HapticNumAxes(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticEffectSupported
 
-```nelua
+```lua
 global function SDL_HapticEffectSupported(haptic: *SDL_Haptic, effect: *SDL_HapticEffect): cint
 ```
 
@@ -7026,7 +7026,7 @@ global function SDL_HapticEffectSupported(haptic: *SDL_Haptic, effect: *SDL_Hapt
 
 ### SDL_HapticNewEffect
 
-```nelua
+```lua
 global function SDL_HapticNewEffect(haptic: *SDL_Haptic, effect: *SDL_HapticEffect): cint
 ```
 
@@ -7034,7 +7034,7 @@ global function SDL_HapticNewEffect(haptic: *SDL_Haptic, effect: *SDL_HapticEffe
 
 ### SDL_HapticUpdateEffect
 
-```nelua
+```lua
 global function SDL_HapticUpdateEffect(haptic: *SDL_Haptic, effect: cint, data: *SDL_HapticEffect): cint
 ```
 
@@ -7042,7 +7042,7 @@ global function SDL_HapticUpdateEffect(haptic: *SDL_Haptic, effect: cint, data: 
 
 ### SDL_HapticRunEffect
 
-```nelua
+```lua
 global function SDL_HapticRunEffect(haptic: *SDL_Haptic, effect: cint, iterations: uint32): cint
 ```
 
@@ -7050,7 +7050,7 @@ global function SDL_HapticRunEffect(haptic: *SDL_Haptic, effect: cint, iteration
 
 ### SDL_HapticStopEffect
 
-```nelua
+```lua
 global function SDL_HapticStopEffect(haptic: *SDL_Haptic, effect: cint): cint
 ```
 
@@ -7058,7 +7058,7 @@ global function SDL_HapticStopEffect(haptic: *SDL_Haptic, effect: cint): cint
 
 ### SDL_HapticDestroyEffect
 
-```nelua
+```lua
 global function SDL_HapticDestroyEffect(haptic: *SDL_Haptic, effect: cint)
 ```
 
@@ -7066,7 +7066,7 @@ global function SDL_HapticDestroyEffect(haptic: *SDL_Haptic, effect: cint)
 
 ### SDL_HapticGetEffectStatus
 
-```nelua
+```lua
 global function SDL_HapticGetEffectStatus(haptic: *SDL_Haptic, effect: cint): cint
 ```
 
@@ -7074,7 +7074,7 @@ global function SDL_HapticGetEffectStatus(haptic: *SDL_Haptic, effect: cint): ci
 
 ### SDL_HapticSetGain
 
-```nelua
+```lua
 global function SDL_HapticSetGain(haptic: *SDL_Haptic, gain: cint): cint
 ```
 
@@ -7082,7 +7082,7 @@ global function SDL_HapticSetGain(haptic: *SDL_Haptic, gain: cint): cint
 
 ### SDL_HapticSetAutocenter
 
-```nelua
+```lua
 global function SDL_HapticSetAutocenter(haptic: *SDL_Haptic, autocenter: cint): cint
 ```
 
@@ -7090,7 +7090,7 @@ global function SDL_HapticSetAutocenter(haptic: *SDL_Haptic, autocenter: cint): 
 
 ### SDL_HapticPause
 
-```nelua
+```lua
 global function SDL_HapticPause(haptic: *SDL_Haptic): cint
 ```
 
@@ -7098,7 +7098,7 @@ global function SDL_HapticPause(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticUnpause
 
-```nelua
+```lua
 global function SDL_HapticUnpause(haptic: *SDL_Haptic): cint
 ```
 
@@ -7106,7 +7106,7 @@ global function SDL_HapticUnpause(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticStopAll
 
-```nelua
+```lua
 global function SDL_HapticStopAll(haptic: *SDL_Haptic): cint
 ```
 
@@ -7114,7 +7114,7 @@ global function SDL_HapticStopAll(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticRumbleSupported
 
-```nelua
+```lua
 global function SDL_HapticRumbleSupported(haptic: *SDL_Haptic): cint
 ```
 
@@ -7122,7 +7122,7 @@ global function SDL_HapticRumbleSupported(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticRumbleInit
 
-```nelua
+```lua
 global function SDL_HapticRumbleInit(haptic: *SDL_Haptic): cint
 ```
 
@@ -7130,7 +7130,7 @@ global function SDL_HapticRumbleInit(haptic: *SDL_Haptic): cint
 
 ### SDL_HapticRumblePlay
 
-```nelua
+```lua
 global function SDL_HapticRumblePlay(haptic: *SDL_Haptic, strength: float32, length: uint32): cint
 ```
 
@@ -7138,7 +7138,7 @@ global function SDL_HapticRumblePlay(haptic: *SDL_Haptic, strength: float32, len
 
 ### SDL_HapticRumbleStop
 
-```nelua
+```lua
 global function SDL_HapticRumbleStop(haptic: *SDL_Haptic): cint
 ```
 
@@ -7146,7 +7146,7 @@ global function SDL_HapticRumbleStop(haptic: *SDL_Haptic): cint
 
 ### SDL_HintPriority
 
-```nelua
+```lua
 global SDL_HintPriority: type = @enum(cint){
   SDL_HINT_DEFAULT = 0,
   SDL_HINT_NORMAL = 1,
@@ -7158,7 +7158,7 @@ global SDL_HintPriority: type = @enum(cint){
 
 ### SDL_SetHintWithPriority
 
-```nelua
+```lua
 global function SDL_SetHintWithPriority(name: cstring, value: cstring, priority: SDL_HintPriority): SDL_bool
 ```
 
@@ -7166,7 +7166,7 @@ global function SDL_SetHintWithPriority(name: cstring, value: cstring, priority:
 
 ### SDL_SetHint
 
-```nelua
+```lua
 global function SDL_SetHint(name: cstring, value: cstring): SDL_bool
 ```
 
@@ -7174,7 +7174,7 @@ global function SDL_SetHint(name: cstring, value: cstring): SDL_bool
 
 ### SDL_GetHint
 
-```nelua
+```lua
 global function SDL_GetHint(name: cstring): cstring
 ```
 
@@ -7182,7 +7182,7 @@ global function SDL_GetHint(name: cstring): cstring
 
 ### SDL_GetHintBoolean
 
-```nelua
+```lua
 global function SDL_GetHintBoolean(name: cstring, default_value: SDL_bool): SDL_bool
 ```
 
@@ -7190,7 +7190,7 @@ global function SDL_GetHintBoolean(name: cstring, default_value: SDL_bool): SDL_
 
 ### SDL_HintCallback
 
-```nelua
+```lua
 global SDL_HintCallback: type = @function(pointer, cstring, cstring, cstring)
 ```
 
@@ -7198,7 +7198,7 @@ global SDL_HintCallback: type = @function(pointer, cstring, cstring, cstring)
 
 ### SDL_AddHintCallback
 
-```nelua
+```lua
 global function SDL_AddHintCallback(name: cstring, callback: SDL_HintCallback, userdata: pointer)
 ```
 
@@ -7206,7 +7206,7 @@ global function SDL_AddHintCallback(name: cstring, callback: SDL_HintCallback, u
 
 ### SDL_DelHintCallback
 
-```nelua
+```lua
 global function SDL_DelHintCallback(name: cstring, callback: SDL_HintCallback, userdata: pointer)
 ```
 
@@ -7214,7 +7214,7 @@ global function SDL_DelHintCallback(name: cstring, callback: SDL_HintCallback, u
 
 ### SDL_ClearHints
 
-```nelua
+```lua
 global function SDL_ClearHints()
 ```
 
@@ -7222,7 +7222,7 @@ global function SDL_ClearHints()
 
 ### SDL_LoadObject
 
-```nelua
+```lua
 global function SDL_LoadObject(sofile: cstring): pointer
 ```
 
@@ -7230,7 +7230,7 @@ global function SDL_LoadObject(sofile: cstring): pointer
 
 ### SDL_LoadFunction
 
-```nelua
+```lua
 global function SDL_LoadFunction(handle: pointer, name: cstring): pointer
 ```
 
@@ -7238,7 +7238,7 @@ global function SDL_LoadFunction(handle: pointer, name: cstring): pointer
 
 ### SDL_UnloadObject
 
-```nelua
+```lua
 global function SDL_UnloadObject(handle: pointer)
 ```
 
@@ -7246,7 +7246,7 @@ global function SDL_UnloadObject(handle: pointer)
 
 ### SDL_LogCategory
 
-```nelua
+```lua
 global SDL_LogCategory: type = @enum(cint){
   SDL_LOG_CATEGORY_APPLICATION = 0,
   SDL_LOG_CATEGORY_ERROR = 1,
@@ -7275,7 +7275,7 @@ global SDL_LogCategory: type = @enum(cint){
 
 ### SDL_LogPriority
 
-```nelua
+```lua
 global SDL_LogPriority: type = @enum(cint){
   SDL_LOG_PRIORITY_VERBOSE = 1,
   SDL_LOG_PRIORITY_DEBUG = 2,
@@ -7291,7 +7291,7 @@ global SDL_LogPriority: type = @enum(cint){
 
 ### SDL_LogSetAllPriority
 
-```nelua
+```lua
 global function SDL_LogSetAllPriority(priority: SDL_LogPriority)
 ```
 
@@ -7299,7 +7299,7 @@ global function SDL_LogSetAllPriority(priority: SDL_LogPriority)
 
 ### SDL_LogSetPriority
 
-```nelua
+```lua
 global function SDL_LogSetPriority(category: cint, priority: SDL_LogPriority)
 ```
 
@@ -7307,7 +7307,7 @@ global function SDL_LogSetPriority(category: cint, priority: SDL_LogPriority)
 
 ### SDL_LogGetPriority
 
-```nelua
+```lua
 global function SDL_LogGetPriority(category: cint): SDL_LogPriority
 ```
 
@@ -7315,7 +7315,7 @@ global function SDL_LogGetPriority(category: cint): SDL_LogPriority
 
 ### SDL_LogResetPriorities
 
-```nelua
+```lua
 global function SDL_LogResetPriorities()
 ```
 
@@ -7323,7 +7323,7 @@ global function SDL_LogResetPriorities()
 
 ### SDL_Log
 
-```nelua
+```lua
 global function SDL_Log(fmt: cstring, ...: cvarargs)
 ```
 
@@ -7331,7 +7331,7 @@ global function SDL_Log(fmt: cstring, ...: cvarargs)
 
 ### SDL_LogVerbose
 
-```nelua
+```lua
 global function SDL_LogVerbose(category: cint, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7339,7 +7339,7 @@ global function SDL_LogVerbose(category: cint, fmt: cstring, ...: cvarargs)
 
 ### SDL_LogDebug
 
-```nelua
+```lua
 global function SDL_LogDebug(category: cint, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7347,7 +7347,7 @@ global function SDL_LogDebug(category: cint, fmt: cstring, ...: cvarargs)
 
 ### SDL_LogInfo
 
-```nelua
+```lua
 global function SDL_LogInfo(category: cint, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7355,7 +7355,7 @@ global function SDL_LogInfo(category: cint, fmt: cstring, ...: cvarargs)
 
 ### SDL_LogWarn
 
-```nelua
+```lua
 global function SDL_LogWarn(category: cint, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7363,7 +7363,7 @@ global function SDL_LogWarn(category: cint, fmt: cstring, ...: cvarargs)
 
 ### SDL_LogError
 
-```nelua
+```lua
 global function SDL_LogError(category: cint, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7371,7 +7371,7 @@ global function SDL_LogError(category: cint, fmt: cstring, ...: cvarargs)
 
 ### SDL_LogCritical
 
-```nelua
+```lua
 global function SDL_LogCritical(category: cint, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7379,7 +7379,7 @@ global function SDL_LogCritical(category: cint, fmt: cstring, ...: cvarargs)
 
 ### SDL_LogMessage
 
-```nelua
+```lua
 global function SDL_LogMessage(category: cint, priority: SDL_LogPriority, fmt: cstring, ...: cvarargs)
 ```
 
@@ -7387,7 +7387,7 @@ global function SDL_LogMessage(category: cint, priority: SDL_LogPriority, fmt: c
 
 ### SDL_LogMessageV
 
-```nelua
+```lua
 global function SDL_LogMessageV(category: cint, priority: SDL_LogPriority, fmt: cstring, ap: cvalist)
 ```
 
@@ -7395,7 +7395,7 @@ global function SDL_LogMessageV(category: cint, priority: SDL_LogPriority, fmt: 
 
 ### SDL_LogOutputFunction
 
-```nelua
+```lua
 global SDL_LogOutputFunction: type = @function(pointer, cint, SDL_LogPriority, cstring)
 ```
 
@@ -7403,7 +7403,7 @@ global SDL_LogOutputFunction: type = @function(pointer, cint, SDL_LogPriority, c
 
 ### SDL_LogGetOutputFunction
 
-```nelua
+```lua
 global function SDL_LogGetOutputFunction(callback: *SDL_LogOutputFunction, userdata: *pointer)
 ```
 
@@ -7411,7 +7411,7 @@ global function SDL_LogGetOutputFunction(callback: *SDL_LogOutputFunction, userd
 
 ### SDL_LogSetOutputFunction
 
-```nelua
+```lua
 global function SDL_LogSetOutputFunction(callback: SDL_LogOutputFunction, userdata: pointer)
 ```
 
@@ -7419,7 +7419,7 @@ global function SDL_LogSetOutputFunction(callback: SDL_LogOutputFunction, userda
 
 ### SDL_MessageBoxFlags
 
-```nelua
+```lua
 global SDL_MessageBoxFlags: type = @enum(cint){
   SDL_MESSAGEBOX_ERROR = 16,
   SDL_MESSAGEBOX_WARNING = 32,
@@ -7433,7 +7433,7 @@ global SDL_MessageBoxFlags: type = @enum(cint){
 
 ### SDL_MessageBoxButtonFlags
 
-```nelua
+```lua
 global SDL_MessageBoxButtonFlags: type = @enum(cint){
   SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 1,
   SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 2
@@ -7444,7 +7444,7 @@ global SDL_MessageBoxButtonFlags: type = @enum(cint){
 
 ### SDL_MessageBoxButtonData
 
-```nelua
+```lua
 global SDL_MessageBoxButtonData: type = @record{
   flags: uint32,
   buttonid: cint,
@@ -7456,7 +7456,7 @@ global SDL_MessageBoxButtonData: type = @record{
 
 ### SDL_MessageBoxColor
 
-```nelua
+```lua
 global SDL_MessageBoxColor: type = @record{
   r: uint8,
   g: uint8,
@@ -7468,7 +7468,7 @@ global SDL_MessageBoxColor: type = @record{
 
 ### SDL_MessageBoxColorType
 
-```nelua
+```lua
 global SDL_MessageBoxColorType: type = @enum(cint){
   SDL_MESSAGEBOX_COLOR_BACKGROUND = 0,
   SDL_MESSAGEBOX_COLOR_TEXT = 1,
@@ -7483,7 +7483,7 @@ global SDL_MessageBoxColorType: type = @enum(cint){
 
 ### SDL_MessageBoxColorScheme
 
-```nelua
+```lua
 global SDL_MessageBoxColorScheme: type = @record{
   colors: [5]SDL_MessageBoxColor
 }
@@ -7493,7 +7493,7 @@ global SDL_MessageBoxColorScheme: type = @record{
 
 ### SDL_MessageBoxData
 
-```nelua
+```lua
 global SDL_MessageBoxData: type = @record{
   flags: uint32,
   window: *SDL_Window,
@@ -7509,7 +7509,7 @@ global SDL_MessageBoxData: type = @record{
 
 ### SDL_ShowMessageBox
 
-```nelua
+```lua
 global function SDL_ShowMessageBox(messageboxdata: *SDL_MessageBoxData, buttonid: *cint): cint
 ```
 
@@ -7517,7 +7517,7 @@ global function SDL_ShowMessageBox(messageboxdata: *SDL_MessageBoxData, buttonid
 
 ### SDL_ShowSimpleMessageBox
 
-```nelua
+```lua
 global function SDL_ShowSimpleMessageBox(flags: uint32, title: cstring, message: cstring, window: *SDL_Window): cint
 ```
 
@@ -7525,7 +7525,7 @@ global function SDL_ShowSimpleMessageBox(flags: uint32, title: cstring, message:
 
 ### SDL_MetalView
 
-```nelua
+```lua
 global SDL_MetalView: type = @pointer
 ```
 
@@ -7533,7 +7533,7 @@ global SDL_MetalView: type = @pointer
 
 ### SDL_Metal_CreateView
 
-```nelua
+```lua
 global function SDL_Metal_CreateView(window: *SDL_Window): SDL_MetalView
 ```
 
@@ -7541,7 +7541,7 @@ global function SDL_Metal_CreateView(window: *SDL_Window): SDL_MetalView
 
 ### SDL_Metal_DestroyView
 
-```nelua
+```lua
 global function SDL_Metal_DestroyView(view: SDL_MetalView)
 ```
 
@@ -7549,7 +7549,7 @@ global function SDL_Metal_DestroyView(view: SDL_MetalView)
 
 ### SDL_Metal_GetLayer
 
-```nelua
+```lua
 global function SDL_Metal_GetLayer(view: SDL_MetalView): pointer
 ```
 
@@ -7557,7 +7557,7 @@ global function SDL_Metal_GetLayer(view: SDL_MetalView): pointer
 
 ### SDL_Metal_GetDrawableSize
 
-```nelua
+```lua
 global function SDL_Metal_GetDrawableSize(window: *SDL_Window, w: *cint, h: *cint)
 ```
 
@@ -7565,7 +7565,7 @@ global function SDL_Metal_GetDrawableSize(window: *SDL_Window, w: *cint, h: *cin
 
 ### SDL_PowerState
 
-```nelua
+```lua
 global SDL_PowerState: type = @enum(cint){
   SDL_POWERSTATE_UNKNOWN = 0,
   SDL_POWERSTATE_ON_BATTERY = 1,
@@ -7579,7 +7579,7 @@ global SDL_PowerState: type = @enum(cint){
 
 ### SDL_GetPowerInfo
 
-```nelua
+```lua
 global function SDL_GetPowerInfo(secs: *cint, pct: *cint): SDL_PowerState
 ```
 
@@ -7587,7 +7587,7 @@ global function SDL_GetPowerInfo(secs: *cint, pct: *cint): SDL_PowerState
 
 ### SDL_RendererFlags
 
-```nelua
+```lua
 global SDL_RendererFlags: type = @enum(cint){
   SDL_RENDERER_SOFTWARE = 1,
   SDL_RENDERER_ACCELERATED = 2,
@@ -7600,7 +7600,7 @@ global SDL_RendererFlags: type = @enum(cint){
 
 ### SDL_RendererInfo
 
-```nelua
+```lua
 global SDL_RendererInfo: type = @record{
   name: cstring,
   flags: uint32,
@@ -7615,7 +7615,7 @@ global SDL_RendererInfo: type = @record{
 
 ### SDL_ScaleMode
 
-```nelua
+```lua
 global SDL_ScaleMode: type = @enum(cint){
   SDL_ScaleModeNearest = 0,
   SDL_ScaleModeLinear = 1,
@@ -7627,7 +7627,7 @@ global SDL_ScaleMode: type = @enum(cint){
 
 ### SDL_TextureAccess
 
-```nelua
+```lua
 global SDL_TextureAccess: type = @enum(cint){
   SDL_TEXTUREACCESS_STATIC = 0,
   SDL_TEXTUREACCESS_STREAMING = 1,
@@ -7639,7 +7639,7 @@ global SDL_TextureAccess: type = @enum(cint){
 
 ### SDL_TextureModulate
 
-```nelua
+```lua
 global SDL_TextureModulate: type = @enum(cint){
   SDL_TEXTUREMODULATE_NONE = 0,
   SDL_TEXTUREMODULATE_COLOR = 1,
@@ -7651,7 +7651,7 @@ global SDL_TextureModulate: type = @enum(cint){
 
 ### SDL_RendererFlip
 
-```nelua
+```lua
 global SDL_RendererFlip: type = @enum(cint){
   SDL_FLIP_NONE = 0,
   SDL_FLIP_HORIZONTAL = 1,
@@ -7663,7 +7663,7 @@ global SDL_RendererFlip: type = @enum(cint){
 
 ### SDL_Renderer
 
-```nelua
+```lua
 global SDL_Renderer: type = @record{}
 ```
 
@@ -7671,7 +7671,7 @@ global SDL_Renderer: type = @record{}
 
 ### SDL_Texture
 
-```nelua
+```lua
 global SDL_Texture: type = @record{}
 ```
 
@@ -7679,7 +7679,7 @@ global SDL_Texture: type = @record{}
 
 ### SDL_GetNumRenderDrivers
 
-```nelua
+```lua
 global function SDL_GetNumRenderDrivers(): cint
 ```
 
@@ -7687,7 +7687,7 @@ global function SDL_GetNumRenderDrivers(): cint
 
 ### SDL_GetRenderDriverInfo
 
-```nelua
+```lua
 global function SDL_GetRenderDriverInfo(index: cint, info: *SDL_RendererInfo): cint
 ```
 
@@ -7695,7 +7695,7 @@ global function SDL_GetRenderDriverInfo(index: cint, info: *SDL_RendererInfo): c
 
 ### SDL_CreateWindowAndRenderer
 
-```nelua
+```lua
 global function SDL_CreateWindowAndRenderer(width: cint, height: cint, window_flags: uint32, window: **SDL_Window, renderer: **SDL_Renderer): cint
 ```
 
@@ -7703,7 +7703,7 @@ global function SDL_CreateWindowAndRenderer(width: cint, height: cint, window_fl
 
 ### SDL_CreateRenderer
 
-```nelua
+```lua
 global function SDL_CreateRenderer(window: *SDL_Window, index: cint, flags: uint32): *SDL_Renderer
 ```
 
@@ -7711,7 +7711,7 @@ global function SDL_CreateRenderer(window: *SDL_Window, index: cint, flags: uint
 
 ### SDL_CreateSoftwareRenderer
 
-```nelua
+```lua
 global function SDL_CreateSoftwareRenderer(surface: *SDL_Surface): *SDL_Renderer
 ```
 
@@ -7719,7 +7719,7 @@ global function SDL_CreateSoftwareRenderer(surface: *SDL_Surface): *SDL_Renderer
 
 ### SDL_GetRenderer
 
-```nelua
+```lua
 global function SDL_GetRenderer(window: *SDL_Window): *SDL_Renderer
 ```
 
@@ -7727,7 +7727,7 @@ global function SDL_GetRenderer(window: *SDL_Window): *SDL_Renderer
 
 ### SDL_GetRendererInfo
 
-```nelua
+```lua
 global function SDL_GetRendererInfo(renderer: *SDL_Renderer, info: *SDL_RendererInfo): cint
 ```
 
@@ -7735,7 +7735,7 @@ global function SDL_GetRendererInfo(renderer: *SDL_Renderer, info: *SDL_Renderer
 
 ### SDL_GetRendererOutputSize
 
-```nelua
+```lua
 global function SDL_GetRendererOutputSize(renderer: *SDL_Renderer, w: *cint, h: *cint): cint
 ```
 
@@ -7743,7 +7743,7 @@ global function SDL_GetRendererOutputSize(renderer: *SDL_Renderer, w: *cint, h: 
 
 ### SDL_CreateTexture
 
-```nelua
+```lua
 global function SDL_CreateTexture(renderer: *SDL_Renderer, format: uint32, access: cint, w: cint, h: cint): *SDL_Texture
 ```
 
@@ -7751,7 +7751,7 @@ global function SDL_CreateTexture(renderer: *SDL_Renderer, format: uint32, acces
 
 ### SDL_CreateTextureFromSurface
 
-```nelua
+```lua
 global function SDL_CreateTextureFromSurface(renderer: *SDL_Renderer, surface: *SDL_Surface): *SDL_Texture
 ```
 
@@ -7759,7 +7759,7 @@ global function SDL_CreateTextureFromSurface(renderer: *SDL_Renderer, surface: *
 
 ### SDL_QueryTexture
 
-```nelua
+```lua
 global function SDL_QueryTexture(texture: *SDL_Texture, format: *uint32, access: *cint, w: *cint, h: *cint): cint
 ```
 
@@ -7767,7 +7767,7 @@ global function SDL_QueryTexture(texture: *SDL_Texture, format: *uint32, access:
 
 ### SDL_SetTextureColorMod
 
-```nelua
+```lua
 global function SDL_SetTextureColorMod(texture: *SDL_Texture, r: uint8, g: uint8, b: uint8): cint
 ```
 
@@ -7775,7 +7775,7 @@ global function SDL_SetTextureColorMod(texture: *SDL_Texture, r: uint8, g: uint8
 
 ### SDL_GetTextureColorMod
 
-```nelua
+```lua
 global function SDL_GetTextureColorMod(texture: *SDL_Texture, r: *uint8, g: *uint8, b: *uint8): cint
 ```
 
@@ -7783,7 +7783,7 @@ global function SDL_GetTextureColorMod(texture: *SDL_Texture, r: *uint8, g: *uin
 
 ### SDL_SetTextureAlphaMod
 
-```nelua
+```lua
 global function SDL_SetTextureAlphaMod(texture: *SDL_Texture, alpha: uint8): cint
 ```
 
@@ -7791,7 +7791,7 @@ global function SDL_SetTextureAlphaMod(texture: *SDL_Texture, alpha: uint8): cin
 
 ### SDL_GetTextureAlphaMod
 
-```nelua
+```lua
 global function SDL_GetTextureAlphaMod(texture: *SDL_Texture, alpha: *uint8): cint
 ```
 
@@ -7799,7 +7799,7 @@ global function SDL_GetTextureAlphaMod(texture: *SDL_Texture, alpha: *uint8): ci
 
 ### SDL_SetTextureBlendMode
 
-```nelua
+```lua
 global function SDL_SetTextureBlendMode(texture: *SDL_Texture, blendMode: SDL_BlendMode): cint
 ```
 
@@ -7807,7 +7807,7 @@ global function SDL_SetTextureBlendMode(texture: *SDL_Texture, blendMode: SDL_Bl
 
 ### SDL_GetTextureBlendMode
 
-```nelua
+```lua
 global function SDL_GetTextureBlendMode(texture: *SDL_Texture, blendMode: *SDL_BlendMode): cint
 ```
 
@@ -7815,7 +7815,7 @@ global function SDL_GetTextureBlendMode(texture: *SDL_Texture, blendMode: *SDL_B
 
 ### SDL_SetTextureScaleMode
 
-```nelua
+```lua
 global function SDL_SetTextureScaleMode(texture: *SDL_Texture, scaleMode: SDL_ScaleMode): cint
 ```
 
@@ -7823,7 +7823,7 @@ global function SDL_SetTextureScaleMode(texture: *SDL_Texture, scaleMode: SDL_Sc
 
 ### SDL_GetTextureScaleMode
 
-```nelua
+```lua
 global function SDL_GetTextureScaleMode(texture: *SDL_Texture, scaleMode: *SDL_ScaleMode): cint
 ```
 
@@ -7831,7 +7831,7 @@ global function SDL_GetTextureScaleMode(texture: *SDL_Texture, scaleMode: *SDL_S
 
 ### SDL_UpdateTexture
 
-```nelua
+```lua
 global function SDL_UpdateTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: pointer, pitch: cint): cint
 ```
 
@@ -7839,7 +7839,7 @@ global function SDL_UpdateTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels
 
 ### SDL_UpdateYUVTexture
 
-```nelua
+```lua
 global function SDL_UpdateYUVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, Uplane: *uint8, Upitch: cint, Vplane: *uint8, Vpitch: cint): cint
 ```
 
@@ -7847,7 +7847,7 @@ global function SDL_UpdateYUVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Ypl
 
 ### SDL_LockTexture
 
-```nelua
+```lua
 global function SDL_LockTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: *pointer, pitch: *cint): cint
 ```
 
@@ -7855,7 +7855,7 @@ global function SDL_LockTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: 
 
 ### SDL_LockTextureToSurface
 
-```nelua
+```lua
 global function SDL_LockTextureToSurface(texture: *SDL_Texture, rect: *SDL_Rect, surface: **SDL_Surface): cint
 ```
 
@@ -7863,7 +7863,7 @@ global function SDL_LockTextureToSurface(texture: *SDL_Texture, rect: *SDL_Rect,
 
 ### SDL_UnlockTexture
 
-```nelua
+```lua
 global function SDL_UnlockTexture(texture: *SDL_Texture)
 ```
 
@@ -7871,7 +7871,7 @@ global function SDL_UnlockTexture(texture: *SDL_Texture)
 
 ### SDL_RenderTargetSupported
 
-```nelua
+```lua
 global function SDL_RenderTargetSupported(renderer: *SDL_Renderer): SDL_bool
 ```
 
@@ -7879,7 +7879,7 @@ global function SDL_RenderTargetSupported(renderer: *SDL_Renderer): SDL_bool
 
 ### SDL_SetRenderTarget
 
-```nelua
+```lua
 global function SDL_SetRenderTarget(renderer: *SDL_Renderer, texture: *SDL_Texture): cint
 ```
 
@@ -7887,7 +7887,7 @@ global function SDL_SetRenderTarget(renderer: *SDL_Renderer, texture: *SDL_Textu
 
 ### SDL_GetRenderTarget
 
-```nelua
+```lua
 global function SDL_GetRenderTarget(renderer: *SDL_Renderer): *SDL_Texture
 ```
 
@@ -7895,7 +7895,7 @@ global function SDL_GetRenderTarget(renderer: *SDL_Renderer): *SDL_Texture
 
 ### SDL_RenderSetLogicalSize
 
-```nelua
+```lua
 global function SDL_RenderSetLogicalSize(renderer: *SDL_Renderer, w: cint, h: cint): cint
 ```
 
@@ -7903,7 +7903,7 @@ global function SDL_RenderSetLogicalSize(renderer: *SDL_Renderer, w: cint, h: ci
 
 ### SDL_RenderGetLogicalSize
 
-```nelua
+```lua
 global function SDL_RenderGetLogicalSize(renderer: *SDL_Renderer, w: *cint, h: *cint)
 ```
 
@@ -7911,7 +7911,7 @@ global function SDL_RenderGetLogicalSize(renderer: *SDL_Renderer, w: *cint, h: *
 
 ### SDL_RenderSetIntegerScale
 
-```nelua
+```lua
 global function SDL_RenderSetIntegerScale(renderer: *SDL_Renderer, enable: SDL_bool): cint
 ```
 
@@ -7919,7 +7919,7 @@ global function SDL_RenderSetIntegerScale(renderer: *SDL_Renderer, enable: SDL_b
 
 ### SDL_RenderGetIntegerScale
 
-```nelua
+```lua
 global function SDL_RenderGetIntegerScale(renderer: *SDL_Renderer): SDL_bool
 ```
 
@@ -7927,7 +7927,7 @@ global function SDL_RenderGetIntegerScale(renderer: *SDL_Renderer): SDL_bool
 
 ### SDL_RenderSetViewport
 
-```nelua
+```lua
 global function SDL_RenderSetViewport(renderer: *SDL_Renderer, rect: *SDL_Rect): cint
 ```
 
@@ -7935,7 +7935,7 @@ global function SDL_RenderSetViewport(renderer: *SDL_Renderer, rect: *SDL_Rect):
 
 ### SDL_RenderGetViewport
 
-```nelua
+```lua
 global function SDL_RenderGetViewport(renderer: *SDL_Renderer, rect: *SDL_Rect)
 ```
 
@@ -7943,7 +7943,7 @@ global function SDL_RenderGetViewport(renderer: *SDL_Renderer, rect: *SDL_Rect)
 
 ### SDL_RenderSetClipRect
 
-```nelua
+```lua
 global function SDL_RenderSetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect): cint
 ```
 
@@ -7951,7 +7951,7 @@ global function SDL_RenderSetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect):
 
 ### SDL_RenderGetClipRect
 
-```nelua
+```lua
 global function SDL_RenderGetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect)
 ```
 
@@ -7959,7 +7959,7 @@ global function SDL_RenderGetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect)
 
 ### SDL_RenderIsClipEnabled
 
-```nelua
+```lua
 global function SDL_RenderIsClipEnabled(renderer: *SDL_Renderer): SDL_bool
 ```
 
@@ -7967,7 +7967,7 @@ global function SDL_RenderIsClipEnabled(renderer: *SDL_Renderer): SDL_bool
 
 ### SDL_RenderSetScale
 
-```nelua
+```lua
 global function SDL_RenderSetScale(renderer: *SDL_Renderer, scaleX: float32, scaleY: float32): cint
 ```
 
@@ -7975,7 +7975,7 @@ global function SDL_RenderSetScale(renderer: *SDL_Renderer, scaleX: float32, sca
 
 ### SDL_RenderGetScale
 
-```nelua
+```lua
 global function SDL_RenderGetScale(renderer: *SDL_Renderer, scaleX: *float32, scaleY: *float32)
 ```
 
@@ -7983,7 +7983,7 @@ global function SDL_RenderGetScale(renderer: *SDL_Renderer, scaleX: *float32, sc
 
 ### SDL_SetRenderDrawColor
 
-```nelua
+```lua
 global function SDL_SetRenderDrawColor(renderer: *SDL_Renderer, r: uint8, g: uint8, b: uint8, a: uint8): cint
 ```
 
@@ -7991,7 +7991,7 @@ global function SDL_SetRenderDrawColor(renderer: *SDL_Renderer, r: uint8, g: uin
 
 ### SDL_GetRenderDrawColor
 
-```nelua
+```lua
 global function SDL_GetRenderDrawColor(renderer: *SDL_Renderer, r: *uint8, g: *uint8, b: *uint8, a: *uint8): cint
 ```
 
@@ -7999,7 +7999,7 @@ global function SDL_GetRenderDrawColor(renderer: *SDL_Renderer, r: *uint8, g: *u
 
 ### SDL_SetRenderDrawBlendMode
 
-```nelua
+```lua
 global function SDL_SetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: SDL_BlendMode): cint
 ```
 
@@ -8007,7 +8007,7 @@ global function SDL_SetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: S
 
 ### SDL_GetRenderDrawBlendMode
 
-```nelua
+```lua
 global function SDL_GetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: *SDL_BlendMode): cint
 ```
 
@@ -8015,7 +8015,7 @@ global function SDL_GetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: *
 
 ### SDL_RenderClear
 
-```nelua
+```lua
 global function SDL_RenderClear(renderer: *SDL_Renderer): cint
 ```
 
@@ -8023,7 +8023,7 @@ global function SDL_RenderClear(renderer: *SDL_Renderer): cint
 
 ### SDL_RenderDrawPoint
 
-```nelua
+```lua
 global function SDL_RenderDrawPoint(renderer: *SDL_Renderer, x: cint, y: cint): cint
 ```
 
@@ -8031,7 +8031,7 @@ global function SDL_RenderDrawPoint(renderer: *SDL_Renderer, x: cint, y: cint): 
 
 ### SDL_RenderDrawPoints
 
-```nelua
+```lua
 global function SDL_RenderDrawPoints(renderer: *SDL_Renderer, points: *SDL_Point, count: cint): cint
 ```
 
@@ -8039,7 +8039,7 @@ global function SDL_RenderDrawPoints(renderer: *SDL_Renderer, points: *SDL_Point
 
 ### SDL_RenderDrawLine
 
-```nelua
+```lua
 global function SDL_RenderDrawLine(renderer: *SDL_Renderer, x1: cint, y1: cint, x2: cint, y2: cint): cint
 ```
 
@@ -8047,7 +8047,7 @@ global function SDL_RenderDrawLine(renderer: *SDL_Renderer, x1: cint, y1: cint, 
 
 ### SDL_RenderDrawLines
 
-```nelua
+```lua
 global function SDL_RenderDrawLines(renderer: *SDL_Renderer, points: *SDL_Point, count: cint): cint
 ```
 
@@ -8055,7 +8055,7 @@ global function SDL_RenderDrawLines(renderer: *SDL_Renderer, points: *SDL_Point,
 
 ### SDL_RenderDrawRect
 
-```nelua
+```lua
 global function SDL_RenderDrawRect(renderer: *SDL_Renderer, rect: *SDL_Rect): cint
 ```
 
@@ -8063,7 +8063,7 @@ global function SDL_RenderDrawRect(renderer: *SDL_Renderer, rect: *SDL_Rect): ci
 
 ### SDL_RenderDrawRects
 
-```nelua
+```lua
 global function SDL_RenderDrawRects(renderer: *SDL_Renderer, rects: *SDL_Rect, count: cint): cint
 ```
 
@@ -8071,7 +8071,7 @@ global function SDL_RenderDrawRects(renderer: *SDL_Renderer, rects: *SDL_Rect, c
 
 ### SDL_RenderFillRect
 
-```nelua
+```lua
 global function SDL_RenderFillRect(renderer: *SDL_Renderer, rect: *SDL_Rect): cint
 ```
 
@@ -8079,7 +8079,7 @@ global function SDL_RenderFillRect(renderer: *SDL_Renderer, rect: *SDL_Rect): ci
 
 ### SDL_RenderFillRects
 
-```nelua
+```lua
 global function SDL_RenderFillRects(renderer: *SDL_Renderer, rects: *SDL_Rect, count: cint): cint
 ```
 
@@ -8087,7 +8087,7 @@ global function SDL_RenderFillRects(renderer: *SDL_Renderer, rects: *SDL_Rect, c
 
 ### SDL_RenderCopy
 
-```nelua
+```lua
 global function SDL_RenderCopy(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect): cint
 ```
 
@@ -8095,7 +8095,7 @@ global function SDL_RenderCopy(renderer: *SDL_Renderer, texture: *SDL_Texture, s
 
 ### SDL_RenderCopyEx
 
-```nelua
+```lua
 global function SDL_RenderCopyEx(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect, angle: float64, center: *SDL_Point, flip: SDL_RendererFlip): cint
 ```
 
@@ -8103,7 +8103,7 @@ global function SDL_RenderCopyEx(renderer: *SDL_Renderer, texture: *SDL_Texture,
 
 ### SDL_RenderDrawPointF
 
-```nelua
+```lua
 global function SDL_RenderDrawPointF(renderer: *SDL_Renderer, x: float32, y: float32): cint
 ```
 
@@ -8111,7 +8111,7 @@ global function SDL_RenderDrawPointF(renderer: *SDL_Renderer, x: float32, y: flo
 
 ### SDL_RenderDrawPointsF
 
-```nelua
+```lua
 global function SDL_RenderDrawPointsF(renderer: *SDL_Renderer, points: *SDL_FPoint, count: cint): cint
 ```
 
@@ -8119,7 +8119,7 @@ global function SDL_RenderDrawPointsF(renderer: *SDL_Renderer, points: *SDL_FPoi
 
 ### SDL_RenderDrawLineF
 
-```nelua
+```lua
 global function SDL_RenderDrawLineF(renderer: *SDL_Renderer, x1: float32, y1: float32, x2: float32, y2: float32): cint
 ```
 
@@ -8127,7 +8127,7 @@ global function SDL_RenderDrawLineF(renderer: *SDL_Renderer, x1: float32, y1: fl
 
 ### SDL_RenderDrawLinesF
 
-```nelua
+```lua
 global function SDL_RenderDrawLinesF(renderer: *SDL_Renderer, points: *SDL_FPoint, count: cint): cint
 ```
 
@@ -8135,7 +8135,7 @@ global function SDL_RenderDrawLinesF(renderer: *SDL_Renderer, points: *SDL_FPoin
 
 ### SDL_RenderDrawRectF
 
-```nelua
+```lua
 global function SDL_RenderDrawRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): cint
 ```
 
@@ -8143,7 +8143,7 @@ global function SDL_RenderDrawRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): 
 
 ### SDL_RenderDrawRectsF
 
-```nelua
+```lua
 global function SDL_RenderDrawRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect, count: cint): cint
 ```
 
@@ -8151,7 +8151,7 @@ global function SDL_RenderDrawRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect,
 
 ### SDL_RenderFillRectF
 
-```nelua
+```lua
 global function SDL_RenderFillRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): cint
 ```
 
@@ -8159,7 +8159,7 @@ global function SDL_RenderFillRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): 
 
 ### SDL_RenderFillRectsF
 
-```nelua
+```lua
 global function SDL_RenderFillRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect, count: cint): cint
 ```
 
@@ -8167,7 +8167,7 @@ global function SDL_RenderFillRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect,
 
 ### SDL_RenderCopyF
 
-```nelua
+```lua
 global function SDL_RenderCopyF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect): cint
 ```
 
@@ -8175,7 +8175,7 @@ global function SDL_RenderCopyF(renderer: *SDL_Renderer, texture: *SDL_Texture, 
 
 ### SDL_RenderCopyExF
 
-```nelua
+```lua
 global function SDL_RenderCopyExF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect, angle: float64, center: *SDL_FPoint, flip: SDL_RendererFlip): cint
 ```
 
@@ -8183,7 +8183,7 @@ global function SDL_RenderCopyExF(renderer: *SDL_Renderer, texture: *SDL_Texture
 
 ### SDL_RenderReadPixels
 
-```nelua
+```lua
 global function SDL_RenderReadPixels(renderer: *SDL_Renderer, rect: *SDL_Rect, format: uint32, pixels: pointer, pitch: cint): cint
 ```
 
@@ -8191,7 +8191,7 @@ global function SDL_RenderReadPixels(renderer: *SDL_Renderer, rect: *SDL_Rect, f
 
 ### SDL_RenderPresent
 
-```nelua
+```lua
 global function SDL_RenderPresent(renderer: *SDL_Renderer)
 ```
 
@@ -8199,7 +8199,7 @@ global function SDL_RenderPresent(renderer: *SDL_Renderer)
 
 ### SDL_DestroyTexture
 
-```nelua
+```lua
 global function SDL_DestroyTexture(texture: *SDL_Texture)
 ```
 
@@ -8207,7 +8207,7 @@ global function SDL_DestroyTexture(texture: *SDL_Texture)
 
 ### SDL_DestroyRenderer
 
-```nelua
+```lua
 global function SDL_DestroyRenderer(renderer: *SDL_Renderer)
 ```
 
@@ -8215,7 +8215,7 @@ global function SDL_DestroyRenderer(renderer: *SDL_Renderer)
 
 ### SDL_RenderFlush
 
-```nelua
+```lua
 global function SDL_RenderFlush(renderer: *SDL_Renderer): cint
 ```
 
@@ -8223,7 +8223,7 @@ global function SDL_RenderFlush(renderer: *SDL_Renderer): cint
 
 ### SDL_GL_BindTexture
 
-```nelua
+```lua
 global function SDL_GL_BindTexture(texture: *SDL_Texture, texw: *float32, texh: *float32): cint
 ```
 
@@ -8231,7 +8231,7 @@ global function SDL_GL_BindTexture(texture: *SDL_Texture, texw: *float32, texh: 
 
 ### SDL_GL_UnbindTexture
 
-```nelua
+```lua
 global function SDL_GL_UnbindTexture(texture: *SDL_Texture): cint
 ```
 
@@ -8239,7 +8239,7 @@ global function SDL_GL_UnbindTexture(texture: *SDL_Texture): cint
 
 ### SDL_RenderGetMetalLayer
 
-```nelua
+```lua
 global function SDL_RenderGetMetalLayer(renderer: *SDL_Renderer): pointer
 ```
 
@@ -8247,7 +8247,7 @@ global function SDL_RenderGetMetalLayer(renderer: *SDL_Renderer): pointer
 
 ### SDL_RenderGetMetalCommandEncoder
 
-```nelua
+```lua
 global function SDL_RenderGetMetalCommandEncoder(renderer: *SDL_Renderer): pointer
 ```
 
@@ -8255,7 +8255,7 @@ global function SDL_RenderGetMetalCommandEncoder(renderer: *SDL_Renderer): point
 
 ### SDL_CreateShapedWindow
 
-```nelua
+```lua
 global function SDL_CreateShapedWindow(title: cstring, x: cuint, y: cuint, w: cuint, h: cuint, flags: uint32): *SDL_Window
 ```
 
@@ -8263,7 +8263,7 @@ global function SDL_CreateShapedWindow(title: cstring, x: cuint, y: cuint, w: cu
 
 ### SDL_IsShapedWindow
 
-```nelua
+```lua
 global function SDL_IsShapedWindow(window: *SDL_Window): SDL_bool
 ```
 
@@ -8271,7 +8271,7 @@ global function SDL_IsShapedWindow(window: *SDL_Window): SDL_bool
 
 ### WindowShapeMode
 
-```nelua
+```lua
 global WindowShapeMode: type = @enum(cint){
   ShapeModeDefault = 0,
   ShapeModeBinarizeAlpha = 1,
@@ -8284,7 +8284,7 @@ global WindowShapeMode: type = @enum(cint){
 
 ### SDL_WindowShapeParams
 
-```nelua
+```lua
 global SDL_WindowShapeParams: type = @union{
   binarizationCutoff: uint8,
   colorKey: SDL_Color
@@ -8295,7 +8295,7 @@ global SDL_WindowShapeParams: type = @union{
 
 ### SDL_WindowShapeMode
 
-```nelua
+```lua
 global SDL_WindowShapeMode: type = @record{
   mode: WindowShapeMode,
   parameters: SDL_WindowShapeParams
@@ -8306,7 +8306,7 @@ global SDL_WindowShapeMode: type = @record{
 
 ### SDL_SetWindowShape
 
-```nelua
+```lua
 global function SDL_SetWindowShape(window: *SDL_Window, shape: *SDL_Surface, shape_mode: *SDL_WindowShapeMode): cint
 ```
 
@@ -8314,7 +8314,7 @@ global function SDL_SetWindowShape(window: *SDL_Window, shape: *SDL_Surface, sha
 
 ### SDL_GetShapedWindowMode
 
-```nelua
+```lua
 global function SDL_GetShapedWindowMode(window: *SDL_Window, shape_mode: *SDL_WindowShapeMode): cint
 ```
 
@@ -8322,7 +8322,7 @@ global function SDL_GetShapedWindowMode(window: *SDL_Window, shape_mode: *SDL_Wi
 
 ### SDL_LinuxSetThreadPriority
 
-```nelua
+```lua
 global function SDL_LinuxSetThreadPriority(threadID: int64, priority: cint): cint
 ```
 
@@ -8330,7 +8330,7 @@ global function SDL_LinuxSetThreadPriority(threadID: int64, priority: cint): cin
 
 ### SDL_IsTablet
 
-```nelua
+```lua
 global function SDL_IsTablet(): SDL_bool
 ```
 
@@ -8338,7 +8338,7 @@ global function SDL_IsTablet(): SDL_bool
 
 ### SDL_OnApplicationWillTerminate
 
-```nelua
+```lua
 global function SDL_OnApplicationWillTerminate()
 ```
 
@@ -8346,7 +8346,7 @@ global function SDL_OnApplicationWillTerminate()
 
 ### SDL_OnApplicationDidReceiveMemoryWarning
 
-```nelua
+```lua
 global function SDL_OnApplicationDidReceiveMemoryWarning()
 ```
 
@@ -8354,7 +8354,7 @@ global function SDL_OnApplicationDidReceiveMemoryWarning()
 
 ### SDL_OnApplicationWillResignActive
 
-```nelua
+```lua
 global function SDL_OnApplicationWillResignActive()
 ```
 
@@ -8362,7 +8362,7 @@ global function SDL_OnApplicationWillResignActive()
 
 ### SDL_OnApplicationDidEnterBackground
 
-```nelua
+```lua
 global function SDL_OnApplicationDidEnterBackground()
 ```
 
@@ -8370,7 +8370,7 @@ global function SDL_OnApplicationDidEnterBackground()
 
 ### SDL_OnApplicationWillEnterForeground
 
-```nelua
+```lua
 global function SDL_OnApplicationWillEnterForeground()
 ```
 
@@ -8378,7 +8378,7 @@ global function SDL_OnApplicationWillEnterForeground()
 
 ### SDL_OnApplicationDidBecomeActive
 
-```nelua
+```lua
 global function SDL_OnApplicationDidBecomeActive()
 ```
 
@@ -8386,7 +8386,7 @@ global function SDL_OnApplicationDidBecomeActive()
 
 ### SDL_GetTicks
 
-```nelua
+```lua
 global function SDL_GetTicks(): uint32
 ```
 
@@ -8394,7 +8394,7 @@ global function SDL_GetTicks(): uint32
 
 ### SDL_GetPerformanceCounter
 
-```nelua
+```lua
 global function SDL_GetPerformanceCounter(): uint64
 ```
 
@@ -8402,7 +8402,7 @@ global function SDL_GetPerformanceCounter(): uint64
 
 ### SDL_GetPerformanceFrequency
 
-```nelua
+```lua
 global function SDL_GetPerformanceFrequency(): uint64
 ```
 
@@ -8410,7 +8410,7 @@ global function SDL_GetPerformanceFrequency(): uint64
 
 ### SDL_Delay
 
-```nelua
+```lua
 global function SDL_Delay(ms: uint32)
 ```
 
@@ -8418,7 +8418,7 @@ global function SDL_Delay(ms: uint32)
 
 ### SDL_TimerCallback
 
-```nelua
+```lua
 global SDL_TimerCallback: type = @function(uint32, pointer): uint32
 ```
 
@@ -8426,7 +8426,7 @@ global SDL_TimerCallback: type = @function(uint32, pointer): uint32
 
 ### SDL_AddTimer
 
-```nelua
+```lua
 global function SDL_AddTimer(interval: uint32, callback: SDL_TimerCallback, param: pointer): cint
 ```
 
@@ -8434,7 +8434,7 @@ global function SDL_AddTimer(interval: uint32, callback: SDL_TimerCallback, para
 
 ### SDL_RemoveTimer
 
-```nelua
+```lua
 global function SDL_RemoveTimer(id: cint): SDL_bool
 ```
 
@@ -8442,7 +8442,7 @@ global function SDL_RemoveTimer(id: cint): SDL_bool
 
 ### SDL_version
 
-```nelua
+```lua
 global SDL_version: type = @record{
   major: uint8,
   minor: uint8,
@@ -8454,7 +8454,7 @@ global SDL_version: type = @record{
 
 ### SDL_GetVersion
 
-```nelua
+```lua
 global function SDL_GetVersion(ver: *SDL_version)
 ```
 
@@ -8462,7 +8462,7 @@ global function SDL_GetVersion(ver: *SDL_version)
 
 ### SDL_GetRevision
 
-```nelua
+```lua
 global function SDL_GetRevision(): cstring
 ```
 
@@ -8470,7 +8470,7 @@ global function SDL_GetRevision(): cstring
 
 ### SDL_GetRevisionNumber
 
-```nelua
+```lua
 global function SDL_GetRevisionNumber(): cint
 ```
 
@@ -8478,7 +8478,7 @@ global function SDL_GetRevisionNumber(): cint
 
 ### SDL_Locale
 
-```nelua
+```lua
 global SDL_Locale: type = @record{
   language: cstring,
   country: cstring
@@ -8489,7 +8489,7 @@ global SDL_Locale: type = @record{
 
 ### SDL_GetPreferredLocales
 
-```nelua
+```lua
 global function SDL_GetPreferredLocales(): *SDL_Locale
 ```
 
@@ -8497,7 +8497,7 @@ global function SDL_GetPreferredLocales(): *SDL_Locale
 
 ### SDL_OpenURL
 
-```nelua
+```lua
 global function SDL_OpenURL(url: cstring): cint
 ```
 
@@ -8505,7 +8505,7 @@ global function SDL_OpenURL(url: cstring): cint
 
 ### SDL_Init
 
-```nelua
+```lua
 global function SDL_Init(flags: uint32): cint
 ```
 
@@ -8513,7 +8513,7 @@ global function SDL_Init(flags: uint32): cint
 
 ### SDL_InitSubSystem
 
-```nelua
+```lua
 global function SDL_InitSubSystem(flags: uint32): cint
 ```
 
@@ -8521,7 +8521,7 @@ global function SDL_InitSubSystem(flags: uint32): cint
 
 ### SDL_QuitSubSystem
 
-```nelua
+```lua
 global function SDL_QuitSubSystem(flags: uint32)
 ```
 
@@ -8529,7 +8529,7 @@ global function SDL_QuitSubSystem(flags: uint32)
 
 ### SDL_WasInit
 
-```nelua
+```lua
 global function SDL_WasInit(flags: uint32): uint32
 ```
 
@@ -8537,7 +8537,7 @@ global function SDL_WasInit(flags: uint32): uint32
 
 ### SDL_Quit
 
-```nelua
+```lua
 global function SDL_Quit()
 ```
 
@@ -8545,7 +8545,7 @@ global function SDL_Quit()
 
 ### SDL_ICONV_ERROR
 
-```nelua
+```lua
 global SDL_ICONV_ERROR: csize
 ```
 
@@ -8553,7 +8553,7 @@ global SDL_ICONV_ERROR: csize
 
 ### SDL_ICONV_E2BIG
 
-```nelua
+```lua
 global SDL_ICONV_E2BIG: csize
 ```
 
@@ -8561,7 +8561,7 @@ global SDL_ICONV_E2BIG: csize
 
 ### SDL_ICONV_EILSEQ
 
-```nelua
+```lua
 global SDL_ICONV_EILSEQ: csize
 ```
 
@@ -8569,7 +8569,7 @@ global SDL_ICONV_EILSEQ: csize
 
 ### SDL_ICONV_EINVAL
 
-```nelua
+```lua
 global SDL_ICONV_EINVAL: csize
 ```
 
@@ -8577,7 +8577,7 @@ global SDL_ICONV_EINVAL: csize
 
 ### SDL_LIL_ENDIAN
 
-```nelua
+```lua
 global SDL_LIL_ENDIAN: cint
 ```
 
@@ -8585,7 +8585,7 @@ global SDL_LIL_ENDIAN: cint
 
 ### SDL_BIG_ENDIAN
 
-```nelua
+```lua
 global SDL_BIG_ENDIAN: cint
 ```
 
@@ -8593,7 +8593,7 @@ global SDL_BIG_ENDIAN: cint
 
 ### SDL_BYTEORDER
 
-```nelua
+```lua
 global SDL_BYTEORDER: cint
 ```
 
@@ -8601,7 +8601,7 @@ global SDL_BYTEORDER: cint
 
 ### SDL_MUTEX_TIMEDOUT
 
-```nelua
+```lua
 global SDL_MUTEX_TIMEDOUT: cint
 ```
 
@@ -8609,7 +8609,7 @@ global SDL_MUTEX_TIMEDOUT: cint
 
 ### SDL_MUTEX_MAXWAIT
 
-```nelua
+```lua
 global SDL_MUTEX_MAXWAIT: uint32
 ```
 
@@ -8617,7 +8617,7 @@ global SDL_MUTEX_MAXWAIT: uint32
 
 ### SDL_RWOPS_UNKNOWN
 
-```nelua
+```lua
 global SDL_RWOPS_UNKNOWN: uint32
 ```
 
@@ -8625,7 +8625,7 @@ global SDL_RWOPS_UNKNOWN: uint32
 
 ### SDL_RWOPS_WINFILE
 
-```nelua
+```lua
 global SDL_RWOPS_WINFILE: uint32
 ```
 
@@ -8633,7 +8633,7 @@ global SDL_RWOPS_WINFILE: uint32
 
 ### SDL_RWOPS_STDFILE
 
-```nelua
+```lua
 global SDL_RWOPS_STDFILE: uint32
 ```
 
@@ -8641,7 +8641,7 @@ global SDL_RWOPS_STDFILE: uint32
 
 ### SDL_RWOPS_JNIFILE
 
-```nelua
+```lua
 global SDL_RWOPS_JNIFILE: uint32
 ```
 
@@ -8649,7 +8649,7 @@ global SDL_RWOPS_JNIFILE: uint32
 
 ### SDL_RWOPS_MEMORY
 
-```nelua
+```lua
 global SDL_RWOPS_MEMORY: uint32
 ```
 
@@ -8657,7 +8657,7 @@ global SDL_RWOPS_MEMORY: uint32
 
 ### SDL_RWOPS_MEMORY_RO
 
-```nelua
+```lua
 global SDL_RWOPS_MEMORY_RO: uint32
 ```
 
@@ -8665,7 +8665,7 @@ global SDL_RWOPS_MEMORY_RO: uint32
 
 ### SDL_AUDIO_MASK_BITSIZE
 
-```nelua
+```lua
 global SDL_AUDIO_MASK_BITSIZE: uint16
 ```
 
@@ -8673,7 +8673,7 @@ global SDL_AUDIO_MASK_BITSIZE: uint16
 
 ### SDL_AUDIO_MASK_DATATYPE
 
-```nelua
+```lua
 global SDL_AUDIO_MASK_DATATYPE: uint16
 ```
 
@@ -8681,7 +8681,7 @@ global SDL_AUDIO_MASK_DATATYPE: uint16
 
 ### SDL_AUDIO_MASK_ENDIAN
 
-```nelua
+```lua
 global SDL_AUDIO_MASK_ENDIAN: uint16
 ```
 
@@ -8689,7 +8689,7 @@ global SDL_AUDIO_MASK_ENDIAN: uint16
 
 ### SDL_AUDIO_MASK_SIGNED
 
-```nelua
+```lua
 global SDL_AUDIO_MASK_SIGNED: uint16
 ```
 
@@ -8697,7 +8697,7 @@ global SDL_AUDIO_MASK_SIGNED: uint16
 
 ### SDL_AUDIO_ALLOW_FREQUENCY_CHANGE
 
-```nelua
+```lua
 global SDL_AUDIO_ALLOW_FREQUENCY_CHANGE: uint16
 ```
 
@@ -8705,7 +8705,7 @@ global SDL_AUDIO_ALLOW_FREQUENCY_CHANGE: uint16
 
 ### SDL_AUDIO_ALLOW_FORMAT_CHANGE
 
-```nelua
+```lua
 global SDL_AUDIO_ALLOW_FORMAT_CHANGE: uint16
 ```
 
@@ -8713,7 +8713,7 @@ global SDL_AUDIO_ALLOW_FORMAT_CHANGE: uint16
 
 ### SDL_AUDIO_ALLOW_CHANNELS_CHANGE
 
-```nelua
+```lua
 global SDL_AUDIO_ALLOW_CHANNELS_CHANGE: uint16
 ```
 
@@ -8721,7 +8721,7 @@ global SDL_AUDIO_ALLOW_CHANNELS_CHANGE: uint16
 
 ### SDL_AUDIO_ALLOW_SAMPLES_CHANGE
 
-```nelua
+```lua
 global SDL_AUDIO_ALLOW_SAMPLES_CHANGE: uint16
 ```
 
@@ -8729,7 +8729,7 @@ global SDL_AUDIO_ALLOW_SAMPLES_CHANGE: uint16
 
 ### SDL_AUDIO_ALLOW_ANY_CHANGE
 
-```nelua
+```lua
 global SDL_AUDIO_ALLOW_ANY_CHANGE: uint16
 ```
 
@@ -8737,7 +8737,7 @@ global SDL_AUDIO_ALLOW_ANY_CHANGE: uint16
 
 ### SDL_AUDIOCVT_MAX_FILTERS
 
-```nelua
+```lua
 global SDL_AUDIOCVT_MAX_FILTERS: cint
 ```
 
@@ -8745,7 +8745,7 @@ global SDL_AUDIOCVT_MAX_FILTERS: cint
 
 ### SDL_MIX_MAXVOLUME
 
-```nelua
+```lua
 global SDL_MIX_MAXVOLUME: cint
 ```
 
@@ -8753,7 +8753,7 @@ global SDL_MIX_MAXVOLUME: cint
 
 ### SDL_CACHELINE_SIZE
 
-```nelua
+```lua
 global SDL_CACHELINE_SIZE: cint
 ```
 
@@ -8761,7 +8761,7 @@ global SDL_CACHELINE_SIZE: cint
 
 ### SDL_ALPHA_OPAQUE
 
-```nelua
+```lua
 global SDL_ALPHA_OPAQUE: uint8
 ```
 
@@ -8769,7 +8769,7 @@ global SDL_ALPHA_OPAQUE: uint8
 
 ### SDL_ALPHA_TRANSPARENT
 
-```nelua
+```lua
 global SDL_ALPHA_TRANSPARENT: uint8
 ```
 
@@ -8777,7 +8777,7 @@ global SDL_ALPHA_TRANSPARENT: uint8
 
 ### SDL_SWSURFACE
 
-```nelua
+```lua
 global SDL_SWSURFACE: uint32
 ```
 
@@ -8785,7 +8785,7 @@ global SDL_SWSURFACE: uint32
 
 ### SDL_PREALLOC
 
-```nelua
+```lua
 global SDL_PREALLOC: uint32
 ```
 
@@ -8793,7 +8793,7 @@ global SDL_PREALLOC: uint32
 
 ### SDL_RLEACCEL
 
-```nelua
+```lua
 global SDL_RLEACCEL: uint32
 ```
 
@@ -8801,7 +8801,7 @@ global SDL_RLEACCEL: uint32
 
 ### SDL_DONTFREE
 
-```nelua
+```lua
 global SDL_DONTFREE: uint32
 ```
 
@@ -8809,7 +8809,7 @@ global SDL_DONTFREE: uint32
 
 ### SDL_SIMD_ALIGNED
 
-```nelua
+```lua
 global SDL_SIMD_ALIGNED: uint32
 ```
 
@@ -8817,7 +8817,7 @@ global SDL_SIMD_ALIGNED: uint32
 
 ### SDL_WINDOWPOS_UNDEFINED_MASK
 
-```nelua
+```lua
 global SDL_WINDOWPOS_UNDEFINED_MASK: uint32
 ```
 
@@ -8825,7 +8825,7 @@ global SDL_WINDOWPOS_UNDEFINED_MASK: uint32
 
 ### SDL_WINDOWPOS_UNDEFINED
 
-```nelua
+```lua
 global SDL_WINDOWPOS_UNDEFINED: uint32
 ```
 
@@ -8833,7 +8833,7 @@ global SDL_WINDOWPOS_UNDEFINED: uint32
 
 ### SDL_WINDOWPOS_CENTERED_MASK
 
-```nelua
+```lua
 global SDL_WINDOWPOS_CENTERED_MASK: uint32
 ```
 
@@ -8841,7 +8841,7 @@ global SDL_WINDOWPOS_CENTERED_MASK: uint32
 
 ### SDL_WINDOWPOS_CENTERED
 
-```nelua
+```lua
 global SDL_WINDOWPOS_CENTERED: uint32
 ```
 
@@ -8849,7 +8849,7 @@ global SDL_WINDOWPOS_CENTERED: uint32
 
 ### SDL_BUTTON_LEFT
 
-```nelua
+```lua
 global SDL_BUTTON_LEFT: uint8
 ```
 
@@ -8857,7 +8857,7 @@ global SDL_BUTTON_LEFT: uint8
 
 ### SDL_BUTTON_MIDDLE
 
-```nelua
+```lua
 global SDL_BUTTON_MIDDLE: uint8
 ```
 
@@ -8865,7 +8865,7 @@ global SDL_BUTTON_MIDDLE: uint8
 
 ### SDL_BUTTON_RIGHT
 
-```nelua
+```lua
 global SDL_BUTTON_RIGHT: uint8
 ```
 
@@ -8873,7 +8873,7 @@ global SDL_BUTTON_RIGHT: uint8
 
 ### SDL_BUTTON_X1
 
-```nelua
+```lua
 global SDL_BUTTON_X1: uint8
 ```
 
@@ -8881,7 +8881,7 @@ global SDL_BUTTON_X1: uint8
 
 ### SDL_BUTTON_X2
 
-```nelua
+```lua
 global SDL_BUTTON_X2: uint8
 ```
 
@@ -8889,7 +8889,7 @@ global SDL_BUTTON_X2: uint8
 
 ### SDL_BUTTON_LMASK
 
-```nelua
+```lua
 global SDL_BUTTON_LMASK: uint8
 ```
 
@@ -8897,7 +8897,7 @@ global SDL_BUTTON_LMASK: uint8
 
 ### SDL_BUTTON_MMASK
 
-```nelua
+```lua
 global SDL_BUTTON_MMASK: uint8
 ```
 
@@ -8905,7 +8905,7 @@ global SDL_BUTTON_MMASK: uint8
 
 ### SDL_BUTTON_RMASK
 
-```nelua
+```lua
 global SDL_BUTTON_RMASK: uint8
 ```
 
@@ -8913,7 +8913,7 @@ global SDL_BUTTON_RMASK: uint8
 
 ### SDL_BUTTON_X1MASK
 
-```nelua
+```lua
 global SDL_BUTTON_X1MASK: uint8
 ```
 
@@ -8921,7 +8921,7 @@ global SDL_BUTTON_X1MASK: uint8
 
 ### SDL_BUTTON_X2MASK
 
-```nelua
+```lua
 global SDL_BUTTON_X2MASK: uint8
 ```
 
@@ -8929,7 +8929,7 @@ global SDL_BUTTON_X2MASK: uint8
 
 ### SDL_JOYSTICK_AXIS_MAX
 
-```nelua
+```lua
 global SDL_JOYSTICK_AXIS_MAX: cint
 ```
 
@@ -8937,7 +8937,7 @@ global SDL_JOYSTICK_AXIS_MAX: cint
 
 ### SDL_JOYSTICK_AXIS_MIN
 
-```nelua
+```lua
 global SDL_JOYSTICK_AXIS_MIN: cint
 ```
 
@@ -8945,7 +8945,7 @@ global SDL_JOYSTICK_AXIS_MIN: cint
 
 ### SDL_HAT_CENTERED
 
-```nelua
+```lua
 global SDL_HAT_CENTERED: uint8
 ```
 
@@ -8953,7 +8953,7 @@ global SDL_HAT_CENTERED: uint8
 
 ### SDL_HAT_UP
 
-```nelua
+```lua
 global SDL_HAT_UP: uint8
 ```
 
@@ -8961,7 +8961,7 @@ global SDL_HAT_UP: uint8
 
 ### SDL_HAT_RIGHT
 
-```nelua
+```lua
 global SDL_HAT_RIGHT: uint8
 ```
 
@@ -8969,7 +8969,7 @@ global SDL_HAT_RIGHT: uint8
 
 ### SDL_HAT_DOWN
 
-```nelua
+```lua
 global SDL_HAT_DOWN: uint8
 ```
 
@@ -8977,7 +8977,7 @@ global SDL_HAT_DOWN: uint8
 
 ### SDL_HAT_LEFT
 
-```nelua
+```lua
 global SDL_HAT_LEFT: uint8
 ```
 
@@ -8985,7 +8985,7 @@ global SDL_HAT_LEFT: uint8
 
 ### SDL_HAT_RIGHTUP
 
-```nelua
+```lua
 global SDL_HAT_RIGHTUP: uint8
 ```
 
@@ -8993,7 +8993,7 @@ global SDL_HAT_RIGHTUP: uint8
 
 ### SDL_HAT_RIGHTDOWN
 
-```nelua
+```lua
 global SDL_HAT_RIGHTDOWN: uint8
 ```
 
@@ -9001,7 +9001,7 @@ global SDL_HAT_RIGHTDOWN: uint8
 
 ### SDL_HAT_LEFTUP
 
-```nelua
+```lua
 global SDL_HAT_LEFTUP: uint8
 ```
 
@@ -9009,7 +9009,7 @@ global SDL_HAT_LEFTUP: uint8
 
 ### SDL_HAT_LEFTDOWN
 
-```nelua
+```lua
 global SDL_HAT_LEFTDOWN: uint8
 ```
 
@@ -9017,7 +9017,7 @@ global SDL_HAT_LEFTDOWN: uint8
 
 ### SDL_STANDARD_GRAVITY
 
-```nelua
+```lua
 global SDL_STANDARD_GRAVITY: float32
 ```
 
@@ -9025,7 +9025,7 @@ global SDL_STANDARD_GRAVITY: float32
 
 ### SDL_TOUCH_MOUSEID
 
-```nelua
+```lua
 global SDL_TOUCH_MOUSEID: uint32
 ```
 
@@ -9033,7 +9033,7 @@ global SDL_TOUCH_MOUSEID: uint32
 
 ### SDL_MOUSE_TOUCHID
 
-```nelua
+```lua
 global SDL_MOUSE_TOUCHID: int64
 ```
 
@@ -9041,7 +9041,7 @@ global SDL_MOUSE_TOUCHID: int64
 
 ### SDL_RELEASED
 
-```nelua
+```lua
 global SDL_RELEASED: int8
 ```
 
@@ -9049,7 +9049,7 @@ global SDL_RELEASED: int8
 
 ### SDL_PRESSED
 
-```nelua
+```lua
 global SDL_PRESSED: int8
 ```
 
@@ -9057,7 +9057,7 @@ global SDL_PRESSED: int8
 
 ### SDL_TEXTEDITINGEVENT_TEXT_SIZE
 
-```nelua
+```lua
 global SDL_TEXTEDITINGEVENT_TEXT_SIZE: cint
 ```
 
@@ -9065,7 +9065,7 @@ global SDL_TEXTEDITINGEVENT_TEXT_SIZE: cint
 
 ### SDL_TEXTINPUTEVENT_TEXT_SIZE
 
-```nelua
+```lua
 global SDL_TEXTINPUTEVENT_TEXT_SIZE: cint
 ```
 
@@ -9073,7 +9073,7 @@ global SDL_TEXTINPUTEVENT_TEXT_SIZE: cint
 
 ### SDL_QUERY
 
-```nelua
+```lua
 global SDL_QUERY: cint
 ```
 
@@ -9081,7 +9081,7 @@ global SDL_QUERY: cint
 
 ### SDL_IGNORE
 
-```nelua
+```lua
 global SDL_IGNORE: cint
 ```
 
@@ -9089,7 +9089,7 @@ global SDL_IGNORE: cint
 
 ### SDL_DISABLE
 
-```nelua
+```lua
 global SDL_DISABLE: cint
 ```
 
@@ -9097,7 +9097,7 @@ global SDL_DISABLE: cint
 
 ### SDL_ENABLE
 
-```nelua
+```lua
 global SDL_ENABLE: cint
 ```
 
@@ -9105,7 +9105,7 @@ global SDL_ENABLE: cint
 
 ### SDL_HAPTIC_CONSTANT
 
-```nelua
+```lua
 global SDL_HAPTIC_CONSTANT: uint32
 ```
 
@@ -9113,7 +9113,7 @@ global SDL_HAPTIC_CONSTANT: uint32
 
 ### SDL_HAPTIC_SINE
 
-```nelua
+```lua
 global SDL_HAPTIC_SINE: uint32
 ```
 
@@ -9121,7 +9121,7 @@ global SDL_HAPTIC_SINE: uint32
 
 ### SDL_HAPTIC_LEFTRIGHT
 
-```nelua
+```lua
 global SDL_HAPTIC_LEFTRIGHT: uint32
 ```
 
@@ -9129,7 +9129,7 @@ global SDL_HAPTIC_LEFTRIGHT: uint32
 
 ### SDL_HAPTIC_TRIANGLE
 
-```nelua
+```lua
 global SDL_HAPTIC_TRIANGLE: uint32
 ```
 
@@ -9137,7 +9137,7 @@ global SDL_HAPTIC_TRIANGLE: uint32
 
 ### SDL_HAPTIC_SAWTOOTHUP
 
-```nelua
+```lua
 global SDL_HAPTIC_SAWTOOTHUP: uint32
 ```
 
@@ -9145,7 +9145,7 @@ global SDL_HAPTIC_SAWTOOTHUP: uint32
 
 ### SDL_HAPTIC_SAWTOOTHDOWN
 
-```nelua
+```lua
 global SDL_HAPTIC_SAWTOOTHDOWN: uint32
 ```
 
@@ -9153,7 +9153,7 @@ global SDL_HAPTIC_SAWTOOTHDOWN: uint32
 
 ### SDL_HAPTIC_RAMP
 
-```nelua
+```lua
 global SDL_HAPTIC_RAMP: uint32
 ```
 
@@ -9161,7 +9161,7 @@ global SDL_HAPTIC_RAMP: uint32
 
 ### SDL_HAPTIC_SPRING
 
-```nelua
+```lua
 global SDL_HAPTIC_SPRING: uint32
 ```
 
@@ -9169,7 +9169,7 @@ global SDL_HAPTIC_SPRING: uint32
 
 ### SDL_HAPTIC_DAMPER
 
-```nelua
+```lua
 global SDL_HAPTIC_DAMPER: uint32
 ```
 
@@ -9177,7 +9177,7 @@ global SDL_HAPTIC_DAMPER: uint32
 
 ### SDL_HAPTIC_INERTIA
 
-```nelua
+```lua
 global SDL_HAPTIC_INERTIA: uint32
 ```
 
@@ -9185,7 +9185,7 @@ global SDL_HAPTIC_INERTIA: uint32
 
 ### SDL_HAPTIC_FRICTION
 
-```nelua
+```lua
 global SDL_HAPTIC_FRICTION: uint32
 ```
 
@@ -9193,7 +9193,7 @@ global SDL_HAPTIC_FRICTION: uint32
 
 ### SDL_HAPTIC_CUSTOM
 
-```nelua
+```lua
 global SDL_HAPTIC_CUSTOM: uint32
 ```
 
@@ -9201,7 +9201,7 @@ global SDL_HAPTIC_CUSTOM: uint32
 
 ### SDL_HAPTIC_GAIN
 
-```nelua
+```lua
 global SDL_HAPTIC_GAIN: uint32
 ```
 
@@ -9209,7 +9209,7 @@ global SDL_HAPTIC_GAIN: uint32
 
 ### SDL_HAPTIC_AUTOCENTER
 
-```nelua
+```lua
 global SDL_HAPTIC_AUTOCENTER: uint32
 ```
 
@@ -9217,7 +9217,7 @@ global SDL_HAPTIC_AUTOCENTER: uint32
 
 ### SDL_HAPTIC_STATUS
 
-```nelua
+```lua
 global SDL_HAPTIC_STATUS: uint32
 ```
 
@@ -9225,7 +9225,7 @@ global SDL_HAPTIC_STATUS: uint32
 
 ### SDL_HAPTIC_PAUSE
 
-```nelua
+```lua
 global SDL_HAPTIC_PAUSE: uint32
 ```
 
@@ -9233,7 +9233,7 @@ global SDL_HAPTIC_PAUSE: uint32
 
 ### SDL_HAPTIC_POLAR
 
-```nelua
+```lua
 global SDL_HAPTIC_POLAR: uint32
 ```
 
@@ -9241,7 +9241,7 @@ global SDL_HAPTIC_POLAR: uint32
 
 ### SDL_HAPTIC_CARTESIAN
 
-```nelua
+```lua
 global SDL_HAPTIC_CARTESIAN: uint32
 ```
 
@@ -9249,7 +9249,7 @@ global SDL_HAPTIC_CARTESIAN: uint32
 
 ### SDL_HAPTIC_SPHERICAL
 
-```nelua
+```lua
 global SDL_HAPTIC_SPHERICAL: uint32
 ```
 
@@ -9257,7 +9257,7 @@ global SDL_HAPTIC_SPHERICAL: uint32
 
 ### SDL_HAPTIC_STEERING_AXIS
 
-```nelua
+```lua
 global SDL_HAPTIC_STEERING_AXIS: uint32
 ```
 
@@ -9265,7 +9265,7 @@ global SDL_HAPTIC_STEERING_AXIS: uint32
 
 ### SDL_HAPTIC_INFINITY
 
-```nelua
+```lua
 global SDL_HAPTIC_INFINITY: uint32
 ```
 
@@ -9273,7 +9273,7 @@ global SDL_HAPTIC_INFINITY: uint32
 
 ### SDL_HINT_FRAMEBUFFER_ACCELERATION
 
-```nelua
+```lua
 global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring
 ```
 
@@ -9281,7 +9281,7 @@ global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring
 
 ### SDL_HINT_RENDER_DRIVER
 
-```nelua
+```lua
 global SDL_HINT_RENDER_DRIVER: cstring
 ```
 
@@ -9289,7 +9289,7 @@ global SDL_HINT_RENDER_DRIVER: cstring
 
 ### SDL_HINT_RENDER_OPENGL_SHADERS
 
-```nelua
+```lua
 global SDL_HINT_RENDER_OPENGL_SHADERS: cstring
 ```
 
@@ -9297,7 +9297,7 @@ global SDL_HINT_RENDER_OPENGL_SHADERS: cstring
 
 ### SDL_HINT_RENDER_DIRECT3D_THREADSAFE
 
-```nelua
+```lua
 global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring
 ```
 
@@ -9305,7 +9305,7 @@ global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring
 
 ### SDL_HINT_RENDER_DIRECT3D11_DEBUG
 
-```nelua
+```lua
 global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring
 ```
 
@@ -9313,7 +9313,7 @@ global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring
 
 ### SDL_HINT_RENDER_LOGICAL_SIZE_MODE
 
-```nelua
+```lua
 global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring
 ```
 
@@ -9321,7 +9321,7 @@ global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring
 
 ### SDL_HINT_RENDER_SCALE_QUALITY
 
-```nelua
+```lua
 global SDL_HINT_RENDER_SCALE_QUALITY: cstring
 ```
 
@@ -9329,7 +9329,7 @@ global SDL_HINT_RENDER_SCALE_QUALITY: cstring
 
 ### SDL_HINT_RENDER_VSYNC
 
-```nelua
+```lua
 global SDL_HINT_RENDER_VSYNC: cstring
 ```
 
@@ -9337,7 +9337,7 @@ global SDL_HINT_RENDER_VSYNC: cstring
 
 ### SDL_HINT_VIDEO_ALLOW_SCREENSAVER
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring
 ```
 
@@ -9345,7 +9345,7 @@ global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring
 
 ### SDL_HINT_VIDEO_EXTERNAL_CONTEXT
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring
 ```
 
@@ -9353,7 +9353,7 @@ global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring
 
 ### SDL_HINT_VIDEO_X11_XVIDMODE
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_XVIDMODE: cstring
 ```
 
@@ -9361,7 +9361,7 @@ global SDL_HINT_VIDEO_X11_XVIDMODE: cstring
 
 ### SDL_HINT_VIDEO_X11_XINERAMA
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_XINERAMA: cstring
 ```
 
@@ -9369,7 +9369,7 @@ global SDL_HINT_VIDEO_X11_XINERAMA: cstring
 
 ### SDL_HINT_VIDEO_X11_XRANDR
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_XRANDR: cstring
 ```
 
@@ -9377,7 +9377,7 @@ global SDL_HINT_VIDEO_X11_XRANDR: cstring
 
 ### SDL_HINT_VIDEO_X11_WINDOW_VISUALID
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring
 ```
 
@@ -9385,7 +9385,7 @@ global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring
 
 ### SDL_HINT_VIDEO_X11_NET_WM_PING
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring
 ```
 
@@ -9393,7 +9393,7 @@ global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring
 
 ### SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring
 ```
 
@@ -9401,7 +9401,7 @@ global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring
 
 ### SDL_HINT_VIDEO_X11_FORCE_EGL
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring
 ```
 
@@ -9409,7 +9409,7 @@ global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring
 
 ### SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN
 
-```nelua
+```lua
 global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring
 ```
 
@@ -9417,7 +9417,7 @@ global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring
 
 ### SDL_HINT_WINDOWS_INTRESOURCE_ICON
 
-```nelua
+```lua
 global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring
 ```
 
@@ -9425,7 +9425,7 @@ global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring
 
 ### SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL
 
-```nelua
+```lua
 global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring
 ```
 
@@ -9433,7 +9433,7 @@ global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring
 
 ### SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
 
-```nelua
+```lua
 global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring
 ```
 
@@ -9441,7 +9441,7 @@ global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring
 
 ### SDL_HINT_GRAB_KEYBOARD
 
-```nelua
+```lua
 global SDL_HINT_GRAB_KEYBOARD: cstring
 ```
 
@@ -9449,7 +9449,7 @@ global SDL_HINT_GRAB_KEYBOARD: cstring
 
 ### SDL_HINT_MOUSE_DOUBLE_CLICK_TIME
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring
 ```
 
@@ -9457,7 +9457,7 @@ global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring
 
 ### SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring
 ```
 
@@ -9465,7 +9465,7 @@ global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring
 
 ### SDL_HINT_MOUSE_NORMAL_SPEED_SCALE
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring
 ```
 
@@ -9473,7 +9473,7 @@ global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring
 
 ### SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring
 ```
 
@@ -9481,7 +9481,7 @@ global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring
 
 ### SDL_HINT_MOUSE_RELATIVE_SCALING
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring
 ```
 
@@ -9489,7 +9489,7 @@ global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring
 
 ### SDL_HINT_MOUSE_RELATIVE_MODE_WARP
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring
 ```
 
@@ -9497,7 +9497,7 @@ global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring
 
 ### SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring
 ```
 
@@ -9505,7 +9505,7 @@ global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring
 
 ### SDL_HINT_TOUCH_MOUSE_EVENTS
 
-```nelua
+```lua
 global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring
 ```
 
@@ -9513,7 +9513,7 @@ global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring
 
 ### SDL_HINT_MOUSE_TOUCH_EVENTS
 
-```nelua
+```lua
 global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring
 ```
 
@@ -9521,7 +9521,7 @@ global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring
 
 ### SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring
 ```
 
@@ -9529,7 +9529,7 @@ global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring
 
 ### SDL_HINT_IDLE_TIMER_DISABLED
 
-```nelua
+```lua
 global SDL_HINT_IDLE_TIMER_DISABLED: cstring
 ```
 
@@ -9537,7 +9537,7 @@ global SDL_HINT_IDLE_TIMER_DISABLED: cstring
 
 ### SDL_HINT_ORIENTATIONS
 
-```nelua
+```lua
 global SDL_HINT_ORIENTATIONS: cstring
 ```
 
@@ -9545,7 +9545,7 @@ global SDL_HINT_ORIENTATIONS: cstring
 
 ### SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS
 
-```nelua
+```lua
 global SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS: cstring
 ```
 
@@ -9553,7 +9553,7 @@ global SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS: cstring
 
 ### SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION
 
-```nelua
+```lua
 global SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: cstring
 ```
 
@@ -9561,7 +9561,7 @@ global SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: cstring
 
 ### SDL_HINT_IOS_HIDE_HOME_INDICATOR
 
-```nelua
+```lua
 global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring
 ```
 
@@ -9569,7 +9569,7 @@ global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring
 
 ### SDL_HINT_ACCELEROMETER_AS_JOYSTICK
 
-```nelua
+```lua
 global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring
 ```
 
@@ -9577,7 +9577,7 @@ global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring
 
 ### SDL_HINT_TV_REMOTE_AS_JOYSTICK
 
-```nelua
+```lua
 global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring
 ```
 
@@ -9585,7 +9585,7 @@ global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring
 
 ### SDL_HINT_XINPUT_ENABLED
 
-```nelua
+```lua
 global SDL_HINT_XINPUT_ENABLED: cstring
 ```
 
@@ -9593,7 +9593,7 @@ global SDL_HINT_XINPUT_ENABLED: cstring
 
 ### SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING
 
-```nelua
+```lua
 global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring
 ```
 
@@ -9601,7 +9601,7 @@ global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring
 
 ### SDL_HINT_GAMECONTROLLERTYPE
 
-```nelua
+```lua
 global SDL_HINT_GAMECONTROLLERTYPE: cstring
 ```
 
@@ -9609,7 +9609,7 @@ global SDL_HINT_GAMECONTROLLERTYPE: cstring
 
 ### SDL_HINT_GAMECONTROLLERCONFIG
 
-```nelua
+```lua
 global SDL_HINT_GAMECONTROLLERCONFIG: cstring
 ```
 
@@ -9617,7 +9617,7 @@ global SDL_HINT_GAMECONTROLLERCONFIG: cstring
 
 ### SDL_HINT_GAMECONTROLLERCONFIG_FILE
 
-```nelua
+```lua
 global SDL_HINT_GAMECONTROLLERCONFIG_FILE: cstring
 ```
 
@@ -9625,7 +9625,7 @@ global SDL_HINT_GAMECONTROLLERCONFIG_FILE: cstring
 
 ### SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES
 
-```nelua
+```lua
 global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES: cstring
 ```
 
@@ -9633,7 +9633,7 @@ global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES: cstring
 
 ### SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT
 
-```nelua
+```lua
 global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT: cstring
 ```
 
@@ -9641,7 +9641,7 @@ global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT: cstring
 
 ### SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS
 
-```nelua
+```lua
 global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring
 ```
 
@@ -9649,7 +9649,7 @@ global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring
 
 ### SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: cstring
 ```
 
@@ -9657,7 +9657,7 @@ global SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI: cstring
 ```
 
@@ -9665,7 +9665,7 @@ global SDL_HINT_JOYSTICK_HIDAPI: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_PS4
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_PS4: cstring
 ```
 
@@ -9673,7 +9673,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_PS4: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_PS5
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_PS5: cstring
 ```
 
@@ -9681,7 +9681,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_PS5: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring
 ```
 
@@ -9689,7 +9689,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_STEAM
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_STEAM: cstring
 ```
 
@@ -9697,7 +9697,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_STEAM: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_SWITCH
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_SWITCH: cstring
 ```
 
@@ -9705,7 +9705,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_SWITCH: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_XBOX
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring
 ```
 
@@ -9713,7 +9713,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT: cstring
 ```
 
@@ -9721,7 +9721,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT: cstring
 
 ### SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring
 ```
 
@@ -9729,7 +9729,7 @@ global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring
 
 ### SDL_HINT_ENABLE_STEAM_CONTROLLERS
 
-```nelua
+```lua
 global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring
 ```
 
@@ -9737,7 +9737,7 @@ global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring
 
 ### SDL_HINT_JOYSTICK_RAWINPUT
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_RAWINPUT: cstring
 ```
 
@@ -9745,7 +9745,7 @@ global SDL_HINT_JOYSTICK_RAWINPUT: cstring
 
 ### SDL_HINT_JOYSTICK_THREAD
 
-```nelua
+```lua
 global SDL_HINT_JOYSTICK_THREAD: cstring
 ```
 
@@ -9753,7 +9753,7 @@ global SDL_HINT_JOYSTICK_THREAD: cstring
 
 ### SDL_HINT_LINUX_JOYSTICK_DEADZONES
 
-```nelua
+```lua
 global SDL_HINT_LINUX_JOYSTICK_DEADZONES: cstring
 ```
 
@@ -9761,7 +9761,7 @@ global SDL_HINT_LINUX_JOYSTICK_DEADZONES: cstring
 
 ### SDL_HINT_ALLOW_TOPMOST
 
-```nelua
+```lua
 global SDL_HINT_ALLOW_TOPMOST: cstring
 ```
 
@@ -9769,7 +9769,7 @@ global SDL_HINT_ALLOW_TOPMOST: cstring
 
 ### SDL_HINT_TIMER_RESOLUTION
 
-```nelua
+```lua
 global SDL_HINT_TIMER_RESOLUTION: cstring
 ```
 
@@ -9777,7 +9777,7 @@ global SDL_HINT_TIMER_RESOLUTION: cstring
 
 ### SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION
 
-```nelua
+```lua
 global SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: cstring
 ```
 
@@ -9785,7 +9785,7 @@ global SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: cstring
 
 ### SDL_HINT_QTWAYLAND_WINDOW_FLAGS
 
-```nelua
+```lua
 global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring
 ```
 
@@ -9793,7 +9793,7 @@ global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring
 
 ### SDL_HINT_THREAD_STACK_SIZE
 
-```nelua
+```lua
 global SDL_HINT_THREAD_STACK_SIZE: cstring
 ```
 
@@ -9801,7 +9801,7 @@ global SDL_HINT_THREAD_STACK_SIZE: cstring
 
 ### SDL_HINT_THREAD_PRIORITY_POLICY
 
-```nelua
+```lua
 global SDL_HINT_THREAD_PRIORITY_POLICY: cstring
 ```
 
@@ -9809,7 +9809,7 @@ global SDL_HINT_THREAD_PRIORITY_POLICY: cstring
 
 ### SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL
 
-```nelua
+```lua
 global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring
 ```
 
@@ -9817,7 +9817,7 @@ global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring
 
 ### SDL_HINT_VIDEO_HIGHDPI_DISABLED
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring
 ```
 
@@ -9825,7 +9825,7 @@ global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring
 
 ### SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK
 
-```nelua
+```lua
 global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring
 ```
 
@@ -9833,7 +9833,7 @@ global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring
 
 ### SDL_HINT_VIDEO_WIN_D3DCOMPILER
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring
 ```
 
@@ -9841,7 +9841,7 @@ global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring
 
 ### SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring
 ```
 
@@ -9849,7 +9849,7 @@ global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring
 
 ### SDL_HINT_WINRT_PRIVACY_POLICY_URL
 
-```nelua
+```lua
 global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring
 ```
 
@@ -9857,7 +9857,7 @@ global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring
 
 ### SDL_HINT_WINRT_PRIVACY_POLICY_LABEL
 
-```nelua
+```lua
 global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring
 ```
 
@@ -9865,7 +9865,7 @@ global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring
 
 ### SDL_HINT_WINRT_HANDLE_BACK_BUTTON
 
-```nelua
+```lua
 global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring
 ```
 
@@ -9873,7 +9873,7 @@ global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring
 
 ### SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring
 ```
 
@@ -9881,7 +9881,7 @@ global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring
 
 ### SDL_HINT_MAC_BACKGROUND_APP
 
-```nelua
+```lua
 global SDL_HINT_MAC_BACKGROUND_APP: cstring
 ```
 
@@ -9889,7 +9889,7 @@ global SDL_HINT_MAC_BACKGROUND_APP: cstring
 
 ### SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION
 
-```nelua
+```lua
 global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring
 ```
 
@@ -9897,7 +9897,7 @@ global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring
 
 ### SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION
 
-```nelua
+```lua
 global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring
 ```
 
@@ -9905,7 +9905,7 @@ global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring
 
 ### SDL_HINT_IME_INTERNAL_EDITING
 
-```nelua
+```lua
 global SDL_HINT_IME_INTERNAL_EDITING: cstring
 ```
 
@@ -9913,7 +9913,7 @@ global SDL_HINT_IME_INTERNAL_EDITING: cstring
 
 ### SDL_HINT_ANDROID_TRAP_BACK_BUTTON
 
-```nelua
+```lua
 global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring
 ```
 
@@ -9921,7 +9921,7 @@ global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring
 
 ### SDL_HINT_ANDROID_BLOCK_ON_PAUSE
 
-```nelua
+```lua
 global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring
 ```
 
@@ -9929,7 +9929,7 @@ global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring
 
 ### SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO
 
-```nelua
+```lua
 global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring
 ```
 
@@ -9937,7 +9937,7 @@ global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring
 
 ### SDL_HINT_RETURN_KEY_HIDES_IME
 
-```nelua
+```lua
 global SDL_HINT_RETURN_KEY_HIDES_IME: cstring
 ```
 
@@ -9945,7 +9945,7 @@ global SDL_HINT_RETURN_KEY_HIDES_IME: cstring
 
 ### SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT
 
-```nelua
+```lua
 global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring
 ```
 
@@ -9953,7 +9953,7 @@ global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring
 
 ### SDL_HINT_EMSCRIPTEN_ASYNCIFY
 
-```nelua
+```lua
 global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring
 ```
 
@@ -9961,7 +9961,7 @@ global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring
 
 ### SDL_HINT_NO_SIGNAL_HANDLERS
 
-```nelua
+```lua
 global SDL_HINT_NO_SIGNAL_HANDLERS: cstring
 ```
 
@@ -9969,7 +9969,7 @@ global SDL_HINT_NO_SIGNAL_HANDLERS: cstring
 
 ### SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4
 
-```nelua
+```lua
 global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring
 ```
 
@@ -9977,7 +9977,7 @@ global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring
 
 ### SDL_HINT_BMP_SAVE_LEGACY_FORMAT
 
-```nelua
+```lua
 global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring
 ```
 
@@ -9985,7 +9985,7 @@ global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring
 
 ### SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING
 
-```nelua
+```lua
 global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring
 ```
 
@@ -9993,7 +9993,7 @@ global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring
 
 ### SDL_HINT_RPI_VIDEO_LAYER
 
-```nelua
+```lua
 global SDL_HINT_RPI_VIDEO_LAYER: cstring
 ```
 
@@ -10001,7 +10001,7 @@ global SDL_HINT_RPI_VIDEO_LAYER: cstring
 
 ### SDL_HINT_VIDEO_DOUBLE_BUFFER
 
-```nelua
+```lua
 global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring
 ```
 
@@ -10009,7 +10009,7 @@ global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring
 
 ### SDL_HINT_OPENGL_ES_DRIVER
 
-```nelua
+```lua
 global SDL_HINT_OPENGL_ES_DRIVER: cstring
 ```
 
@@ -10017,7 +10017,7 @@ global SDL_HINT_OPENGL_ES_DRIVER: cstring
 
 ### SDL_HINT_AUDIO_RESAMPLING_MODE
 
-```nelua
+```lua
 global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring
 ```
 
@@ -10025,7 +10025,7 @@ global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring
 
 ### SDL_HINT_AUDIO_CATEGORY
 
-```nelua
+```lua
 global SDL_HINT_AUDIO_CATEGORY: cstring
 ```
 
@@ -10033,7 +10033,7 @@ global SDL_HINT_AUDIO_CATEGORY: cstring
 
 ### SDL_HINT_RENDER_BATCHING
 
-```nelua
+```lua
 global SDL_HINT_RENDER_BATCHING: cstring
 ```
 
@@ -10041,7 +10041,7 @@ global SDL_HINT_RENDER_BATCHING: cstring
 
 ### SDL_HINT_AUTO_UPDATE_JOYSTICKS
 
-```nelua
+```lua
 global SDL_HINT_AUTO_UPDATE_JOYSTICKS: cstring
 ```
 
@@ -10049,7 +10049,7 @@ global SDL_HINT_AUTO_UPDATE_JOYSTICKS: cstring
 
 ### SDL_HINT_AUTO_UPDATE_SENSORS
 
-```nelua
+```lua
 global SDL_HINT_AUTO_UPDATE_SENSORS: cstring
 ```
 
@@ -10057,7 +10057,7 @@ global SDL_HINT_AUTO_UPDATE_SENSORS: cstring
 
 ### SDL_HINT_EVENT_LOGGING
 
-```nelua
+```lua
 global SDL_HINT_EVENT_LOGGING: cstring
 ```
 
@@ -10065,7 +10065,7 @@ global SDL_HINT_EVENT_LOGGING: cstring
 
 ### SDL_HINT_WAVE_RIFF_CHUNK_SIZE
 
-```nelua
+```lua
 global SDL_HINT_WAVE_RIFF_CHUNK_SIZE: cstring
 ```
 
@@ -10073,7 +10073,7 @@ global SDL_HINT_WAVE_RIFF_CHUNK_SIZE: cstring
 
 ### SDL_HINT_WAVE_TRUNCATION
 
-```nelua
+```lua
 global SDL_HINT_WAVE_TRUNCATION: cstring
 ```
 
@@ -10081,7 +10081,7 @@ global SDL_HINT_WAVE_TRUNCATION: cstring
 
 ### SDL_HINT_WAVE_FACT_CHUNK
 
-```nelua
+```lua
 global SDL_HINT_WAVE_FACT_CHUNK: cstring
 ```
 
@@ -10089,7 +10089,7 @@ global SDL_HINT_WAVE_FACT_CHUNK: cstring
 
 ### SDL_HINT_DISPLAY_USABLE_BOUNDS
 
-```nelua
+```lua
 global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring
 ```
 
@@ -10097,7 +10097,7 @@ global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring
 
 ### SDL_HINT_AUDIO_DEVICE_APP_NAME
 
-```nelua
+```lua
 global SDL_HINT_AUDIO_DEVICE_APP_NAME: cstring
 ```
 
@@ -10105,7 +10105,7 @@ global SDL_HINT_AUDIO_DEVICE_APP_NAME: cstring
 
 ### SDL_HINT_AUDIO_DEVICE_STREAM_NAME
 
-```nelua
+```lua
 global SDL_HINT_AUDIO_DEVICE_STREAM_NAME: cstring
 ```
 
@@ -10113,7 +10113,7 @@ global SDL_HINT_AUDIO_DEVICE_STREAM_NAME: cstring
 
 ### SDL_HINT_PREFERRED_LOCALES
 
-```nelua
+```lua
 global SDL_HINT_PREFERRED_LOCALES: cstring
 ```
 
@@ -10121,7 +10121,7 @@ global SDL_HINT_PREFERRED_LOCALES: cstring
 
 ### SDL_MAX_LOG_MESSAGE
 
-```nelua
+```lua
 global SDL_MAX_LOG_MESSAGE: cint
 ```
 
@@ -10129,7 +10129,7 @@ global SDL_MAX_LOG_MESSAGE: cint
 
 ### SDL_NONSHAPEABLE_WINDOW
 
-```nelua
+```lua
 global SDL_NONSHAPEABLE_WINDOW: cint
 ```
 
@@ -10137,7 +10137,7 @@ global SDL_NONSHAPEABLE_WINDOW: cint
 
 ### SDL_INVALID_SHAPE_ARGUMENT
 
-```nelua
+```lua
 global SDL_INVALID_SHAPE_ARGUMENT: cint
 ```
 
@@ -10145,7 +10145,7 @@ global SDL_INVALID_SHAPE_ARGUMENT: cint
 
 ### SDL_WINDOW_LACKS_SHAPE
 
-```nelua
+```lua
 global SDL_WINDOW_LACKS_SHAPE: cint
 ```
 
@@ -10153,7 +10153,7 @@ global SDL_WINDOW_LACKS_SHAPE: cint
 
 ### SDL_MAJOR_VERSION
 
-```nelua
+```lua
 global SDL_MAJOR_VERSION: cint
 ```
 
@@ -10161,7 +10161,7 @@ global SDL_MAJOR_VERSION: cint
 
 ### SDL_MINOR_VERSION
 
-```nelua
+```lua
 global SDL_MINOR_VERSION: cint
 ```
 
@@ -10169,7 +10169,7 @@ global SDL_MINOR_VERSION: cint
 
 ### SDL_PATCHLEVEL
 
-```nelua
+```lua
 global SDL_PATCHLEVEL: cint
 ```
 
@@ -10177,7 +10177,7 @@ global SDL_PATCHLEVEL: cint
 
 ### SDL_COMPILEDVERSION
 
-```nelua
+```lua
 global SDL_COMPILEDVERSION: cint
 ```
 
@@ -10185,7 +10185,7 @@ global SDL_COMPILEDVERSION: cint
 
 ### SDL_INIT_TIMER
 
-```nelua
+```lua
 global SDL_INIT_TIMER: uint32
 ```
 
@@ -10193,7 +10193,7 @@ global SDL_INIT_TIMER: uint32
 
 ### SDL_INIT_AUDIO
 
-```nelua
+```lua
 global SDL_INIT_AUDIO: uint32
 ```
 
@@ -10201,7 +10201,7 @@ global SDL_INIT_AUDIO: uint32
 
 ### SDL_INIT_VIDEO
 
-```nelua
+```lua
 global SDL_INIT_VIDEO: uint32
 ```
 
@@ -10209,7 +10209,7 @@ global SDL_INIT_VIDEO: uint32
 
 ### SDL_INIT_JOYSTICK
 
-```nelua
+```lua
 global SDL_INIT_JOYSTICK: uint32
 ```
 
@@ -10217,7 +10217,7 @@ global SDL_INIT_JOYSTICK: uint32
 
 ### SDL_INIT_HAPTIC
 
-```nelua
+```lua
 global SDL_INIT_HAPTIC: uint32
 ```
 
@@ -10225,7 +10225,7 @@ global SDL_INIT_HAPTIC: uint32
 
 ### SDL_INIT_GAMECONTROLLER
 
-```nelua
+```lua
 global SDL_INIT_GAMECONTROLLER: uint32
 ```
 
@@ -10233,7 +10233,7 @@ global SDL_INIT_GAMECONTROLLER: uint32
 
 ### SDL_INIT_EVENTS
 
-```nelua
+```lua
 global SDL_INIT_EVENTS: uint32
 ```
 
@@ -10241,7 +10241,7 @@ global SDL_INIT_EVENTS: uint32
 
 ### SDL_INIT_SENSOR
 
-```nelua
+```lua
 global SDL_INIT_SENSOR: uint32
 ```
 
@@ -10249,7 +10249,7 @@ global SDL_INIT_SENSOR: uint32
 
 ### SDL_INIT_NOPARACHUTE
 
-```nelua
+```lua
 global SDL_INIT_NOPARACHUTE: uint32
 ```
 
@@ -10257,7 +10257,7 @@ global SDL_INIT_NOPARACHUTE: uint32
 
 ### SDL_INIT_EVERYTHING
 
-```nelua
+```lua
 global SDL_INIT_EVERYTHING: uint32
 ```
 
@@ -10265,7 +10265,7 @@ global SDL_INIT_EVERYTHING: uint32
 
 ### SDL_BlitSurface
 
-```nelua
+```lua
 global function SDL_BlitSurface(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -10273,7 +10273,7 @@ Defined in C macros
 
 ### SDL_BlitScaled
 
-```nelua
+```lua
 global function SDL_BlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
 ```
 
@@ -10281,7 +10281,7 @@ global function SDL_BlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_
 
 ### SDL_TriggerBreakpoint
 
-```nelua
+```lua
 global function SDL_TriggerBreakpoint()
 ```
 
@@ -10289,7 +10289,7 @@ global function SDL_TriggerBreakpoint()
 
 ### SDL_CompilerBarrier
 
-```nelua
+```lua
 global function SDL_CompilerBarrier()
 ```
 
@@ -10297,7 +10297,7 @@ global function SDL_CompilerBarrier()
 
 ### SDL_MemoryBarrierRelease
 
-```nelua
+```lua
 global function SDL_MemoryBarrierRelease()
 ```
 
@@ -10305,7 +10305,7 @@ global function SDL_MemoryBarrierRelease()
 
 ### SDL_MemoryBarrierAcquire
 
-```nelua
+```lua
 global function SDL_MemoryBarrierAcquire()
 ```
 
@@ -10313,7 +10313,7 @@ global function SDL_MemoryBarrierAcquire()
 
 ### SDL_AtomicIncRef
 
-```nelua
+```lua
 global function SDL_AtomicIncRef(a: *SDL_atomic_t): cint
 ```
 
@@ -10321,7 +10321,7 @@ global function SDL_AtomicIncRef(a: *SDL_atomic_t): cint
 
 ### SDL_AtomicDecRef
 
-```nelua
+```lua
 global function SDL_AtomicDecRef(a: *SDL_atomic_t): cint
 ```
 
@@ -10329,7 +10329,7 @@ global function SDL_AtomicDecRef(a: *SDL_atomic_t): cint
 
 ### SDL_OutOfMemory
 
-```nelua
+```lua
 global function SDL_OutOfMemory(): cint
 ```
 
@@ -10337,7 +10337,7 @@ global function SDL_OutOfMemory(): cint
 
 ### SDL_Unsupported
 
-```nelua
+```lua
 global function SDL_Unsupported(): cint
 ```
 
@@ -10345,7 +10345,7 @@ global function SDL_Unsupported(): cint
 
 ### SDL_InvalidParamError
 
-```nelua
+```lua
 global function SDL_InvalidParamError(param: cstring): cint
 ```
 
@@ -10353,7 +10353,7 @@ global function SDL_InvalidParamError(param: cstring): cint
 
 ### SDL_SwapLE16
 
-```nelua
+```lua
 global function SDL_SwapLE16(x: int16): int16
 ```
 
@@ -10361,7 +10361,7 @@ global function SDL_SwapLE16(x: int16): int16
 
 ### SDL_SwapLE32
 
-```nelua
+```lua
 global function SDL_SwapLE32(x: int32): int32
 ```
 
@@ -10369,7 +10369,7 @@ global function SDL_SwapLE32(x: int32): int32
 
 ### SDL_SwapLE64
 
-```nelua
+```lua
 global function SDL_SwapLE64(x: int64): int64
 ```
 
@@ -10377,7 +10377,7 @@ global function SDL_SwapLE64(x: int64): int64
 
 ### SDL_SwapFloatLE
 
-```nelua
+```lua
 global function SDL_SwapFloatLE(x: float32): float32
 ```
 
@@ -10385,7 +10385,7 @@ global function SDL_SwapFloatLE(x: float32): float32
 
 ### SDL_SwapBE16
 
-```nelua
+```lua
 global function SDL_SwapBE16(x: int16): int16
 ```
 
@@ -10393,7 +10393,7 @@ global function SDL_SwapBE16(x: int16): int16
 
 ### SDL_SwapBE32
 
-```nelua
+```lua
 global function SDL_SwapBE32(x: int32): int32
 ```
 
@@ -10401,7 +10401,7 @@ global function SDL_SwapBE32(x: int32): int32
 
 ### SDL_SwapBE64
 
-```nelua
+```lua
 global function SDL_SwapBE64(x: int64): int64
 ```
 
@@ -10409,7 +10409,7 @@ global function SDL_SwapBE64(x: int64): int64
 
 ### SDL_SwapFloatBE
 
-```nelua
+```lua
 global function SDL_SwapFloatBE(x: float32): float32
 ```
 
@@ -10417,7 +10417,7 @@ global function SDL_SwapFloatBE(x: float32): float32
 
 ### SDL_LoadWAV
 
-```nelua
+```lua
 global function SDL_LoadWAV(file: cstring, spec: *SDL_AudioSpec, audio_buf: **uint8, audio_len: *uint32): *SDL_AudioSpec
 ```
 
@@ -10425,7 +10425,7 @@ global function SDL_LoadWAV(file: cstring, spec: *SDL_AudioSpec, audio_buf: **ui
 
 ### SDL_LoadBMP
 
-```nelua
+```lua
 global function SDL_LoadBMP(file: cstring): *SDL_Surface
 ```
 
@@ -10433,7 +10433,7 @@ global function SDL_LoadBMP(file: cstring): *SDL_Surface
 
 ### SDL_SaveBMP
 
-```nelua
+```lua
 global function SDL_SaveBMP(surface: *SDL_Surface, file: cstring): cint
 ```
 
@@ -10441,7 +10441,7 @@ global function SDL_SaveBMP(surface: *SDL_Surface, file: cstring): cint
 
 ### SDL_GameControllerAddMappingsFromFile
 
-```nelua
+```lua
 global function SDL_GameControllerAddMappingsFromFile(file: cstring): cint
 ```
 
@@ -10449,7 +10449,7 @@ global function SDL_GameControllerAddMappingsFromFile(file: cstring): cint
 
 ### SDL_QuitRequested
 
-```nelua
+```lua
 global function SDL_QuitRequested(): cint
 ```
 
@@ -10457,7 +10457,7 @@ global function SDL_QuitRequested(): cint
 
 ### SDL_GetEventState
 
-```nelua
+```lua
 global function SDL_GetEventState(type: uint32): uint8
 ```
 
@@ -10465,7 +10465,7 @@ global function SDL_GetEventState(type: uint32): uint8
 
 ### SDL_AUDIO_BITSIZE
 
-```nelua
+```lua
 global function SDL_AUDIO_BITSIZE(x: uint16): uint16
 ```
 
@@ -10473,7 +10473,7 @@ global function SDL_AUDIO_BITSIZE(x: uint16): uint16
 
 ### SDL_AUDIO_ISFLOAT
 
-```nelua
+```lua
 global function SDL_AUDIO_ISFLOAT(x: uint16): uint16
 ```
 
@@ -10481,7 +10481,7 @@ global function SDL_AUDIO_ISFLOAT(x: uint16): uint16
 
 ### SDL_AUDIO_ISBIGENDIAN
 
-```nelua
+```lua
 global function SDL_AUDIO_ISBIGENDIAN(x: uint16): uint16
 ```
 
@@ -10489,7 +10489,7 @@ global function SDL_AUDIO_ISBIGENDIAN(x: uint16): uint16
 
 ### SDL_AUDIO_ISSIGNED
 
-```nelua
+```lua
 global function SDL_AUDIO_ISSIGNED(x: uint16): uint16
 ```
 
@@ -10497,7 +10497,7 @@ global function SDL_AUDIO_ISSIGNED(x: uint16): uint16
 
 ### SDL_AUDIO_ISINT
 
-```nelua
+```lua
 global function SDL_AUDIO_ISINT(x: uint16): uint16
 ```
 
@@ -10505,7 +10505,7 @@ global function SDL_AUDIO_ISINT(x: uint16): uint16
 
 ### SDL_AUDIO_ISLITTLEENDIAN
 
-```nelua
+```lua
 global function SDL_AUDIO_ISLITTLEENDIAN(x: uint16): uint16
 ```
 
@@ -10513,7 +10513,7 @@ global function SDL_AUDIO_ISLITTLEENDIAN(x: uint16): uint16
 
 ### SDL_AUDIO_ISUNSIGNED
 
-```nelua
+```lua
 global function SDL_AUDIO_ISUNSIGNED(x: uint16): uint16
 ```
 
@@ -10521,7 +10521,7 @@ global function SDL_AUDIO_ISUNSIGNED(x: uint16): uint16
 
 ### SDL_PIXELFLAG
 
-```nelua
+```lua
 global function SDL_PIXELFLAG(x: cint): cint
 ```
 
@@ -10529,7 +10529,7 @@ global function SDL_PIXELFLAG(x: cint): cint
 
 ### SDL_PIXELTYPE
 
-```nelua
+```lua
 global function SDL_PIXELTYPE(x: cint): cint
 ```
 
@@ -10537,7 +10537,7 @@ global function SDL_PIXELTYPE(x: cint): cint
 
 ### SDL_PIXELORDER
 
-```nelua
+```lua
 global function SDL_PIXELORDER(x: cint): cint
 ```
 
@@ -10545,7 +10545,7 @@ global function SDL_PIXELORDER(x: cint): cint
 
 ### SDL_PIXELLAYOUT
 
-```nelua
+```lua
 global function SDL_PIXELLAYOUT(x: cint): cint
 ```
 
@@ -10553,7 +10553,7 @@ global function SDL_PIXELLAYOUT(x: cint): cint
 
 ### SDL_BITSPERPIXEL
 
-```nelua
+```lua
 global function SDL_BITSPERPIXEL(x: cint): cint
 ```
 
@@ -10561,7 +10561,7 @@ global function SDL_BITSPERPIXEL(x: cint): cint
 
 ### SDL_BYTESPERPIXEL
 
-```nelua
+```lua
 global function SDL_BYTESPERPIXEL(x: cint): cint
 ```
 
@@ -10569,7 +10569,7 @@ global function SDL_BYTESPERPIXEL(x: cint): cint
 
 ### SDL_ISPIXELFORMAT_INDEXED
 
-```nelua
+```lua
 global function SDL_ISPIXELFORMAT_INDEXED(format: SDL_PixelFormatEnum): SDL_bool
 ```
 
@@ -10577,7 +10577,7 @@ global function SDL_ISPIXELFORMAT_INDEXED(format: SDL_PixelFormatEnum): SDL_bool
 
 ### SDL_ISPIXELFORMAT_PACKED
 
-```nelua
+```lua
 global function SDL_ISPIXELFORMAT_PACKED(format: SDL_PixelFormatEnum): SDL_bool
 ```
 
@@ -10585,7 +10585,7 @@ global function SDL_ISPIXELFORMAT_PACKED(format: SDL_PixelFormatEnum): SDL_bool
 
 ### SDL_ISPIXELFORMAT_ARRAY
 
-```nelua
+```lua
 global function SDL_ISPIXELFORMAT_ARRAY(format: SDL_PixelFormatEnum): SDL_bool
 ```
 
@@ -10593,7 +10593,7 @@ global function SDL_ISPIXELFORMAT_ARRAY(format: SDL_PixelFormatEnum): SDL_bool
 
 ### SDL_ISPIXELFORMAT_ALPHA
 
-```nelua
+```lua
 global function SDL_ISPIXELFORMAT_ALPHA(format: SDL_PixelFormatEnum): SDL_bool
 ```
 
@@ -10601,7 +10601,7 @@ global function SDL_ISPIXELFORMAT_ALPHA(format: SDL_PixelFormatEnum): SDL_bool
 
 ### SDL_ISPIXELFORMAT_FOURCC
 
-```nelua
+```lua
 global function SDL_ISPIXELFORMAT_FOURCC(format: SDL_PixelFormatEnum): SDL_bool
 ```
 
@@ -10609,7 +10609,7 @@ global function SDL_ISPIXELFORMAT_FOURCC(format: SDL_PixelFormatEnum): SDL_bool
 
 ### SDL_WINDOWPOS_ISUNDEFINED
 
-```nelua
+```lua
 global function SDL_WINDOWPOS_ISUNDEFINED(x: uint32): SDL_bool
 ```
 
@@ -10617,7 +10617,7 @@ global function SDL_WINDOWPOS_ISUNDEFINED(x: uint32): SDL_bool
 
 ### SDL_WINDOWPOS_ISCENTERED
 
-```nelua
+```lua
 global function SDL_WINDOWPOS_ISCENTERED(x: uint32): SDL_bool
 ```
 
@@ -10625,7 +10625,7 @@ global function SDL_WINDOWPOS_ISCENTERED(x: uint32): SDL_bool
 
 ### SDL_MUSTLOCK
 
-```nelua
+```lua
 global function SDL_MUSTLOCK(s: *SDL_Surface): SDL_bool
 ```
 
@@ -10633,7 +10633,7 @@ global function SDL_MUSTLOCK(s: *SDL_Surface): SDL_bool
 
 ### SDL_SCANCODE_TO_KEYCODE
 
-```nelua
+```lua
 global function SDL_SCANCODE_TO_KEYCODE(x: SDL_Scancode): SDL_KeyCode
 ```
 
@@ -10641,7 +10641,7 @@ global function SDL_SCANCODE_TO_KEYCODE(x: SDL_Scancode): SDL_KeyCode
 
 ### SDL_SHAPEMODEALPHA
 
-```nelua
+```lua
 global function SDL_SHAPEMODEALPHA(mode: WindowShapeMode): SDL_bool
 ```
 
@@ -10649,7 +10649,7 @@ global function SDL_SHAPEMODEALPHA(mode: WindowShapeMode): SDL_bool
 
 ### SDL_VERSION
 
-```nelua
+```lua
 global function SDL_VERSION(x: *SDL_version)
 ```
 
@@ -10657,7 +10657,7 @@ global function SDL_VERSION(x: *SDL_version)
 
 ### SDL_VERSION_ATLEAST
 
-```nelua
+```lua
 global function SDL_VERSION_ATLEAST(x: cint, y: cint, z: cint): SDL_bool
 ```
 

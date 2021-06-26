@@ -1,6 +1,6 @@
 ### Math
 
-```nelua
+```lua
 global Math = @record{}
 ```
 
@@ -8,7 +8,7 @@ global Math = @record{}
 
 ### Math.Vec2
 
-```nelua
+```lua
 global Math.Vec2 = @record{
   x: number,
   y: number
@@ -19,7 +19,7 @@ global Math.Vec2 = @record{
 
 ### Math.
 
-```nelua
+```lua
 global Math.#|name|# = @record{
     x: T,
     y: T,
@@ -32,7 +32,7 @@ global Math.#|name|# = @record{
 
 ### Math.Grid
 
-```nelua
+```lua
 global Math.Grid = @record{
   rect_size: record{ width: integer, height: integer }, -- the size of the rectangles
   gap: record{ x: integer, y: integer } -- the gap between rectagles

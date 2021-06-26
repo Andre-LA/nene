@@ -1,6 +1,6 @@
 ### TextTexture
 
-```nelua
+```lua
 global TextTexture = @record{
   texture: Texture,
   text: string,
@@ -15,7 +15,7 @@ Related Nene documentation:
 
 ### TextTexture:destroy
 
-```nelua
+```lua
 function TextTexture:destroy()
 ```
 
@@ -26,7 +26,7 @@ Related Nene documentation:
 
 ### TextTexture:update_text
 
-```nelua
+```lua
 function TextTexture:update_text(nene: Nene, text: string, color: Color, font: Font)
 ```
 
@@ -43,7 +43,7 @@ Related SDL and SDL_TTF documentation:
 
 ### TextTexture:draw
 
-```nelua
+```lua
 function TextTexture:draw(nene: Nene, pos: Vec2, color: Color)
 ```
 
@@ -54,7 +54,7 @@ Related Nene documentation:
 
 ### TextTexture.new
 
-```nelua
+```lua
 function TextTexture.new(nene: Nene, initial_text: string, color: Color, font: Font): TextTexture
 ```
 

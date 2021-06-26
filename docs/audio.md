@@ -1,6 +1,6 @@
 ### Sound
 
-```nelua
+```lua
 global Sound = @record{
   _data: *Mix_Chunk,
   channel: integer, -- -1 when no channel is being used
@@ -11,7 +11,7 @@ Holds a sound associated with a sound channel
 
 ### Sound:get
 
-```nelua
+```lua
 function Sound:get(): *Mix_Chunk
 ```
 
@@ -22,7 +22,7 @@ Related SDL_mixer documentation:
 
 ### Sound.load
 
-```nelua
+```lua
 function Sound.load(filename: string): (Sound, boolean)
 ```
 
@@ -38,7 +38,7 @@ Related SDL_mixer documentation:
 
 ### Sound:play
 
-```nelua
+```lua
 function Sound:play(loop: overload(boolean, integer, niltype))
 ```
 
@@ -56,7 +56,7 @@ Related SDL_mixer documentation:
 
 ### Sound:stop
 
-```nelua
+```lua
 function Sound:stop()
 ```
 
@@ -68,7 +68,7 @@ Related SDL_mixer documentation:
 
 ### Sound:destroy
 
-```nelua
+```lua
 function Sound:destroy()
 ```
 
@@ -80,7 +80,7 @@ Related SDL_mixer documentation:
 
 ### Music
 
-```nelua
+```lua
 global Music = @record{
   _data: *Mix_Music,
   id: usize,
@@ -91,7 +91,7 @@ Holds a music associated with an id
 
 ### Music:get
 
-```nelua
+```lua
 function Music:get(): *Mix_Music
 ```
 
@@ -102,7 +102,7 @@ Related SDL_mixer documentation:
 
 ### Music:destroy
 
-```nelua
+```lua
 function Music:destroy()
 ```
 

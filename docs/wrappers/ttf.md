@@ -1,6 +1,6 @@
 ### TTFWrapper
 
-```nelua
+```lua
 global TTFWrapper = @record{}
 ```
 
@@ -8,7 +8,7 @@ global TTFWrapper = @record{}
 
 ### TTFWrapper.ttf_init
 
-```nelua
+```lua
 function TTFWrapper.ttf_init(): boolean
 ```
 
@@ -21,7 +21,7 @@ Related SDL_ttf documentation:
 
 ### TTFWrapper.ttf_quit
 
-```nelua
+```lua
 function TTFWrapper.ttf_quit()
 ```
 
@@ -34,7 +34,7 @@ Related SDL documentation:
 
 ### TTFWrapper.ttf_render_utf8_solid
 
-```nelua
+```lua
 function TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: SDL_Color): (*SDL_Surface, boolean)
 ```
 
@@ -45,7 +45,7 @@ Related SDL_TTF documentation:
 
 ### TTFWrapper.open_font
 
-```nelua
+```lua
 function TTFWrapper.open_font(file: cstring, ptsize: cint): (*TTF_Font, boolean)
 ```
 
@@ -58,7 +58,7 @@ Related SDL_TTF documentation:
 
 ### TTFWrapper.close_font
 
-```nelua
+```lua
 function TTFWrapper.close_font(font: *TTF_Font)
 ```
 

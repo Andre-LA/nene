@@ -1,6 +1,6 @@
 ### Color
 
-```nelua
+```lua
 global Color = @SDL_Color
 ```
 
@@ -11,7 +11,7 @@ Related SDL documentation:
 
 ### Color.Palette
 
-```nelua
+```lua
 global Color.Palette: record{
   black: Color,
   white: Color,
@@ -25,6 +25,6 @@ global Color.Palette: record{
 
 The general color pallete of Nene
 
-> Note: This is not related to [`SDL_Pallete`](https://wiki.libsdl.org/SDL_Palette) structure.
+> Note: This is not related to [`SDL_Pallete`](https://wiki.libsdl.org/SDL_Palette) data structure.
 
 ---

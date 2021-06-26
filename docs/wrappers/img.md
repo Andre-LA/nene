@@ -1,6 +1,6 @@
 ### ImgWrapper
 
-```nelua
+```lua
 global ImgWrapper = @record{}
 ```
 
@@ -8,7 +8,7 @@ global ImgWrapper = @record{}
 
 ### ImgWrapper.img_init
 
-```nelua
+```lua
 function ImgWrapper.img_init(flags: cint): (boolean, cint)
 ```
 
@@ -24,7 +24,7 @@ Related SDL_ttf documentation:
 
 ### ImgWrapper.img_quit
 
-```nelua
+```lua
 function ImgWrapper.img_quit()
 ```
 

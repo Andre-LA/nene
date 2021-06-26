@@ -1,6 +1,6 @@
 ### Nene
 
-```nelua
+```lua
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
@@ -17,7 +17,7 @@ Most of the `Core`'s functions comes from SDL2 actually.
 
 ### Nene.initialized
 
-```nelua
+```lua
 global Nene.initialized
 ```
 
@@ -26,7 +26,7 @@ by the user.
 
 ### Nene.EventsCallbacks
 
-```nelua
+```lua
 global Nene.EventsCallbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
@@ -61,7 +61,7 @@ Related SDL documentation:
 
 ### Nene:pool_events
 
-```nelua
+```lua
 function Nene:pool_events(evt_callbacks: facultative(Nene.EventsCallbacks))
 ```
 
@@ -79,7 +79,7 @@ Related SDL documentation:
 
 ### Nene:get_window_size
 
-```nelua
+```lua
 function Nene:get_window_size(): (cint, cint)
 ```
 
@@ -90,7 +90,7 @@ Related SDL documentation:
 
 ### Nene:get_scancode
 
-```nelua
+```lua
 function Nene:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
 ```
 
@@ -106,7 +106,7 @@ Related SDL documentation:
 
 ### Nene:set_render_draw_color
 
-```nelua
+```lua
 function Nene:set_render_draw_color(color: Color)
 ```
 
@@ -122,7 +122,7 @@ Related SDL documentation:
 
 ### Nene:render_clear
 
-```nelua
+```lua
 function Nene:render_clear(color: Color)
 ```
 
@@ -138,7 +138,7 @@ Related SDL documentation:
 
 ### Nene:render_draw_line
 
-```nelua
+```lua
 function Nene:render_draw_line(origin: Math.Vec2, destination: Math.Vec2, color: Color)
 ```
 
@@ -153,7 +153,7 @@ Related SDL documentation:
 
 ### Nene:render_draw_rect
 
-```nelua
+```lua
 function Nene:render_draw_rect(rectangle: Math.Rect, use_lines: boolean, color: Color)
 ```
 
@@ -166,7 +166,7 @@ Related SDL documentation:
 
 ### Nene:render_copy
 
-```nelua
+```lua
 function Nene:render_copy(tex: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
 ```
 
@@ -185,7 +185,7 @@ Related SDL documentation:
 
 ### Nene:create_texture_from_surface
 
-```nelua
+```lua
 function Nene:create_texture_from_surface(surface_ref: *SDL_Surface): (*SDL_Texture, boolean)
 ```
 
@@ -200,7 +200,7 @@ Related SDL_TTF documentation:
 
 ### Nene:render_present
 
-```nelua
+```lua
 function Nene:render_present()
 ```
 
@@ -214,7 +214,7 @@ Related SDL documentation:
 
 ### Nene.init
 
-```nelua
+```lua
 function Nene.init(
   title: string,
   window_size_x: integer, window_size_y: integer,
@@ -244,7 +244,7 @@ Related SDL documentation:
 
 ### Nene:terminate
 
-```nelua
+```lua
 function Nene:terminate()
 ```
 

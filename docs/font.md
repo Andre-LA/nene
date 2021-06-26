@@ -1,6 +1,6 @@
 ### Font
 
-```nelua
+```lua
 global Font = @record{
   _data: *TTF_Font,
 }
@@ -10,7 +10,7 @@ Wraps a reference to a font
 
 ### Font.load
 
-```nelua
+```lua
 function Font.load(filename: string, ptsize: cint): (Font, boolean)
 ```
 
@@ -18,7 +18,7 @@ function Font.load(filename: string, ptsize: cint): (Font, boolean)
 
 ### Font:get
 
-```nelua
+```lua
 function Font:get(): *TTF_Font
 ```
 
@@ -26,7 +26,7 @@ function Font:get(): *TTF_Font
 
 ### Font:destroy
 
-```nelua
+```lua
 function Font:destroy()
 ```
 

@@ -1,6 +1,6 @@
 ### Texture
 
-```nelua
+```lua
 global Texture = @record{
   _data: *SDL_Texture,  -- internal data, don't use it, use methods `get` and `apply_sdltex` instead
   initialized: boolean, -- internal data, used to check if the texture is initialized
@@ -17,7 +17,7 @@ Related SDL documentation:
 
 ### Texture:get
 
-```nelua
+```lua
 function Texture:get(): *SDL_Texture
 ```
 
@@ -28,7 +28,7 @@ Related SDL documentation:
 
 ### Texture:destroy
 
-```nelua
+```lua
 function Texture:destroy()
 ```
 
@@ -39,7 +39,7 @@ Related SDL documentation:
 
 ### Texture:draw
 
-```nelua
+```lua
 function Texture:draw(nene: Nene, color: Color, source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
 ```
 
@@ -53,7 +53,7 @@ Related Nene documentation:
 
 ### Texture:apply_sdltex
 
-```nelua
+```lua
 function Texture:apply_sdltex(new_tex: *SDL_Texture)
 ```
 
@@ -66,7 +66,7 @@ Related Nene documentation:
 
 ### Texture.new
 
-```nelua
+```lua
 function Texture.new(tex: *SDL_Texture): Texture
 ```
 

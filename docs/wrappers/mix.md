@@ -1,6 +1,6 @@
 ### MixWrapper
 
-```nelua
+```lua
 global MixWrapper = @record{}
 ```
 
@@ -8,7 +8,7 @@ global MixWrapper = @record{}
 
 ### MixWrapper.mix_init
 
-```nelua
+```lua
 function MixWrapper.mix_init(flags: cint): (boolean, cint)
 ```
 
@@ -24,7 +24,7 @@ Related SDL_ttf documentation:
 
 ### MixWrapper.mix_quit
 
-```nelua
+```lua
 function MixWrapper.mix_quit()
 ```
 
@@ -38,7 +38,7 @@ Related SDL documentation:
 
 ### MixWrapper.load_wav
 
-```nelua
+```lua
 function MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
 ```
 
@@ -52,7 +52,7 @@ Related SDL_mixer documentation:
 
 ### MixWrapper.open_audio
 
-```nelua
+```lua
 function MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
 ```
 
@@ -65,7 +65,7 @@ Related SDL_ttf documentation:
 
 ### MixWrapper.close_audio
 
-```nelua
+```lua
 function MixWrapper.close_audio()
 ```
 
@@ -78,7 +78,7 @@ Related SDL documentation:
 
 ### MixWrapper.play_channel
 
-```nelua
+```lua
 function MixWrapper.play_channel(channel: cint, chunk: *Mix_Chunk, loop: cint): (cint, boolean)
 ```
 
@@ -93,7 +93,7 @@ Related SDL_mixer documentation:
 
 ### MixWrapper.halt_channel
 
-```nelua
+```lua
 function MixWrapper.halt_channel(channel: cint)
 ```
 
@@ -107,7 +107,7 @@ Related SDL_mixer documentation:
 
 ### MixWrapper.free_chunk
 
-```nelua
+```lua
 function MixWrapper.free_chunk(chunk: *Mix_Chunk)
 ```
 
@@ -121,7 +121,7 @@ Related SDL_mixer documentation:
 
 ### MixWrapper.free_music
 
-```nelua
+```lua
 function MixWrapper.free_music(music: *Mix_Music)
 ```
 
