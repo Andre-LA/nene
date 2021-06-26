@@ -1,11 +1,30 @@
-# nene/colors.nelua
-## 
-```lua
-global Nene.Color = @SDL_Color
+### Color
+
+```nelua
+global Color = @SDL_Color
 ```
-`Nene.Color` is an alias of `SDL_Color`, see it's documentation for more information. 
- 
-Related SDL documentation: 
+
+`Nene.Color` is an alias of `SDL_Color`, see it's documentation for more information.
+
+Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
+
+### Color.Palette
+
+```nelua
+global Color.Palette: record{
+  black: Color,
+  white: Color,
+  red: Color,
+  green: Color,
+  blue: Color,
+  yellow: Color,
+  bg: Color,
+}
+```
+
+The general color pallete of Nene
+
+> Note: This is not related to [`SDL_Pallete`](https://wiki.libsdl.org/SDL_Palette) structure.
 
 ---

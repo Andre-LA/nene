@@ -1,23 +1,22 @@
 require 'nene.sdl2'
-require 'nene.core'
 
 --- `Nene.Color` is an alias of `SDL_Color`, see it's documentation for more information.
 ---
 --- Related SDL documentation:
 --- * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
-global Nene.Color = @SDL_Color
+global Color = @SDL_Color
 
 --- The general color pallete of Nene
 ---
 --- > Note: This is not related to [`SDL_Pallete`](https://wiki.libsdl.org/SDL_Palette) structure.
-global Nene.Palette: record{
-  black: Nene.Color,
-  white: Nene.Color,
-  red: Nene.Color,
-  green: Nene.Color,
-  blue: Nene.Color,
-  yellow: Nene.Color,
-  bg: Nene.Color,
+global Color.Palette: record{
+  black: Color,
+  white: Color,
+  red: Color,
+  green: Color,
+  blue: Color,
+  yellow: Color,
+  bg: Color,
 } <const> = {
   { 0x00, 0x00, 0x00, 0xff },
   { 0xff, 0xff, 0xff, 0xff },

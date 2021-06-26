@@ -1,11 +1,12 @@
 require 'nene.sdl2'
-require 'nene.core'
+require 'nene.macros'
 
-global Nene.SDLWrapper = @record{}
+-- The `SDLWrapper` namespace
+global SDLWrapper = @record{}
 
 ##[[
 local function warn_msg(fn_name, msg)
-  Nene.macros.warn_sdl_msg_macro('Nene.SDLWrapper.'..fn_name, msg, 'SDL', 'SDL_GetError')
+  macros.warn_sdl_msg_macro('SDLWrapper.'..fn_name, msg, 'SDL', 'SDL_GetError')
 end
 ]]
 
@@ -15,8 +16,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_Init](https://wiki.libsdl.org/SDL_Init)
-function Nene.SDLWrapper.sdl_init(flags: uint32): boolean
-  check(not Nene.initialized, 'Nene is already initialized')
+function SDLWrapper.sdl_init(flags: uint32): boolean
 
   local ok = SDL_Init(flags) == 0
 
@@ -33,8 +33,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
-function Nene.SDLWrapper.sdl_quit()
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.sdl_quit()
   SDL_Quit()
 end
 
@@ -49,8 +48,7 @@ end
 --- * [SDL_Surface](https://wiki.libsdl.org/SDL_Surface)
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 --- * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
-function Nene.SDLWrapper.create_texture_from_surface(renderer: *SDL_Renderer, surface: *SDL_Surface): (*SDL_Texture, boolean)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.create_texture_from_surface(renderer: *SDL_Renderer, surface: *SDL_Surface): (*SDL_Texture, boolean)
   check(surface, 'surface is nilptr')
 
   local texture = SDL_CreateTextureFromSurface(renderer, surface)
@@ -69,8 +67,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
-function Nene.SDLWrapper.destroy_texture(texture: *SDL_Texture)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.destroy_texture(texture: *SDL_Texture)
   check(texture, 'texture is nilptr')
 
   SDL_DestroyTexture(texture)
@@ -87,8 +84,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 --- * [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
-function Nene.SDLWrapper.set_texture_color_modulation(texture: *SDL_Texture, color: SDL_Color): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.set_texture_color_modulation(texture: *SDL_Texture, color: SDL_Color): boolean
   check(texture, 'texture is nilptr')
 
   local mod_result = SDL_SetTextureColorMod(texture, color.r, color.g, color.b)
@@ -112,8 +108,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_QueryTexture](https://wiki.libsdl.org/SDL_QueryTexture)
-function Nene.SDLWrapper.query_texture_size(texture: *SDL_Texture): (cint, cint, boolean)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.query_texture_size(texture: *SDL_Texture): (cint, cint, boolean)
   check(texture, 'texture is nilptr')
 
   local fmt: uint32, access: cint, w: cint, h: cint;
@@ -134,8 +129,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_GetTicks](https://wiki.libsdl.org/SDL_GetTicks)
-function Nene.SDLWrapper.get_ticks(): uint32
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.get_ticks(): uint32
   return SDL_GetTicks()
 end
 
@@ -143,8 +137,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
-function Nene.SDLWrapper.free_surface(surface: *SDL_Surface)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.free_surface(surface: *SDL_Surface)
   check(surface, 'surface is nilptr')
 
   SDL_FreeSurface(surface)
@@ -160,8 +153,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 --- * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
-function Nene.SDLWrapper.get_keyboard_state(): span(uint8)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.get_keyboard_state(): span(uint8)
 
   local kb_state_len: cint;
   local kb_state_arr = SDL_GetKeyboardState(&kb_state_len)
@@ -178,8 +170,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
-function Nene.SDLWrapper.get_mouse_state(): (uint32, cint, cint)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.get_mouse_state(): (uint32, cint, cint)
 
   local x: cint, y: cint
   local bitmask = SDL_GetMouseState(&x, &y)
@@ -195,8 +186,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent)
-function Nene.SDLWrapper.poll_event(event: *SDL_Event): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.poll_event(event: *SDL_Event): boolean
   return SDL_PollEvent(event) == 1
 end
 
@@ -209,8 +199,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Window](https://wiki.libsdl.org/SDL_Window)
 --- * [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow)
-function Nene.SDLWrapper.create_window(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): (*SDL_Window, boolean)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.create_window(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): (*SDL_Window, boolean)
 
   local window = SDL_CreateWindow(title, x, y, w, h, flags)
   local ok = window ~= nilptr
@@ -229,8 +218,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Window](https://wiki.libsdl.org/SDL_Window)
 --- * [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow)
-function Nene.SDLWrapper.destroy_window(window: *SDL_Window)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.destroy_window(window: *SDL_Window)
   check(window ~= nilptr, 'window is nilptr')
 
   SDL_DestroyWindow(window)
@@ -242,8 +230,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
-function Nene.SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.get_window_size(window: *SDL_Window): (cint, cint)
   check(window, 'window is nilptr')
 
   local ww: cint, wh: cint;
@@ -264,8 +251,7 @@ end
 --- * [SDL_Window](https://wiki.libsdl.org/SDL_Window)
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_CreateRenderer](https://wiki.libsdl.org/SDL_CreateRenderer)
-function Nene.SDLWrapper.create_renderer(window: *SDL_Window, index: cint, flags: uint32): (*SDL_Renderer, boolean)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.create_renderer(window: *SDL_Window, index: cint, flags: uint32): (*SDL_Renderer, boolean)
   check(window ~= nilptr, 'window is nilptr')
 
   local renderer = SDL_CreateRenderer(window, index, flags)
@@ -286,8 +272,7 @@ end
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer)
-function Nene.SDLWrapper.destroy_renderer(renderer: *SDL_Renderer)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.destroy_renderer(renderer: *SDL_Renderer)
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   SDL_DestroyRenderer(renderer)
@@ -301,8 +286,7 @@ end
 --- * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
-function Nene.SDLWrapper.set_render_draw_color(renderer: *SDL_Renderer, r: uint8, g: uint8, b: uint8, a: uint8): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.set_render_draw_color(renderer: *SDL_Renderer, r: uint8, g: uint8, b: uint8, a: uint8): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   local ok = SDL_SetRenderDrawColor(renderer, r, g, b, a) == 0
@@ -322,8 +306,7 @@ end
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_BlendMode](https://wiki.libsdl.org/SDL_BlendMode)
 --- * [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL_SetRenderDrawBlendMode)
-function Nene.SDLWrapper.set_render_draw_blend_mode(renderer: *SDL_Renderer, blend_mode: SDL_BlendMode): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.set_render_draw_blend_mode(renderer: *SDL_Renderer, blend_mode: SDL_BlendMode): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   local ok = SDL_SetRenderDrawBlendMode(renderer, blend_mode) == 0
@@ -341,8 +324,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
-function Nene.SDLWrapper.render_clear(renderer: *SDL_Renderer): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.render_clear(renderer: *SDL_Renderer): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   local ok = SDL_RenderClear(renderer) == 0
@@ -361,8 +343,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
-function Nene.SDLWrapper.render_present(renderer: *SDL_Renderer)
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.render_present(renderer: *SDL_Renderer)
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   SDL_RenderPresent(renderer)
@@ -375,8 +356,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
-function Nene.SDLWrapper.render_draw_line(renderer: *SDL_Renderer, x1: cint, y1: cint, x2: cint, y2: cint): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.render_draw_line(renderer: *SDL_Renderer, x1: cint, y1: cint, x2: cint, y2: cint): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   local ok = SDL_RenderDrawLine(renderer, x1, y1, x2, y2) == 0
@@ -396,8 +376,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
-function Nene.SDLWrapper.render_draw_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.render_draw_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   local ok = SDL_RenderDrawRect(renderer, rect) == 0
@@ -415,8 +394,7 @@ end
 --- Related SDL documentation:
 --- * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 --- * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
-function Nene.SDLWrapper.render_fill_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.render_fill_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
 
   local ok = SDL_RenderFillRect(renderer, rect) == 0
@@ -437,8 +415,7 @@ end
 --- * [SDL_Rect](https://wiki.libsdl.org/SDL_Rect)
 --- * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 --- * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
-function Nene.SDLWrapper.render_copy(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function SDLWrapper.render_copy(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect): boolean
   check(renderer ~= nilptr, 'renderer is nilptr')
   check(texture ~= nilptr, 'texture is nilptr')
 

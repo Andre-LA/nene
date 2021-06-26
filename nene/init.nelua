@@ -16,7 +16,6 @@
 require 'nene.core'
 require 'nene.colors'
 require 'nene.math'
-require 'nene.core_state'
 
 -- features
 require 'nene.font'

@@ -7,7 +7,7 @@ require 'string'
 require 'nene'
 
 -- localizing variables to avoid verbosity
-local Rect, Vec2, TextTexture = Nene.Math.Rect, Nene.Math.Vec2, Nene.TextTexture
+local Rect, Vec2 = Math.Rect, Math.Vec2
 
 -- general game settings
 local SETTINGS: record{
@@ -50,14 +50,14 @@ function Racket:get_rect(is_player_one: boolean): Rect
 end
 
 -- racket's gameplay code
-function Racket:update(nene_core: Nene.Core, is_player_one: boolean <comptime>)
+function Racket:update(nene: Nene, is_player_one: boolean <comptime>)
   -- input
   local is_up, is_down = false, false
 
   ## if is_player_one.value then
-    is_up, is_down = nene_core:get_scancode(SDL_SCANCODE_W), nene_core:get_scancode(SDL_SCANCODE_S)
+    is_up, is_down = nene:get_scancode(SDL_SCANCODE_W), nene:get_scancode(SDL_SCANCODE_S)
   ## else
-    is_up, is_down = nene_core:get_scancode(SDL_SCANCODE_I), nene_core:get_scancode(SDL_SCANCODE_K)
+    is_up, is_down = nene:get_scancode(SDL_SCANCODE_I), nene:get_scancode(SDL_SCANCODE_K)
   ## end
 
   -- movement
@@ -73,8 +73,8 @@ function Racket:update(nene_core: Nene.Core, is_player_one: boolean <comptime>)
 end
 
 -- draw a racket
-function Racket:draw(nene_core: Nene.Core, is_player_one: boolean)
-  nene_core:render_draw_rect(self:get_rect(is_player_one), false, Nene.Palette.yellow)
+function Racket:draw(nene: Nene, is_player_one: boolean)
+  nene:render_draw_rect(self:get_rect(is_player_one), false, Color.Palette.yellow)
 end
 
 -- ball record
@@ -132,27 +132,27 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket)
   end
 end
 
-function Ball:draw(nene_core: Nene.Core)
-  nene_core:render_draw_rect(self:get_rect(), false, Nene.Palette.white)
+function Ball:draw(nene: Nene)
+  nene:render_draw_rect(self:get_rect(), false, Color.Palette.white)
 end
 
-local function update_points(nene_core: Nene.Core, pts_text: *TextTexture, points: integer, font: Nene.Font)
+local function update_points(nene: Nene, pts_text: *TextTexture, points: integer, font: Font)
   local pts_str = tostring(points)
   defer pts_str:destroy() end
-  pts_text:update_text(nene_core, pts_str, Nene.Palette.white, font)
+  pts_text:update_text(nene, pts_str, Color.Palette.white, font)
 end
 
 local function game()
   -- nene setup:
 
-  -- nene core initialization, this example will use `Nene.Core` directly
-  -- instead of `Nene.Main` since only simple features will be used.
-  local ok, nene_core = Nene.Core.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
+  -- nene core initialization, this example will use `Nene` directly
+  -- instead of `Main` since only simple features will be used.
+  local ok, nene = Nene.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
   assert(ok, 'core state initialization failed')
 
   -- the `terminate` method deinitializes nene and SDL libraries
   defer
-    nene_core:terminate()
+    nene:terminate()
   end
 
   -- game setup:
@@ -160,11 +160,11 @@ local function game()
   local pl_1: Racket, pl_2: Racket, ball = {}, {}, Ball.new()
 
   -- "monogram_extended" font is included with nene, but it's not loaded automatically.
-  local font = Nene.Font.load('resources/monogram_extended.ttf', 72)
+  local font = Font.load('resources/monogram_extended.ttf', 72)
   defer font:destroy() end
 
-  local r1_text, r2_text = TextTexture.new(nene_core, '0', Nene.Palette.white, font),
-                           TextTexture.new(nene_core, '0', Nene.Palette.white, font)
+  local r1_text, r2_text = TextTexture.new(nene, '0', Color.Palette.white, font),
+                           TextTexture.new(nene, '0', Color.Palette.white, font)
   defer
     r1_text:destroy()
     r2_text:destroy()
@@ -172,40 +172,40 @@ local function game()
 
   -- game loop:
   repeat
-    nene_core:pool_events()
+    nene:pool_events()
 
     do -- update step
       local prev_r1_points, prev_r2_points = pl_1.points, pl_2.points
 
-      pl_1:update(nene_core, true)
-      pl_2:update(nene_core, false)
+      pl_1:update(nene, true)
+      pl_2:update(nene, false)
       ball:update(pl_1, pl_2)
 
       if prev_r1_points ~= pl_1.points then
-        update_points(nene_core, r1_text, pl_1.points, font)
+        update_points(nene, r1_text, pl_1.points, font)
       end
       if prev_r2_points ~= pl_2.points then
-        update_points(nene_core, r2_text, pl_2.points, font)
+        update_points(nene, r2_text, pl_2.points, font)
       end
     end
 
     do -- draw step
       -- draw background
-      nene_core:render_clear(Nene.Palette.bg)
+      nene:render_clear(Color.Palette.bg)
 
       -- draw rackets and ball
-      pl_1:draw(nene_core, true)
-      pl_2:draw(nene_core, false)
-      ball:draw(nene_core)
+      pl_1:draw(nene, true)
+      pl_2:draw(nene, false)
+      ball:draw(nene)
 
       -- draw points texts
-      r1_text:draw(nene_core, {10, 0}, Nene.Palette.white)
-      r2_text:draw(nene_core, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Nene.Palette.white)
+      r1_text:draw(nene, {10, 0}, Color.Palette.white)
+      r2_text:draw(nene, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Color.Palette.white)
 
       -- present the "drawing result"
-      nene_core:render_present()
+      nene:render_present()
     end
-  until nene_core.quit
+  until nene.quit
 end
 
 game()

@@ -1,80 +1,72 @@
-# nene/wrappers/ttf.nelua
-## Nene.TTFWrapper
-```lua
-global Nene.TTFWrapper = @record{}
+### TTFWrapper
+
+```nelua
+global TTFWrapper = @record{}
 ```
 
 
----
 
-## warn_msg
-```lua
-local function warn_msg(fn_name, msg)
+### TTFWrapper.ttf_init
+
+```nelua
+function TTFWrapper.ttf_init(): boolean
 ```
 
+Wrapper of `TTF_Init`
 
----
+Initialize SDL_ttf library.
 
-## Nene.TTFWrapper.ttf_init
-```lua
-function Nene.TTFWrapper.ttf_init(): boolean
-```
-Wrapper of `TTF_Init` 
- 
-Initialize SDL_ttf library. 
-This function doesn't check if `Nene` is initialized. 
- 
-Related SDL_ttf documentation: 
+Related SDL_ttf documentation:
 * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
 
----
+### TTFWrapper.ttf_quit
 
-## Nene.TTFWrapper.ttf_quit
-```lua
-function Nene.TTFWrapper.ttf_quit()
+```nelua
+function TTFWrapper.ttf_quit()
 ```
-Wrapper of `TTF_Quit` 
- 
-Shutdown and cleanup SDL_ttf library. 
- 
-Related SDL documentation: 
+
+Wrapper of `TTF_Quit`
+
+Shutdown and cleanup SDL_ttf library.
+
+Related SDL documentation:
 * [TTF_Quit](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_10.html)
 
----
+### TTFWrapper.ttf_render_utf8_solid
 
-## Nene.TTFWrapper.ttf_render_utf8_solid
-```lua
-function Nene.TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: SDL_Color): (*SDL_Surface, boolean)
+```nelua
+function TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: SDL_Color): (*SDL_Surface, boolean)
 ```
-Wrapper of `TTF_RenderUTF8_Solid`. 
- 
-Related SDL_TTF documentation: 
+
+Wrapper of `TTF_RenderUTF8_Solid`.
+
+Related SDL_TTF documentation:
 * [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
 
----
+### TTFWrapper.open_font
 
-## Nene.TTFWrapper.open_font
-```lua
-function Nene.TTFWrapper.open_font(file: cstring, ptsize: cint): (*TTF_Font, boolean)
+```nelua
+function TTFWrapper.open_font(file: cstring, ptsize: cint): (*TTF_Font, boolean)
 ```
-Wrapper of `TTF_OpenFont`. 
- 
-Load `file` for use as a font with `ptsize`. 
- 
-Related SDL_TTF documentation: 
+
+Wrapper of `TTF_OpenFont`.
+
+Load `file` for use as a font with `ptsize`.
+
+Related SDL_TTF documentation:
 * [TTF_OpenFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_14.html)
 
----
+### TTFWrapper.close_font
 
-## Nene.TTFWrapper.close_font
-```lua
-function Nene.TTFWrapper.close_font(font: *TTF_Font)
+```nelua
+function TTFWrapper.close_font(font: *TTF_Font)
 ```
-Wrapper of `TTF_CloseFont`. 
- 
-Free the memory used by `font` and free `font` as well. 
- 
-Related SDL_TTF documentation: 
+
+Wrapper of `TTF_CloseFont`.
+
+Free the memory used by `font` and free `font` as well.
+
+Related SDL_TTF documentation:
 * [TTF_CloseFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_18.html)
 
 ---

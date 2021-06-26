@@ -1,14 +1,13 @@
-require 'nene.core'
 require 'math'
 
-global Nene.Math = @record{}
-local Math = @Nene.Math
+global Math = @record{}
 
-local Vec2 = @record{
+global Math.Vec2 = @record{
   x: number,
   y: number
 }
-global Nene.Math.Vec2 = @Vec2
+
+local Vec2 = @Math.Vec2
 ## Vec2.value.is_vec = true
 
 global Vec2.zero: Vec2 = { x = 0, y = 0}
@@ -65,13 +64,14 @@ end
 
   local T: type = #[T]#
 
-  local RectT = @record{
+  global Math.#|name|# = @record{
     x: T,
     y: T,
     w: T,
     h: T
   }
-  global Math.#|name|# = RectT
+
+  local RectT = @Math.#|name|#
 
   function RectT:get_intersection(other_rect: RectT): RectT
     local max_px = math.max(self.x, other_rect.x)
@@ -130,14 +130,18 @@ function Math.Rect:to_rectf(): Math.Rectf
   }
 end
 
---- This record is intended to generate rectangles from an infinite grid. This grid is mathematical, it doesn't really exists.
-local Grid = @record{
+--[[
+This record is intended to generate rectangles from an infinite grid. This grid is mathematical, it doesn't really exists.
+]]
+global Math.Grid = @record{
   rect_size: record{ width: integer, height: integer }, -- the size of the rectangles
   gap: record{ x: integer, y: integer } -- the gap between rectagles
 }
-global Nene.Math.Grid = @Grid
+local Grid = @Math.Grid
 
---- Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
+--[[
+Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
+]]
 function Grid.gen_rect(self: Grid, column: integer, row: integer): Math.Rect
   return (@Math.Rect){
     x = self.rect_size.width * column + self.gap.x * column,
@@ -147,9 +151,11 @@ function Grid.gen_rect(self: Grid, column: integer, row: integer): Math.Rect
   }
 end
 
---- Returns the the column and row from a `n`th cell, note that this function is 0-indexed (so, the first cell is `0`, not `1`).
----
---- Is necessary to also give how many cells fit on a line.
+--[[
+Returns the the column and row from a `n`th cell, note that this function is 0-indexed (so, the first cell is `0`, not `1`).
+
+Is necessary to also give how many cells fit on a line.
+]]
 function Grid.get_nth_cell_column_row(n: isize, cells_per_line: isize): (isize, isize)
   return n % cells_per_line, n // cells_per_line
 end

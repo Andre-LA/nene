@@ -1,35 +1,35 @@
-# nene/font.nelua
-## Font
-```lua
-local Font = @record{
+### Font
+
+```nelua
+global Font = @record{
   _data: *TTF_Font,
 }
-global Nene.Font = @Font
 ```
+
 Wraps a reference to a font
 
----
+### Font.load
 
-## Font.load
-```lua
+```nelua
 function Font.load(filename: string, ptsize: cint): (Font, boolean)
 ```
 
 
----
 
-## Font:get
-```lua
+### Font:get
+
+```nelua
 function Font:get(): *TTF_Font
 ```
 
 
----
 
-## Font:destroy
-```lua
+### Font:destroy
+
+```nelua
 function Font:destroy()
 ```
+
 
 
 ---

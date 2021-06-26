@@ -1,26 +1,26 @@
 require 'nene.sdl2'
 require 'nene.sdl2_mixer'
-require 'nene.core'
 
-global Nene.MixWrapper = @record{}
+require 'nene.macros'
+
+global MixWrapper = @record{}
 
 ##[[
 local function warn_msg(fn_name, msg)
-  Nene.macros.warn_sdl_msg_macro('Nene.MixWrapper.'..fn_name, msg, 'SDL_mixer', 'Mix_GetError')
+  macros.warn_sdl_msg_macro('MixWrapper.'..fn_name, msg, 'SDL_mixer', 'Mix_GetError')
 end
 ]]
 
 --- Wrapper of `Mix_Init`
 ---
 --- Initialize SDL_mixer loading support.
---- This function doesn't check if `Nene` is initialized.
 ---
 --- It returns an `ok` (boolean) success status and the bitmask that `Mix_Init` returns.
 --- The `ok` status is true when the bitmask returned by `Mix_Init` is equals to `flags` argument.
 ---
 --- Related SDL_ttf documentation:
 --- * [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
-function Nene.MixWrapper.mix_init(flags: cint): (boolean, cint)
+function MixWrapper.mix_init(flags: cint): (boolean, cint)
   local mix_result = Mix_Init(flags)
   local ok = mix_result & flags == flags
 
@@ -38,8 +38,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
-function Nene.MixWrapper.mix_quit()
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.mix_quit()
 
   while Mix_Init(0) ~= 0 do
     Mix_Quit()
@@ -53,8 +52,7 @@ end
 --- Related SDL_mixer documentation:
 --- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 --- * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
-function Nene.MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
 
   local chunk = Mix_LoadWAV(file)
   local ok = chunk ~= nilptr
@@ -69,12 +67,10 @@ end
 --- Wrapper of `Mix_OpenAudio`
 ---
 --- Initialize SDL_mixer library.
---- This function doesn't check if `Nene` is initialized.
 ---
 --- Related SDL_ttf documentation:
 --- * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
-function Nene.MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
   local ok = Mix_OpenAudio(frequency, format, channels, chunksize)
 
   if not ok then
@@ -90,8 +86,7 @@ end
 ---
 --- Related SDL documentation:
 --- * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
-function Nene.MixWrapper.close_audio()
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.close_audio()
   Mix_CloseAudio()
 end
 
@@ -103,8 +98,7 @@ end
 --- Related SDL_mixer documentation:
 --- * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
 --- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
-function Nene.MixWrapper.play_channel(channel: cint, chunk: *Mix_Chunk, loop: cint): (cint, boolean)
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.play_channel(channel: cint, chunk: *Mix_Chunk, loop: cint): (cint, boolean)
   check(chunk, 'chunk is nilptr')
 
   local channel = Mix_PlayChannel(channel, chunk, loop)
@@ -124,8 +118,7 @@ end
 --- Related SDL_mixer documentation:
 --- * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
 --- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
-function Nene.MixWrapper.halt_channel(channel: cint)
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.halt_channel(channel: cint)
   Mix_HaltChannel(channel)
 end
 
@@ -136,8 +129,7 @@ end
 --- Related SDL_mixer documentation:
 --- * [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
 --- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
-function Nene.MixWrapper.free_chunk(chunk: *Mix_Chunk)
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.free_chunk(chunk: *Mix_Chunk)
   check(chunk, 'chunk is nilptr')
 
   Mix_FreeChunk(chunk)
@@ -150,8 +142,7 @@ end
 --- Related SDL_mixer documentation:
 --- * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
 --- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
-function Nene.MixWrapper.free_music(music: *Mix_Music)
-  check(Nene.initialized, 'Nene is not initialized')
+function MixWrapper.free_music(music: *Mix_Music)
   check(music, 'music is nilptr')
   Mix_FreeMusic(music)
 end

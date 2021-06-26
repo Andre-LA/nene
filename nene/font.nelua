@@ -4,13 +4,10 @@ require 'nene.core'
 require 'nene.math'
 require 'nene.wrappers.ttf'
 
-local TTFWrapper = Nene.TTFWrapper
-
---- Wraps a reference to a font
-local Font = @record{
+-- Wraps a reference to a font
+global Font = @record{
   _data: *TTF_Font,
 }
-global Nene.Font = @Font
 
 function Font.load(filename: string, ptsize: cint): (Font, boolean)
   local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)

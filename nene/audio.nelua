@@ -1,33 +1,36 @@
 require 'nene.wrappers.mix'
 require 'nene.core'
 
-local MixWrapper = Nene.MixWrapper
+local MixWrapper = MixWrapper
 
---- Holds a sound associated with a sound channel
-local Sound = @record{
+-- Holds a sound associated with a sound channel
+global Sound = @record{
   _data: *Mix_Chunk,
   channel: integer, -- -1 when no channel is being used
 }
-global Nene.Sound = @Sound
 
---- returns internal data, it checks if internal data is `nilptr`.
----
---- Related SDL_mixer documentation:
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+returns internal data, it checks if internal data is `nilptr`.
+
+Related SDL_mixer documentation:
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function Sound:get(): *Mix_Chunk
   check(self._data ~= nilptr, 'Sound.get: Sound internal data is `nilptr`')
   return self._data
 end
 
---- try to load a sound from a file.
----
---- it returns:
---- * `Nene.Sound` value, with internal data properly initialized if load is successful
---- * a boolean which is `true` when the load succeeds.
----
---- Related SDL_mixer documentation:
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
---- * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+--[[
+try to load a sound from a file.
+
+it returns:
+* `Sound` value, with internal data properly initialized if load is successful
+* a boolean which is `true` when the load succeeds.
+
+Related SDL_mixer documentation:
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+* [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+]]
 function Sound.load(filename: string): (Sound, boolean)
   local sound_data, ok = MixWrapper.load_wav(filename)
 
@@ -39,17 +42,19 @@ function Sound.load(filename: string): (Sound, boolean)
   return new_sound, ok
 end
 
---- plays the loaded sound.
---- * if `true` is passed on `loop` argument, the sound will loop forever;
---- * if an `integer` is passed, the sound will loop `loop` times
---- * if `nil` is passed, it will play only one time.
----
---- When there is no sound loaded (that is, the internal data is `nilptr`), then this method
---- does nothing, though it also `check`s if the internal is `nilptr` (unless the `nochecks` pragma is enabled)
----
---- Related SDL_mixer documentation:
---- * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+plays the loaded sound.
+* if `true` is passed on `loop` argument, the sound will loop forever;
+* if an `integer` is passed, the sound will loop `loop` times
+* if `nil` is passed, it will play only one time.
+
+When there is no sound loaded (that is, the internal data is `nilptr`), then this method
+does nothing, though it also `check`s if the internal is `nilptr` (unless the `nochecks` pragma is enabled)
+
+Related SDL_mixer documentation:
+* [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function Sound:play(loop: overload(boolean, integer, niltype))
   check(Nene.initialized, 'Nene is not initialized')
   local data = self:get()
@@ -67,11 +72,13 @@ function Sound:play(loop: overload(boolean, integer, niltype))
   end
 end
 
---- stops the sound.
----
---- Related SDL_mixer documentation:
---- * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+stops the sound.
+
+Related SDL_mixer documentation:
+* [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function Sound:stop()
   check(Nene.initialized, 'Nene is not initialized')
 
@@ -79,15 +86,17 @@ function Sound:stop()
     MixWrapper.halt_channel(self.channel)
     self.channel = -1
   else
-    warn'Nene.Sound.stop: trying to stop an uninitialized sound'
+    warn'Sound.stop: trying to stop an uninitialized sound'
   end
 end
 
---- Destroy the sound, it will first stop it and then free the sound's memory.
----
---- Related SDL_mixer documentation:
---- * [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+Destroy the sound, it will first stop it and then free the sound's memory.
+
+Related SDL_mixer documentation:
+* [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function Sound:destroy()
   check(Nene.initialized, 'Nene is not initialized')
   local data = self:get()
@@ -98,26 +107,30 @@ function Sound:destroy()
   self._data = nilptr
 end
 
-local Music = @record{
+-- Holds a music associated with an id
+global Music = @record{
   _data: *Mix_Music,
   id: usize,
 }
-global Nene.Music = @Music
 
---- returns internal data, it checks if internal data is `nilptr`.
----
---- Related SDL_mixer documentation:
---- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+--[[
+returns internal data, it checks if internal data is `nilptr`.
+
+Related SDL_mixer documentation:
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+]]
 function Music:get(): *Mix_Music
   check(self._data ~= nilptr, 'Sound.get: Sound internal data is `nilptr`')
   return self._data
 end
 
---- Destroy the music, it will halts it if playing, it also wait if it's still fading out.
----
---- Related SDL_mixer documentation:
---- * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
---- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+--[[
+Destroy the music, it will halts it if playing, it also wait if it's still fading out.
+
+Related SDL_mixer documentation:
+* [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+]]
 function Music:destroy()
   check(Nene.initialized, 'Nene is not initialized')
   local data = self:get()

@@ -7,78 +7,82 @@ require 'nene.font'
 require 'nene.texture'
 require 'nene.math'
 
-local TTFWrapper, SDLWrapper, Color, Font, Vec2, Rect = Nene.TTFWrapper,
-                                                        Nene.SDLWrapper,
-                                                        Nene.Color,
-                                                        Nene.Font,
-                                                        Nene.Math.Vec2,
-                                                        Nene.Math.Rect
+local Vec2, Rect = Math.Vec2, Math.Rect
 
---- Owns a internal `Nene.Texture` with a text, this text is also stored as a string on the `text` field.
---- Use `update_text` method to easily to update both `text` and the texture with a new text.
----
---- Related Nene documentation:
---- * [Nene.Texture](texture.md#nenetexture)
-local TextTexture = @record{
-  texture: Nene.Texture,
+--[[
+Owns a internal `Texture` with a text, this text is also stored as a string on the `text` field.
+Use `update_text` method to easily to update both `text` and the texture with a new text.
+
+Related Nene documentation:
+* [Texture](texture.md#nenetexture)
+]]
+global TextTexture = @record{
+  texture: Texture,
   text: string,
 }
-global Nene.TextTexture = @TextTexture
 
---- Destroy the TextTexture
----
---- Related Nene documentation:
---- * [Nene.Texture.destroy](texture.md#nenetexturedestroy)
+--[[
+Destroy the TextTexture
+
+Related Nene documentation:
+* [Texture.destroy](texture.md#nenetexturedestroy)
+]]
 function TextTexture:destroy()
   self.text = ''
   self.texture:destroy()
 end
 
---- Updates the texture with a new `text`, with the given `font`.
----
---- Related Nene documentation:
---- * [Nene.Texture.create_texture_from_surface](core_state.md#nenecorecreate_texture_from_surface)
---- * [Nene.Texture.apply_sdltex](texture.md#nenetextureapply_sdltex)
----
---- Related SDL and SDL_TTF documentation:
---- * [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
---- * [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
---- * [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
-function TextTexture:update_text(nene_core: Nene.Core, text: string, color: Color, font: Font)
+--[[
+Updates the texture with a new `text`, with the given `font`.
+
+Related Nene documentation:
+* [Texture.create_texture_from_surface](core_state.md#nenecorecreate_texture_from_surface)
+* [Texture.apply_sdltex](texture.md#nenetextureapply_sdltex)
+
+Related SDL and SDL_TTF documentation:
+* [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
+* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+* [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
+]]
+function TextTexture:update_text(nene: Nene, text: string, color: Color, font: Font)
   local text_surface, ok = TTFWrapper.ttf_render_utf8_solid(font:get(), text, color)
 
   if ok then
-    local text_texture = nene_core:create_texture_from_surface(text_surface)
+    local text_texture = nene:create_texture_from_surface(text_surface)
     SDLWrapper.free_surface(text_surface)
 
     if text_texture then
       self.texture:apply_sdltex(text_texture)
       self.text = text
     else
-      warn'Nene.TextTexture.update_text: could not update text texture'
+      warn'TextTexture.update_text: could not update text texture'
     end
   end
 end
 
---- Draw the texture at the given `pos`ition with the given `color` tint.
----
---- Related Nene documentation:
---- * [Nene.Texture.draw](texture.md#nenetexturedraw)
-function TextTexture:draw(nene_core: Nene.Core, pos: Vec2, color: Color)
+--[[
+Draw the texture at the given `pos`ition with the given `color` tint.
+
+Related Nene documentation:
+* [Texture.draw](texture.md#nenetexturedraw)
+]]
+function TextTexture:draw(nene: Nene, pos: Vec2, color: Color)
   local dest: Rect = {
     x = math.ifloor(pos.x), y = math.ifloor(pos.y),
     w = self.texture.width, h = self.texture.height
   }
 
-  self.texture:draw(nene_core, color, nil, dest)
+  self.texture:draw(nene, color, nil, dest)
 end
 
---- Creates a new initialized `Nene.TextTexture` with an `initial_text` with the given `color` with the given `font`.
----
---- Related Nene documentation:
---- * [Nene.TextTexture.update_text](#nenetexttextureupdate_text)
-function TextTexture.new(nene_core: Nene.Core, initial_text: string, color: Color, font: Font): TextTexture
+--[[
+Creates a new initialized `TextTexture` with an `initial_text` with the given `color` with the given `font`.
+
+Related Nene documentation:
+* [TextTexture.update_text](#nenetexttextureupdate_text)
+]]
+function TextTexture.new(nene: Nene, initial_text: string, color: Color, font: Font): TextTexture
   local new: TextTexture;
-  new:update_text(nene_core, initial_text, color, font)
+  new:update_text(nene, initial_text, color, font)
   return new
 end
