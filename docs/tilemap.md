@@ -42,7 +42,7 @@ print(column, row) -- prints '2       1'
 ```
 
 Related Nene documentation:
-* [Nene.Tilemap.get_tile_pos](#tilemapget_tile_pos)
+* [Tilemap.get_tile_pos](#tilemapget_tile_pos)
 * [Math.Grid.get_nth_cell_column_row](math.md#mathgridget_nth_cell_column_row)
 
 ### Tilemap:get_tile_pos
@@ -53,7 +53,7 @@ function Tilemap:get_tile_pos(column: isize, row: isize, tileset: Grid): Vec2
 
 Gets the proper (local) position from a certain tile by column and row of the tilemap (not tileset!).
 
-The column and row of a tile can be obtained through `Nene.Tilemap.get_tile_column_row` method.
+The column and row of a tile can be obtained through `Tilemap.get_tile_column_row` method.
 
 For example, let's say you want to know the position of the 9th tile (that is, 8th index) of a tilemap that have a
 `width` of 5 tiles, 32x32 dimensions each:
@@ -99,7 +99,7 @@ control variable (the "tileset index") as parameter, it returns:
 * `tileset_index`: the value of `self.map[tile_index]`, it refers to a tile on tileset.
 
 Related Nelua documentation:
-[For In (Nelua Overview)](https://nelua.io/overview/#for-in)
+* [For In (Nelua Overview)](https://nelua.io/overview/#for-in)
 
 ### Tilemap:__pairs
 
@@ -119,12 +119,12 @@ end
 ```
 
 Related Nelua documentation:
-[For In (Nelua Overview)](https://nelua.io/overview/#for-in)
+* [For In (Nelua Overview)](https://nelua.io/overview/#for-in)
 
 ### Tilemap:draw
 
 ```lua
-function Tilemap:draw(nene_core: Nene.Core, tileset_grid: Grid, tileset_texture: Texture, position: Vec2, color: facultative(Color))
+function Tilemap:draw(nene: Nene, tileset_grid: Grid, tileset_texture: Texture, position: Vec2, color: facultative(Color))
 ```
 
 Draw the whole `tilemap` at `position` (relative to screen) using the `color` tint.
@@ -133,8 +133,10 @@ The tilemap will use `atlas` as "tileset", this atlas however is actually a grid
 you should also give the `tileset` texture.
 
 Related Nene documentation:
-* [Math.Vec2](math.md#mathvec2)
+* [Nene](core.md#nene)
 * [Math.Grid](math.md#mathgrid)
-* [Nene.Color](colors.md)
+* [Math.Vec2](math.md#mathvec2)
+* [Texture](texture.md#texture)
+* [Color](colors.md)
 
 ---
