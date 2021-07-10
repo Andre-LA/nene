@@ -17,6 +17,94 @@ global Math.Vec2 = @record{
 
 
 
+### Math.Vec2.__eq
+
+```lua
+function Math.Vec2.__eq(a: Vec2, b: Vec2): boolean
+```
+
+
+
+### Math.Vec2.__add
+
+```lua
+function Math.Vec2.__add(a: Vec2, b: Vec2): Vec2
+```
+
+
+
+### Math.Vec2.__sub
+
+```lua
+function Math.Vec2.__sub(a: Vec2, b: Vec2): Vec2
+```
+
+
+
+### Math.Vec2.__mul
+
+```lua
+function Math.Vec2.__mul(a: overload(Vec2, number), b: overload(Vec2, number)): Vec2
+```
+
+
+
+### Math.Vec2.__div
+
+```lua
+function Math.Vec2.__div(a: Vec2, b: Vec2): Vec2
+```
+
+
+
+### Math.Vec2.__unm
+
+```lua
+function Math.Vec2.__unm(v: Vec2): Vec2
+```
+
+
+
+### Math.Vec2.lerp
+
+```lua
+function Math.Vec2.lerp(a: Vec2, b: Vec2, t: number): Vec2
+```
+
+
+
+### Math.Vec2.len_sqr
+
+```lua
+function Math.Vec2.len_sqr(v: Vec2): number
+```
+
+
+
+### Math.Vec2.__len
+
+```lua
+function Math.Vec2.__len(v: Vec2): number
+```
+
+
+
+### Math.Vec2.dot
+
+```lua
+function Math.Vec2.dot(a: Vec2, b: Vec2): number
+```
+
+
+
+### Math.Vec2.normalized
+
+```lua
+function Math.Vec2.normalized(v: Vec2): Vec2
+```
+
+
+
 ### Math.
 
 ```lua
@@ -40,5 +128,23 @@ global Math.Grid = @record{
 ```
 
 This record is intended to generate rectangles from an infinite grid. This grid is mathematical, it doesn't really exists.
+
+### Math.Grid.gen_rect
+
+```lua
+function Math.Grid.gen_rect(self: Grid, column: integer, row: integer): Math.Rect
+```
+
+Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
+
+### Math.Grid.get_nth_cell_column_row
+
+```lua
+function Math.Grid.get_nth_cell_column_row(n: isize, cells_per_line: isize): (isize, isize)
+```
+
+Returns the the column and row from a `n`th cell, note that this function is 0-indexed (so, the first cell is `0`, not `1`).
+
+Is necessary to also give how many cells fit on a line.
 
 ---
