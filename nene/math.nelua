@@ -23,9 +23,6 @@ function Math.Vec2.__sub(a: Vec2, b: Vec2): Vec2
 end
 
 function Math.Vec2.__mul(a: overload(Vec2, number), b: overload(Vec2, number)): Vec2
-  -- one of the arguments must be a Vec2
-  ## staticassert(a.type.is_vec or b.type.is_vec, 'neither types is a Vec2')
-
   ## if a.type.is_vec and b.type.is_vec then -- both are vectors
     return (@Vec2){ x = a.x * b.x, y = a.y * b.y }
   ## elseif a.type.is_arithmetic then -- b is a vector
