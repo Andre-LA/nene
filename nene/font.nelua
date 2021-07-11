@@ -4,23 +4,46 @@ require 'nene.core'
 require 'nene.math'
 require 'nene.wrappers.ttf'
 
--- Wraps a reference to a font
+-- Wraps a (SDL_TTF) font
 global Font = @record{
   _data: *TTF_Font,
 }
 
-function Font.load(filename: string, ptsize: cint): (Font, boolean)
-  local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)
-  return (@Font){ _data = ttf_font }, ok
-end
+--[[
+It checks if the internal data is `nilptr` and then returns it.
 
+Related TTFWrapper documentation:
+* [TTF_Font](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_56.html#SEC56)
+]]
 function Font:get(): *TTF_Font
   check(self._data ~= nilptr, 'cannot get an unitilialized font')
   return self._data
 end
 
+--[[
+try to load a font from a file.
+
+it returns:
+* `Font` value, with internal data properly initialized if load is successful
+* a boolean which is `true` when the load succeeds.
+
+Related TTFWrapper documentation:
+* [TTFWrapper.open_font](wrappers/ttf.md#ttfwrapperopen_font)
+]]
+function Font.load(filename: string, ptsize: cint): (Font, boolean)
+  local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)
+  local new_font: Font = { _data = ttf_font }
+  return new_font, ok
+end
+
+--[[
+Destroy the font.
+
+Related TTFWrapper documentation:
+* [TTFWrapper.close_font](wrappers/ttf.md#ttfwrapperclose_font)
+]]
 function Font:destroy()
-  check(self._data ~= nilptr, 'cannot free a not initialized font')
-  TTFWrapper.close_font(self._data)
+  local internal_font = self:get()
+  TTFWrapper.close_font(internal_font)
   self._data = nilptr
 end
