@@ -3,14 +3,14 @@ require 'nene.core'
 
 local MixWrapper = MixWrapper
 
--- Wraps a sound associated with a sound channel
+-- Wraps a (SDL_mixer) sound associated with a sound channel
 global Sound = @record{
   _data: *Mix_Chunk, -- internal data, don't use it directly, use methods instead
   channel: integer, -- -1 when no channel is being used
 }
 
 --[[
-returns internal data, it checks if the internal data is `nilptr`.
+It checks if the internal data is `nilptr` and then returns it.
 
 Related SDL_mixer documentation:
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
@@ -99,10 +99,9 @@ function Sound:destroy()
   self._data = nilptr
 end
 
--- Holds a music associated with an id
+-- Wraps a (SDL_mixer) music
 global Music = @record{
   _data: *Mix_Music,
-  id: usize,
 }
 
 --[[
@@ -112,7 +111,7 @@ Related SDL_mixer documentation:
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 ]]
 function Music:get(): *Mix_Music
-  check(self._data ~= nilptr, 'Sound.get: Sound internal data is `nilptr`')
+  check(self._data ~= nilptr, 'Music.get: Music internal data is `nilptr`')
   return self._data
 end
 

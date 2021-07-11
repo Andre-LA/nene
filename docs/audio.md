@@ -7,7 +7,7 @@ global Sound = @record{
 }
 ```
 
-Wraps a sound associated with a sound channel
+Wraps a (SDL_mixer) sound associated with a sound channel
 
 ### Sound:get
 
@@ -15,7 +15,7 @@ Wraps a sound associated with a sound channel
 function Sound:get(): *Mix_Chunk
 ```
 
-returns internal data, it checks if the internal data is `nilptr`.
+It checks if the internal data is `nilptr` and then returns it.
 
 Related SDL_mixer documentation:
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
@@ -79,11 +79,10 @@ Related MixWrapper documentation:
 ```lua
 global Music = @record{
   _data: *Mix_Music,
-  id: usize,
 }
 ```
 
-Holds a music associated with an id
+Wraps a (SDL_mixer) music
 
 ### Music:get
 
