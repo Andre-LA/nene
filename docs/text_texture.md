@@ -7,11 +7,11 @@ global TextTexture = @record{
 }
 ```
 
-Owns a internal `Texture` with a text, this text is also stored as a string on the `text` field.
-Use `update_text` method to easily to update both `text` and the texture with a new text.
+**Owns** an internal `Texture` with a text in it, this text is also stored as a string on the `text` field.
+Use `update_text` method to easily to update both `text` and `texture` with this new text.
 
 Related Nene documentation:
-* [Texture](texture.md#nenetexture)
+* [Texture](texture.md#texture)
 
 ### TextTexture:destroy
 
@@ -19,48 +19,55 @@ Related Nene documentation:
 function TextTexture:destroy()
 ```
 
-Destroy the TextTexture
+Destroy the TextTexture.
 
 Related Nene documentation:
-* [Texture.destroy](texture.md#nenetexturedestroy)
+* [Texture.destroy](texture.md#texturedestroy)
 
 ### TextTexture:update_text
 
 ```lua
-function TextTexture:update_text(nene: Nene, text: string, color: Color, font: Font)
+function TextTexture:update_text(nene: Nene, text: string, font: Font, color: facultative(Color))
 ```
 
-Updates the texture with a new `text`, with the given `font`.
+Updates the text texture with a new `text`, with the given `font`.
+
+You can optionally also pass a `color`, which by default is white.
 
 Related Nene documentation:
-* [Texture.create_texture_from_surface](core_state.md#nenecorecreate_texture_from_surface)
-* [Texture.apply_sdltex](texture.md#nenetextureapply_sdltex)
+* [Nene.create_texture_from_surface](core.md#nenecreate_texture_from_surface)
+* [Texture.apply_sdltex](texture.md#textureapply_sdltex)
 
 Related SDL and SDL_TTF documentation:
-* [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
-* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
-* [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
+* [TTFWrapper.ttf_render_utf8_solid](wrappers/ttf.md#ttfwrapperttf_render_utf8_solid)
+* [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
+* [SDLWrapper.free_surface](wrappers/sdl.md#sdlwrapperfree_surface)
 
 ### TextTexture:draw
 
 ```lua
-function TextTexture:draw(nene: Nene, pos: Vec2, color: Color)
+function TextTexture:draw(nene: Nene, position: Vec2, color: Color)
 ```
 
-Draw the texture at the given `pos`ition with the given `color` tint.
+Draw the texture at the given `position` with the given `color` tint.
 
 Related Nene documentation:
-* [Texture.draw](texture.md#nenetexturedraw)
+* [Texture.draw](texture.md#texturedraw)
+* [Math.Vec2](math.md#mathvec2)
+* [Math.Rect](math.md#mathrect)
+* [Color](colors.md#color)
 
 ### TextTexture.new
 
 ```lua
-function TextTexture.new(nene: Nene, initial_text: string, color: Color, font: Font): TextTexture
+function TextTexture.new(nene: Nene, initial_text: string, font: Font, color: facultative(Color)): TextTexture
 ```
 
-Creates a new initialized `TextTexture` with an `initial_text` with the given `color` with the given `font`.
+Creates a new initialized `TextTexture` with an `initial_text` applied with the given `font`.
+
+A color can be passed optionally, is white by default.
 
 Related Nene documentation:
-* [TextTexture.update_text](#nenetexttextureupdate_text)
+* [TextTexture.update_text](#texttextureupdate_text)
 
 ---
