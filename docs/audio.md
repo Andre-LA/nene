@@ -2,12 +2,12 @@
 
 ```lua
 global Sound = @record{
-  _data: *Mix_Chunk,
+  _data: *Mix_Chunk, -- internal data, don't use it directly, use methods instead
   channel: integer, -- -1 when no channel is being used
 }
 ```
 
-Holds a sound associated with a sound channel
+Wraps a sound associated with a sound channel
 
 ### Sound:get
 
@@ -15,7 +15,7 @@ Holds a sound associated with a sound channel
 function Sound:get(): *Mix_Chunk
 ```
 
-returns internal data, it checks if internal data is `nilptr`.
+returns internal data, it checks if the internal data is `nilptr`.
 
 Related SDL_mixer documentation:
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
@@ -32,9 +32,8 @@ it returns:
 * `Sound` value, with internal data properly initialized if load is successful
 * a boolean which is `true` when the load succeeds.
 
-Related SDL_mixer documentation:
-* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
-* [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+Related MixWrapper documentation:
+* [MixWrapper.load_wav](wrappers/mix.md#mixwrapperload_wav)
 
 ### Sound:play
 
@@ -50,9 +49,8 @@ plays the loaded sound.
 When there is no sound loaded (that is, the internal data is `nilptr`), then this method
 does nothing, though it also `check`s if the internal is `nilptr` (unless the `nochecks` pragma is enabled)
 
-Related SDL_mixer documentation:
-* [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
-* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+Related MixWrapper documentation:
+* [MixWrapper.play_channel](wrappers/mix.md#mixwrapperplay_channel)
 
 ### Sound:stop
 
@@ -60,11 +58,10 @@ Related SDL_mixer documentation:
 function Sound:stop()
 ```
 
-stops the sound.
+Halts (stop, interrupt) the sound.
 
-Related SDL_mixer documentation:
-* [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
-* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+Related MixWrapper documentation:
+* [MixWrapper.halt_channel](wrappers/mix.md#mixwrapperhalt_channel)
 
 ### Sound:destroy
 
@@ -74,9 +71,8 @@ function Sound:destroy()
 
 Destroy the sound, it will first stop it and then free the sound's memory.
 
-Related SDL_mixer documentation:
-* [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
-* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+Related MixWrapper documentation:
+* [MixWrapper.free_chunk](wrappers/mix.md#mixwrapperfree_chunk)
 
 ### Music
 
@@ -108,8 +104,7 @@ function Music:destroy()
 
 Destroy the music, it will halts it if playing, it also wait if it's still fading out.
 
-Related SDL_mixer documentation:
-* [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
-* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+Related MixWrapper documentation:
+* [MixWrapper.free_music](wrappers/mix.md#mixwrapperfree_music)
 
 ---
