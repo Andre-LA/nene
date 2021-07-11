@@ -139,7 +139,7 @@ end
 local function update_points(nene: Nene, pts_text: *TextTexture, points: integer, font: Font)
   local pts_str = tostring(points)
   defer pts_str:destroy() end
-  pts_text:update_text(nene, pts_str, Color.Palette.white, font)
+  pts_text:update_text(nene, pts_str, font)
 end
 
 local function game()
@@ -163,8 +163,7 @@ local function game()
   local font = Font.load('resources/monogram_extended.ttf', 72)
   defer font:destroy() end
 
-  local r1_text, r2_text = TextTexture.new(nene, '0', Color.Palette.white, font),
-                           TextTexture.new(nene, '0', Color.Palette.white, font)
+  local r1_text, r2_text = TextTexture.new(nene, '0', font), TextTexture.new(nene, '0', font)
   defer
     r1_text:destroy()
     r2_text:destroy()
