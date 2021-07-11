@@ -144,7 +144,7 @@ Related Nene documentation:
 * [Math.Grid](math.md#mathgrid)
 * [Math.Vec2](math.md#mathvec2)
 * [Texture](texture.md#texture)
-* [Color](colors.md)
+* [Color](colors.md#color)
 ]]
 function Tilemap:draw(nene: Nene, tileset_grid: Grid, tileset_texture: Texture, position: Vec2, color: facultative(Color))
   ## if color.type.is_niltype then

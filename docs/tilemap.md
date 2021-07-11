@@ -137,6 +137,6 @@ Related Nene documentation:
 * [Math.Grid](math.md#mathgrid)
 * [Math.Vec2](math.md#mathvec2)
 * [Texture](texture.md#texture)
-* [Color](colors.md)
+* [Color](colors.md#color)
 
 ---
