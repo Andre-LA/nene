@@ -25,8 +25,8 @@ end
 --[[
 free the internal data
 
-Related SDL documentation:
-* [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
+Related SDLWrapper documentation:
+* [SDLWrapper.destroy_texture](wrappers/sdl.md#sdlwrapperdestroy_texture)
 ]]
 function Texture:destroy()
   local internal_tex = self:get()

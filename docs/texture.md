@@ -29,8 +29,8 @@ function Texture:destroy()
 
 free the internal data
 
-Related SDL documentation:
-* [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
+Related SDLWrapper documentation:
+* [SDLWrapper.destroy_texture](wrappers/sdl.md#sdlwrapperdestroy_texture)
 
 ### Texture:apply_sdltex
 

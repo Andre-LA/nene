@@ -113,7 +113,7 @@ function Nene:set_render_draw_color(color: Color)
 Set rendering draw color
 
 Related Nene documentation:
-* [Color](colors.md)
+* [Color](colors.md#color)
 
 Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
@@ -129,8 +129,8 @@ function Nene:render_clear(color: Color)
 it clears the rendering target with the given `color`.
 
 Related Nene documentation:
-* [Color](colors.md)
-* [Nene.set_render_draw_color](core_state.md)
+* [Color](colors.md#color)
+* [Nene.set_render_draw_color](#neneset_render_draw_color)
 
 Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
@@ -145,8 +145,8 @@ function Nene:render_draw_line(origin: Math.Vec2, destination: Math.Vec2, color:
 renders a line from `origin` to `destination` with the given `color`.
 
 Related Nene documentation:
-* [Math.Vec2](math.md#nenemathvec2)
-* [Color](colors.md)
+* [Math.Vec2](math.md#mathvec2)
+* [Color](colors.md#color)
 
 Related SDL documentation:
 * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)

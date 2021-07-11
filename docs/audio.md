@@ -90,7 +90,7 @@ Wraps a (SDL_mixer) music
 function Music:get(): *Mix_Music
 ```
 
-returns internal data, it checks if internal data is `nilptr`.
+It checks if the internal data is `nilptr` and then returns it.
 
 Related SDL_mixer documentation:
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
