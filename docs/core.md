@@ -11,9 +11,9 @@ global Nene = @record{
 ```
 
 The core of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
-`Math`, `Color` and `SDLWrapper`).
+`Math`, `Color` and all SDL wrappers).
 
-Most of the `Core`'s functions comes from SDL2 actually.
+Many of the `Core`'s functions wraps wrapper's functions actually.
 
 ### Nene.initialized
 
@@ -21,8 +21,8 @@ Most of the `Core`'s functions comes from SDL2 actually.
 global Nene.initialized
 ```
 
-The initialization state of Nene, it's handled by `Nene.init` and `Nene.terminate` functions and shouldn't be modified
-by the user.
+The initialization state of Nene, it's set to `true` by `Nene.init` and
+set to `false` by `Nene.terminate`, it shouldn't be modified by any other function.
 
 ### Nene.EventsCallbacks
 
