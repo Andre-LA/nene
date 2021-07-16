@@ -348,4 +348,34 @@ Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
 
+### SDLWrapper.set_render_target
+
+```lua
+function SDLWrapper.set_render_target(renderer: *SDL_Renderer, texture: *SDL_Texture): boolean
+```
+
+Wrapper of `SDL_SetRenderTarget`
+
+The `texture`as the current `renderer`'s target.
+
+Related SDL documentation:
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+* [SDL_SetRenderTarget](https://wiki.libsdl.org/SDL_SetRenderTarget)
+
+### SDLWrapper.create_texture
+
+```lua
+function SDLWrapper.create_texture(renderer: *SDL_Renderer, format: uint32, access: cint, w: cint, h: cint): (*SDL_Texture, boolean)
+```
+
+Wrapper of `SDL_CreateTexture`
+
+Create a texture.
+
+Related SDL documentation:
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+* [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
+
 ---

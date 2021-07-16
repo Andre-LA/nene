@@ -19,7 +19,7 @@ Related Nene documentation:
 function TextTexture:destroy()
 ```
 
-Destroy the TextTexture.
+Destroy the TextTexture and resets to zeroed state.
 
 Related Nene documentation:
 * [Texture.destroy](texture.md#texturedestroy)
@@ -46,10 +46,12 @@ Related SDL and SDL_TTF documentation:
 ### TextTexture:draw
 
 ```lua
-function TextTexture:draw(nene: Nene, position: Vec2, color: Color)
+function TextTexture:draw(nene: Nene, position: Vec2, color: facultative(Color))
 ```
 
-Draw the texture at the given `position` with the given `color` tint.
+Draw the texture at the given `position`.
+
+A `color` tint can be passed optionally, it's white by default.
 
 Related Nene documentation:
 * [Texture.draw](texture.md#texturedraw)

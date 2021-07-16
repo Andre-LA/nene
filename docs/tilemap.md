@@ -2,7 +2,7 @@
 
 ```lua
 global Tilemap = @record{
-  width: uinteger,
+  width: isize,
   map: vector(isize),
 }
 ```
@@ -64,7 +64,7 @@ For example, let's say you want to know the position of the 9th tile (that is, 8
 --          0px   32px  64px  96px  128px
 --          ├─────┼─────┼─────┼─────┼─────┬ 0px
 --   row: 0 │  0  │  1  │  2  │  3  │  5  │
---          ├─────┼─────x═════╬─────┼─────┼ 32px
+--          ├─────┼─────@═════╬─────┼─────┼ 32px
 --        1 │  6  │  7  ║  8  ║  9  │ 10  │
 --          └─────┴─────╩═════╩─────┴─────┴ 64px
 
@@ -76,7 +76,7 @@ local tileset_grid: Math.Grid = { rect_size = {32, 32} }
 -- since tilemap's map is 0-indexed, we use `8`.
 local column, row = my_tilemap:get_tile_column_row(8)
 
--- returns the position of `x` of the (ascii) grid above, that is, {64, 32}
+-- returns the position of `@` of the (ascii) grid above, that is, {64, 32}
 -- this is the position of the 9th tile relative to `my_tilemap`!
 local tile_pos = my_tilemap:get_tile_pos(column, row, tileset_grid)
 ```

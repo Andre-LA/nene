@@ -69,7 +69,9 @@ Related MixWrapper documentation:
 function Sound:destroy()
 ```
 
-Destroy the sound, it will first stop it and then free the sound's memory.
+Destroy the sound and resets to zeroed state,
+
+> Note: It will first stop the sound and then free the sound's memory.
 
 Related MixWrapper documentation:
 * [MixWrapper.free_chunk](wrappers/mix.md#mixwrapperfree_chunk)
@@ -101,7 +103,9 @@ Related SDL_mixer documentation:
 function Music:destroy()
 ```
 
-Destroy the music, it will halts it if playing, it also wait if it's still fading out.
+Destroy the music and resets to zeroed state.
+
+> Note: SDL_mixer first halts the music if it's playing, it also wait if it's still fading out.
 
 Related MixWrapper documentation:
 * [MixWrapper.free_music](wrappers/mix.md#mixwrapperfree_music)

@@ -127,7 +127,8 @@ function MixWrapper.free_music(music: *Mix_Music)
 
 Wrapper of `Mix_FreeMusic`
 
-Free the music memory.
+Free the music memory, if the music it's playing then it's halted first;
+if it's fading out, SDL_mixer will wait for the fade out.
 
 Related SDL_mixer documentation:
 * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)

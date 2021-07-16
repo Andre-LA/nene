@@ -8,7 +8,7 @@ global Texture = @record{
 }
 ```
 
-wraps an internal (SDL) Texture
+Wraps an internal (SDL) Texture
 
 ### Texture:get
 
@@ -27,7 +27,7 @@ Related SDL documentation:
 function Texture:destroy()
 ```
 
-free the internal data
+Free internal data and resets to zeroed state.
 
 Related SDLWrapper documentation:
 * [SDLWrapper.destroy_texture](wrappers/sdl.md#sdlwrapperdestroy_texture)
@@ -39,7 +39,9 @@ function Texture:apply_sdltex(new_tex: *SDL_Texture)
 ```
 
 Applies a new internal texture (with a `pointer(SDL_Texture)`).
+
 If there is non-`nilptr` internal texture, then it's freed before applying this new internal texture.
+
 It also updates `width` and `height` fields.
 
 Related Nene documentation:
@@ -60,12 +62,13 @@ Related Nene documentation:
 ### Texture:draw
 
 ```lua
-function Texture:draw(nene: Nene, color: Color, source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
+function Texture:draw(nene: Nene, color: facultative(Color), source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
 ```
 
-Draw the texture with a `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
+Draw the texture at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
 you can optionally pass the `source` rectangle if you want to draw a slice of the texture.
-Note that you need pass an initialized `Core`.
+
+A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
 * [Color](colors.md#color)

@@ -2,21 +2,44 @@
 
 ```lua
 global SpriteSheet = @record{
-  atlas: *Nene.TextureAtlas,
-  animations: vector(Nene.AnimationRange)
+  grid: Grid,              -- spritesheet grid
+  sprites_per_line: isize, -- how many sprites fit in a line of this grid
+  animations: hashmap(string, AnimationRange) -- hashmap of animations, maps animation names to animation ranges.
 }
 ```
 
-a sprite sheet uses an atlas and applies it for sprites, it contains an atlas and a sequence of animations ranges.
+The `SpriteSheet` module is used to make animated sprites.
 
-### SpriteSheet:get_named_animation_range
+### SpriteSheet:destroy
 
 ```lua
-function SpriteSheet:get_named_animation_range(name: string): (boolean, Nene.AnimationRange)
+function SpriteSheet:destroy()
 ```
 
-search the animation range with the respective name
-when found, it returns `true` and the a copy of the respective animation range,
-otherwise it returns `false` and a unitilialized animation range.
+destroyes the Spritesheet, freeing it's memory.
+
+### SpriteSheet:get_sprite_column_row
+
+```lua
+function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
+```
+
+get the column and row of the grid from an index of this spritesheet.
+
+### SpriteSheet:get_source_rect
+
+```lua
+function SpriteSheet:get_source_rect(column: isize, row: isize)
+```
+
+get the source get from the spritesheet at the column and row.
+
+### SpriteSheet:draw
+
+```lua
+function SpriteSheet:draw(nene: Nene, spritesheet_texture: Texture, animation_name: string, animation_index: isize, color: facultative(Color))
+```
+
+draw the sprite from the spritesheet
 
 ---

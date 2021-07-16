@@ -40,7 +40,7 @@ Related TTFWrapper documentation:
 function Font:destroy()
 ```
 
-Destroy the font.
+Destroy the font and resets to zeroed state.
 
 Related TTFWrapper documentation:
 * [TTFWrapper.close_font](wrappers/ttf.md#ttfwrapperclose_font)

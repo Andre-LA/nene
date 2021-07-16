@@ -167,11 +167,11 @@ Related SDL documentation:
 ### Nene:render_copy
 
 ```lua
-function Nene:render_copy(tex: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
+function Nene:render_copy(texture: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
 ```
 
 Wrapper of `SDL_RenderCopy`.
-Copies a Texture on the rendering target.
+Copies `texture` on the rendering target.
 
 By default the whole texture is copied unless the `source` rectangle is given,
 in this case only the "source" part of the texture will be copied.
@@ -182,6 +182,30 @@ in this case it will be copied at this "destination" part of the rendering targe
 Related SDL documentation:
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+
+### Nene:set_render_target
+
+```lua
+function Nene:set_render_target(texture: facultative(*SDL_Texture))
+```
+
+Set a `texture` as rendering target.
+
+If `texture` is not given, then the target will be the window.
+
+Related SDLWrapper documentation:
+* [SDLWrapper.set_render_target](wrappers/sdl.md#sdlwrapperset_render_target)
+
+### Nene:create_sdl_texture
+
+```lua
+function Nene:create_sdl_texture(format: uint32, access: cint, w: cint, h: cint): *SDL_Texture
+```
+
+Create a SDL texture.
+
+Related SDLWrapper documentation:
+* [SDLWrapper.create_texture](wrappers/sdl.md#sdlwrappercreate_texture)
 
 ### Nene:create_texture_from_surface
 

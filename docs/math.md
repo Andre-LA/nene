@@ -122,17 +122,17 @@ global Math.#|name|# = @record{
 
 ```lua
 global Math.Grid = @record{
-  rect_size: record{ width: integer, height: integer }, -- the size of the rectangles
-  gap: record{ x: integer, y: integer } -- the gap between rectagles
+  rect_size: record{ width: integer, height: integer }, -- size of the rectangles
+  gap: record{ x: integer, y: integer } -- gap between rectagles
 }
 ```
 
-This record is intended to generate rectangles from an infinite grid. This grid is mathematical, it doesn't really exists.
+This record is intended to generate rectangles from an infinite grid.
 
 ### Math.Grid.gen_rect
 
 ```lua
-function Math.Grid.gen_rect(self: Grid, column: integer, row: integer): Math.Rect
+function Math.Grid.gen_rect(grid: Grid, column: integer, row: integer): Math.Rect
 ```
 
 Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
