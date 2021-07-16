@@ -22,13 +22,13 @@ global TextTexture = @record{
 }
 
 --[[
-Destroy the TextTexture.
+Destroy the TextTexture and resets to zeroed state.
 
 Related Nene documentation:
 * [Texture.destroy](texture.md#texturedestroy)
 ]]
 function TextTexture:destroy()
-  self.text = ''
+  self.text = (@string)()
   self.texture:destroy()
 end
 
@@ -67,7 +67,9 @@ function TextTexture:update_text(nene: Nene, text: string, font: Font, color: fa
 end
 
 --[[
-Draw the texture at the given `position` with the given `color` tint.
+Draw the texture at the given `position`.
+
+A `color` tint can be passed optionally, it's white by default.
 
 Related Nene documentation:
 * [Texture.draw](texture.md#texturedraw)
@@ -75,10 +77,16 @@ Related Nene documentation:
 * [Math.Rect](math.md#mathrect)
 * [Color](colors.md#color)
 ]]
-function TextTexture:draw(nene: Nene, position: Vec2, color: Color)
+function TextTexture:draw(nene: Nene, position: Vec2, color: facultative(Color))
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
   local dest: Rect = {
-    x = math.ifloor(position.x), y = math.ifloor(position.y),
-    w = self.texture.width, h = self.texture.height
+    x = math.ifloor(position.x),
+    y = math.ifloor(position.y),
+    w = self.texture.width,
+    h = self.texture.height
   }
 
   self.texture:draw(nene, color, nil, dest)

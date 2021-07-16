@@ -139,24 +139,20 @@ function Math.Rect:to_rectf(): Math.Rectf
   }
 end
 
---[[
-This record is intended to generate rectangles from an infinite grid. This grid is mathematical, it doesn't really exists.
-]]
+-- This record is intended to generate rectangles from an infinite grid.
 global Math.Grid = @record{
-  rect_size: record{ width: integer, height: integer }, -- the size of the rectangles
-  gap: record{ x: integer, y: integer } -- the gap between rectagles
+  rect_size: record{ width: integer, height: integer }, -- size of the rectangles
+  gap: record{ x: integer, y: integer } -- gap between rectagles
 }
 local Grid = @Math.Grid
 
---[[
-Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
-]]
-function Math.Grid.gen_rect(self: Grid, column: integer, row: integer): Math.Rect
+-- Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
+function Math.Grid.gen_rect(grid: Grid, column: integer, row: integer): Math.Rect
   return (@Math.Rect){
-    x = self.rect_size.width * column + self.gap.x * column,
-    y = self.rect_size.height * row + self.gap.y * row,
-    w = self.rect_size.width,
-    h = self.rect_size.height,
+    x = grid.rect_size.width * column + grid.gap.x * column,
+    y = grid.rect_size.height * row + grid.gap.y * row,
+    w = grid.rect_size.width,
+    h = grid.rect_size.height,
   }
 end
 

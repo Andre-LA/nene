@@ -4,7 +4,7 @@ require 'nene.core'
 
 local Vec2, Rect = Math.Vec2, Math.Rect
 
--- wraps an internal (SDL) Texture
+-- Wraps an internal (SDL) Texture
 global Texture = @record{
   _data: *SDL_Texture,  -- internal data, don't use it directly, use methods instead
   width: uinteger,      -- width of the texture in pixels
@@ -23,7 +23,7 @@ function Texture:get(): *SDL_Texture
 end
 
 --[[
-free the internal data
+Free internal data and resets to zeroed state.
 
 Related SDLWrapper documentation:
 * [SDLWrapper.destroy_texture](wrappers/sdl.md#sdlwrapperdestroy_texture)
@@ -31,12 +31,16 @@ Related SDLWrapper documentation:
 function Texture:destroy()
   local internal_tex = self:get()
   SDLWrapper.destroy_texture(internal_tex)
+
   self._data = nilptr
+  self.width, self.height = 0, 0
 end
 
 --[[
 Applies a new internal texture (with a `pointer(SDL_Texture)`).
+
 If there is non-`nilptr` internal texture, then it's freed before applying this new internal texture.
+
 It also updates `width` and `height` fields.
 
 Related Nene documentation:
@@ -71,9 +75,10 @@ function Texture.new(tex: *SDL_Texture): Texture
 end
 
 --[[
-Draw the texture with a `color` tint at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
+Draw the texture at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
 you can optionally pass the `source` rectangle if you want to draw a slice of the texture.
-Note that you need pass an initialized `Core`.
+
+A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
 * [Color](colors.md#color)
@@ -82,14 +87,17 @@ Related Nene documentation:
 * [Math.Rect](math.md#mathrect)
 * [Math.Vec2](math.md#mathvec2)
 ]]
-function Texture:draw(nene: Nene, color: Color, source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
-  local internal_tex = self:get()
+function Texture:draw(nene: Nene, color: facultative(Color), source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
 
-  SDLWrapper.set_texture_color_modulation(internal_tex, color)
+  local internal_tex = self:get()
 
   ## if destination.type.is_vec then -- shadow the vec2 destination with a rect destination
   local destination: Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
   ## end
 
+  SDLWrapper.set_texture_color_modulation(internal_tex, color)
   nene:render_copy(internal_tex, source, destination)
 end

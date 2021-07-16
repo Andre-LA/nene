@@ -11,12 +11,14 @@ local function warn_msg(fn_name, msg)
 end
 ]]
 
---- Wrapper of `TTF_Init`
----
---- Initialize SDL_ttf library.
----
---- Related SDL_ttf documentation:
---- * [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
+--[[
+Wrapper of `TTF_Init`
+
+Initialize SDL_ttf library.
+
+Related SDL_ttf documentation:
+* [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
+]]
 function TTFWrapper.ttf_init(): boolean
   local ok = TTF_Init() == 0
 
@@ -27,20 +29,24 @@ function TTFWrapper.ttf_init(): boolean
   return ok
 end
 
---- Wrapper of `TTF_Quit`
----
---- Shutdown and cleanup SDL_ttf library.
----
---- Related SDL documentation:
---- * [TTF_Quit](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_10.html)
+--[[
+Wrapper of `TTF_Quit`
+
+Shutdown and cleanup SDL_ttf library.
+
+Related SDL documentation:
+* [TTF_Quit](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_10.html)
+]]
 function TTFWrapper.ttf_quit()
   TTF_Quit()
 end
 
---- Wrapper of `TTF_RenderUTF8_Solid`.
----
---- Related SDL_TTF documentation:
---- * [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
+--[[
+Wrapper of `TTF_RenderUTF8_Solid`.
+
+Related SDL_TTF documentation:
+* [TTF_RenderUTF8_Solid](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_44.html)
+]]
 function TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: SDL_Color): (*SDL_Surface, boolean)
   check(font, 'font is nilptr')
 
@@ -54,12 +60,14 @@ function TTFWrapper.ttf_render_utf8_solid(font: *TTF_Font, text: string, color: 
   return text_surface, ok
 end
 
---- Wrapper of `TTF_OpenFont`.
----
---- Load `file` for use as a font with `ptsize`.
----
---- Related SDL_TTF documentation:
---- * [TTF_OpenFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_14.html)
+--[[
+Wrapper of `TTF_OpenFont`.
+
+Load `file` for use as a font with `ptsize`.
+
+Related SDL_TTF documentation:
+* [TTF_OpenFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_14.html)
+]]
 function TTFWrapper.open_font(file: cstring, ptsize: cint): (*TTF_Font, boolean)
 
   local font = TTF_OpenFont(file, ptsize)
@@ -72,12 +80,14 @@ function TTFWrapper.open_font(file: cstring, ptsize: cint): (*TTF_Font, boolean)
   return font, ok
 end
 
---- Wrapper of `TTF_CloseFont`.
----
---- Free the memory used by `font` and free `font` as well.
----
---- Related SDL_TTF documentation:
---- * [TTF_CloseFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_18.html)
+--[[
+Wrapper of `TTF_CloseFont`.
+
+Free the memory used by `font` and free `font` as well.
+
+Related SDL_TTF documentation:
+* [TTF_CloseFont](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_18.html)
+]]
 function TTFWrapper.close_font(font: *TTF_Font)
   check(font, 'font is nilptr')
 

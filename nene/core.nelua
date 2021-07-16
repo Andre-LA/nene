@@ -297,7 +297,7 @@ end
 
 --[[
 Wrapper of `SDL_RenderCopy`.
-Copies a Texture on the rendering target.
+Copies `texture` on the rendering target.
 
 By default the whole texture is copied unless the `source` rectangle is given,
 in this case only the "source" part of the texture will be copied.
@@ -309,7 +309,7 @@ Related SDL documentation:
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 ]]
-function Nene:render_copy(tex: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
+function Nene:render_copy(texture: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
   check(Nene.initialized, 'Nene is not initialized')
 
   local src: *SDL_Rect, dest: *SDL_Rect;
@@ -324,7 +324,7 @@ function Nene:render_copy(tex: *SDL_Texture, source: facultative(Math.Rect), des
   dest = &dest_rect
   ## end
 
-  SDLWrapper.render_copy(self.renderer, tex, src, dest)
+  SDLWrapper.render_copy(self.renderer, texture, src, dest)
 end
 
 --[[

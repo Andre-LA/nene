@@ -11,15 +11,17 @@ local function warn_msg(fn_name, msg)
 end
 ]]
 
---- Wrapper of `Mix_Init`
----
---- Initialize SDL_mixer loading support.
----
---- It returns an `ok` (boolean) success status and the bitmask that `Mix_Init` returns.
---- The `ok` status is true when the bitmask returned by `Mix_Init` is equals to `flags` argument.
----
---- Related SDL_ttf documentation:
---- * [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
+--[[
+Wrapper of `Mix_Init`
+
+Initialize SDL_mixer loading support.
+
+It returns an `ok` (boolean) success status and the bitmask that `Mix_Init` returns.
+The `ok` status is true when the bitmask returned by `Mix_Init` is equals to `flags` argument.
+
+Related SDL_ttf documentation:
+* [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
+]]
 function MixWrapper.mix_init(flags: cint): (boolean, cint)
   local mix_result = Mix_Init(flags)
   local ok = mix_result & flags == flags
@@ -31,13 +33,15 @@ function MixWrapper.mix_init(flags: cint): (boolean, cint)
   return ok, mix_result
 end
 
---- Wrapper of `Mix_Quit`
----
---- Shutdown and cleanup SDL_mixer loading support.
---- This function will call `Mix_Quit` _n_ times until `Mix_Init(0)` returns non-zero.
----
---- Related SDL documentation:
---- * [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
+--[[
+Wrapper of `Mix_Quit`
+
+Shutdown and cleanup SDL_mixer loading support.
+This function will call `Mix_Quit` _n_ times until `Mix_Init(0)` returns non-zero.
+
+Related SDL documentation:
+* [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
+]]
 function MixWrapper.mix_quit()
 
   while Mix_Init(0) ~= 0 do
@@ -45,13 +49,15 @@ function MixWrapper.mix_quit()
   end
 end
 
---- Wrapper of `Mix_LoadWAV`
----
---- Load a file at `file` to use as a sample.
----
---- Related SDL_mixer documentation:
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
---- * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+--[[
+Wrapper of `Mix_LoadWAV`
+
+Load a file at `file` to use as a sample.
+
+Related SDL_mixer documentation:
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+* [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
+]]
 function MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
 
   local chunk = Mix_LoadWAV(file)
@@ -64,12 +70,14 @@ function MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
   return chunk, ok
 end
 
---- Wrapper of `Mix_OpenAudio`
----
---- Initialize SDL_mixer library.
----
---- Related SDL_ttf documentation:
---- * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
+--[[
+Wrapper of `Mix_OpenAudio`
+
+Initialize SDL_mixer library.
+
+Related SDL_ttf documentation:
+* [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
+]]
 function MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, chunksize: cint): boolean
   local ok = Mix_OpenAudio(frequency, format, channels, chunksize)
 
@@ -80,24 +88,28 @@ function MixWrapper.open_audio(frequency: cint, format: uint16, channels: cint, 
   return ok
 end
 
---- Wrapper of `Mix_CloseAudio`
----
---- Shutdown and cleanup SDL_mixer library.
----
---- Related SDL documentation:
---- * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
+--[[
+Wrapper of `Mix_CloseAudio`
+
+Shutdown and cleanup SDL_mixer library.
+
+Related SDL documentation:
+* [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
+]]
 function MixWrapper.close_audio()
   Mix_CloseAudio()
 end
 
---- Wrapper of `Mix_PlayChannel`
----
---- Play a `chunk` on a `channel` (when `-1`, it will use the first free channel)
---- It will play `loop` + 1 times (pass `-1` to loop infinitely).
----
---- Related SDL_mixer documentation:
---- * [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+Wrapper of `Mix_PlayChannel`
+
+Play a `chunk` on a `channel` (when `-1`, it will use the first free channel)
+It will play `loop` + 1 times (pass `-1` to loop infinitely).
+
+Related SDL_mixer documentation:
+* [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html#SEC28)
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function MixWrapper.play_channel(channel: cint, chunk: *Mix_Chunk, loop: cint): (cint, boolean)
   check(chunk, 'chunk is nilptr')
 
@@ -111,37 +123,44 @@ function MixWrapper.play_channel(channel: cint, chunk: *Mix_Chunk, loop: cint): 
   return channel, ok
 end
 
---- Wrapper of `Mix_HaltChannel`
----
---- Stops the playing `channel`, if `-1` is passed, then it halts all channels.
----
---- Related SDL_mixer documentation:
---- * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+Wrapper of `Mix_HaltChannel`
+
+Stops the playing `channel`, if `-1` is passed, then it halts all channels.
+
+Related SDL_mixer documentation:
+* [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html#SEC34)
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function MixWrapper.halt_channel(channel: cint)
   Mix_HaltChannel(channel)
 end
 
---- Wrapper of `Mix_FreeChunk`
----
---- Stops the playing `channel`, if `-1` is passed, then it halts all channels.
----
---- Related SDL_mixer documentation:
---- * [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
---- * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+--[[
+Wrapper of `Mix_FreeChunk`
+
+Stops the playing `channel`, if `-1` is passed, then it halts all channels.
+
+Related SDL_mixer documentation:
+* [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html#SEC24)
+* [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
+]]
 function MixWrapper.free_chunk(chunk: *Mix_Chunk)
   check(chunk, 'chunk is nilptr')
 
   Mix_FreeChunk(chunk)
 end
 
---- Wrapper of `Mix_FreeMusic`
----
---- Free the music memory.
----
---- Related SDL_mixer documentation:
---- * [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
---- * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+--[[
+Wrapper of `Mix_FreeMusic`
+
+Free the music memory, if the music it's playing then it's halted first;
+if it's fading out, SDL_mixer will wait for the fade out.
+
+Related SDL_mixer documentation:
+* [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html#SEC56)
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+]]
 function MixWrapper.free_music(music: *Mix_Music)
   check(music, 'music is nilptr')
   Mix_FreeMusic(music)
