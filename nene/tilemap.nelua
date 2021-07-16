@@ -151,16 +151,19 @@ function Tilemap:draw(nene: Nene, tileset_grid: Grid, tileset_texture: Texture, 
   local color = Color.Palette.white
   ## end
 
-  for map_i, tileset_i in pairs(self) do
+  for tile_i, tileset_i in pairs(self) do
     if tileset_i > 0 then
       local tileset_column, tileset_row = Grid.get_nth_cell_column_row(tileset_i - 1)
       local tileset_rect = tileset_grid:gen_rect(tileset_column, tileset_row)
 
+      local tile_column, tile_row = self:get_tile_column_row(tile_i)
+      local tile_pos = self:get_tile_pos(tile_column, tile_row, tileset_grid)
+
       local tile_rect: Rect = {
-        x = position.x + tile_pos.x,
-        y = position.y + tile_pos.y,
-        w = tileset_rect.rect_size.width,
-        h = tileset_rect.rect_size.height,
+        x = math.ifloor(position.x + tile_pos.x),
+        y = math.ifloor(position.y + tile_pos.y),
+        w = tileset_rect.width,
+        h = tileset_rect.height,
       }
 
       tileset_texture:draw(nene, color, tileset_rect, tile_rect)
