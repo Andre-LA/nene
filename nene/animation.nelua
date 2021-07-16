@@ -5,6 +5,7 @@ global AnimationRange = @record{
   to: usize,   -- last frame
 }
 
+-- checks equality between animation ranges
 function Nene.AnimationRange.__eq(l: Nene.AnimationRange, r: Nene.AnimationRange): boolean
   return l.from == r.from and l.to == r.to and l.fps == r.fps
 end

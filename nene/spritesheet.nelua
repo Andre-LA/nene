@@ -6,12 +6,14 @@ require 'nene.math'
 
 local Rect, Grid = Math.Rect, Math.Grid
 
+-- The `SpriteSheet` module is used to make animated sprites.
 global SpriteSheet = @record{
-  grid: Grid,
-  sprites_per_line: isize,
+  grid: Grid,              -- spritesheet grid
+  sprites_per_line: isize, -- how many sprites fit in a line of this grid
   animations: hashmap(string, AnimationRange) -- hashmap of animations, maps animation names to animation ranges.
 }
 
+-- destroyes the Spritesheet, freeing it's memory.
 function SpriteSheet:destroy()
   -- destroy hashmap
   self.animations:destroy()
@@ -22,14 +24,17 @@ function SpriteSheet:destroy()
   self.animations = (@hashmap)()
 end
 
+-- get the column and row of the grid from an index of this spritesheet.
 function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
   return Grid.get_nth_cell_column_row(index, self.sprites_per_line)
 end
 
+-- get the source get from the spritesheet at the column and row.
 function SpriteSheet:get_source_rect(column: isize, row: isize)
   return self.grid:gen_rect(column, row)
 end
 
+-- draw the sprite from the spritesheet
 function SpriteSheet:draw(nene: Nene, spritesheet_texture: Texture, animation_name: string, animation_index: isize, color: facultative(Color))
   ## if color.type.is_niltype then
   local color = Color.Palette.white
