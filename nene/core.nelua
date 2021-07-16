@@ -328,6 +328,36 @@ function Nene:render_copy(texture: *SDL_Texture, source: facultative(Math.Rect),
 end
 
 --[[
+Set a `texture` as rendering target.
+
+If `texture` is not given, then the target will be the window.
+
+Related SDLWrapper documentation:
+* [SDLWrapper.set_render_target](wrappers/sdl.md#sdlwrapperset_render_target)
+]]
+function Nene:set_render_target(texture: facultative(*SDL_Texture))
+  check(Nene.initialized, 'Nene is not initialized')
+
+  ## if not texture.type.is_niltype then
+    SDLWrapper.set_render_target(self.renderer, texture)
+  ## else
+    SDLWrapper.set_render_target(self.renderer, nilptr)
+  ## end
+end
+
+--[[
+Create a SDL texture.
+
+Related SDLWrapper documentation:
+* [SDLWrapper.create_texture](wrappers/sdl.md#sdlwrappercreate_texture)
+]]
+function Nene:create_sdl_texture(format: uint32, access: cint, w: cint, h: cint): *SDL_Texture
+  check(Nene.initialized, 'Nene is not initialized')
+  local texture, ok = SDLWrapper.create_texture(self.renderer, format, access, w, h)
+  return texture
+end
+
+--[[
 Wrapper of `SDL_CreateTextureFromSurface`.
 
 Creates a Texture from the given surface.

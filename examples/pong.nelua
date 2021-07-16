@@ -11,7 +11,8 @@ local Rect, Vec2 = Math.Rect, Math.Vec2
 
 -- general game settings
 local SETTINGS: record{
-  winsize: Vec2,
+  screen_size: Vec2,
+  win_size: Vec2,
   racket: record{
     size: Vec2,
     velocity: integer,
@@ -21,7 +22,8 @@ local SETTINGS: record{
     velocity: integer,
   }
 } <const> = {
-  winsize = { 640, 360 },
+  screen_size = { 320, 240 },
+  win_size = { (320*2), (240*2) },
   racket = {
     size = { 20, 100 },
     velocity = 4,
@@ -43,7 +45,7 @@ local Racket = @record{
 -- return the rect of the racket
 function Racket:get_rect(is_player_one: boolean): Rect
   return (@Rect){
-    x = math.ifloor(is_player_one and 20 or SETTINGS.winsize.x - SETTINGS.racket.size.x - 20),
+    x = math.ifloor(is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20),
     y = self.pos_y,
     w = SETTINGS.racket.size.x, h = SETTINGS.racket.size.y
   }
@@ -61,7 +63,7 @@ function Racket:update(nene: Nene, is_player_one: boolean <comptime>)
   ## end
 
   -- movement
-  local ylimit <const> = SETTINGS.winsize.y - SETTINGS.racket.size.y
+  local ylimit <const> = SETTINGS.screen_size.y - SETTINGS.racket.size.y
 
   if is_up then
     self.pos_y = math.clamp(self.pos_y - SETTINGS.racket.velocity, 0, ylimit)
@@ -85,7 +87,7 @@ local Ball = @record{
 
 function Ball.new()
   return (@Ball){
-    pos = { SETTINGS.winsize.x // 2, SETTINGS.winsize.y // 2 },
+    pos = { SETTINGS.screen_size.x // 2, SETTINGS.screen_size.y // 2 },
     direction = { 1, 1 },
   }
 end
@@ -104,9 +106,9 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket)
 
   -- does intersected limits?
   local on_left_side  <const> = self.pos.x < 0
-  local on_right_side <const> = self.pos.x + SETTINGS.ball.size > SETTINGS.winsize.x
+  local on_right_side <const> = self.pos.x + SETTINGS.ball.size > SETTINGS.screen_size.x
   local on_up_side    <const> = self.pos.y < 0
-  local on_down_side  <const> = self.pos.y + SETTINGS.ball.size > SETTINGS.winsize.y
+  local on_down_side  <const> = self.pos.y + SETTINGS.ball.size > SETTINGS.screen_size.y
 
   -- invert horizontal direction when intersecting left or right side and add points to the winner player
   if on_left_side or on_right_side then
@@ -147,13 +149,20 @@ local function game()
 
   -- nene core initialization, this example will use `Nene` directly
   -- instead of `Main` since only simple features will be used.
-  local ok, nene = Nene.init('nene pong example', SETTINGS.winsize.x, SETTINGS.winsize.y)
+  local ok, nene = Nene.init('nene pong example', SETTINGS.win_size.x, SETTINGS.win_size.y)
   assert(ok, 'core state initialization failed')
 
   -- the `terminate` method deinitializes nene and SDL libraries
-  defer
-    nene:terminate()
-  end
+  defer nene:terminate() end
+
+  local screen: Texture = Texture.new(
+    nene:create_sdl_texture(
+      SDL_PIXELFORMAT_RGBA8888,
+      SDL_TEXTUREACCESS_TARGET,
+      math.ifloor(SETTINGS.screen_size.x),
+      math.ifloor(SETTINGS.screen_size.y)
+    )
+  )
 
   -- game setup:
 
@@ -189,17 +198,27 @@ local function game()
     end
 
     do -- draw step
+      -- set a low-resolution screen as the render target.
+      nene:set_render_target(screen:get())
+
       -- draw background
       nene:render_clear(Color.Palette.bg)
 
-      -- draw rackets and ball
-      pl_1:draw(nene, true)
-      pl_2:draw(nene, false)
-      ball:draw(nene)
+      do -- rendering screen
+        -- draw rackets and ball
+        pl_1:draw(nene, true)
+        pl_2:draw(nene, false)
+        ball:draw(nene)
 
-      -- draw points texts
-      r1_text:draw(nene, {10, 0}, Color.Palette.white)
-      r2_text:draw(nene, {SETTINGS.winsize.x - r1_text.texture.width - 10, 0}, Color.Palette.white)
+        -- draw points texts
+        r1_text:draw(nene, {10, 0})
+        r2_text:draw(nene, {SETTINGS.screen_size.x - r1_text.texture.width - 10, 0})
+      end
+      -- reset render target to window
+      nene:set_render_target()
+
+      -- draw the whole screen on the whole window
+      screen:draw(nene)
 
       -- present the "drawing result"
       nene:render_present()
