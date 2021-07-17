@@ -58,9 +58,8 @@ Related SDL_mixer documentation:
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 * [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
 ]]
-function MixWrapper.load_wav(file: cstring): (*Mix_Chunk, boolean)
-
-  local chunk = Mix_LoadWAV(file)
+function MixWrapper.load_wav(filepath: cstring): (*Mix_Chunk, boolean)
+  local chunk = Mix_LoadWAV(filepath)
   local ok = chunk ~= nilptr
 
   if not ok then
