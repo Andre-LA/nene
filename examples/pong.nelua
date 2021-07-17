@@ -1,4 +1,6 @@
--- basic pong example!
+-- === basic pong example! ===
+
+-- require basic libraries
 require 'math'
 require 'string'
 
@@ -6,13 +8,13 @@ require 'string'
 -- all nene modules will be required at once.
 require 'nene'
 
--- localizing variables to avoid verbosity
+-- localizing types to avoid verbosity
 local Rect, Vec2 = Math.Rect, Math.Vec2
 
 -- general game settings
 local SETTINGS: record{
-  screen_size: Vec2,
-  win_size: Vec2,
+  screen_size: record{ x: integer, y: integer },
+  win_size: record{ x: integer, y: integer },
   racket: record{
     size: Vec2,
     velocity: integer,
@@ -45,7 +47,7 @@ local Racket = @record{
 -- return the rect of the racket
 function Racket:get_rect(is_player_one: boolean): Rect
   return (@Rect){
-    x = math.ifloor(is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20),
+    x = is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20,
     y = self.pos_y,
     w = SETTINGS.racket.size.x, h = SETTINGS.racket.size.y
   }
@@ -84,13 +86,6 @@ local Ball = @record{
   pos: Vec2,
   direction: Vec2,
 }
-
-function Ball.new()
-  return (@Ball){
-    pos = { SETTINGS.screen_size.x // 2, SETTINGS.screen_size.y // 2 },
-    direction = { 1, 1 },
-  }
-end
 
 -- return the ball's rect
 function Ball:get_rect(): Rect
@@ -145,44 +140,63 @@ local function update_points(nene: Nene, pts_text: *TextTexture, points: integer
 end
 
 local function game()
-  -- nene setup:
+  -- == nene setup == --
 
-  -- nene core initialization, this example will use `Nene` directly
-  -- instead of `Main` since only simple features will be used.
+  -- nene initialization
   local ok, nene = Nene.init('nene pong example', SETTINGS.win_size.x, SETTINGS.win_size.y)
-  assert(ok, 'core state initialization failed')
+  assert(ok, 'nene initialization failed')
 
   -- the `terminate` method deinitializes nene and SDL libraries
-  defer nene:terminate() end
+  -- here defer is used to make it called only after all the above code
+  -- see about defer: https://nelua.io/overview/#defer
+  defer
+    nene:terminate()
+  end
 
-  local screen: Texture = Texture.new(
-    nene:create_sdl_texture(
-      SDL_PIXELFORMAT_RGBA8888,
-      SDL_TEXTUREACCESS_TARGET,
-      math.ifloor(SETTINGS.screen_size.x),
-      math.ifloor(SETTINGS.screen_size.y)
-    )
-  )
+  -- == game setup == --
 
-  -- game setup:
+  -- this creates a new "Nene Texture" which will be used as low resolution
+  -- screen through using render target (sometimes called as Render Texture on some engines),
+  -- due to this, it will use "target" texture access.
+  --
+  -- note that the value comes from SDL directly, while Nene abstracts SDL many
+  -- times, it doesn't try to hide it, so you will interact with SDL sometimes,
+  -- especially to go beyond Nene capabilities if needed.
+  local screen = Texture.create_texture(nene, SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, SDL_TEXTUREACCESS_TARGET)
 
-  local pl_1: Racket, pl_2: Racket, ball = {}, {}, Ball.new()
+  -- Textures needs to be destroyed after usage
+  defer screen:destroy() end
 
-  -- "monogram_extended" font is included with nene, but it's not loaded automatically.
+  -- creates players rackets and the ball
+  local pl_1: Racket, pl_2: Racket;
+  local ball: Ball = {
+    pos = { SETTINGS.screen_size.x // 2, SETTINGS.screen_size.y // 2 },
+    direction = { 1, 1 },
+  }
+
+  -- "monogram_extended" font is available with nene, but it's not loaded automatically.
   local font = Font.load('resources/monogram_extended.ttf', 72)
+
+  -- also needs to be destroyed after usage
   defer font:destroy() end
 
+  -- creates both players texts and then defer it's destroy calls
   local r1_text, r2_text = TextTexture.new(nene, '0', font), TextTexture.new(nene, '0', font)
   defer
     r1_text:destroy()
     r2_text:destroy()
   end
 
-  -- game loop:
+  -- finally, the game loop
+  -- In Nene, you just `repeat` the loop until Nene gets a "quit" state
+  -- this happens when the game is just to be closed.
   repeat
+    -- this updates the internal state, it also pools all the SDL events,
+    -- you can pass many callbacks to react to these events.
     nene:pool_events()
 
-    do -- update step
+    -- update step
+    do
       local prev_r1_points, prev_r2_points = pl_1.points, pl_2.points
 
       pl_1:update(nene, true)
@@ -197,14 +211,17 @@ local function game()
       end
     end
 
-    do -- draw step
-      -- set a low-resolution screen as the render target.
+    -- draw step
+    do
+      -- set a low-resolution screen as the render target, this is very useful to make pixel-art games.
       nene:set_render_target(screen:get())
 
-      -- draw background
+      -- clear screen, otherwise the game would draw frame on top of previous frames,
+      -- which gives weird results.
       nene:render_clear(Color.Palette.bg)
 
-      do -- rendering screen
+      -- rendering on the screen
+      do
         -- draw rackets and ball
         pl_1:draw(nene, true)
         pl_2:draw(nene, false)
@@ -214,16 +231,26 @@ local function game()
         r1_text:draw(nene, {10, 0})
         r2_text:draw(nene, {SETTINGS.screen_size.x - r1_text.texture.width - 10, 0})
       end
-      -- reset render target to window
+
+      -- reset render target to window screen, this is the default when no render target is used.
       nene:set_render_target()
 
-      -- draw the whole screen on the whole window
+      -- draw the whole screen on the whole window screen.
       screen:draw(nene)
 
-      -- present the "drawing result"
+      -- present the "drawing result".
+      -- In SDL (and consequently Nene) applies all draw operations on a backbuffer, this is very
+      -- common in many game libraries.
+      -- render_present presents the composed backbuffer on the screen.
       nene:render_present()
     end
-  until nene.quit
+  until nene.quit -- this loop will be repeated until Nene assign `true` to `Nene.quit` variable.
+
+  -- all the memory  will be released due the defer blocks above.
 end
 
+-- the code is inside a function, here we call it.
+-- this is not mandatory in Nene, you can just write the code here too,
+-- however, coding in a function is required to make address sanitizer
+-- (a memory debug utility) and web compiling works as expected.
 game()
