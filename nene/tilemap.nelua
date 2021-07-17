@@ -71,7 +71,7 @@ For example, let's say you want to know the position of the 9th tile (that is, 8
 
 -- the tileset grid, in this example each tile of our hypothetical tileset and tilemap contains 32x32 dimensions,
 -- without gaps; this is needed by `get_tile_pos` method.
-local tileset_grid: Math.Grid = { rect_size = {32, 32} }
+local tileset_grid: Math.Grid = { cell_size = {32, 32} }
 
 -- here, we obtain the column and row of the 9th tile using `get_tile_column_row`,
 -- since tilemap's map is 0-indexed, we use `8`.
@@ -89,8 +89,8 @@ Related Nene documentation:
 ]]
 function Tilemap:get_tile_pos(column: isize, row: isize, tileset: Grid): Vec2
   return (@Vec2){
-    x = column * tileset.rect_size.width,
-    y = row * tileset.rect_size.height
+    x = column * tileset.cell_size.width,
+    y = row * tileset.cell_size.height
   }
 end
 

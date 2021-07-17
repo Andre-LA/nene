@@ -141,7 +141,7 @@ end
 
 -- This record is intended to generate rectangles from an infinite grid.
 global Math.Grid = @record{
-  rect_size: record{ width: integer, height: integer }, -- size of the rectangles
+  cell_size: record{ width: integer, height: integer }, -- size of the rectangles
   gap: record{ x: integer, y: integer } -- gap between rectagles
 }
 local Grid = @Math.Grid
@@ -149,10 +149,10 @@ local Grid = @Math.Grid
 -- Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
 function Math.Grid.gen_rect(grid: Grid, column: integer, row: integer): Math.Rect
   return (@Math.Rect){
-    x = grid.rect_size.width * column + grid.gap.x * column,
-    y = grid.rect_size.height * row + grid.gap.y * row,
-    w = grid.rect_size.width,
-    h = grid.rect_size.height,
+    x = grid.cell_size.width * column + grid.gap.x * column,
+    y = grid.cell_size.height * row + grid.gap.y * row,
+    w = grid.cell_size.width,
+    h = grid.cell_size.height,
   }
 end
 
