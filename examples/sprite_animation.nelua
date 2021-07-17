@@ -1,0 +1,52 @@
+-- spritesheet example, more detailed explanation about nene
+-- is available at pong example.
+
+require 'math'
+
+-- here we only require the core and the spritesheet  of course, others nene modules
+-- will be required as dependencies, like the Colors module, since it's one
+-- of the a spritesheet depedencies.
+require 'nene.core'
+require 'nene.wrappers.sdl'
+require 'nene.texture'
+require 'nene.spritesheet'
+
+local function game()
+  local ok, nene = Nene.init('nene spritesheets', (64*4), (64*4))
+  assert(ok, 'nene initialization failed')
+
+  defer nene:terminate() end
+
+  local screen = Texture.create_texture(nene, 64, 64)
+  defer screen:destroy() end
+
+  local sprites_texture, ok = Texture.load(nene, 'resources/img_shapes.png')
+  assert(ok, "error: 'img_shapes.png' could not be loaded")
+  defer sprites_texture:destroy() end
+
+  local spritesheet: SpriteSheet = {
+    grid = { cell_size = {32, 32} },
+    sprites_per_line = 2,
+  }
+
+  local prev_time = SDLWrapper.get_ticks()
+  local sprite_index = 0
+
+  repeat
+    nene:pool_events()
+
+    local current_time = SDLWrapper.get_ticks()
+    if current_time - prev_time > 1000 then
+      prev_time = current_time
+      sprite_index = (sprite_index + 1) % 4
+    end
+
+    nene:render_clear(Color.Palette.bg)
+
+    spritesheet:draw(nene, {10, 10}, sprites_texture, sprite_index)
+
+    nene:render_present()
+  until nene.quit
+end
+
+game()
