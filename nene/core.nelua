@@ -29,7 +29,7 @@ global Nene = @record{
 global Nene.initialized = false
 
 --[[
-The callbacks that can be passed on `Core:pool_events` method
+The callbacks that can be passed on `Core:poll_events` method
 
 Related SDL documentation:
 * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
@@ -73,7 +73,7 @@ Related SDL documentation:
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 ]]
-function Nene:pool_events(evt_callbacks: facultative(Nene.EventsCallbacks))
+function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
   check(Nene.initialized, 'Nene is not initialized')
 
   local evt: SDL_Event;
@@ -389,11 +389,27 @@ try to initialize and return a new initilized core state.
 
 returns:
   * a boolean that indicates true on success
-  * a string error message on failure (or empty otherwise)
   * a new state, only filled on success
+
 notes:
   * You always should first check if the initialization
-  succeeded before trying to use the state
+  succeeded before trying to use the state.
+
+Code example:
+```lua
+-- initialize nene
+local ok, nene = Nene.init('My game title', 1280, 720)
+
+-- test if nene got successfully initialized, here `assert`
+-- is used instead of `check`, this way, this test is also done
+-- in release mode.
+assert(ok, 'error: nene initialization failed')
+
+-- defer nene termination, to release resources used by nene
+defer
+  nene:terminate()
+end
+```
 
 Related SDL documentation:
 * [SDL_Init](https://wiki.libsdl.org/SDL_Init)
@@ -424,7 +440,7 @@ function Nene.init(
   local flags = SDL_WINDOW_SHOWN
   ## end
 
-  local new_state: Nene
+  local new_state: Nene;
 
   -- init libraries
   local sdl_init_result = SDLWrapper.sdl_init(SDL_INIT_VIDEO)

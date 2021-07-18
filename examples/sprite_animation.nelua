@@ -33,7 +33,7 @@ local function game()
   local sprite_index = 0
 
   repeat
-    nene:pool_events()
+    nene:poll_events()
 
     local current_time = SDLWrapper.get_ticks()
     if current_time - prev_time > 1000 then

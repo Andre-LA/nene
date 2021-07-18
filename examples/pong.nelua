@@ -191,9 +191,9 @@ local function game()
   -- In Nene, you just `repeat` the loop until Nene gets a "quit" state
   -- this happens when the game is just to be closed.
   repeat
-    -- this updates the internal state, it also pools all the SDL events,
+    -- this updates the internal state, it also polls all the SDL events,
     -- you can pass many callbacks to react to these events.
-    nene:pool_events()
+    nene:poll_events()
 
     -- update step
     do
