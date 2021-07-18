@@ -11,42 +11,68 @@ require 'nene.wrappers.sdl'
 require 'nene.texture'
 require 'nene.spritesheet'
 
+-- Here all the game code is inside a "game" function because it make address sanitizer more detailed.
+-- In your games, you may use a "game frame" function, this makes web port easier.
+-- Since a web port is beyond this example, using just a "game" function is enough.
 local function game()
+  -- initialize nene and test if got succesfully initialized
   local ok, nene = Nene.init('nene spritesheets', (64*4), (64*4))
-  assert(ok, 'nene initialization failed')
-
+  assert(ok, 'error: nene initialization failed')
+  -- defer nene termination
   defer nene:terminate() end
 
-  local screen = Texture.create_texture(nene, 64, 64)
-  defer screen:destroy() end
-
+  -- create a texture with img_shapes.png image on it
+  -- then test initialization and defers it's destruction
+  -- note that img_shapes images contains four shapes, on a 32x32 alignment.
   local sprites_texture, ok = Texture.load(nene, 'resources/img_shapes.png')
   assert(ok, "error: 'img_shapes.png' could not be loaded")
   defer sprites_texture:destroy() end
 
+  -- set the spritesheet values which will be used with the texture created above
   local spritesheet: SpriteSheet = {
-    grid = { cell_size = {32, 32} },
-    sprites_per_line = 2,
+    grid = { cell_size = {32, 32} }, -- sprite dimensions
+    sprites_per_line = 2, -- how many sprites exists per line
   }
 
+  -- let's create a timer, this will store the time just after SDL (nene) initialization.
+  -- this variable will only be modified when the sprite changes.
   local prev_time = SDLWrapper.get_ticks()
+
+  -- the sprite index which we want to render on the current frame, this
+  -- refers to the cell of the spritesheet, the first one is on top-left,
+  -- the last is on bottom-right, the flow is left-to-right, up-to-down.
   local sprite_index = 0
 
+  -- with everything setup, now we run our game loop until the game will quit
   repeat
+    -- updates the nene internal state
     nene:poll_events()
 
+    -- store the current time since nene initialization
     local current_time = SDLWrapper.get_ticks()
+
+    -- if the difference between the last time we changed the sprite and now
+    -- is greater than one second, then we updates prev_time and change
+    -- the sprite index used on spritesheet rendering.
     if current_time - prev_time > 1000 then
       prev_time = current_time
       sprite_index = (sprite_index + 1) % 4
     end
 
+    -- let's draw our game, first we need to clear the backbuffer.
     nene:render_clear(Color.Palette.bg)
 
-    spritesheet:draw(nene, {10, 10}, sprites_texture, sprite_index)
+    -- then, draw the sprite from the spritesheet at {10, 10} position, using
+    -- the sprite texture, using the sprite index.
+    -- note that spritesheet doesn't contains the texture it should render on the
+    -- fields, this should be passed as an argument, the reason for this is that
+    -- when a module needs an external resource, it "asks" for it through parameters.
+    spritesheet:draw(nene, {x = 10, y = 10}, sprites_texture, sprite_index)
 
+    -- finally, swap buffers and present our final result
     nene:render_present()
   until nene.quit
 end
 
+-- run the game
 game()
