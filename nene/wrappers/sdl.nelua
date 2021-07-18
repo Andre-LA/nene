@@ -152,7 +152,6 @@ Related SDL documentation:
 ]]
 function SDLWrapper.free_surface(surface: *SDL_Surface)
   check(surface, 'surface is nilptr')
-
   SDL_FreeSurface(surface)
 end
 
@@ -169,7 +168,6 @@ Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 ]]
 function SDLWrapper.get_keyboard_state(): span(uint8)
-
   local kb_state_len: cint;
   local kb_state_arr = SDL_GetKeyboardState(&kb_state_len)
 
@@ -188,7 +186,6 @@ Related SDL documentation:
 * [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
 ]]
 function SDLWrapper.get_mouse_state(): (uint32, cint, cint)
-
   local x: cint, y: cint
   local bitmask = SDL_GetMouseState(&x, &y)
   return bitmask, x, y

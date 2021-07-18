@@ -162,5 +162,6 @@ Returns the the column and row from a `n`th cell, note that this function is 0-i
 Is necessary to also give how many cells fit on a line.
 ]]
 function Math.Grid.get_nth_cell_column_row(n: isize, cells_per_line: isize): (isize, isize)
+  check(cells_per_line ~= 0, 'Cannot calculate row and column with 0 cells per line')
   return n % cells_per_line, n // cells_per_line
 end

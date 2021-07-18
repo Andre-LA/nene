@@ -107,11 +107,17 @@ If the operations fails, the ok status will be `false` and uninitialized texture
 Related SDLWrapper documentation:
 * [ImgWrapper.img_load](wrappers/img.md#imgwrapperimg_load)
 * [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
+* [SDLWrapper.free_surface](wrappers/sdl.md#sdlwrapperfree_surface)
 ]]
 function Texture.load(nene: Nene, filepath: cstring): (Texture, boolean)
   local img_surface, ok = ImgWrapper.img_load(filepath)
+
   if not ok then
     return (@Texture)(), false
+  end
+
+  defer
+    SDLWrapper.free_surface(img_surface)
   end
 
   local sdl_texture, ok = SDLWrapper.create_texture_from_surface(nene.renderer, img_surface)
