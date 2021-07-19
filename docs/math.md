@@ -122,7 +122,7 @@ global Math.#|name|# = @record{
 
 ```lua
 global Math.Grid = @record{
-  rect_size: record{ width: integer, height: integer }, -- size of the rectangles
+  cell_size: record{ width: integer, height: integer }, -- size of the rectangles
   gap: record{ x: integer, y: integer } -- gap between rectagles
 }
 ```

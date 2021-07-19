@@ -54,15 +54,15 @@ global Nene.EventsCallbacks = @record{
 }
 ```
 
-The callbacks that can be passed on `Core:pool_events` method
+The callbacks that can be passed on `Core:poll_events` method
 
 Related SDL documentation:
 * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 
-### Nene:pool_events
+### Nene:poll_events
 
 ```lua
-function Nene:pool_events(evt_callbacks: facultative(Nene.EventsCallbacks))
+function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
 ```
 
 You should call this method at the start of each game loop tick, it:
@@ -196,17 +196,6 @@ If `texture` is not given, then the target will be the window.
 Related SDLWrapper documentation:
 * [SDLWrapper.set_render_target](wrappers/sdl.md#sdlwrapperset_render_target)
 
-### Nene:create_sdl_texture
-
-```lua
-function Nene:create_sdl_texture(format: uint32, access: cint, w: cint, h: cint): *SDL_Texture
-```
-
-Create a SDL texture.
-
-Related SDLWrapper documentation:
-* [SDLWrapper.create_texture](wrappers/sdl.md#sdlwrappercreate_texture)
-
 ### Nene:create_texture_from_surface
 
 ```lua
@@ -251,11 +240,27 @@ try to initialize and return a new initilized core state.
 
 returns:
   * a boolean that indicates true on success
-  * a string error message on failure (or empty otherwise)
   * a new state, only filled on success
+
 notes:
   * You always should first check if the initialization
-  succeeded before trying to use the state
+  succeeded before trying to use the state.
+
+Code example:
+```lua
+-- initialize nene
+local ok, nene = Nene.init('My game title', 1280, 720)
+
+-- test if nene got successfully initialized, here `assert`
+-- is used instead of `check`, this way, this test is also done
+-- in release mode.
+assert(ok, 'error: nene initialization failed')
+
+-- defer nene termination, to release resources used by nene
+defer
+  nene:terminate()
+end
+```
 
 Related SDL documentation:
 * [SDL_Init](https://wiki.libsdl.org/SDL_Init)

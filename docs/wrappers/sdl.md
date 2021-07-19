@@ -173,6 +173,21 @@ Related SDL documentation:
 * [SDL_Window](https://wiki.libsdl.org/SDL_Window)
 * [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow)
 
+### SDLWrapper.get_renderer_info
+
+```lua
+function SDLWrapper.get_renderer_info(renderer: *SDL_Renderer): (SDL_RendererInfo, boolean)
+```
+
+Wrapper of `SDL_GetRendererInfo`.
+
+Get information about rendering context.
+
+Related SDL documentation:
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_RendererInfo](https://wiki.libsdl.org/SDL_RendererInfo)
+* [SDL_GetRendererInfo](https://wiki.libsdl.org/SDL_GetRendererInfo)
+
 ### SDLWrapper.destroy_window
 
 ```lua
@@ -377,5 +392,7 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 * [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
+* [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
+* [SDL_PixelFormatEnum](https://wiki.libsdl.org/SDL_PixelFormatEnum)
 
 ---

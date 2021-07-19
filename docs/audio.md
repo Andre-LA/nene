@@ -97,6 +97,35 @@ It checks if the internal data is `nilptr` and then returns it.
 Related SDL_mixer documentation:
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 
+### Music:play
+
+```lua
+function Music:play(loops: facultative(integer))
+```
+
+Plays the music (forever by default), note that this stops any playing music.
+
+You can also pass a `loop` argument, this makes the music loop `loop` times, also note that:
+* Passing `0` will make it play the music `0` times.
+* Passing `1` will make it only once.
+* Passing `-1` will make it looping forever, this is the default value.
+
+Related MixWrapper documentation:
+* [MixWrapper.play_music](wrappers/mix.md#mixwrapperplay_music)
+* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperhalt_music)
+
+### Music.stop
+
+```lua
+function Music.stop()
+```
+
+Stops any playing music.
+
+Related MixWrapper documentation:
+* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperhalt_music)
+* [MixWrapper.play_music](wrappers/mix.md#mixwrapperplay_music)
+
 ### Music:destroy
 
 ```lua

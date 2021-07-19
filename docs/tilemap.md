@@ -70,7 +70,7 @@ For example, let's say you want to know the position of the 9th tile (that is, 8
 
 -- the tileset grid, in this example each tile of our hypothetical tileset and tilemap contains 32x32 dimensions,
 -- without gaps; this is needed by `get_tile_pos` method.
-local tileset_grid: Math.Grid = { rect_size = {32, 32} }
+local tileset_grid: Math.Grid = { cell_size = {32, 32} }
 
 -- here, we obtain the column and row of the 9th tile using `get_tile_column_row`,
 -- since tilemap's map is 0-indexed, we use `8`.

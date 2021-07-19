@@ -59,6 +59,36 @@ Returns an initialized `Texture` with the given `tex` applied.
 Related Nene documentation:
 * [Texture.apply_sdltex](#textureapply_sdltex)
 
+### Texture.create_texture
+
+```lua
+function Texture.create_texture(nene: Nene, width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): Texture
+```
+
+Creates a `Texture` from `Nene.create_sdl_texture` using the given `access` and `format`.
+
+`format` and `access` are optional.
+
+By default, `format` is SDL_PIXELFORMAT_RGBA8888 and access is `SDL_TEXTUREACCESS_STATIC`.
+
+Related Nene documentation:
+* [Nene.create_sdl_texture](core.md#nenecreate_sdl_texture)
+
+### Texture.load
+
+```lua
+function Texture.load(nene: Nene, filepath: cstring): (Texture, boolean)
+```
+
+Loads an image file and returns a Texture and an ok status.
+
+If the operations fails, the ok status will be `false` and uninitialized texture.
+
+Related SDLWrapper documentation:
+* [ImgWrapper.img_load](wrappers/img.md#imgwrapperimg_load)
+* [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
+* [SDLWrapper.free_surface](wrappers/sdl.md#sdlwrapperfree_surface)
+
 ### Texture:draw
 
 ```lua

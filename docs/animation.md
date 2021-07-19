@@ -14,4 +14,12 @@ global AnimationRange = @record{
 
 Animation range type, used on Spritesheets
 
+### AnimationRange.__eq
+
+```lua
+function AnimationRange.__eq(l: AnimationRange, r: AnimationRange): boolean
+```
+
+checks equality between animation ranges
+
 ---
