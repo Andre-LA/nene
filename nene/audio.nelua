@@ -120,6 +120,38 @@ function Music:get(): *Mix_Music
 end
 
 --[[
+Plays the music (forever by default), note that this stops any playing music.
+
+You can also pass a `loop` argument, this makes the music loop `loop` times, also note that:
+* Passing `0` will make it play the music `0` times.
+* Passing `1` will make it only once.
+* Passing `-1` will make it looping forever, this is the default value.
+
+Related MixWrapper documentation:
+* [MixWrapper.play_music](wrappers/mix.md#mixwrapperplay_music)
+* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperhalt_music)
+]]
+function Music:play(loops: facultative(integer))
+  ## if loops.type.is_niltype then
+  local loops: cint = -1
+  ## end
+
+  local data = self:get()
+  MixWrapper.play_music(data, loops)
+end
+
+--[[
+Stops any playing music.
+
+Related MixWrapper documentation:
+* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperhalt_music)
+* [MixWrapper.play_music](wrappers/mix.md#mixwrapperplay_music)
+]]
+function Music.stop()
+  MixWrapper.halt_music()
+end
+
+--[[
 Destroy the music and resets to zeroed state.
 
 > Note: SDL_mixer first halts the music if it's playing, it also wait if it's still fading out.
@@ -130,5 +162,6 @@ Related MixWrapper documentation:
 function Music:destroy()
   local data = self:get()
   MixWrapper.free_music(data)
+
   self._data = nilptr
 end
