@@ -129,6 +129,58 @@ end
     }
   end
 
+  -- a very simple collision resolution, it returns a rectangle result from the resolution,
+  -- it may be improved on future releases.
+  --
+  -- It returns:
+  -- * a boolean which contains if the two rectangles were really intersecting
+  -- * a new rectangle with the collision resolved
+  function RectT.simple_collision(self: RectT, intersected: RectT): (boolean, RectT)
+    local function resolve_vertical(result: RectT, self: RectT, self_center: Vec2, intersected: RectT, intersected_center: Vec2): (RectT)
+      if self_center.y < intersected_center.y then -- go to top
+        result.y = intersected.y - self.h
+      else -- go to bottom
+        result.y = intersected.y + intersected.h
+      end
+
+      return result
+    end
+
+    local function resolve_horizontal(result: RectT, self: RectT, self_center: Vec2, intersected: RectT, intersected_center: Vec2): (RectT)
+      if self_center.x < intersected_center.x then -- go to left
+        result.x = intersected.x - self.w
+      else -- go to right
+        result.x = intersected.x + intersected.w
+      end
+
+      return result
+    end
+
+    local intersection, is_intersecting = self:get_intersection(intersected)
+
+    -- skip if is not actually intersecting
+    if not is_intersecting then
+      return false, (@RectT)()
+    end
+
+    local result = self -- copy self
+
+    local self_center = self:get_center()
+    local intersected_center = intersected:get_center()
+    local centers_diff = intersected_center - self_center
+
+    if math.abs(centers_diff.y) > math.abs(centers_diff.x) then -- is vertical
+      result = resolve_vertical(result, self, self_center, intersected, intersected_center)
+    elseif math.abs(centers_diff.x) > math.abs(centers_diff.y) then -- is horizontal
+      result = resolve_horizontal(result, self, self_center, intersected, intersected_center)
+    else -- is diagonal
+      result = resolve_vertical(result, self, self_center, intersected, intersected_center)
+      result = resolve_horizontal(result, self, self_center, intersected, intersected_center)
+    end
+
+    return true, result
+  end
+
   ## RectT.value.is_rect = true
 ## end
 
