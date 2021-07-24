@@ -148,7 +148,7 @@ function Texture:draw(nene: Nene, color: facultative(Color), source: facultative
 
   local internal_tex = self:get()
 
-  ## if destination.type.is_vec then -- shadow the vec2 destination with a rect destination
+  ## if destination.type.is_vec2 then -- shadow the vec2 destination with a rect destination
   local destination: Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
   ## end
 

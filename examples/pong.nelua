@@ -120,8 +120,8 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket)
   -- invert horizontal direction when intersecting rackets
   local ball_rect = self:get_rect()
   local r1_rect, r2_rect = racket_1:get_rect(true), racket_2:get_rect(false)
-  local is_r1_intersecting, is_r2_intersecting = ball_rect:is_rect_intersecting(r1_rect),
-                                                 ball_rect:is_rect_intersecting(r2_rect)
+  local is_r1_intersecting, is_r2_intersecting = ball_rect:is_intersecting(r1_rect),
+                                                 ball_rect:is_intersecting(r2_rect)
 
   if is_r1_intersecting or is_r2_intersecting then
     self.direction.x = -self.direction.x
