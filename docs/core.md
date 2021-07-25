@@ -3,6 +3,7 @@
 ```lua
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
+  delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
   keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")

@@ -8,6 +8,8 @@ require 'nene.wrappers.img'
 require 'nene.colors'
 require 'nene.math'
 
+local previous_time: uint32 = 0
+
 --[[
 The core of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
 `Math`, `Color` and all SDL wrappers).
@@ -16,6 +18,7 @@ Many of the `Core`'s functions wraps wrapper's functions actually.
 ]]
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
+  delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
   keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
@@ -172,6 +175,11 @@ function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
       self.keyboard_state[i] = kb_state[i] == 1
     end
   end
+
+  -- update delta time
+  local current_time = SDLWrapper.get_ticks()
+  self.delta_time = (current_time - previous_time) / 1000
+  previous_time = current_time
 end
 
 --[[
@@ -510,6 +518,7 @@ function Nene.init(
 
   -- everything setup!
   new_state = {
+    delta_time = (1 / 60), -- fake delta time targeting 60 fps, this avoids a wrong delta time of 0s.
     =window,
     =renderer,
   }
