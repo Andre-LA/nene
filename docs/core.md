@@ -71,11 +71,13 @@ You should call this method at the start of each game loop tick, it:
 3. Calls the respective callbacks if `evt_callbacks` is given.
 
 Related SDL documentation:
-* [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent)
 * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
 * [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)
-* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.poll_event](wrappers/sdl.md#sdlwrapperpoll_event)
+* [SDLWrapper.get_keyboard_state](wrappers/sdl.md#sdlwrapperget_keyboard_state)
 
 ### Nene:get_window_size
 
@@ -85,8 +87,8 @@ function Nene:get_window_size(): (cint, cint)
 
 Get the size of the current window.
 
-Related SDL documentation:
-* [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
+Related SDLWrapper documentation:
+* [SDLWrapper.get_window_size](wrappers/sdl.md#sdlwrapperget_window_size)
 
 ### Nene:get_scancode
 
@@ -102,7 +104,9 @@ Returns the state of `scancode`.
 
 Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
-* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.get_keyboard_state](wrappers/sdl.md#sdlwrapperget_keyboard_state)
 
 ### Nene:set_render_draw_color
 
@@ -118,7 +122,9 @@ Related Nene documentation:
 Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
-* [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.set_render_draw_color](wrappers/sdl.md#sdlwrapperset_render_draw_color)
 
 ### Nene:render_clear
 
@@ -134,7 +140,9 @@ Related Nene documentation:
 
 Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
-* [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.render_clear](wrappers/sdl.md#sdlwrapperrender_clear)
 
 ### Nene:render_draw_line
 
@@ -148,8 +156,8 @@ Related Nene documentation:
 * [Math.Vec2](math.md#mathvec2)
 * [Color](colors.md#color)
 
-Related SDL documentation:
-* [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
+Related SDLWrapper documentation:
+* [SDLWrapper.render_draw_line](wrappers/sdl.md#sdlwrapperrender_draw_line)
 
 ### Nene:render_draw_rect
 
@@ -159,10 +167,12 @@ function Nene:render_draw_rect(rectangle: Math.Rect, use_lines: boolean, color: 
 
 renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
 
-Related SDL documentation:
-* [SDL_Rect](https://wiki.libsdl.org/SDL_Rect)
-* [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
-* [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
+Related Nene documentation:
+* [Math.Rect](math.md)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.render_draw_rect](wrappers/sdl.md#sdlwrapperrender_draw_rect)
+* [SDLWrapper.render_fill_rect](wrappers/sdl.md#sdlwrapperrender_fill_rect)
 
 ### Nene:render_copy
 
@@ -180,8 +190,10 @@ By default the texture will be copied on the whole rendering target unless the `
 in this case it will be copied at this "destination" part of the rendering target.
 
 Related SDL documentation:
-* [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.render_copy](wrappers/sdl.md#sdlwrapperrender_copy)
 
 ### Nene:set_render_target
 
@@ -206,10 +218,12 @@ Wrapper of `SDL_CreateTextureFromSurface`.
 
 Creates a Texture from the given surface.
 
-Related SDL_TTF documentation:
+Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 * [SDL_Surface](https://wiki.libsdl.org/SDL_Surface)
-* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
 
 ### Nene:render_present
 
@@ -222,8 +236,8 @@ this function presents it).
 
 This also does some modification on the state, preparing it for the next frame.
 
-Related SDL documentation:
-* [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
+Related SDLWrapper documentation:
+* [SDLWrapper.render_present](wrappers/sdl.md#sdlwrapperrender_present)
 
 ### Nene.init
 
@@ -262,14 +276,21 @@ defer
 end
 ```
 
-Related SDL documentation:
-* [SDL_Init](https://wiki.libsdl.org/SDL_Init)
-* [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow)
-* [SDL_CreateRenderer](https://wiki.libsdl.org/SDL_CreateRenderer)
-* [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL_SetRenderDrawBlendMode)
-* [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
-* [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
-* [TTF_Init](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
+Related SDLWrapper documentation:
+* [SDLWrapper.sdl_init](wrappers/sdl.md#sdlwrappersdl_init)
+* [SDLWrapper.create_window](wrappers/sdl.md#sdlwrappercreate_window)
+* [SDLWrapper.create_renderer](wrappers/sdl.md#sdlwrappercreate_renderer)
+* [SDLWrapper.set_render_draw_blend_mode](wrappers/sdl.md#sdlwrapperset_render_draw_blend_mode)
+
+Related MixWrapper documentation:
+* [MixWrapper.mix_init](wrappers/mix.md#mixwrappermix_init)
+* [MixWrapper.open_audio](wrappers/mix.md#mixwrapperopen_audio)
+
+Related ImgWrapper documentation:
+* [ImgWrapper.img_init](wrappers/img.md#imgwrapperimg_init)
+
+Related TTFWrapper documentation:
+* [TTFWrapper.ttf_init](wrappers/ttf.md#ttfwrapperttf_init)
 
 ### Nene:terminate
 
@@ -279,13 +300,19 @@ function Nene:terminate()
 
 Finalize application and quits all SDL subsystems
 
-Related SDL documentation:
-* [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer)
-* [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow)
-* [TTF_Quit](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_10.html)
-* [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
-* [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
-* [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
-* [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
+Related SDLWrapper documentation:
+* [SDLWrapper.destroy_renderer](wrappers/sdl.md#sdlwrapperdestroy_renderer)
+* [SDLWrapper.destroy_window](wrappers/sdl.md#sdlwrapperdestroy_window)
+* [SDLWrapper.sdl_quit](wrappers/sdl.md#sdlwrapper sdl_quit)
+
+Related ImgWrapper documentation:
+* [ImgWrapper.img_quit](wrappers/img.md#imgwrapperimg_quit)
+
+Related TTFWrapper documentation:
+* [TTFWrapper.ttf_quit](wrappers/ttf.md#ttfwrapperttf_quit)
+
+Related MixWrapper documentation:
+* [MixWrapper.close_audio](wrappers/mix.md#mixwrapperclose_audio)
+* [MixWrapper.mix_quit](wrappers/mix.md#mixwrappermix_quit)
 
 ---

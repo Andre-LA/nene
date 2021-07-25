@@ -19,6 +19,7 @@ global Color.Palette: record{
   green: Color,
   blue: Color,
   yellow: Color,
+  cyan: Color,
   bg: Color,
 }
 ```
