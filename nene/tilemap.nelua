@@ -72,9 +72,19 @@ For example, let's say you want to know the position of the 9th tile (that is, 8
 --        1 │  6  │  7  ║  8  ║  9  │ 10  │
 --          └─────┴─────╩═════╩─────┴─────┴ 64px
 
--- the tileset grid, in this example each tile of our hypothetical tileset and tilemap contains 32x32 dimensions,
--- without gaps; this is needed by `get_tile_pos` method.
-my_tilemap.grid = { cell_size = {32, 32} }
+-- let's create the above tilemap:
+local my_tilemap: Tilemap = {
+  tilemap_width =  4, -- here we setup how many tiles fits on a line of the tilemap, the height it's "infinite".
+  tileset_width = 10, -- same concept, but on tileset
+  -- this comes from the Math module, it stores the "layout" of tilemap and tileset
+  grid = {
+    cell_size = { 32, 32 } -- the dimensions of each tile, Grid also allows gaps
+  },
+  map = { -- finally, the map of tilemap, it's just a vector, each entry is the index of tileset
+    00, 01, 02, 03,
+    10, 11, 12, 13,
+  }
+}
 
 -- here, we obtain the column and row of the 9th tile using `get_tile_column_row`,
 -- since tilemap's map is 0-indexed, we use `8`.
