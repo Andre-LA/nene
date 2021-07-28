@@ -252,5 +252,5 @@ end
 -- the code is inside a function, here we call it.
 -- this is not mandatory in Nene, you can just write the code here too,
 -- however, coding in a function is required to make address sanitizer
--- (a memory debug utility) and web compiling works as expected.
+-- (a memory debug utility) work as expected.
 game()

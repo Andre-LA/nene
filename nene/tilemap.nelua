@@ -1,11 +1,11 @@
-require 'iterators'
+require 'io'
 require 'vector'
 
 require 'nene.core'
 require 'nene.texture'
 require 'nene.math'
 
-local Vec2, Grid = Math.Vec2, Math.Grid
+local Vec2, Rect, Grid = Math.Vec2, Math.Rect, Math.Grid
 
 --[[
 A tilemap contains a `width` number of tiles and a `map` of numbers which are the tiles from the tileset.
@@ -18,11 +18,14 @@ left to right, top to bottom direction.
 just as tilemap it starts from top-left and goes from left to right, top to bottom.
 ]]
 global Tilemap = @record{
-  width: isize,
+  tilemap_width: isize,
+  tileset_width: isize,
+  grid: Math.Grid,
   map: vector(isize),
 }
 ## Tilemap.value.is_tilemap = true
-
+## Tilemap.value.is_contiguous = true
+## Tilemap.value.is_container = true
 --[[
 Gets the proper column and row from a certain tile from the tilemap.
 
@@ -48,7 +51,7 @@ Related Nene documentation:
 * [Math.Grid.get_nth_cell_column_row](math.md#mathgridget_nth_cell_column_row)
 ]]
 function Tilemap:get_tile_column_row(index: usize): (isize, isize)
-  return Grid.get_nth_cell_column_row(index, self.width)
+  return Grid.get_nth_cell_column_row(index, self.tilemap_width)
 end
 
 --[[
@@ -71,7 +74,7 @@ For example, let's say you want to know the position of the 9th tile (that is, 8
 
 -- the tileset grid, in this example each tile of our hypothetical tileset and tilemap contains 32x32 dimensions,
 -- without gaps; this is needed by `get_tile_pos` method.
-local tileset_grid: Math.Grid = { cell_size = {32, 32} }
+my_tilemap.grid = { cell_size = {32, 32} }
 
 -- here, we obtain the column and row of the 9th tile using `get_tile_column_row`,
 -- since tilemap's map is 0-indexed, we use `8`.
@@ -79,7 +82,7 @@ local column, row = my_tilemap:get_tile_column_row(8)
 
 -- returns the position of `@` of the (ascii) grid above, that is, {64, 32}
 -- this is the position of the 9th tile relative to `my_tilemap`!
-local tile_pos = my_tilemap:get_tile_pos(column, row, tileset_grid)
+local tile_pos = my_tilemap:get_tile_pos(column, row)
 ```
 
 Related Nene documentation:
@@ -87,57 +90,17 @@ Related Nene documentation:
 * [Math.Vec2](math.md#mathvec2)
 * [Math.Grid](math.md#mathgrid)
 ]]
-function Tilemap:get_tile_pos(column: isize, row: isize, tileset: Grid): Vec2
+function Tilemap:get_tile_pos(column: isize, row: isize): Vec2
   return (@Vec2){
-    x = column * tileset.cell_size.width,
-    y = row * tileset.cell_size.height
+    x = column * self.grid.cell_size.width,
+    y = row * self.grid.cell_size.height
   }
 end
 
 --[[
-The `__next` iterator function, used by `__pairs` iterator, it receives the "state" (the tilemap itself) and the
-control variable (the "tileset index") as parameter, it returns:
-* a `boolean`: `true` when the next iteration can occur, this is only used by the `__pairs` function.
-* `tile_index`: the nth tile of the tilemap.
-* `tileset_index`: the value of `self.map[tile_index]`, it refers to a tile on tileset.
+Draw the whole `tilemap` using the given `tileset` texture at `position` (relative to screen) using the `color` tint.
 
-Related Nelua documentation:
-* [For In (Nelua Overview)](https://nelua.io/overview/#for-in)
-]]
-function Tilemap:__next(tile_index: isize): (boolean, isize, isize)
-  tile_index = tile_index + 1
-
-  if unlikely(tile_index >= #self.map) then
-    return false, -1, -1
-  end
-
-  return true, tile_index, self.map[tile_index]
-end
-
---[[
-A tilemap can be iterated with `for in` syntax through `pairs`, which uses this `__pairs` metamethod to work.
-
-code example:
-```lua
-for tile_index, tileset_index in pairs(my_tilemap) do
-  if tileset_index ~= 0 then
-    -- do stuff with this tile :)
-  end
-end
-```
-
-Related Nelua documentation:
-* [For In (Nelua Overview)](https://nelua.io/overview/#for-in)
-]]
-function Tilemap:__pairs()
-  return Tilemap.__next, self, -1_isize
-end
-
---[[
-Draw the whole `tilemap` at `position` (relative to screen) using the `color` tint.
-
-The tilemap will use `atlas` as "tileset", this atlas however is actually a grid and not a resource. Due to this,
-you should also give the `tileset` texture.
+A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
 * [Nene](core.md#nene)
@@ -146,27 +109,29 @@ Related Nene documentation:
 * [Texture](texture.md#texture)
 * [Color](colors.md#color)
 ]]
-function Tilemap:draw(nene: Nene, tileset_grid: Grid, tileset_texture: Texture, position: Vec2, color: facultative(Color))
+function Tilemap.draw(self: Tilemap, nene: Nene, tileset: Texture, position: Vec2, color: facultative(Color))
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
 
-  for tile_i, tileset_i in pairs(self) do
+  for tile_i = 0, < #self.map do
+    local tileset_i = self.map[tile_i]
+
     if tileset_i > 0 then
-      local tileset_column, tileset_row = Grid.get_nth_cell_column_row(tileset_i - 1)
-      local tileset_rect = tileset_grid:gen_rect(tileset_column, tileset_row)
+      local tileset_column, tileset_row = Grid.get_nth_cell_column_row(tileset_i - 1, self.tileset_width)
+      local tileset_rect = self.grid:gen_rect(tileset_column, tileset_row)
 
       local tile_column, tile_row = self:get_tile_column_row(tile_i)
-      local tile_pos = self:get_tile_pos(tile_column, tile_row, tileset_grid)
+      local tile_pos = self:get_tile_pos(tile_column, tile_row)
 
       local tile_rect: Rect = {
         x = math.ifloor(position.x + tile_pos.x),
         y = math.ifloor(position.y + tile_pos.y),
-        w = tileset_rect.width,
-        h = tileset_rect.height,
+        w = tileset_rect.w,
+        h = tileset_rect.h,
       }
 
-      tileset_texture:draw(nene, color, tileset_rect, tile_rect)
+      tileset:draw(nene, color, tileset_rect, tile_rect)
     end
   end
 end
