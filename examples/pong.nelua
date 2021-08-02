@@ -28,11 +28,11 @@ local SETTINGS: record{
   win_size = { (320*2), (240*2) },
   racket = {
     size = { 20, 100 },
-    velocity = 4,
+    velocity = 120,
   },
   ball = {
     size = 10,
-    velocity = 5,
+    velocity = 150,
   }
 }
 
@@ -40,7 +40,7 @@ local SETTINGS: record{
 
 -- racket record
 local Racket = @record{
-  pos_y: integer,
+  pos_y: number,
   points: integer,
 }
 
@@ -67,11 +67,11 @@ function Racket:update(nene: Nene, is_player_one: boolean <comptime>)
   local ylimit <const> = SETTINGS.screen_size.y - SETTINGS.racket.size.y
 
   if is_up then
-    self.pos_y = math.clamp(self.pos_y - SETTINGS.racket.velocity, 0, ylimit)
+    self.pos_y = math.clamp(self.pos_y - SETTINGS.racket.velocity * nene.delta_time, 0, ylimit)
   end
 
   if is_down then
-    self.pos_y = math.clamp(self.pos_y + SETTINGS.racket.velocity, 0, ylimit)
+    self.pos_y = math.clamp(self.pos_y + SETTINGS.racket.velocity * nene.delta_time, 0, ylimit)
   end
 end
 
@@ -92,8 +92,8 @@ function Ball:get_rect(): Rect
 end
 
 -- ball's gameplay code
-function Ball:update(racket_1: *Racket, racket_2: *Racket)
-  self.pos = self.pos + self.direction * SETTINGS.ball.velocity
+function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
+  self.pos = self.pos + self.direction * SETTINGS.ball.velocity * delta_time
 
   -- does intersected limits?
   local on_left_side  <const> = self.pos.x < 0
@@ -197,7 +197,7 @@ local function game()
 
       pl_1:update(nene, true)
       pl_2:update(nene, false)
-      ball:update(pl_1, pl_2)
+      ball:update(pl_1, pl_2, nene.delta_time)
 
       if prev_r1_points ~= pl_1.points then
         update_points(nene, r1_text, pl_1.points, font)
