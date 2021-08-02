@@ -46,11 +46,10 @@ local Racket = @record{
 
 -- return the rect of the racket
 function Racket:get_rect(is_player_one: boolean): Rect
-  return (@Rect){
-    x = is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20,
-    y = self.pos_y,
-    w = SETTINGS.racket.size.x, h = SETTINGS.racket.size.y
-  }
+  return Rect.from_vec2(
+    {(is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20), self.pos_y},
+    SETTINGS.racket.size
+  )
 end
 
 -- racket's gameplay code
@@ -89,10 +88,7 @@ local Ball = @record{
 
 -- return the ball's rect
 function Ball:get_rect(): Rect
-  return (@Rect){
-    x = self.pos.x, y = self.pos.y,
-    w = SETTINGS.ball.size, h = SETTINGS.ball.size,
-  }
+  return Rect.from_vec2(self.pos, {SETTINGS.ball.size, SETTINGS.ball.size})
 end
 
 -- ball's gameplay code

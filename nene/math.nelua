@@ -74,6 +74,7 @@ end
 
   local T: type = #[T]#
 
+  -- Rect type, but also Rectf, note that Rectf may be removed, so don't use it while this warning is here.
   global Math.#|name|# = @record{
     x: T,
     y: T,
@@ -83,6 +84,17 @@ end
 
   local RectT = @Math.#|name|#
 
+  -- Creates a Rect from two bi-dimensional vectors
+  function RectT.from_vec2(position: Vec2, size: Vec2): RectT
+    return (@RectT){
+      x = math.ifloor(position.x),
+      y = math.ifloor(position.y),
+      w = math.ifloor(size.x),
+      h = math.ifloor(size.y)
+    }
+  end
+  
+  -- Test if an another rect or point it's intersecting
   function RectT.is_intersecting(self: RectT, other: overload(RectT, Vec2)): boolean
     ## if other.type.is_vec2 then -- other is Vec2
       return (
@@ -101,6 +113,10 @@ end
     ## end
   end
 
+  -- Get an intersection rect between two rects and also if the two rects are actually intersecting.
+  -- 
+  -- It's not necessary to test if the two rects are intersecting before using this function, just check
+  -- the second return value for that.
   function RectT.get_intersection(a: RectT, b: RectT): (RectT, boolean)
     if not a:is_intersecting(b) then
       return (@RectT)(), false
@@ -122,6 +138,7 @@ end
     return intersection, true
   end
 
+  -- get the center of rectangle.
   function RectT.get_center(self: RectT): Vec2
     return (@Vec2){
       x = self.x + (self.w / 2),
@@ -188,10 +205,7 @@ end
 ## decl_rect('Rect', integer)
 
 function Math.Rectf:to_rect(): Math.Rect
-  return (@Math.Rect){
-    x = math.ifloor(self.x), y = math.ifloor(self.y),
-    w = math.ifloor(self.w), h = math.ifloor(self.h)
-  }
+  return Math.Rect.from_vec2( { self.x, self.y }, { self.w, self.h } )
 end
 
 function Math.Rect:to_rectf(): Math.Rectf
@@ -206,6 +220,7 @@ global Math.Grid = @record{
   cell_size: record{ width: integer, height: integer }, -- size of the rectangles
   gap: record{ x: integer, y: integer } -- gap between rectagles
 }
+
 local Grid = @Math.Grid
 
 -- Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
