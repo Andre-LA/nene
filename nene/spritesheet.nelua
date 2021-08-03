@@ -1,26 +1,44 @@
-require 'nene.texture_atlas'
-require 'nene.animation'
+require 'hashmap'
 require 'vector'
 
--- a sprite sheet uses an atlas and applies it for sprites
--- it contains an atlas and a sequence of animations ranges.
-global Nene.SpriteSheet = @record{
-  atlas: *Nene.TextureAtlas,
-  animations: vector(Nene.AnimationRange)
+require 'nene.core'
+require 'nene.colors'
+require 'nene.math'
+require 'nene.texture'
+
+local Vec2, Rect, Grid = Math.Vec2, Math.Rect, Math.Grid
+
+-- The `SpriteSheet` module is used to use and draw sprites.
+global SpriteSheet = @record{
+  grid: Grid,              -- spritesheet grid
+  sprites_per_line: isize, -- how many sprites fit in a line of this grid
 }
 
-## Nene.value.metafields.SpriteSheet.value.is_spritesheet = true
-## Nene.value.metafields.SpriteSheet.value.is_atlas_user = true
+-- get the column and row of the grid from an index of this spritesheet.
+function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
+  return Grid.get_nth_cell_column_row(index, self.sprites_per_line)
+end
 
--- search the animation range with the respective name
--- when found, it returns `true` and the a copy of the respective animation range,
--- otherwise it returns `false` and a unitilialized animation range.
-function Nene.SpriteSheet:get_named_animation_range(name: string): (boolean, Nene.AnimationRange)
-  for i = 0, < #self.animations do
-    if self.animations[i].name == name then
-      return true, self.animations[i]
-    end
-  end
+-- get the source get from the spritesheet at the column and row.
+function SpriteSheet:get_source_rect(column: isize, row: isize)
+  return self.grid:gen_rect(column, row)
+end
 
-  return false, (@Nene.AnimationRange){}
+-- draw the sprite from the spritesheet
+function SpriteSheet:draw(nene: Nene, position: Vec2, spritesheet_texture: Texture, sprite_index: isize, color: facultative(Color))
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
+  local sprite_column, sprite_row = self:get_sprite_column_row(sprite_index)
+  local sprite_source = self:get_source_rect(sprite_column, sprite_row)
+
+  local destination: Rect = {
+    x = math.ifloor(position.x),
+    y = math.ifloor(position.y),
+    w = sprite_source.w,
+    h = sprite_source.h
+  }
+
+  spritesheet_texture:draw(nene, color, sprite_source, destination)
 end

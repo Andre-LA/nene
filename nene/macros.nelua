@@ -1,0 +1,24 @@
+require 'string'
+
+global macros = @record{}
+
+##[[
+local function check_args(fn_name, fn_msg, lib_name, lib_get_error_fn)
+  static_assert(type(fn_name) == 'string', 'macros.warn_sdl_msg_macro on `fn_name` arg: string expected, got '..type(fn_name))
+  static_assert(type(fn_msg) == 'string', 'macros.warn_sdl_msg_macro on `fn_msg` arg: string expected, got '..type(fn_msg))
+  static_assert(type(lib_name) == 'string', 'macros.warn_sdl_msg_macro on `lib_name` arg: string expected, got '..type(lib_name))
+  static_assert(type(lib_get_error_fn) == 'string', 'macros.warn_sdl_msg_macro on `lib_get_error_fn` arg: string expected, got '..type(lib_get_error_fn))
+end
+]]
+
+## function macros.warn_sdl_msg_macro(fn_name, msg, lib_name, lib_get_error_fn)
+  ## check_args(fn_name, msg, lib_name, lib_get_error_fn)
+
+  do
+    ## local warn_str = string.format('%s: %s. (%s error message: %%s)', fn_name, msg, lib_name)
+    local lib_error_msg: cstring = #|lib_get_error_fn|#()
+    local warn_msg = string.format(#[warn_str]#, lib_error_msg)
+    warn(warn_msg)
+    warn_msg:destroy()
+  end
+## end

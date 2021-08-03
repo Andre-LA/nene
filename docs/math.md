@@ -1,117 +1,150 @@
-# nene/math.nelua
-## Nene.Math (record)
+### Math
 
 ```lua
-global Nene.Math = @record{}
+global Math = @record{}
 ```
 
-## Nene.Math.Vec2 (record)
+
+
+### Math.Vec2
 
 ```lua
-global Nene.Math.Vec2 = @record{
+global Math.Vec2 = @record{
   x: number,
   y: number
 }
 ```
 
-## Vec2.__eq (function)
+
+
+### Math.Vec2.__eq
 
 ```lua
-function Vec2.__eq(l: Vec2, r: Vec2): boolean
+function Math.Vec2.__eq(a: Vec2, b: Vec2): boolean
 ```
 
-## Vec2.__len (function)
+
+
+### Math.Vec2.__add
 
 ```lua
-function Vec2.__len(v: Vec2): number
+function Math.Vec2.__add(a: Vec2, b: Vec2): Vec2
 ```
 
-## Vec2.__add (function)
+
+
+### Math.Vec2.__sub
 
 ```lua
-function Vec2.__add(l: Vec2, r: Vec2): Vec2
+function Math.Vec2.__sub(a: Vec2, b: Vec2): Vec2
 ```
 
-## Vec2.__sub (function)
+
+
+### Math.Vec2.__mul
 
 ```lua
-function Vec2.__sub(l: Vec2, r: Vec2): Vec2
+function Math.Vec2.__mul(a: overload(Vec2, number), b: overload(Vec2, number)): Vec2
 ```
 
-## Vec2.__mul (function)
+
+
+### Math.Vec2.__div
 
 ```lua
-function Vec2.__mul(l: Vec2, r: overload(Vec2, number)): Vec2
+function Math.Vec2.__div(a: Vec2, b: Vec2): Vec2
 ```
 
-## Vec2.__div (function)
+
+
+### Math.Vec2.__unm
 
 ```lua
-function Vec2.__div(l: Vec2, r: Vec2): Vec2
+function Math.Vec2.__unm(v: Vec2): Vec2
 ```
 
-## Vec2.__unm (function)
+
+
+### Math.Vec2.lerp
 
 ```lua
-function Vec2.__unm(v: Vec2): Vec2
+function Math.Vec2.lerp(a: Vec2, b: Vec2, t: number): Vec2
 ```
 
-## Vec2.dot (function)
+
+
+### Math.Vec2.len_sqr
 
 ```lua
-function Vec2.dot(l: Vec2, r: Vec2): number
+function Math.Vec2.len_sqr(v: Vec2): number
 ```
 
-## Vec2.normalized (function)
+
+
+### Math.Vec2.__len
 
 ```lua
-function Vec2.normalized(v: Vec2): Vec2
+function Math.Vec2.__len(v: Vec2): number
 ```
 
-## Nene.Math.#|name|# (record)
+
+
+### Math.Vec2.dot
 
 ```lua
-  global Nene.Math.#|name|# = @record{
+function Math.Vec2.dot(a: Vec2, b: Vec2): number
+```
+
+
+
+### Math.Vec2.normalized
+
+```lua
+function Math.Vec2.normalized(v: Vec2): Vec2
+```
+
+
+
+### Math.
+
+```lua
+global Math.#|name|# = @record{
     x: T,
     y: T,
     w: T,
     h: T
   }
-  local RectT = Nene.Math.#|name|#
 ```
 
-## RectT:get_intersection (function)
+
+
+### Math.Grid
 
 ```lua
-  function RectT:get_intersection(other_rect: RectT): RectT
+global Math.Grid = @record{
+  cell_size: record{ width: integer, height: integer }, -- size of the rectangles
+  gap: record{ x: integer, y: integer } -- gap between rectagles
+}
 ```
 
-## RectT:is_point_intersecting (function)
+This record is intended to generate rectangles from an infinite grid.
+
+### Math.Grid.gen_rect
 
 ```lua
-  function RectT:is_point_intersecting(point: Nene.Math.Vec2): boolean
+function Math.Grid.gen_rect(grid: Grid, column: integer, row: integer): Math.Rect
 ```
 
-## RectT:is_rect_intersecting (function)
+Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
+
+### Math.Grid.get_nth_cell_column_row
 
 ```lua
-  function RectT:is_rect_intersecting(other: RectT): boolean
+function Math.Grid.get_nth_cell_column_row(n: isize, cells_per_line: isize): (isize, isize)
 ```
 
-## RectT:get_center (function)
+Returns the the column and row from a `n`th cell, note that this function is 0-indexed (so, the first cell is `0`, not `1`).
 
-```lua
-  function RectT:get_center(): Nene.Math.Vec2
-```
+Is necessary to also give how many cells fit on a line.
 
-## Nene.Math.Rectf:to_rect (function)
-
-```lua
-function Nene.Math.Rectf:to_rect(): Nene.Math.Rect
-```
-
-## Nene.Math.Rect:to_rectf (function)
-
-```lua
-function Nene.Math.Rect:to_rectf(): Nene.Math.Rectf
-```
+---
