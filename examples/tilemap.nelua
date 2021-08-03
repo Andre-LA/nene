@@ -4,7 +4,7 @@ require 'nene.texture'
 require 'nene.tilemap'
 
 local function game()
-  local win_w <comptime>, win_h <comptime> = 800, 600
+  local win_w <comptime>, win_h <comptime> = 550, 260
 
   local ok, nene = Nene.init('nene tilemap', win_w, win_h)
   assert(ok, 'error: nene initialization failed')
@@ -45,7 +45,7 @@ local function game()
     nene:set_render_target()
 
     screen:draw(nene)
-    tilemap:draw(nene, tileset, {0,0})
+    tilemap:draw(nene, tileset, {20,20})
 
     nene:render_present()
   until nene.quit

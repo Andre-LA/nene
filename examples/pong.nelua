@@ -102,10 +102,12 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   local on_down_side  <const> = self.pos.y + SETTINGS.ball.size > SETTINGS.screen_size.y
 
   -- invert horizontal direction when intersecting left or right side and add points to the winner player
+  -- also resets ball position to center
   if on_left_side or on_right_side then
     self.direction.x = -self.direction.x
     local winner_racket = on_left_side and racket_2 or racket_1
     winner_racket.points = winner_racket.points + 1
+    self.pos = { SETTINGS.screen_size.x // 2, SETTINGS.screen_size.y // 2 }
   end
 
   -- invert vertical direction when intersecting up or down side
@@ -139,7 +141,7 @@ local function game()
   -- == nene setup == --
 
   -- nene initialization
-  local ok, nene = Nene.init('nene pong example', SETTINGS.win_size.x, SETTINGS.win_size.y)
+  local ok, nene = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
   assert(ok, 'nene initialization failed')
 
   -- the `terminate` method deinitializes nene and SDL libraries

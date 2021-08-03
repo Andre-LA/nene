@@ -16,7 +16,7 @@ require 'nene.spritesheet'
 -- Since a web port is beyond this example, using just a "game" function is enough.
 local function game()
   -- initialize nene and test if got succesfully initialized
-  local ok, nene = Nene.init('nene spritesheets', (64*4), (64*4))
+  local ok, nene = Nene.init('nene sprite animation', (64*4), (64*4))
   assert(ok, 'error: nene initialization failed')
   -- defer nene termination
   defer nene:terminate() end
