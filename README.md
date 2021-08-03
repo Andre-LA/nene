@@ -13,15 +13,27 @@ Is a very simple game library for simple games, for now, using any library than 
 - [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
 - [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
 
-## Examples
-- [Pong example](examples/pong.nelua)
-- [(external) Rotor-quick tests](https://github.com/Andre-LA/rotor-quick/tree/sdl2-refactor/tests)
+`nelua-decl` is bundled as a git submodule, but this dependency is only used for `nene` development.
+
+## Installation
+
+First, [Install Nelua](https://nelua.io/installing/).
+
+Then, install SDL2 and extension libraries, it's generally available on systems's package managers, for example, in Ubuntu use the following command:
+```
+$ apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-image-dev 
+# you may need use sudo to install on Ubuntu 
+```
+
+Finally, just download `nene` (see below) and use in your game as a library.
  
 ## Download
 You can download this library by using a simple `git clone`:
 ```
 git clone https://github.com/Andre-LA/nene.git
 ```
+
+You only need the `nene` subdirectory of this repository in order to use `nene`.
 
 However, you may like to re-generate the `sdl2` libraries, in this case, you should clone recursively:
 ```
@@ -31,4 +43,11 @@ With this, you will also clone `nelua-decl`, used in to generate `sdl2` bindings
 
 (Note: a `Makefile` will be created to automatically re-generate these bindings and copy them to
  `nene` directory, but for now, you should [re-gen and copy by hand](https://github.com/edubart/nelua-decl#how-to-generate-bindings))
- 
+
+## Examples
+- [Pong](examples/pong.nelua)
+- [Rectangles](examples/rects.nelua)
+- [Sprite Animation](examples/sprite_animation.nelua)
+- [Tilemap](examples/tilemap.nelua)
+
+![image](https://user-images.githubusercontent.com/8538122/127941148-8597cb04-1bac-49cc-9ba1-909f199be996.png)
