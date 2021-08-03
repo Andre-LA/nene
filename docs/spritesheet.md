@@ -1,15 +1,36 @@
-# nene/spritesheet.nelua
-## Nene.SpriteSheet (record)
+### SpriteSheet
 
 ```lua
-global Nene.SpriteSheet = @record{
-  atlas: *Nene.TextureAtlas,
-  animations: vector(Nene.AnimationRange)
+global SpriteSheet = @record{
+  grid: Grid,              -- spritesheet grid
+  sprites_per_line: isize, -- how many sprites fit in a line of this grid
 }
 ```
 
-## Nene.SpriteSheet:get_named_animation_range (function)
+The `SpriteSheet` module is used to use and draw sprites.
+
+### SpriteSheet:get_sprite_column_row
 
 ```lua
-function Nene.SpriteSheet:get_named_animation_range(name: string): (boolean, Nene.AnimationRange)
+function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
 ```
+
+get the column and row of the grid from an index of this spritesheet.
+
+### SpriteSheet:get_source_rect
+
+```lua
+function SpriteSheet:get_source_rect(column: isize, row: isize)
+```
+
+get the source get from the spritesheet at the column and row.
+
+### SpriteSheet:draw
+
+```lua
+function SpriteSheet:draw(nene: Nene, position: Vec2, spritesheet_texture: Texture, sprite_index: isize, color: facultative(Color))
+```
+
+draw the sprite from the spritesheet
+
+---

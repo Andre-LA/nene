@@ -1,17 +1,25 @@
-# nene/animation.nelua
-## Nene.AnimationRange (record)
+## animation
+
+Animation range type, used on Spritesheets
+
+### AnimationRange
 
 ```lua
-global Nene.AnimationRange = @record{
-  name: string,
-  fps: number,
-  from: usize,
-  to: usize,
+global AnimationRange = @record{
+  fps: number, -- frames per second of this animation
+  from: usize, -- first frame
+  to: usize,   -- last frame
 }
 ```
 
-## Nene.AnimationRange.__eq (function)
+Animation range type, used on Spritesheets
+
+### AnimationRange.__eq
 
 ```lua
-function Nene.AnimationRange.__eq(l: Nene.AnimationRange, r: Nene.AnimationRange): boolean
+function AnimationRange.__eq(l: AnimationRange, r: AnimationRange): boolean
 ```
+
+checks equality between animation ranges
+
+---

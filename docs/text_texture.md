@@ -1,33 +1,75 @@
-# nene/text_texture.nelua
-## Nene.TextTexture (record)
+### TextTexture
 
 ```lua
-global Nene.TextTexture = @record{
-  texture: Nene.Texture,
+global TextTexture = @record{
+  texture: Texture,
   text: string,
 }
 ```
 
-## Nene.TextTexture:free (function)
+**Owns** an internal `Texture` with a text in it, this text is also stored as a string on the `text` field.
+Use `update_text` method to easily to update both `text` and `texture` with this new text.
+
+Related Nene documentation:
+* [Texture](texture.md#texture)
+
+### TextTexture:destroy
 
 ```lua
-function Nene.TextTexture:free()
+function TextTexture:destroy()
 ```
 
-## Nene.TextTexture:update_text (function)
+Destroy the TextTexture and resets to zeroed state.
+
+Related Nene documentation:
+* [Texture.destroy](texture.md#texturedestroy)
+
+### TextTexture:update_text
 
 ```lua
-function Nene.TextTexture:update_text(nene_state: Nene.CoreState, text: string, color: Nene.Color, font: facultative(Nene.Font))
+function TextTexture:update_text(nene: Nene, text: string, font: Font, color: facultative(Color))
 ```
 
-## Nene.TextTexture:draw (function)
+Updates the text texture with a new `text`, with the given `font`.
+
+You can optionally also pass a `color`, which by default is white.
+
+Related Nene documentation:
+* [Nene.create_texture_from_surface](core.md#nenecreate_texture_from_surface)
+* [Texture.apply_sdltex](texture.md#textureapply_sdltex)
+
+Related SDL and SDL_TTF documentation:
+* [TTFWrapper.ttf_render_utf8_solid](wrappers/ttf.md#ttfwrapperttf_render_utf8_solid)
+* [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
+* [SDLWrapper.free_surface](wrappers/sdl.md#sdlwrapperfree_surface)
+
+### TextTexture:draw
 
 ```lua
-function Nene.TextTexture:draw(nene_state: Nene.CoreState, pos: Nene.Math.Vec2, color: Nene.Color)
+function TextTexture:draw(nene: Nene, position: Vec2, color: facultative(Color))
 ```
 
-## Nene.TextTexture.new (function)
+Draw the texture at the given `position`.
+
+A `color` tint can be passed optionally, it's white by default.
+
+Related Nene documentation:
+* [Texture.draw](texture.md#texturedraw)
+* [Math.Vec2](math.md#mathvec2)
+* [Math.Rect](math.md#mathrect)
+* [Color](colors.md#color)
+
+### TextTexture.new
 
 ```lua
-function Nene.TextTexture.new(nene_state: Nene.CoreState, initial_text: string, color: Nene.Color, font: facultative(Nene.Font)): Nene.TextTexture
+function TextTexture.new(nene: Nene, initial_text: string, font: Font, color: facultative(Color)): TextTexture
 ```
+
+Creates a new initialized `TextTexture` with an `initial_text` applied with the given `font`.
+
+A color can be passed optionally, is white by default.
+
+Related Nene documentation:
+* [TextTexture.update_text](#texttextureupdate_text)
+
+---
