@@ -218,7 +218,7 @@ function Nene:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)
     local currently_pressed = self.keyboard_state[scancode]
     local previously_pressed = self.prev_keyboard_state[scancode]
 
-    if is_down.value then
+    if is_down then
       return currently_pressed and not previously_pressed
     else
       return not currently_pressed and previously_pressed
