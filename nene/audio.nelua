@@ -120,6 +120,25 @@ function Music:get(): *Mix_Music
 end
 
 --[[
+Load music file. 
+
+Related MixWrapper documentation:
+* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperload_mus)
+
+Related SDL_mixer documentation:
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+]]
+function Music.load(filename: string): (Music, boolean)
+  local music_data, ok = MixWrapper.load_mus(filename)
+  
+  local new_music: Music = {
+    _data = music_data
+  }
+  
+  return new_music, ok
+end
+
+--[[
 Plays the music (forever by default), note that this stops any playing music.
 
 You can also pass a `loop` argument, this makes the music loop `loop` times, also note that:

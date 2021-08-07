@@ -34,7 +34,7 @@ Wrapper of `Mix_Quit`
 Shutdown and cleanup SDL_mixer loading support.
 This function will call `Mix_Quit` _n_ times until `Mix_Init(0)` returns non-zero.
 
-Related SDL documentation:
+Related SDL_mixer documentation:
 * [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
 * [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
 
@@ -76,9 +76,23 @@ Wrapper of `Mix_CloseAudio`
 
 Shutdown and cleanup SDL_mixer library.
 
-Related SDL documentation:
+Related SDL_mixer documentation:
 * [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
 * [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
+
+### MixWrapper.load_mus
+
+```lua
+function MixWrapper.load_mus(filepath: cstring): (*Mix_Music, boolean)
+```
+
+Wrapper of `Mix_LoadMUS`
+
+Load music file to use.
+
+Related SDL_mixer documentation:
+* [Mix_LoadMUS](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_55.html#SEC55)
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 
 ### MixWrapper.play_channel
 

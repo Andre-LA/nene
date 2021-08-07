@@ -97,6 +97,20 @@ It checks if the internal data is `nilptr` and then returns it.
 Related SDL_mixer documentation:
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 
+### Music.load
+
+```lua
+function Music.load(filename: string): (Music, boolean)
+```
+
+Load music file.
+
+Related MixWrapper documentation:
+* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperload_mus)
+
+Related SDL_mixer documentation:
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+
 ### Music:play
 
 ```lua
