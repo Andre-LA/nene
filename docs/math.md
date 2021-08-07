@@ -116,7 +116,7 @@ global Math.#|name|# = @record{
   }
 ```
 
-
+Rect type, but also Rectf, note that Rectf may be removed, so don't use it while this warning is here.
 
 ### Math.Grid
 
