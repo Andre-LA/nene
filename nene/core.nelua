@@ -273,7 +273,11 @@ Related Nene documentation:
 Related SDLWrapper documentation:
 * [SDLWrapper.render_draw_line](wrappers/sdl.md#sdlwrapperrender_draw_line)
 ]]
-function Nene:render_draw_line(origin: Math.Vec2, destination: Math.Vec2, color: Color)
+function Nene:render_draw_line(origin: Math.Vec2, destination: Math.Vec2, color: facultative(Color))
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
   check(Nene.initialized, 'Nene is not initialized')
 
   self:set_render_draw_color(color)
@@ -296,7 +300,11 @@ Related SDLWrapper documentation:
 * [SDLWrapper.render_draw_rect](wrappers/sdl.md#sdlwrapperrender_draw_rect)
 * [SDLWrapper.render_fill_rect](wrappers/sdl.md#sdlwrapperrender_fill_rect)
 ]]
-function Nene:render_draw_rect(rectangle: Math.Rect, use_lines: boolean, color: Color)
+function Nene:render_draw_rect(rectangle: Math.Rect, use_lines: boolean, color: facultative(Color))
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
   check(Nene.initialized, 'Nene is not initialized')
 
   local sdl_rect: SDL_Rect = {
