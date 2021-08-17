@@ -1,0 +1,83 @@
+-- in this demo, a basic camera control is done
+-- Actually, there is no "camera" on Nene, instead, there is a
+-- Vec2 offset done in all rendering calls, this offset is the
+-- `render_offset` field.
+
+-- You can change this field in order to add a basic camera control.
+
+require 'nene.core'
+require 'nene.math'
+
+-- alias Rect for easier access
+local Rect = @Math.Rect
+
+-- in this example it also be showcased how to split your game logic in functions.
+-- It's pretty simple, you just need to pass nene state as an argument (unless you use
+-- a global variable of course).
+-- Make sure to use a pointer when using a parameter! First because you may want to
+-- modify the nene state, but also because Nene is a heavy data structure to pass as a copy.
+local function draw_parallax_grid(nene: *Nene)
+  -- draw a grid with parallax effect!
+  -- save our original render_offset value
+  local original_offset = nene.render_offset
+
+  -- multiply render_offset by half
+  nene.render_offset = nene.render_offset * 0.5
+
+  -- at the end of the function, the original value will be restored to render_offset
+  defer nene.render_offset = original_offset end
+
+  for i = -64, 64 do
+    nene:render_draw_line({16 * i, -2048}, {16 * i, 2048}, Color.Palette.black)
+    nene:render_draw_line({-2048, 16 * i}, {2048, 16 * i}, Color.Palette.black)
+  end
+end
+
+local function draw_parallax_shadow(nene: *Nene)
+  local original_offset = nene.render_offset
+  nene.render_offset = nene.render_offset * 0.5
+  defer nene.render_offset = original_offset end
+
+  nene:render_draw_rect({120, 120, 16, 16}, false, {0, 0, 0, 100})
+end
+
+local function camera()
+  -- initialize, test nene initialization and defer it's termination.
+  local ok, nene = Nene.init('nene basic camera', 256, 256)
+  assert(ok, 'error: nene initialization failed')
+  defer nene:terminate() end
+
+  -- create or rect, note that is <const>
+  local rect_on_center: Rect <const> = {112, 112, 32, 32}
+
+  repeat
+    -- modify `render_offset` field in order to get a basic camera control
+    if nene:get_scancode(SDL_SCANCODE_RIGHT) then
+      nene.render_offset.x = nene.render_offset.x + 1
+    elseif nene:get_scancode(SDL_SCANCODE_LEFT) then
+      nene.render_offset.x = nene.render_offset.x - 1
+    end
+
+    if nene:get_scancode(SDL_SCANCODE_UP) then
+      nene.render_offset.y = nene.render_offset.y - 1
+    elseif nene:get_scancode(SDL_SCANCODE_DOWN) then
+      nene.render_offset.y = nene.render_offset.y + 1
+    end
+
+    -- update nene state and clear backbuffer
+    nene:poll_events()
+
+    -- rendering step
+    nene:render_clear(Color.Palette.bg)
+    do
+      draw_parallax_grid(nene)
+      draw_parallax_shadow(nene)
+
+      -- draw the rect, note that rect_on_center is never modified
+      nene:render_draw_rect(rect_on_center, false)
+    end
+    nene:render_present()
+  until nene.quit
+end
+
+camera()

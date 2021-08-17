@@ -21,6 +21,7 @@ Many of the `Core`'s functions wraps wrapper's functions actually.
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
+  render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
   keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
@@ -284,10 +285,10 @@ function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultati
 
   self:set_render_draw_color(color)
 
-  local origin_px: cint, origin_py: cint, dest_px: cint, dest_py: cint = math.ifloor(origin.x),
-                                                                         math.ifloor(origin.y),
-                                                                         math.ifloor(destination.x),
-                                                                         math.ifloor(destination.y)
+  local origin_px: cint, origin_py: cint, dest_px: cint, dest_py: cint = math.ifloor(origin.x - self.render_offset.x),
+                                                                         math.ifloor(origin.y - self.render_offset.y),
+                                                                         math.ifloor(destination.x - self.render_offset.x),
+                                                                         math.ifloor(destination.y - self.render_offset.y)
 
   SDLWrapper.render_draw_line(self.renderer, origin_px, origin_py, dest_px, dest_py)
 end
@@ -310,8 +311,10 @@ function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facul
   check(Nene.initialized, 'Nene is not initialized')
 
   local sdl_rect: SDL_Rect = {
-    x = rectangle.x, y = rectangle.y,
-    w = rectangle.w, h = rectangle.h
+    x = math.ifloor(rectangle.x - self.render_offset.x),
+    y = math.ifloor(rectangle.y - self.render_offset.y),
+    w = rectangle.w,
+    h = rectangle.h
   }
 
   self:set_render_draw_color(color)
@@ -348,12 +351,24 @@ function Nene:render_copy(texture: *SDL_Texture, source: facultative(Rect), dest
   local src: *SDL_Rect, dest: *SDL_Rect;
 
   ## if not source.type.is_niltype then
-  local src_rect: SDL_Rect = {x = source.x, y = source.y, w = source.w, h = source.h}
+  local src_rect: SDL_Rect = {
+    x = math.ifloor(source.x - self.render_offset.x),
+    y = math.ifloor(source.y - self.render_offset.y),
+    w = source.w,
+    h = source.h
+  }
+
   src = &src_rect
   ## end
 
   ## if not destination.type.is_niltype then
-  local dest_rect: SDL_Rect = {x = destination.x, y = destination.y, w = destination.w, h = destination.h}
+  local dest_rect: SDL_Rect = {
+    x = math.ifloor(destination.x - self.render_offset.x),
+    y = math.ifloor(destination.y - self.render_offset.y),
+    w = destination.w,
+    h = destination.h
+  }
+
   dest = &dest_rect
   ## end
 
