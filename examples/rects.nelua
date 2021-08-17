@@ -27,7 +27,7 @@ local function rects()
 
     -- draw both rects with white lines
     nene:render_draw_rect(rect_a, true, Color.Palette.white)
-    nene:render_draw_rect(rect_b, true, Color.Palette.white)
+    nene:render_draw_rect(rect_b, true) -- when a color is not passed, then `Color.Palette.white` will be used
 
     if is_intersecting then
       nene:render_draw_rect(col_rect, false, Color.Palette.cyan)

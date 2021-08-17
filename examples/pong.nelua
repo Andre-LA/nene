@@ -128,7 +128,7 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
 end
 
 function Ball:draw(nene: Nene)
-  nene:render_draw_rect(self:get_rect(), false, Color.Palette.white)
+  nene:render_draw_rect(self:get_rect(), false)
 end
 
 local function update_points(nene: Nene, pts_text: *TextTexture, points: integer, font: Font)
