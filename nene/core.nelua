@@ -8,6 +8,8 @@ require 'nene.wrappers.img'
 require 'nene.colors'
 require 'nene.math'
 
+local Vec2, Rect = @Math.Vec2, @Math.Rect
+
 local previous_time: uint32 = 0
 
 --[[
@@ -273,7 +275,7 @@ Related Nene documentation:
 Related SDLWrapper documentation:
 * [SDLWrapper.render_draw_line](wrappers/sdl.md#sdlwrapperrender_draw_line)
 ]]
-function Nene:render_draw_line(origin: Math.Vec2, destination: Math.Vec2, color: facultative(Color))
+function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultative(Color))
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
@@ -300,7 +302,7 @@ Related SDLWrapper documentation:
 * [SDLWrapper.render_draw_rect](wrappers/sdl.md#sdlwrapperrender_draw_rect)
 * [SDLWrapper.render_fill_rect](wrappers/sdl.md#sdlwrapperrender_fill_rect)
 ]]
-function Nene:render_draw_rect(rectangle: Math.Rect, use_lines: boolean, color: facultative(Color))
+function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color))
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
@@ -331,13 +333,16 @@ in this case only the "source" part of the texture will be copied.
 By default the texture will be copied on the whole rendering target unless the `destination` rectangle is given,
 in this case it will be copied at this "destination" part of the rendering target.
 
+Related Nene documentation:
+* [Math.Rect](math.md)
+
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 
 Related SDLWrapper documentation:
 * [SDLWrapper.render_copy](wrappers/sdl.md#sdlwrapperrender_copy)
 ]]
-function Nene:render_copy(texture: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
+function Nene:render_copy(texture: *SDL_Texture, source: facultative(Rect), destination: facultative(Rect))
   check(Nene.initialized, 'Nene is not initialized')
 
   local src: *SDL_Rect, dest: *SDL_Rect;
