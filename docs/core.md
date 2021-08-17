@@ -4,6 +4,7 @@
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
+  render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
   keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
@@ -148,7 +149,7 @@ Related SDLWrapper documentation:
 ### Nene:render_draw_line
 
 ```lua
-function Nene:render_draw_line(origin: Math.Vec2, destination: Math.Vec2, color: Color)
+function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultative(Color))
 ```
 
 renders a line from `origin` to `destination` with the given `color`.
@@ -163,7 +164,7 @@ Related SDLWrapper documentation:
 ### Nene:render_draw_rect
 
 ```lua
-function Nene:render_draw_rect(rectangle: Math.Rect, use_lines: boolean, color: Color)
+function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color))
 ```
 
 renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
@@ -178,7 +179,7 @@ Related SDLWrapper documentation:
 ### Nene:render_copy
 
 ```lua
-function Nene:render_copy(texture: *SDL_Texture, source: facultative(Math.Rect), destination: facultative(Math.Rect))
+function Nene:render_copy(texture: *SDL_Texture, source: facultative(Rect), destination: facultative(Rect))
 ```
 
 Wrapper of `SDL_RenderCopy`.
@@ -189,6 +190,9 @@ in this case only the "source" part of the texture will be copied.
 
 By default the texture will be copied on the whole rendering target unless the `destination` rectangle is given,
 in this case it will be copied at this "destination" part of the rendering target.
+
+Related Nene documentation:
+* [Math.Rect](math.md)
 
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
