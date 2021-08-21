@@ -10,8 +10,6 @@ require 'nene.math'
 
 local Vec2, Rect = @Math.Vec2, @Math.Rect
 
-local previous_time: uint32 = 0
-
 --[[
 The core of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
 `Math`, `Color` and all SDL wrappers).
@@ -20,6 +18,7 @@ Many of the `Core`'s functions wraps wrapper's functions actually.
 ]]
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
+  current_time: uint32,    -- time since initialization (in milliseconds!).
   delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
   render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
@@ -179,10 +178,10 @@ function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
     end
   end
 
-  -- update delta time
-  local current_time = SDLWrapper.get_ticks()
-  self.delta_time = (current_time - previous_time) / 1000
-  previous_time = current_time
+  -- update delta_time and current_time
+  local cur_time = SDLWrapper.get_ticks()
+  self.delta_time = (cur_time - self.current_time) / 1000
+  self.current_time = cur_time
 end
 
 --[[

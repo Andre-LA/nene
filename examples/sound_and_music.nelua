@@ -4,30 +4,30 @@ require 'nene.audio'
 
 local function audio_and_music()
   -- nene initialization and deferred de-initialization
-  local ok, nene = Nene.init('Nene audio and music', 128, 128)
+  local ok, nene = Nene.init('nene audio and music', 128, 128)
   assert(ok, 'error: nene initialization failed')
   defer nene:terminate() end
-  
+
   -- sound and music loading and deferred destroyment
   local click = Sound.load('resources/pixelclick.wav')
   local bossa = Music.load('resources/8bit Bossa.ogg')
-  
+
   defer
     click:destroy()
     bossa:destroy()
   end
-  
+
   bossa:play()
-  
+
   repeat
     nene:poll_events()
-    
+
     if nene:get_scancode(SDL_SCANCODE_SPACE, true) then
       click:play()
     end
-    
+
     nene:render_clear(Color.Palette.bg)
-    
+
     nene:render_present()
   until nene.quit
 end
