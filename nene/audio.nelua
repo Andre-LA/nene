@@ -79,8 +79,6 @@ function Sound:stop()
   if self.channel >= 0 then
     MixWrapper.halt_channel(self.channel)
     self.channel = -1
-  else
-    warn'Sound.stop: trying to stop an uninitialized sound'
   end
 end
 
@@ -120,7 +118,7 @@ function Music:get(): *Mix_Music
 end
 
 --[[
-Load music file. 
+Load music file.
 
 Related MixWrapper documentation:
 * [MixWrapper.halt_music](wrappers/mix.md#mixwrapperload_mus)
@@ -130,11 +128,11 @@ Related SDL_mixer documentation:
 ]]
 function Music.load(filename: string): (Music, boolean)
   local music_data, ok = MixWrapper.load_mus(filename)
-  
+
   local new_music: Music = {
     _data = music_data
   }
-  
+
   return new_music, ok
 end
 
