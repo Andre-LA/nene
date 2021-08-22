@@ -18,6 +18,14 @@ left to right, top to bottom direction.
 * when the entry value is `0`, then it's an empty space, othewise it refers to a tile from the tileset (`1` = "1st tile", and so on),
 just as tilemap it starts from top-left and goes from left to right, top to bottom.
 
+### Tilemap:destroy
+
+```lua
+function Tilemap:destroy()
+```
+
+destroys the internal map vector and set tilemap to zeroed state
+
 ### Tilemap:get_tile_column_row
 
 ```lua

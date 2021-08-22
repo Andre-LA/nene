@@ -3,12 +3,17 @@
 ```lua
 global Nene = @record{
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
+  current_time: uint32,    -- time since initialization (in milliseconds!).
   delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
   render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
-  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
-  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- holds the state of keyboard in the previous frame (`true` means "pressed")
+
+  -- input states
+  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+  mouse_pos: Vec2,            -- store the mouse position relative to window
+  mouse_buttons: [32]boolean, -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
 }
 ```
 
@@ -308,7 +313,7 @@ Finalize application and quits all SDL subsystems
 Related SDLWrapper documentation:
 * [SDLWrapper.destroy_renderer](wrappers/sdl.md#sdlwrapperdestroy_renderer)
 * [SDLWrapper.destroy_window](wrappers/sdl.md#sdlwrapperdestroy_window)
-* [SDLWrapper.sdl_quit](wrappers/sdl.md#sdlwrapper sdl_quit)
+* [SDLWrapper.sdl_quit](wrappers/sdl.md#sdlwrappersdl_quit)
 
 Related ImgWrapper documentation:
 * [ImgWrapper.img_quit](wrappers/img.md#imgwrapperimg_quit)
