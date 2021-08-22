@@ -16,8 +16,7 @@ local function rects()
     nene:poll_events()
 
     -- copy mouse position to rect_a position
-    local _, mouse_x, mouse_y = SDLWrapper.get_mouse_state()
-    rect_a.x, rect_a.y = mouse_x, mouse_y
+    rect_a:set_pos(nene.mouse_pos)
 
     -- create a third rect, which is a resolved collision between the
     -- two above, note that is a very simple collision algorhythm

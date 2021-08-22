@@ -23,8 +23,12 @@ global Nene = @record{
   render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
-  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- holds the state of keyboard in the current frame (`true` means "pressed")
-  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- holds the state of keyboard in the previous frame (`true` means "pressed")
+
+  -- input states
+  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+  mouse_pos: Vec2,            -- store the mouse position relative to window
+  mouse_buttons: [32]boolean, -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
 }
 
 --[[
@@ -170,12 +174,23 @@ function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
     ## end
   end
 
-  do -- update current keyboard_state
+  -- update input states
+  do
+    -- update current keyboard_state
     local kb_state = SDLWrapper.get_keyboard_state()
 
     for i = 0, < #kb_state do
       self.keyboard_state[i] = kb_state[i] == 1
     end
+
+    -- update mouse state
+    local buttons_bitmask, mx, my = SDLWrapper.get_mouse_state()
+
+    for i = 0, < #self.mouse_buttons do
+      self.mouse_buttons[i] = buttons_bitmask & (1 << i) ~= 0
+    end
+
+    self.mouse_pos = {mx, my}
   end
 
   -- update delta_time and current_time
@@ -309,12 +324,8 @@ function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facul
 
   check(Nene.initialized, 'Nene is not initialized')
 
-  local sdl_rect: SDL_Rect = {
-    x = math.ifloor(rectangle.x - self.render_offset.x),
-    y = math.ifloor(rectangle.y - self.render_offset.y),
-    w = rectangle.w,
-    h = rectangle.h
-  }
+  rectangle:set_pos({rectangle.x - self.render_offset.x, rectangle.y - self.render_offset.y})
+  local sdl_rect: SDL_Rect = rectangle:to_sdlrect()
 
   self:set_render_draw_color(color)
 
@@ -350,24 +361,13 @@ function Nene:render_copy(texture: *SDL_Texture, source: facultative(Rect), dest
   local src: *SDL_Rect, dest: *SDL_Rect;
 
   ## if not source.type.is_niltype then
-  local src_rect: SDL_Rect = {
-    x = math.ifloor(source.x),
-    y = math.ifloor(source.y),
-    w = source.w,
-    h = source.h
-  }
-
+  local src_rect: SDL_Rect = source:to_sdlrect()
   src = &src_rect
   ## end
 
   ## if not destination.type.is_niltype then
-  local dest_rect: SDL_Rect = {
-    x = math.ifloor(destination.x - self.render_offset.x),
-    y = math.ifloor(destination.y - self.render_offset.y),
-    w = destination.w,
-    h = destination.h
-  }
-
+  destination:set_pos({destination.x - self.render_offset.x, destination.y - self.render_offset.y})
+  local dest_rect: SDL_Rect = destination:to_sdlrect()
   dest = &dest_rect
   ## end
 
@@ -559,7 +559,7 @@ Finalize application and quits all SDL subsystems
 Related SDLWrapper documentation:
 * [SDLWrapper.destroy_renderer](wrappers/sdl.md#sdlwrapperdestroy_renderer)
 * [SDLWrapper.destroy_window](wrappers/sdl.md#sdlwrapperdestroy_window)
-* [SDLWrapper.sdl_quit](wrappers/sdl.md#sdlwrapper sdl_quit)
+* [SDLWrapper.sdl_quit](wrappers/sdl.md#sdlwrappersdl_quit)
 
 Related ImgWrapper documentation:
 * [ImgWrapper.img_quit](wrappers/img.md#imgwrapperimg_quit)
