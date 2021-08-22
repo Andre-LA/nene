@@ -34,6 +34,7 @@ local function game()
       2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
     }
   }
+  defer tilemap:destroy() end
 
   repeat
     nene:poll_events()

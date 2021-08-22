@@ -23,9 +23,17 @@ global Tilemap = @record{
   grid: Math.Grid,
   map: vector(isize),
 }
-## Tilemap.value.is_tilemap = true
-## Tilemap.value.is_contiguous = true
-## Tilemap.value.is_container = true
+
+-- destroys the internal map vector and set tilemap to zeroed state
+function Tilemap:destroy()
+  self.map:destroy()
+
+  self.tilemap_width = 0
+  self.tileset_width = 0
+  self.grid = (@Grid)()
+  self.map = (@vector(isize))()
+end
+
 --[[
 Gets the proper column and row from a certain tile from the tilemap.
 
