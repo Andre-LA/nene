@@ -111,7 +111,7 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   end
 
   -- invert vertical direction when intersecting up or down side
-  if on_down_side or on_up_side then
+  if on_down_side and self.direction.y > 0 or on_up_side and self.direction.y < 0 then
     self.direction.y = -self.direction.y
   end
 
