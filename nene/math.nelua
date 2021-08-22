@@ -72,7 +72,7 @@ end
 ## local decl_rect = function(name, T)
   ## staticassert(T.value.is_arithmetic, 'T is not arithmetic')
 
-  local T: type = #[T]#
+  local T: type = @#[T]#
 
   -- Rect type, but also Rectf, note that Rectf may be removed, so don't use it while this warning is here.
   global Math.#|name|# = @record{
@@ -83,6 +83,22 @@ end
   }
 
   local RectT = @Math.#|name|#
+  ## RectT.subtype = T
+
+  -- convert this
+  function RectT.to_sdlrect(rect: RectT): SDL_Rect
+    ## if T.type.is_integral then
+      return SDL_Rect{
+        x = math.ifloor(rect.x), y = math.ifloor(rect.y),
+        w = math.ifloor(rect.w), h = math.ifloor(rect.h)
+      }
+    ## else
+      return SDL_Rect{
+        x = rect.x, y = rect.y,
+        w = rect.w, h = rect.h
+      }
+    ## end
+  end
 
   -- Creates a Rect from two bi-dimensional vectors
   function RectT.from_vec2(position: Vec2, size: Vec2): RectT
@@ -93,7 +109,17 @@ end
       h = math.ifloor(size.y)
     }
   end
-  
+
+  -- set the rectangle's position from a `Vec2`
+  function RectT:set_pos(position: Vec2)
+    self.x, self.y = math.ifloor(position.x), math.ifloor(position.y)
+  end
+
+  -- set the rectangle's size from a `Vec2`
+  function RectT:set_size(size: Vec2)
+    self.w, self.h = math.ifloor(size.x), math.ifloor(size.y)
+  end
+
   -- Test if an another rect or point it's intersecting
   function RectT.is_intersecting(self: RectT, other: overload(RectT, Vec2)): boolean
     ## if other.type.is_vec2 then -- other is Vec2
@@ -114,7 +140,7 @@ end
   end
 
   -- Get an intersection rect between two rects and also if the two rects are actually intersecting.
-  -- 
+  --
   -- It's not necessary to test if the two rects are intersecting before using this function, just check
   -- the second return value for that.
   function RectT.get_intersection(a: RectT, b: RectT): (RectT, boolean)
