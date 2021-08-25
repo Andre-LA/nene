@@ -106,6 +106,25 @@ Related Nene documentation:
 * [Math.Vec2](math.md#mathvec2)
 * [Math.Grid](math.md#mathgrid)
 
+### Tilemap.get_height
+
+```lua
+function Tilemap.get_height(tilemap: Tilemap): isize
+```
+
+Returns the map's height.
+
+For example, let's say that an tilemap have 3 tiles of width, and it contains 5 tiles
+in it's map, then the map looks like this:
+
+```
+┌───┬───┬───┐ ┬ 0
+│ 1 │ 2 │ 3 │ │
+├───┼───┼───┘ ┼ height
+│ 4 │ 5 │     │
+└───┴───┘     ┴ 2 --> this is the result
+```
+
 ### Tilemap.draw
 
 ```lua

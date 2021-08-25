@@ -1,4 +1,5 @@
 require 'io'
+require 'math'
 require 'vector'
 
 require 'nene.core'
@@ -113,6 +114,24 @@ function Tilemap:get_tile_pos(column: isize, row: isize): Vec2
     x = column * self.grid.cell_size.width,
     y = row * self.grid.cell_size.height
   }
+end
+
+--[[
+Returns the map's height.
+
+For example, let's say that an tilemap have 3 tiles of width, and it contains 5 tiles
+in it's map, then the map looks like this:
+
+```
+┌───┬───┬───┐ ┬ 0
+│ 1 │ 2 │ 3 │ │
+├───┼───┼───┘ ┼ height
+│ 4 │ 5 │     │
+└───┴───┘     ┴ 2 --> this is the result
+```
+]]
+function Tilemap.get_height(tilemap: Tilemap): isize
+  return math.ceil(#tilemap.map / tilemap.tilemap_width)
 end
 
 --[[
