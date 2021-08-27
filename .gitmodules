@@ -1,4 +1,0 @@
-[submodule "nelua-decl"]
-	path = nelua-decl
-	url = https://github.com/edubart/nelua-decl.git
-	branch = main
