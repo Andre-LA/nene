@@ -9,12 +9,13 @@ require 'nene.colors'
 require 'nene.math'
 
 ##[[
-if ccinfo.is_emscripten then
-  primtypes.integer = primtypes.int32
-  primtypes.uinteger = primtypes.uint32
-  primtypes.number = primtypes.float32
-end
+  if ccinfo.is_emscripten then
+    primtypes.integer = primtypes.int32
+    primtypes.uinteger = primtypes.uint32
+    primtypes.number = primtypes.float32
 ]]
+    global function emscripten_set_main_loop(func: function(), fps: cint, simulate_infinite_loop: cint) <cimport,cinclude'<emscripten.h>',nodecl> end
+##end
 
 local Vec2, Rect = @Math.Vec2, @Math.Rect
 
@@ -25,10 +26,13 @@ The core of Nene, it contains pointers made by SDL2, and doesn't requires any ot
 Many of the `Core`'s functions wraps wrapper's functions actually.
 ]]
 global Nene = @record{
+  -- general data
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   current_time: uint32,    -- time since initialization (in milliseconds!).
   delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
   render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
+
+  -- SDL references
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
 

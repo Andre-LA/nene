@@ -1,6 +1,10 @@
 ##[[
 cinclude '<SDL2/SDL_ttf.h>'
-linklib 'SDL2_ttf'
+if ccinfo.is_emscripten then
+  cflags '-s USE_SDL_TTF=2'
+else
+  linklib 'SDL2_ttf'
+end
 ]]
 global function TTF_Linked_Version(): *SDL_version <cimport, nodecl> end
 global function TTF_ByteSwappedUNICODE(swapped: cint) <cimport, nodecl> end
