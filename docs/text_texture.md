@@ -1,3 +1,10 @@
+### Summary
+* [TextTexture](#texttexture)
+* [TextTexture:destroy](#texttexturedestroy)
+* [TextTexture:update_text](#texttextureupdate_text)
+* [TextTexture:draw](#texttexturedraw)
+* [TextTexture.new](#texttexturenew)
+
 ### TextTexture
 
 ```lua

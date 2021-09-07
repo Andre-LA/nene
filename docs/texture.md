@@ -1,3 +1,13 @@
+### Summary
+* [Texture](#texture)
+* [Texture:get](#textureget)
+* [Texture:destroy](#texturedestroy)
+* [Texture:apply_sdltex](#textureapply_sdltex)
+* [Texture.new](#texturenew)
+* [Texture.create_texture](#texturecreate_texture)
+* [Texture.load](#textureload)
+* [Texture:draw](#texturedraw)
+
 ### Texture
 
 ```lua

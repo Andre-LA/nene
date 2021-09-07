@@ -1,3 +1,9 @@
+### Summary
+* [Font](#font)
+* [Font:get](#fontget)
+* [Font.load](#fontload)
+* [Font:destroy](#fontdestroy)
+
 ### Font
 
 ```lua

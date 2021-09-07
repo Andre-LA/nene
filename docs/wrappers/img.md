@@ -1,3 +1,9 @@
+### Summary
+* [ImgWrapper](#imgwrapper)
+* [ImgWrapper.img_init](#imgwrapperimg_init)
+* [ImgWrapper.img_load](#imgwrapperimg_load)
+* [ImgWrapper.img_quit](#imgwrapperimg_quit)
+
 ### ImgWrapper
 
 ```lua

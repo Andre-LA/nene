@@ -1,3 +1,11 @@
+### Summary
+* [Tilemap](#tilemap)
+* [Tilemap:destroy](#tilemapdestroy)
+* [Tilemap:get_tile_column_row](#tilemapget_tile_column_row)
+* [Tilemap:get_tile_pos](#tilemapget_tile_pos)
+* [Tilemap.get_height](#tilemapget_height)
+* [Tilemap.draw](#tilemapdraw)
+
 ### Tilemap
 
 ```lua

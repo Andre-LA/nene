@@ -1,3 +1,7 @@
+### Summary
+* [Color](#color)
+* [Color.Palette](#colorpalette)
+
 ### Color
 
 ```lua

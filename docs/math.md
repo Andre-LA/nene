@@ -1,3 +1,22 @@
+### Summary
+* [Math](#math)
+* [Math.Vec2](#mathvec2)
+* [Math.Vec2.__eq](#mathvec2__eq)
+* [Math.Vec2.__add](#mathvec2__add)
+* [Math.Vec2.__sub](#mathvec2__sub)
+* [Math.Vec2.__mul](#mathvec2__mul)
+* [Math.Vec2.__div](#mathvec2__div)
+* [Math.Vec2.__unm](#mathvec2__unm)
+* [Math.Vec2.lerp](#mathvec2lerp)
+* [Math.Vec2.len_sqr](#mathvec2len_sqr)
+* [Math.Vec2.__len](#mathvec2__len)
+* [Math.Vec2.dot](#mathvec2dot)
+* [Math.Vec2.normalized](#mathvec2normalized)
+* [Math.](#math)
+* [Math.Grid](#mathgrid)
+* [Math.Grid.gen_rect](#mathgridgen_rect)
+* [Math.Grid.get_nth_cell_column_row](#mathgridget_nth_cell_column_row)
+
 ### Math
 
 ```lua

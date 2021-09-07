@@ -1,3 +1,17 @@
+### Summary
+* [Sound](#sound)
+* [Sound:get](#soundget)
+* [Sound.load](#soundload)
+* [Sound:play](#soundplay)
+* [Sound:stop](#soundstop)
+* [Sound:destroy](#sounddestroy)
+* [Music](#music)
+* [Music:get](#musicget)
+* [Music.load](#musicload)
+* [Music:play](#musicplay)
+* [Music.stop](#musicstop)
+* [Music:destroy](#musicdestroy)
+
 ### Sound
 
 ```lua

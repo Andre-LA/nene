@@ -1,11 +1,41 @@
+### Summary
+* [emscripten_set_main_loop](#emscripten_set_main_loop)
+* [Nene](#nene)
+* [Nene.initialized](#neneinitialized)
+* [Nene.EventsCallbacks](#neneeventscallbacks)
+* [Nene:poll_events](#nenepoll_events)
+* [Nene:get_window_size](#neneget_window_size)
+* [Nene:get_scancode](#neneget_scancode)
+* [Nene:set_render_draw_color](#neneset_render_draw_color)
+* [Nene:render_clear](#nenerender_clear)
+* [Nene:render_draw_line](#nenerender_draw_line)
+* [Nene:render_draw_rect](#nenerender_draw_rect)
+* [Nene:render_copy](#nenerender_copy)
+* [Nene:set_render_target](#neneset_render_target)
+* [Nene:create_texture_from_surface](#nenecreate_texture_from_surface)
+* [Nene:render_present](#nenerender_present)
+* [Nene.init](#neneinit)
+* [Nene:terminate](#neneterminate)
+
+### emscripten_set_main_loop
+
+```lua
+global function emscripten_set_main_loop(func: function(), fps: cint, simulate_infinite_loop: cint)
+```
+
+
+
 ### Nene
 
 ```lua
 global Nene = @record{
+  -- general data
   quit: boolean,           -- `true` when the application will quit, `false` otherwise;
   current_time: uint32,    -- time since initialization (in milliseconds!).
   delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
   render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
+
+  -- SDL references
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
 

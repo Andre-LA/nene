@@ -1,3 +1,11 @@
+### Summary
+* [TTFWrapper](#ttfwrapper)
+* [TTFWrapper.ttf_init](#ttfwrapperttf_init)
+* [TTFWrapper.ttf_quit](#ttfwrapperttf_quit)
+* [TTFWrapper.ttf_render_utf8_solid](#ttfwrapperttf_render_utf8_solid)
+* [TTFWrapper.open_font](#ttfwrapperopen_font)
+* [TTFWrapper.close_font](#ttfwrapperclose_font)
+
 ### TTFWrapper
 
 ```lua

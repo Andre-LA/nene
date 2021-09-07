@@ -1,3 +1,9 @@
+### Summary
+* [SpriteSheet](#spritesheet)
+* [SpriteSheet:get_sprite_column_row](#spritesheetget_sprite_column_row)
+* [SpriteSheet:get_source_rect](#spritesheetget_source_rect)
+* [SpriteSheet:draw](#spritesheetdraw)
+
 ### SpriteSheet
 
 ```lua

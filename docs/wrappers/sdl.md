@@ -1,3 +1,33 @@
+### Summary
+* [SDLWrapper](#sdlwrapper)
+* [SDLWrapper.sdl_init](#sdlwrappersdl_init)
+* [SDLWrapper.sdl_quit](#sdlwrappersdl_quit)
+* [SDLWrapper.create_texture_from_surface](#sdlwrappercreate_texture_from_surface)
+* [SDLWrapper.destroy_texture](#sdlwrapperdestroy_texture)
+* [SDLWrapper.set_texture_color_modulation](#sdlwrapperset_texture_color_modulation)
+* [SDLWrapper.query_texture_size](#sdlwrapperquery_texture_size)
+* [SDLWrapper.get_ticks](#sdlwrapperget_ticks)
+* [SDLWrapper.free_surface](#sdlwrapperfree_surface)
+* [SDLWrapper.get_keyboard_state](#sdlwrapperget_keyboard_state)
+* [SDLWrapper.get_mouse_state](#sdlwrapperget_mouse_state)
+* [SDLWrapper.poll_event](#sdlwrapperpoll_event)
+* [SDLWrapper.create_window](#sdlwrappercreate_window)
+* [SDLWrapper.get_renderer_info](#sdlwrapperget_renderer_info)
+* [SDLWrapper.destroy_window](#sdlwrapperdestroy_window)
+* [SDLWrapper.get_window_size](#sdlwrapperget_window_size)
+* [SDLWrapper.create_renderer](#sdlwrappercreate_renderer)
+* [SDLWrapper.destroy_renderer](#sdlwrapperdestroy_renderer)
+* [SDLWrapper.set_render_draw_color](#sdlwrapperset_render_draw_color)
+* [SDLWrapper.set_render_draw_blend_mode](#sdlwrapperset_render_draw_blend_mode)
+* [SDLWrapper.render_clear](#sdlwrapperrender_clear)
+* [SDLWrapper.render_present](#sdlwrapperrender_present)
+* [SDLWrapper.render_draw_line](#sdlwrapperrender_draw_line)
+* [SDLWrapper.render_draw_rect](#sdlwrapperrender_draw_rect)
+* [SDLWrapper.render_fill_rect](#sdlwrapperrender_fill_rect)
+* [SDLWrapper.render_copy](#sdlwrapperrender_copy)
+* [SDLWrapper.set_render_target](#sdlwrapperset_render_target)
+* [SDLWrapper.create_texture](#sdlwrappercreate_texture)
+
 ### SDLWrapper
 
 ```lua

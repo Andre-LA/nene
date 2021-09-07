@@ -1,3 +1,18 @@
+### Summary
+* [MixWrapper](#mixwrapper)
+* [MixWrapper.mix_init](#mixwrappermix_init)
+* [MixWrapper.mix_quit](#mixwrappermix_quit)
+* [MixWrapper.load_wav](#mixwrapperload_wav)
+* [MixWrapper.open_audio](#mixwrapperopen_audio)
+* [MixWrapper.close_audio](#mixwrapperclose_audio)
+* [MixWrapper.load_mus](#mixwrapperload_mus)
+* [MixWrapper.play_channel](#mixwrapperplay_channel)
+* [MixWrapper.halt_channel](#mixwrapperhalt_channel)
+* [MixWrapper.free_chunk](#mixwrapperfree_chunk)
+* [MixWrapper.free_music](#mixwrapperfree_music)
+* [MixWrapper.play_music](#mixwrapperplay_music)
+* [MixWrapper.halt_music](#mixwrapperhalt_music)
+
 ### MixWrapper
 
 ```lua

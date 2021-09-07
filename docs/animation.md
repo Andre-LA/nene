@@ -1,4 +1,8 @@
-## animation
+### Summary
+* [AnimationRange](#animationrange)
+* [AnimationRange.__eq](#animationrange__eq)
+
+## TESTE
 
 Animation range type, used on Spritesheets
 

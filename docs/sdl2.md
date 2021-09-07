@@ -1,7 +1,1209 @@
+### Summary
+* [SDL_GetPlatform](#sdl_getplatform)
+* [FILE](#file)
+* [SDL_bool](#sdl_bool)
+* [SDL_malloc](#sdl_malloc)
+* [SDL_calloc](#sdl_calloc)
+* [SDL_realloc](#sdl_realloc)
+* [SDL_free](#sdl_free)
+* [SDL_malloc_func](#sdl_malloc_func)
+* [SDL_calloc_func](#sdl_calloc_func)
+* [SDL_realloc_func](#sdl_realloc_func)
+* [SDL_free_func](#sdl_free_func)
+* [SDL_GetMemoryFunctions](#sdl_getmemoryfunctions)
+* [SDL_SetMemoryFunctions](#sdl_setmemoryfunctions)
+* [SDL_GetNumAllocations](#sdl_getnumallocations)
+* [SDL_getenv](#sdl_getenv)
+* [SDL_setenv](#sdl_setenv)
+* [SDL_qsort](#sdl_qsort)
+* [SDL_abs](#sdl_abs)
+* [SDL_isalpha](#sdl_isalpha)
+* [SDL_isalnum](#sdl_isalnum)
+* [SDL_isblank](#sdl_isblank)
+* [SDL_iscntrl](#sdl_iscntrl)
+* [SDL_isdigit](#sdl_isdigit)
+* [SDL_isxdigit](#sdl_isxdigit)
+* [SDL_ispunct](#sdl_ispunct)
+* [SDL_isspace](#sdl_isspace)
+* [SDL_isupper](#sdl_isupper)
+* [SDL_islower](#sdl_islower)
+* [SDL_isprint](#sdl_isprint)
+* [SDL_isgraph](#sdl_isgraph)
+* [SDL_toupper](#sdl_toupper)
+* [SDL_tolower](#sdl_tolower)
+* [SDL_crc32](#sdl_crc32)
+* [SDL_memset](#sdl_memset)
+* [SDL_memset4](#sdl_memset4)
+* [SDL_memcpy](#sdl_memcpy)
+* [SDL_memmove](#sdl_memmove)
+* [SDL_memcmp](#sdl_memcmp)
+* [SDL_wcslen](#sdl_wcslen)
+* [SDL_wcslcpy](#sdl_wcslcpy)
+* [SDL_wcslcat](#sdl_wcslcat)
+* [SDL_wcsdup](#sdl_wcsdup)
+* [SDL_wcsstr](#sdl_wcsstr)
+* [SDL_wcscmp](#sdl_wcscmp)
+* [SDL_wcsncmp](#sdl_wcsncmp)
+* [SDL_wcscasecmp](#sdl_wcscasecmp)
+* [SDL_wcsncasecmp](#sdl_wcsncasecmp)
+* [SDL_strlen](#sdl_strlen)
+* [SDL_strlcpy](#sdl_strlcpy)
+* [SDL_utf8strlcpy](#sdl_utf8strlcpy)
+* [SDL_strlcat](#sdl_strlcat)
+* [SDL_strdup](#sdl_strdup)
+* [SDL_strrev](#sdl_strrev)
+* [SDL_strupr](#sdl_strupr)
+* [SDL_strlwr](#sdl_strlwr)
+* [SDL_strchr](#sdl_strchr)
+* [SDL_strrchr](#sdl_strrchr)
+* [SDL_strstr](#sdl_strstr)
+* [SDL_strtokr](#sdl_strtokr)
+* [SDL_utf8strlen](#sdl_utf8strlen)
+* [SDL_itoa](#sdl_itoa)
+* [SDL_uitoa](#sdl_uitoa)
+* [SDL_ltoa](#sdl_ltoa)
+* [SDL_ultoa](#sdl_ultoa)
+* [SDL_lltoa](#sdl_lltoa)
+* [SDL_ulltoa](#sdl_ulltoa)
+* [SDL_atoi](#sdl_atoi)
+* [SDL_atof](#sdl_atof)
+* [SDL_strtol](#sdl_strtol)
+* [SDL_strtoul](#sdl_strtoul)
+* [SDL_strtoll](#sdl_strtoll)
+* [SDL_strtoull](#sdl_strtoull)
+* [SDL_strtod](#sdl_strtod)
+* [SDL_strcmp](#sdl_strcmp)
+* [SDL_strncmp](#sdl_strncmp)
+* [SDL_strcasecmp](#sdl_strcasecmp)
+* [SDL_strncasecmp](#sdl_strncasecmp)
+* [SDL_sscanf](#sdl_sscanf)
+* [SDL_vsscanf](#sdl_vsscanf)
+* [SDL_snprintf](#sdl_snprintf)
+* [SDL_vsnprintf](#sdl_vsnprintf)
+* [SDL_acos](#sdl_acos)
+* [SDL_acosf](#sdl_acosf)
+* [SDL_asin](#sdl_asin)
+* [SDL_asinf](#sdl_asinf)
+* [SDL_atan](#sdl_atan)
+* [SDL_atanf](#sdl_atanf)
+* [SDL_atan2](#sdl_atan2)
+* [SDL_atan2f](#sdl_atan2f)
+* [SDL_ceil](#sdl_ceil)
+* [SDL_ceilf](#sdl_ceilf)
+* [SDL_copysign](#sdl_copysign)
+* [SDL_copysignf](#sdl_copysignf)
+* [SDL_cos](#sdl_cos)
+* [SDL_cosf](#sdl_cosf)
+* [SDL_exp](#sdl_exp)
+* [SDL_expf](#sdl_expf)
+* [SDL_fabs](#sdl_fabs)
+* [SDL_fabsf](#sdl_fabsf)
+* [SDL_floor](#sdl_floor)
+* [SDL_floorf](#sdl_floorf)
+* [SDL_trunc](#sdl_trunc)
+* [SDL_truncf](#sdl_truncf)
+* [SDL_fmod](#sdl_fmod)
+* [SDL_fmodf](#sdl_fmodf)
+* [SDL_log](#sdl_log)
+* [SDL_logf](#sdl_logf)
+* [SDL_log10](#sdl_log10)
+* [SDL_log10f](#sdl_log10f)
+* [SDL_pow](#sdl_pow)
+* [SDL_powf](#sdl_powf)
+* [SDL_round](#sdl_round)
+* [SDL_roundf](#sdl_roundf)
+* [SDL_lround](#sdl_lround)
+* [SDL_lroundf](#sdl_lroundf)
+* [SDL_scalbn](#sdl_scalbn)
+* [SDL_scalbnf](#sdl_scalbnf)
+* [SDL_sin](#sdl_sin)
+* [SDL_sinf](#sdl_sinf)
+* [SDL_sqrt](#sdl_sqrt)
+* [SDL_sqrtf](#sdl_sqrtf)
+* [SDL_tan](#sdl_tan)
+* [SDL_tanf](#sdl_tanf)
+* [_SDL_iconv_t](#_sdl_iconv_t)
+* [SDL_iconv_t](#sdl_iconv_t)
+* [SDL_iconv_open](#sdl_iconv_open)
+* [SDL_iconv_close](#sdl_iconv_close)
+* [SDL_iconv](#sdl_iconv)
+* [SDL_iconv_string](#sdl_iconv_string)
+* [SDL_memcpy4](#sdl_memcpy4)
+* [SDL_main_func](#sdl_main_func)
+* [SDL_main](#sdl_main)
+* [SDL_SetMainReady](#sdl_setmainready)
+* [SDL_AssertState](#sdl_assertstate)
+* [SDL_AssertData](#sdl_assertdata)
+* [SDL_ReportAssertion](#sdl_reportassertion)
+* [SDL_AssertionHandler](#sdl_assertionhandler)
+* [SDL_SetAssertionHandler](#sdl_setassertionhandler)
+* [SDL_GetDefaultAssertionHandler](#sdl_getdefaultassertionhandler)
+* [SDL_GetAssertionHandler](#sdl_getassertionhandler)
+* [SDL_GetAssertionReport](#sdl_getassertionreport)
+* [SDL_ResetAssertionReport](#sdl_resetassertionreport)
+* [SDL_AtomicTryLock](#sdl_atomictrylock)
+* [SDL_AtomicLock](#sdl_atomiclock)
+* [SDL_AtomicUnlock](#sdl_atomicunlock)
+* [SDL_MemoryBarrierReleaseFunction](#sdl_memorybarrierreleasefunction)
+* [SDL_MemoryBarrierAcquireFunction](#sdl_memorybarrieracquirefunction)
+* [SDL_atomic_t](#sdl_atomic_t)
+* [SDL_AtomicCAS](#sdl_atomiccas)
+* [SDL_AtomicSet](#sdl_atomicset)
+* [SDL_AtomicGet](#sdl_atomicget)
+* [SDL_AtomicAdd](#sdl_atomicadd)
+* [SDL_AtomicCASPtr](#sdl_atomiccasptr)
+* [SDL_AtomicSetPtr](#sdl_atomicsetptr)
+* [SDL_AtomicGetPtr](#sdl_atomicgetptr)
+* [SDL_SetError](#sdl_seterror)
+* [SDL_GetError](#sdl_geterror)
+* [SDL_GetErrorMsg](#sdl_geterrormsg)
+* [SDL_ClearError](#sdl_clearerror)
+* [SDL_errorcode](#sdl_errorcode)
+* [SDL_Error](#sdl_error)
+* [SDL_SwapFloat](#sdl_swapfloat)
+* [SDL_mutex](#sdl_mutex)
+* [SDL_CreateMutex](#sdl_createmutex)
+* [SDL_LockMutex](#sdl_lockmutex)
+* [SDL_TryLockMutex](#sdl_trylockmutex)
+* [SDL_UnlockMutex](#sdl_unlockmutex)
+* [SDL_DestroyMutex](#sdl_destroymutex)
+* [SDL_semaphore](#sdl_semaphore)
+* [SDL_sem](#sdl_sem)
+* [SDL_CreateSemaphore](#sdl_createsemaphore)
+* [SDL_DestroySemaphore](#sdl_destroysemaphore)
+* [SDL_SemWait](#sdl_semwait)
+* [SDL_SemTryWait](#sdl_semtrywait)
+* [SDL_SemWaitTimeout](#sdl_semwaittimeout)
+* [SDL_SemPost](#sdl_sempost)
+* [SDL_SemValue](#sdl_semvalue)
+* [SDL_cond](#sdl_cond)
+* [SDL_CreateCond](#sdl_createcond)
+* [SDL_DestroyCond](#sdl_destroycond)
+* [SDL_CondSignal](#sdl_condsignal)
+* [SDL_CondBroadcast](#sdl_condbroadcast)
+* [SDL_CondWait](#sdl_condwait)
+* [SDL_CondWaitTimeout](#sdl_condwaittimeout)
+* [SDL_Thread](#sdl_thread)
+* [SDL_ThreadPriority](#sdl_threadpriority)
+* [SDL_ThreadFunction](#sdl_threadfunction)
+* [SDL_CreateThread](#sdl_createthread)
+* [SDL_CreateThreadWithStackSize](#sdl_createthreadwithstacksize)
+* [SDL_GetThreadName](#sdl_getthreadname)
+* [SDL_ThreadID](#sdl_threadid)
+* [SDL_GetThreadID](#sdl_getthreadid)
+* [SDL_SetThreadPriority](#sdl_setthreadpriority)
+* [SDL_WaitThread](#sdl_waitthread)
+* [SDL_DetachThread](#sdl_detachthread)
+* [SDL_TLSCreate](#sdl_tlscreate)
+* [SDL_TLSGet](#sdl_tlsget)
+* [SDL_TLSSet](#sdl_tlsset)
+* [SDL_TLSCleanup](#sdl_tlscleanup)
+* [SDL_RWops](#sdl_rwops)
+* [SDL_RWFromFile](#sdl_rwfromfile)
+* [SDL_RWFromFP](#sdl_rwfromfp)
+* [SDL_RWFromMem](#sdl_rwfrommem)
+* [SDL_RWFromConstMem](#sdl_rwfromconstmem)
+* [SDL_AllocRW](#sdl_allocrw)
+* [SDL_FreeRW](#sdl_freerw)
+* [SDL_RWsize](#sdl_rwsize)
+* [SDL_RWseek](#sdl_rwseek)
+* [SDL_RWtell](#sdl_rwtell)
+* [SDL_RWread](#sdl_rwread)
+* [SDL_RWwrite](#sdl_rwwrite)
+* [SDL_RWclose](#sdl_rwclose)
+* [SDL_LoadFile_RW](#sdl_loadfile_rw)
+* [SDL_LoadFile](#sdl_loadfile)
+* [SDL_ReadU8](#sdl_readu8)
+* [SDL_ReadLE16](#sdl_readle16)
+* [SDL_ReadBE16](#sdl_readbe16)
+* [SDL_ReadLE32](#sdl_readle32)
+* [SDL_ReadBE32](#sdl_readbe32)
+* [SDL_ReadLE64](#sdl_readle64)
+* [SDL_ReadBE64](#sdl_readbe64)
+* [SDL_WriteU8](#sdl_writeu8)
+* [SDL_WriteLE16](#sdl_writele16)
+* [SDL_WriteBE16](#sdl_writebe16)
+* [SDL_WriteLE32](#sdl_writele32)
+* [SDL_WriteBE32](#sdl_writebe32)
+* [SDL_WriteLE64](#sdl_writele64)
+* [SDL_WriteBE64](#sdl_writebe64)
+* [SDL_AudioCallback](#sdl_audiocallback)
+* [SDL_AudioSpec](#sdl_audiospec)
+* [SDL_AudioCVT](#sdl_audiocvt)
+* [SDL_AudioFilter](#sdl_audiofilter)
+* [SDL_GetNumAudioDrivers](#sdl_getnumaudiodrivers)
+* [SDL_GetAudioDriver](#sdl_getaudiodriver)
+* [SDL_AudioInit](#sdl_audioinit)
+* [SDL_AudioQuit](#sdl_audioquit)
+* [SDL_GetCurrentAudioDriver](#sdl_getcurrentaudiodriver)
+* [SDL_OpenAudio](#sdl_openaudio)
+* [SDL_GetNumAudioDevices](#sdl_getnumaudiodevices)
+* [SDL_GetAudioDeviceName](#sdl_getaudiodevicename)
+* [SDL_GetAudioDeviceSpec](#sdl_getaudiodevicespec)
+* [SDL_OpenAudioDevice](#sdl_openaudiodevice)
+* [SDL_AudioStatus](#sdl_audiostatus)
+* [SDL_GetAudioStatus](#sdl_getaudiostatus)
+* [SDL_GetAudioDeviceStatus](#sdl_getaudiodevicestatus)
+* [SDL_PauseAudio](#sdl_pauseaudio)
+* [SDL_PauseAudioDevice](#sdl_pauseaudiodevice)
+* [SDL_LoadWAV_RW](#sdl_loadwav_rw)
+* [SDL_FreeWAV](#sdl_freewav)
+* [SDL_BuildAudioCVT](#sdl_buildaudiocvt)
+* [SDL_ConvertAudio](#sdl_convertaudio)
+* [SDL_AudioStream](#sdl_audiostream)
+* [SDL_NewAudioStream](#sdl_newaudiostream)
+* [SDL_AudioStreamPut](#sdl_audiostreamput)
+* [SDL_AudioStreamGet](#sdl_audiostreamget)
+* [SDL_AudioStreamAvailable](#sdl_audiostreamavailable)
+* [SDL_AudioStreamFlush](#sdl_audiostreamflush)
+* [SDL_AudioStreamClear](#sdl_audiostreamclear)
+* [SDL_FreeAudioStream](#sdl_freeaudiostream)
+* [SDL_MixAudio](#sdl_mixaudio)
+* [SDL_MixAudioFormat](#sdl_mixaudioformat)
+* [SDL_QueueAudio](#sdl_queueaudio)
+* [SDL_DequeueAudio](#sdl_dequeueaudio)
+* [SDL_GetQueuedAudioSize](#sdl_getqueuedaudiosize)
+* [SDL_ClearQueuedAudio](#sdl_clearqueuedaudio)
+* [SDL_LockAudio](#sdl_lockaudio)
+* [SDL_LockAudioDevice](#sdl_lockaudiodevice)
+* [SDL_UnlockAudio](#sdl_unlockaudio)
+* [SDL_UnlockAudioDevice](#sdl_unlockaudiodevice)
+* [SDL_CloseAudio](#sdl_closeaudio)
+* [SDL_CloseAudioDevice](#sdl_closeaudiodevice)
+* [SDL_SetClipboardText](#sdl_setclipboardtext)
+* [SDL_GetClipboardText](#sdl_getclipboardtext)
+* [SDL_HasClipboardText](#sdl_hasclipboardtext)
+* [SDL_GetCPUCount](#sdl_getcpucount)
+* [SDL_GetCPUCacheLineSize](#sdl_getcpucachelinesize)
+* [SDL_HasRDTSC](#sdl_hasrdtsc)
+* [SDL_HasAltiVec](#sdl_hasaltivec)
+* [SDL_HasMMX](#sdl_hasmmx)
+* [SDL_Has3DNow](#sdl_has3dnow)
+* [SDL_HasSSE](#sdl_hassse)
+* [SDL_HasSSE2](#sdl_hassse2)
+* [SDL_HasSSE3](#sdl_hassse3)
+* [SDL_HasSSE41](#sdl_hassse41)
+* [SDL_HasSSE42](#sdl_hassse42)
+* [SDL_HasAVX](#sdl_hasavx)
+* [SDL_HasAVX2](#sdl_hasavx2)
+* [SDL_HasAVX512F](#sdl_hasavx512f)
+* [SDL_HasARMSIMD](#sdl_hasarmsimd)
+* [SDL_HasNEON](#sdl_hasneon)
+* [SDL_GetSystemRAM](#sdl_getsystemram)
+* [SDL_SIMDGetAlignment](#sdl_simdgetalignment)
+* [SDL_SIMDAlloc](#sdl_simdalloc)
+* [SDL_SIMDRealloc](#sdl_simdrealloc)
+* [SDL_SIMDFree](#sdl_simdfree)
+* [SDL_PixelType](#sdl_pixeltype)
+* [SDL_BitmapOrder](#sdl_bitmaporder)
+* [SDL_PackedOrder](#sdl_packedorder)
+* [SDL_ArrayOrder](#sdl_arrayorder)
+* [SDL_PackedLayout](#sdl_packedlayout)
+* [SDL_PixelFormatEnum](#sdl_pixelformatenum)
+* [SDL_Color](#sdl_color)
+* [SDL_Palette](#sdl_palette)
+* [SDL_PixelFormat](#sdl_pixelformat)
+* [SDL_GetPixelFormatName](#sdl_getpixelformatname)
+* [SDL_PixelFormatEnumToMasks](#sdl_pixelformatenumtomasks)
+* [SDL_MasksToPixelFormatEnum](#sdl_maskstopixelformatenum)
+* [SDL_AllocFormat](#sdl_allocformat)
+* [SDL_FreeFormat](#sdl_freeformat)
+* [SDL_AllocPalette](#sdl_allocpalette)
+* [SDL_SetPixelFormatPalette](#sdl_setpixelformatpalette)
+* [SDL_SetPaletteColors](#sdl_setpalettecolors)
+* [SDL_FreePalette](#sdl_freepalette)
+* [SDL_MapRGB](#sdl_maprgb)
+* [SDL_MapRGBA](#sdl_maprgba)
+* [SDL_GetRGB](#sdl_getrgb)
+* [SDL_GetRGBA](#sdl_getrgba)
+* [SDL_CalculateGammaRamp](#sdl_calculategammaramp)
+* [SDL_Point](#sdl_point)
+* [SDL_FPoint](#sdl_fpoint)
+* [SDL_Rect](#sdl_rect)
+* [SDL_FRect](#sdl_frect)
+* [SDL_PointInRect](#sdl_pointinrect)
+* [SDL_RectEmpty](#sdl_rectempty)
+* [SDL_RectEquals](#sdl_rectequals)
+* [SDL_HasIntersection](#sdl_hasintersection)
+* [SDL_IntersectRect](#sdl_intersectrect)
+* [SDL_UnionRect](#sdl_unionrect)
+* [SDL_EnclosePoints](#sdl_enclosepoints)
+* [SDL_IntersectRectAndLine](#sdl_intersectrectandline)
+* [SDL_BlendMode](#sdl_blendmode)
+* [SDL_BlendOperation](#sdl_blendoperation)
+* [SDL_BlendFactor](#sdl_blendfactor)
+* [SDL_ComposeCustomBlendMode](#sdl_composecustomblendmode)
+* [SDL_BlitMap](#sdl_blitmap)
+* [SDL_Surface](#sdl_surface)
+* [SDL_blit](#sdl_blit)
+* [SDL_YUV_CONVERSION_MODE](#sdl_yuv_conversion_mode)
+* [SDL_CreateRGBSurface](#sdl_creatergbsurface)
+* [SDL_CreateRGBSurfaceWithFormat](#sdl_creatergbsurfacewithformat)
+* [SDL_CreateRGBSurfaceFrom](#sdl_creatergbsurfacefrom)
+* [SDL_CreateRGBSurfaceWithFormatFrom](#sdl_creatergbsurfacewithformatfrom)
+* [SDL_FreeSurface](#sdl_freesurface)
+* [SDL_SetSurfacePalette](#sdl_setsurfacepalette)
+* [SDL_LockSurface](#sdl_locksurface)
+* [SDL_UnlockSurface](#sdl_unlocksurface)
+* [SDL_LoadBMP_RW](#sdl_loadbmp_rw)
+* [SDL_SaveBMP_RW](#sdl_savebmp_rw)
+* [SDL_SetSurfaceRLE](#sdl_setsurfacerle)
+* [SDL_HasSurfaceRLE](#sdl_hassurfacerle)
+* [SDL_SetColorKey](#sdl_setcolorkey)
+* [SDL_HasColorKey](#sdl_hascolorkey)
+* [SDL_GetColorKey](#sdl_getcolorkey)
+* [SDL_SetSurfaceColorMod](#sdl_setsurfacecolormod)
+* [SDL_GetSurfaceColorMod](#sdl_getsurfacecolormod)
+* [SDL_SetSurfaceAlphaMod](#sdl_setsurfacealphamod)
+* [SDL_GetSurfaceAlphaMod](#sdl_getsurfacealphamod)
+* [SDL_SetSurfaceBlendMode](#sdl_setsurfaceblendmode)
+* [SDL_GetSurfaceBlendMode](#sdl_getsurfaceblendmode)
+* [SDL_SetClipRect](#sdl_setcliprect)
+* [SDL_GetClipRect](#sdl_getcliprect)
+* [SDL_DuplicateSurface](#sdl_duplicatesurface)
+* [SDL_ConvertSurface](#sdl_convertsurface)
+* [SDL_ConvertSurfaceFormat](#sdl_convertsurfaceformat)
+* [SDL_ConvertPixels](#sdl_convertpixels)
+* [SDL_FillRect](#sdl_fillrect)
+* [SDL_FillRects](#sdl_fillrects)
+* [SDL_UpperBlit](#sdl_upperblit)
+* [SDL_LowerBlit](#sdl_lowerblit)
+* [SDL_SoftStretch](#sdl_softstretch)
+* [SDL_SoftStretchLinear](#sdl_softstretchlinear)
+* [SDL_UpperBlitScaled](#sdl_upperblitscaled)
+* [SDL_LowerBlitScaled](#sdl_lowerblitscaled)
+* [SDL_SetYUVConversionMode](#sdl_setyuvconversionmode)
+* [SDL_GetYUVConversionMode](#sdl_getyuvconversionmode)
+* [SDL_GetYUVConversionModeForResolution](#sdl_getyuvconversionmodeforresolution)
+* [SDL_DisplayMode](#sdl_displaymode)
+* [SDL_Window](#sdl_window)
+* [SDL_WindowFlags](#sdl_windowflags)
+* [SDL_WindowEventID](#sdl_windoweventid)
+* [SDL_DisplayEventID](#sdl_displayeventid)
+* [SDL_DisplayOrientation](#sdl_displayorientation)
+* [SDL_FlashOperation](#sdl_flashoperation)
+* [SDL_GLContext](#sdl_glcontext)
+* [SDL_GLattr](#sdl_glattr)
+* [SDL_GLprofile](#sdl_glprofile)
+* [SDL_GLcontextFlag](#sdl_glcontextflag)
+* [SDL_GLcontextReleaseFlag](#sdl_glcontextreleaseflag)
+* [SDL_GLContextResetNotification](#sdl_glcontextresetnotification)
+* [SDL_GetNumVideoDrivers](#sdl_getnumvideodrivers)
+* [SDL_GetVideoDriver](#sdl_getvideodriver)
+* [SDL_VideoInit](#sdl_videoinit)
+* [SDL_VideoQuit](#sdl_videoquit)
+* [SDL_GetCurrentVideoDriver](#sdl_getcurrentvideodriver)
+* [SDL_GetNumVideoDisplays](#sdl_getnumvideodisplays)
+* [SDL_GetDisplayName](#sdl_getdisplayname)
+* [SDL_GetDisplayBounds](#sdl_getdisplaybounds)
+* [SDL_GetDisplayUsableBounds](#sdl_getdisplayusablebounds)
+* [SDL_GetDisplayDPI](#sdl_getdisplaydpi)
+* [SDL_GetDisplayOrientation](#sdl_getdisplayorientation)
+* [SDL_GetNumDisplayModes](#sdl_getnumdisplaymodes)
+* [SDL_GetDisplayMode](#sdl_getdisplaymode)
+* [SDL_GetDesktopDisplayMode](#sdl_getdesktopdisplaymode)
+* [SDL_GetCurrentDisplayMode](#sdl_getcurrentdisplaymode)
+* [SDL_GetClosestDisplayMode](#sdl_getclosestdisplaymode)
+* [SDL_GetWindowDisplayIndex](#sdl_getwindowdisplayindex)
+* [SDL_SetWindowDisplayMode](#sdl_setwindowdisplaymode)
+* [SDL_GetWindowDisplayMode](#sdl_getwindowdisplaymode)
+* [SDL_GetWindowPixelFormat](#sdl_getwindowpixelformat)
+* [SDL_CreateWindow](#sdl_createwindow)
+* [SDL_CreateWindowFrom](#sdl_createwindowfrom)
+* [SDL_GetWindowID](#sdl_getwindowid)
+* [SDL_GetWindowFromID](#sdl_getwindowfromid)
+* [SDL_GetWindowFlags](#sdl_getwindowflags)
+* [SDL_SetWindowTitle](#sdl_setwindowtitle)
+* [SDL_GetWindowTitle](#sdl_getwindowtitle)
+* [SDL_SetWindowIcon](#sdl_setwindowicon)
+* [SDL_SetWindowData](#sdl_setwindowdata)
+* [SDL_GetWindowData](#sdl_getwindowdata)
+* [SDL_SetWindowPosition](#sdl_setwindowposition)
+* [SDL_GetWindowPosition](#sdl_getwindowposition)
+* [SDL_SetWindowSize](#sdl_setwindowsize)
+* [SDL_GetWindowSize](#sdl_getwindowsize)
+* [SDL_GetWindowBordersSize](#sdl_getwindowborderssize)
+* [SDL_SetWindowMinimumSize](#sdl_setwindowminimumsize)
+* [SDL_GetWindowMinimumSize](#sdl_getwindowminimumsize)
+* [SDL_SetWindowMaximumSize](#sdl_setwindowmaximumsize)
+* [SDL_GetWindowMaximumSize](#sdl_getwindowmaximumsize)
+* [SDL_SetWindowBordered](#sdl_setwindowbordered)
+* [SDL_SetWindowResizable](#sdl_setwindowresizable)
+* [SDL_SetWindowAlwaysOnTop](#sdl_setwindowalwaysontop)
+* [SDL_ShowWindow](#sdl_showwindow)
+* [SDL_HideWindow](#sdl_hidewindow)
+* [SDL_RaiseWindow](#sdl_raisewindow)
+* [SDL_MaximizeWindow](#sdl_maximizewindow)
+* [SDL_MinimizeWindow](#sdl_minimizewindow)
+* [SDL_RestoreWindow](#sdl_restorewindow)
+* [SDL_SetWindowFullscreen](#sdl_setwindowfullscreen)
+* [SDL_GetWindowSurface](#sdl_getwindowsurface)
+* [SDL_UpdateWindowSurface](#sdl_updatewindowsurface)
+* [SDL_UpdateWindowSurfaceRects](#sdl_updatewindowsurfacerects)
+* [SDL_SetWindowGrab](#sdl_setwindowgrab)
+* [SDL_SetWindowKeyboardGrab](#sdl_setwindowkeyboardgrab)
+* [SDL_SetWindowMouseGrab](#sdl_setwindowmousegrab)
+* [SDL_GetWindowGrab](#sdl_getwindowgrab)
+* [SDL_GetWindowKeyboardGrab](#sdl_getwindowkeyboardgrab)
+* [SDL_GetWindowMouseGrab](#sdl_getwindowmousegrab)
+* [SDL_GetGrabbedWindow](#sdl_getgrabbedwindow)
+* [SDL_SetWindowBrightness](#sdl_setwindowbrightness)
+* [SDL_GetWindowBrightness](#sdl_getwindowbrightness)
+* [SDL_SetWindowOpacity](#sdl_setwindowopacity)
+* [SDL_GetWindowOpacity](#sdl_getwindowopacity)
+* [SDL_SetWindowModalFor](#sdl_setwindowmodalfor)
+* [SDL_SetWindowInputFocus](#sdl_setwindowinputfocus)
+* [SDL_SetWindowGammaRamp](#sdl_setwindowgammaramp)
+* [SDL_GetWindowGammaRamp](#sdl_getwindowgammaramp)
+* [SDL_HitTestResult](#sdl_hittestresult)
+* [SDL_HitTest](#sdl_hittest)
+* [SDL_SetWindowHitTest](#sdl_setwindowhittest)
+* [SDL_FlashWindow](#sdl_flashwindow)
+* [SDL_DestroyWindow](#sdl_destroywindow)
+* [SDL_IsScreenSaverEnabled](#sdl_isscreensaverenabled)
+* [SDL_EnableScreenSaver](#sdl_enablescreensaver)
+* [SDL_DisableScreenSaver](#sdl_disablescreensaver)
+* [SDL_GL_LoadLibrary](#sdl_gl_loadlibrary)
+* [SDL_GL_GetProcAddress](#sdl_gl_getprocaddress)
+* [SDL_GL_UnloadLibrary](#sdl_gl_unloadlibrary)
+* [SDL_GL_ExtensionSupported](#sdl_gl_extensionsupported)
+* [SDL_GL_ResetAttributes](#sdl_gl_resetattributes)
+* [SDL_GL_SetAttribute](#sdl_gl_setattribute)
+* [SDL_GL_GetAttribute](#sdl_gl_getattribute)
+* [SDL_GL_CreateContext](#sdl_gl_createcontext)
+* [SDL_GL_MakeCurrent](#sdl_gl_makecurrent)
+* [SDL_GL_GetCurrentWindow](#sdl_gl_getcurrentwindow)
+* [SDL_GL_GetCurrentContext](#sdl_gl_getcurrentcontext)
+* [SDL_GL_GetDrawableSize](#sdl_gl_getdrawablesize)
+* [SDL_GL_SetSwapInterval](#sdl_gl_setswapinterval)
+* [SDL_GL_GetSwapInterval](#sdl_gl_getswapinterval)
+* [SDL_GL_SwapWindow](#sdl_gl_swapwindow)
+* [SDL_GL_DeleteContext](#sdl_gl_deletecontext)
+* [SDL_Scancode](#sdl_scancode)
+* [SDL_KeyCode](#sdl_keycode)
+* [SDL_Keymod](#sdl_keymod)
+* [SDL_Keysym](#sdl_keysym)
+* [SDL_GetKeyboardFocus](#sdl_getkeyboardfocus)
+* [SDL_GetKeyboardState](#sdl_getkeyboardstate)
+* [SDL_GetModState](#sdl_getmodstate)
+* [SDL_SetModState](#sdl_setmodstate)
+* [SDL_GetKeyFromScancode](#sdl_getkeyfromscancode)
+* [SDL_GetScancodeFromKey](#sdl_getscancodefromkey)
+* [SDL_GetScancodeName](#sdl_getscancodename)
+* [SDL_GetScancodeFromName](#sdl_getscancodefromname)
+* [SDL_GetKeyName](#sdl_getkeyname)
+* [SDL_GetKeyFromName](#sdl_getkeyfromname)
+* [SDL_StartTextInput](#sdl_starttextinput)
+* [SDL_IsTextInputActive](#sdl_istextinputactive)
+* [SDL_StopTextInput](#sdl_stoptextinput)
+* [SDL_SetTextInputRect](#sdl_settextinputrect)
+* [SDL_HasScreenKeyboardSupport](#sdl_hasscreenkeyboardsupport)
+* [SDL_IsScreenKeyboardShown](#sdl_isscreenkeyboardshown)
+* [SDL_Cursor](#sdl_cursor)
+* [SDL_SystemCursor](#sdl_systemcursor)
+* [SDL_MouseWheelDirection](#sdl_mousewheeldirection)
+* [SDL_GetMouseFocus](#sdl_getmousefocus)
+* [SDL_GetMouseState](#sdl_getmousestate)
+* [SDL_GetGlobalMouseState](#sdl_getglobalmousestate)
+* [SDL_GetRelativeMouseState](#sdl_getrelativemousestate)
+* [SDL_WarpMouseInWindow](#sdl_warpmouseinwindow)
+* [SDL_WarpMouseGlobal](#sdl_warpmouseglobal)
+* [SDL_SetRelativeMouseMode](#sdl_setrelativemousemode)
+* [SDL_CaptureMouse](#sdl_capturemouse)
+* [SDL_GetRelativeMouseMode](#sdl_getrelativemousemode)
+* [SDL_CreateCursor](#sdl_createcursor)
+* [SDL_CreateColorCursor](#sdl_createcolorcursor)
+* [SDL_CreateSystemCursor](#sdl_createsystemcursor)
+* [SDL_SetCursor](#sdl_setcursor)
+* [SDL_GetCursor](#sdl_getcursor)
+* [SDL_GetDefaultCursor](#sdl_getdefaultcursor)
+* [SDL_FreeCursor](#sdl_freecursor)
+* [SDL_ShowCursor](#sdl_showcursor)
+* [SDL_Joystick](#sdl_joystick)
+* [SDL_JoystickGUID](#sdl_joystickguid)
+* [SDL_JoystickType](#sdl_joysticktype)
+* [SDL_JoystickPowerLevel](#sdl_joystickpowerlevel)
+* [SDL_LockJoysticks](#sdl_lockjoysticks)
+* [SDL_UnlockJoysticks](#sdl_unlockjoysticks)
+* [SDL_NumJoysticks](#sdl_numjoysticks)
+* [SDL_JoystickNameForIndex](#sdl_joysticknameforindex)
+* [SDL_JoystickGetDevicePlayerIndex](#sdl_joystickgetdeviceplayerindex)
+* [SDL_JoystickGetDeviceGUID](#sdl_joystickgetdeviceguid)
+* [SDL_JoystickGetDeviceVendor](#sdl_joystickgetdevicevendor)
+* [SDL_JoystickGetDeviceProduct](#sdl_joystickgetdeviceproduct)
+* [SDL_JoystickGetDeviceProductVersion](#sdl_joystickgetdeviceproductversion)
+* [SDL_JoystickGetDeviceType](#sdl_joystickgetdevicetype)
+* [SDL_JoystickGetDeviceInstanceID](#sdl_joystickgetdeviceinstanceid)
+* [SDL_JoystickOpen](#sdl_joystickopen)
+* [SDL_JoystickFromInstanceID](#sdl_joystickfrominstanceid)
+* [SDL_JoystickFromPlayerIndex](#sdl_joystickfromplayerindex)
+* [SDL_JoystickAttachVirtual](#sdl_joystickattachvirtual)
+* [SDL_JoystickDetachVirtual](#sdl_joystickdetachvirtual)
+* [SDL_JoystickIsVirtual](#sdl_joystickisvirtual)
+* [SDL_JoystickSetVirtualAxis](#sdl_joysticksetvirtualaxis)
+* [SDL_JoystickSetVirtualButton](#sdl_joysticksetvirtualbutton)
+* [SDL_JoystickSetVirtualHat](#sdl_joysticksetvirtualhat)
+* [SDL_JoystickName](#sdl_joystickname)
+* [SDL_JoystickGetPlayerIndex](#sdl_joystickgetplayerindex)
+* [SDL_JoystickSetPlayerIndex](#sdl_joysticksetplayerindex)
+* [SDL_JoystickGetGUID](#sdl_joystickgetguid)
+* [SDL_JoystickGetVendor](#sdl_joystickgetvendor)
+* [SDL_JoystickGetProduct](#sdl_joystickgetproduct)
+* [SDL_JoystickGetProductVersion](#sdl_joystickgetproductversion)
+* [SDL_JoystickGetSerial](#sdl_joystickgetserial)
+* [SDL_JoystickGetType](#sdl_joystickgettype)
+* [SDL_JoystickGetGUIDString](#sdl_joystickgetguidstring)
+* [SDL_JoystickGetGUIDFromString](#sdl_joystickgetguidfromstring)
+* [SDL_JoystickGetAttached](#sdl_joystickgetattached)
+* [SDL_JoystickInstanceID](#sdl_joystickinstanceid)
+* [SDL_JoystickNumAxes](#sdl_joysticknumaxes)
+* [SDL_JoystickNumBalls](#sdl_joysticknumballs)
+* [SDL_JoystickNumHats](#sdl_joysticknumhats)
+* [SDL_JoystickNumButtons](#sdl_joysticknumbuttons)
+* [SDL_JoystickUpdate](#sdl_joystickupdate)
+* [SDL_JoystickEventState](#sdl_joystickeventstate)
+* [SDL_JoystickGetAxis](#sdl_joystickgetaxis)
+* [SDL_JoystickGetAxisInitialState](#sdl_joystickgetaxisinitialstate)
+* [SDL_JoystickGetHat](#sdl_joystickgethat)
+* [SDL_JoystickGetBall](#sdl_joystickgetball)
+* [SDL_JoystickGetButton](#sdl_joystickgetbutton)
+* [SDL_JoystickRumble](#sdl_joystickrumble)
+* [SDL_JoystickRumbleTriggers](#sdl_joystickrumbletriggers)
+* [SDL_JoystickHasLED](#sdl_joystickhasled)
+* [SDL_JoystickSetLED](#sdl_joysticksetled)
+* [SDL_JoystickSendEffect](#sdl_joysticksendeffect)
+* [SDL_JoystickClose](#sdl_joystickclose)
+* [SDL_JoystickCurrentPowerLevel](#sdl_joystickcurrentpowerlevel)
+* [SDL_Sensor](#sdl_sensor)
+* [SDL_SensorType](#sdl_sensortype)
+* [SDL_LockSensors](#sdl_locksensors)
+* [SDL_UnlockSensors](#sdl_unlocksensors)
+* [SDL_NumSensors](#sdl_numsensors)
+* [SDL_SensorGetDeviceName](#sdl_sensorgetdevicename)
+* [SDL_SensorGetDeviceType](#sdl_sensorgetdevicetype)
+* [SDL_SensorGetDeviceNonPortableType](#sdl_sensorgetdevicenonportabletype)
+* [SDL_SensorGetDeviceInstanceID](#sdl_sensorgetdeviceinstanceid)
+* [SDL_SensorOpen](#sdl_sensoropen)
+* [SDL_SensorFromInstanceID](#sdl_sensorfrominstanceid)
+* [SDL_SensorGetName](#sdl_sensorgetname)
+* [SDL_SensorGetType](#sdl_sensorgettype)
+* [SDL_SensorGetNonPortableType](#sdl_sensorgetnonportabletype)
+* [SDL_SensorGetInstanceID](#sdl_sensorgetinstanceid)
+* [SDL_SensorGetData](#sdl_sensorgetdata)
+* [SDL_SensorClose](#sdl_sensorclose)
+* [SDL_SensorUpdate](#sdl_sensorupdate)
+* [SDL_GameController](#sdl_gamecontroller)
+* [SDL_GameControllerType](#sdl_gamecontrollertype)
+* [SDL_GameControllerBindType](#sdl_gamecontrollerbindtype)
+* [SDL_GameControllerButtonBind](#sdl_gamecontrollerbuttonbind)
+* [SDL_GameControllerAddMappingsFromRW](#sdl_gamecontrolleraddmappingsfromrw)
+* [SDL_GameControllerAddMapping](#sdl_gamecontrolleraddmapping)
+* [SDL_GameControllerNumMappings](#sdl_gamecontrollernummappings)
+* [SDL_GameControllerMappingForIndex](#sdl_gamecontrollermappingforindex)
+* [SDL_GameControllerMappingForGUID](#sdl_gamecontrollermappingforguid)
+* [SDL_GameControllerMapping](#sdl_gamecontrollermapping)
+* [SDL_IsGameController](#sdl_isgamecontroller)
+* [SDL_GameControllerNameForIndex](#sdl_gamecontrollernameforindex)
+* [SDL_GameControllerTypeForIndex](#sdl_gamecontrollertypeforindex)
+* [SDL_GameControllerMappingForDeviceIndex](#sdl_gamecontrollermappingfordeviceindex)
+* [SDL_GameControllerOpen](#sdl_gamecontrolleropen)
+* [SDL_GameControllerFromInstanceID](#sdl_gamecontrollerfrominstanceid)
+* [SDL_GameControllerFromPlayerIndex](#sdl_gamecontrollerfromplayerindex)
+* [SDL_GameControllerName](#sdl_gamecontrollername)
+* [SDL_GameControllerGetType](#sdl_gamecontrollergettype)
+* [SDL_GameControllerGetPlayerIndex](#sdl_gamecontrollergetplayerindex)
+* [SDL_GameControllerSetPlayerIndex](#sdl_gamecontrollersetplayerindex)
+* [SDL_GameControllerGetVendor](#sdl_gamecontrollergetvendor)
+* [SDL_GameControllerGetProduct](#sdl_gamecontrollergetproduct)
+* [SDL_GameControllerGetProductVersion](#sdl_gamecontrollergetproductversion)
+* [SDL_GameControllerGetSerial](#sdl_gamecontrollergetserial)
+* [SDL_GameControllerGetAttached](#sdl_gamecontrollergetattached)
+* [SDL_GameControllerGetJoystick](#sdl_gamecontrollergetjoystick)
+* [SDL_GameControllerEventState](#sdl_gamecontrollereventstate)
+* [SDL_GameControllerUpdate](#sdl_gamecontrollerupdate)
+* [SDL_GameControllerAxis](#sdl_gamecontrolleraxis)
+* [SDL_GameControllerGetAxisFromString](#sdl_gamecontrollergetaxisfromstring)
+* [SDL_GameControllerGetStringForAxis](#sdl_gamecontrollergetstringforaxis)
+* [SDL_GameControllerGetBindForAxis](#sdl_gamecontrollergetbindforaxis)
+* [SDL_GameControllerHasAxis](#sdl_gamecontrollerhasaxis)
+* [SDL_GameControllerGetAxis](#sdl_gamecontrollergetaxis)
+* [SDL_GameControllerButton](#sdl_gamecontrollerbutton)
+* [SDL_GameControllerGetButtonFromString](#sdl_gamecontrollergetbuttonfromstring)
+* [SDL_GameControllerGetStringForButton](#sdl_gamecontrollergetstringforbutton)
+* [SDL_GameControllerGetBindForButton](#sdl_gamecontrollergetbindforbutton)
+* [SDL_GameControllerHasButton](#sdl_gamecontrollerhasbutton)
+* [SDL_GameControllerGetButton](#sdl_gamecontrollergetbutton)
+* [SDL_GameControllerGetNumTouchpads](#sdl_gamecontrollergetnumtouchpads)
+* [SDL_GameControllerGetNumTouchpadFingers](#sdl_gamecontrollergetnumtouchpadfingers)
+* [SDL_GameControllerGetTouchpadFinger](#sdl_gamecontrollergettouchpadfinger)
+* [SDL_GameControllerHasSensor](#sdl_gamecontrollerhassensor)
+* [SDL_GameControllerSetSensorEnabled](#sdl_gamecontrollersetsensorenabled)
+* [SDL_GameControllerIsSensorEnabled](#sdl_gamecontrollerissensorenabled)
+* [SDL_GameControllerGetSensorDataRate](#sdl_gamecontrollergetsensordatarate)
+* [SDL_GameControllerGetSensorData](#sdl_gamecontrollergetsensordata)
+* [SDL_GameControllerRumble](#sdl_gamecontrollerrumble)
+* [SDL_GameControllerRumbleTriggers](#sdl_gamecontrollerrumbletriggers)
+* [SDL_GameControllerHasLED](#sdl_gamecontrollerhasled)
+* [SDL_GameControllerSetLED](#sdl_gamecontrollersetled)
+* [SDL_GameControllerSendEffect](#sdl_gamecontrollersendeffect)
+* [SDL_GameControllerClose](#sdl_gamecontrollerclose)
+* [SDL_TouchDeviceType](#sdl_touchdevicetype)
+* [SDL_Finger](#sdl_finger)
+* [SDL_GetNumTouchDevices](#sdl_getnumtouchdevices)
+* [SDL_GetTouchDevice](#sdl_gettouchdevice)
+* [SDL_GetTouchDeviceType](#sdl_gettouchdevicetype)
+* [SDL_GetNumTouchFingers](#sdl_getnumtouchfingers)
+* [SDL_GetTouchFinger](#sdl_gettouchfinger)
+* [SDL_RecordGesture](#sdl_recordgesture)
+* [SDL_SaveAllDollarTemplates](#sdl_savealldollartemplates)
+* [SDL_SaveDollarTemplate](#sdl_savedollartemplate)
+* [SDL_LoadDollarTemplates](#sdl_loaddollartemplates)
+* [SDL_EventType](#sdl_eventtype)
+* [SDL_CommonEvent](#sdl_commonevent)
+* [SDL_DisplayEvent](#sdl_displayevent)
+* [SDL_WindowEvent](#sdl_windowevent)
+* [SDL_KeyboardEvent](#sdl_keyboardevent)
+* [SDL_TextEditingEvent](#sdl_texteditingevent)
+* [SDL_TextInputEvent](#sdl_textinputevent)
+* [SDL_MouseMotionEvent](#sdl_mousemotionevent)
+* [SDL_MouseButtonEvent](#sdl_mousebuttonevent)
+* [SDL_MouseWheelEvent](#sdl_mousewheelevent)
+* [SDL_JoyAxisEvent](#sdl_joyaxisevent)
+* [SDL_JoyBallEvent](#sdl_joyballevent)
+* [SDL_JoyHatEvent](#sdl_joyhatevent)
+* [SDL_JoyButtonEvent](#sdl_joybuttonevent)
+* [SDL_JoyDeviceEvent](#sdl_joydeviceevent)
+* [SDL_ControllerAxisEvent](#sdl_controlleraxisevent)
+* [SDL_ControllerButtonEvent](#sdl_controllerbuttonevent)
+* [SDL_ControllerDeviceEvent](#sdl_controllerdeviceevent)
+* [SDL_ControllerTouchpadEvent](#sdl_controllertouchpadevent)
+* [SDL_ControllerSensorEvent](#sdl_controllersensorevent)
+* [SDL_AudioDeviceEvent](#sdl_audiodeviceevent)
+* [SDL_TouchFingerEvent](#sdl_touchfingerevent)
+* [SDL_MultiGestureEvent](#sdl_multigestureevent)
+* [SDL_DollarGestureEvent](#sdl_dollargestureevent)
+* [SDL_DropEvent](#sdl_dropevent)
+* [SDL_SensorEvent](#sdl_sensorevent)
+* [SDL_QuitEvent](#sdl_quitevent)
+* [SDL_OSEvent](#sdl_osevent)
+* [SDL_UserEvent](#sdl_userevent)
+* [SDL_SysWMmsg](#sdl_syswmmsg)
+* [SDL_SysWMEvent](#sdl_syswmevent)
+* [SDL_Event](#sdl_event)
+* [SDL_PumpEvents](#sdl_pumpevents)
+* [SDL_eventaction](#sdl_eventaction)
+* [SDL_PeepEvents](#sdl_peepevents)
+* [SDL_HasEvent](#sdl_hasevent)
+* [SDL_HasEvents](#sdl_hasevents)
+* [SDL_FlushEvent](#sdl_flushevent)
+* [SDL_FlushEvents](#sdl_flushevents)
+* [SDL_PollEvent](#sdl_pollevent)
+* [SDL_WaitEvent](#sdl_waitevent)
+* [SDL_WaitEventTimeout](#sdl_waiteventtimeout)
+* [SDL_PushEvent](#sdl_pushevent)
+* [SDL_EventFilter](#sdl_eventfilter)
+* [SDL_SetEventFilter](#sdl_seteventfilter)
+* [SDL_GetEventFilter](#sdl_geteventfilter)
+* [SDL_AddEventWatch](#sdl_addeventwatch)
+* [SDL_DelEventWatch](#sdl_deleventwatch)
+* [SDL_FilterEvents](#sdl_filterevents)
+* [SDL_EventState](#sdl_eventstate)
+* [SDL_RegisterEvents](#sdl_registerevents)
+* [SDL_GetBasePath](#sdl_getbasepath)
+* [SDL_GetPrefPath](#sdl_getprefpath)
+* [SDL_Haptic](#sdl_haptic)
+* [SDL_HapticDirection](#sdl_hapticdirection)
+* [SDL_HapticConstant](#sdl_hapticconstant)
+* [SDL_HapticPeriodic](#sdl_hapticperiodic)
+* [SDL_HapticCondition](#sdl_hapticcondition)
+* [SDL_HapticRamp](#sdl_hapticramp)
+* [SDL_HapticLeftRight](#sdl_hapticleftright)
+* [SDL_HapticCustom](#sdl_hapticcustom)
+* [SDL_HapticEffect](#sdl_hapticeffect)
+* [SDL_NumHaptics](#sdl_numhaptics)
+* [SDL_HapticName](#sdl_hapticname)
+* [SDL_HapticOpen](#sdl_hapticopen)
+* [SDL_HapticOpened](#sdl_hapticopened)
+* [SDL_HapticIndex](#sdl_hapticindex)
+* [SDL_MouseIsHaptic](#sdl_mouseishaptic)
+* [SDL_HapticOpenFromMouse](#sdl_hapticopenfrommouse)
+* [SDL_JoystickIsHaptic](#sdl_joystickishaptic)
+* [SDL_HapticOpenFromJoystick](#sdl_hapticopenfromjoystick)
+* [SDL_HapticClose](#sdl_hapticclose)
+* [SDL_HapticNumEffects](#sdl_hapticnumeffects)
+* [SDL_HapticNumEffectsPlaying](#sdl_hapticnumeffectsplaying)
+* [SDL_HapticQuery](#sdl_hapticquery)
+* [SDL_HapticNumAxes](#sdl_hapticnumaxes)
+* [SDL_HapticEffectSupported](#sdl_hapticeffectsupported)
+* [SDL_HapticNewEffect](#sdl_hapticneweffect)
+* [SDL_HapticUpdateEffect](#sdl_hapticupdateeffect)
+* [SDL_HapticRunEffect](#sdl_hapticruneffect)
+* [SDL_HapticStopEffect](#sdl_hapticstopeffect)
+* [SDL_HapticDestroyEffect](#sdl_hapticdestroyeffect)
+* [SDL_HapticGetEffectStatus](#sdl_hapticgeteffectstatus)
+* [SDL_HapticSetGain](#sdl_hapticsetgain)
+* [SDL_HapticSetAutocenter](#sdl_hapticsetautocenter)
+* [SDL_HapticPause](#sdl_hapticpause)
+* [SDL_HapticUnpause](#sdl_hapticunpause)
+* [SDL_HapticStopAll](#sdl_hapticstopall)
+* [SDL_HapticRumbleSupported](#sdl_hapticrumblesupported)
+* [SDL_HapticRumbleInit](#sdl_hapticrumbleinit)
+* [SDL_HapticRumblePlay](#sdl_hapticrumbleplay)
+* [SDL_HapticRumbleStop](#sdl_hapticrumblestop)
+* [SDL_HintPriority](#sdl_hintpriority)
+* [SDL_SetHintWithPriority](#sdl_sethintwithpriority)
+* [SDL_SetHint](#sdl_sethint)
+* [SDL_GetHint](#sdl_gethint)
+* [SDL_GetHintBoolean](#sdl_gethintboolean)
+* [SDL_HintCallback](#sdl_hintcallback)
+* [SDL_AddHintCallback](#sdl_addhintcallback)
+* [SDL_DelHintCallback](#sdl_delhintcallback)
+* [SDL_ClearHints](#sdl_clearhints)
+* [SDL_LoadObject](#sdl_loadobject)
+* [SDL_LoadFunction](#sdl_loadfunction)
+* [SDL_UnloadObject](#sdl_unloadobject)
+* [SDL_LogCategory](#sdl_logcategory)
+* [SDL_LogPriority](#sdl_logpriority)
+* [SDL_LogSetAllPriority](#sdl_logsetallpriority)
+* [SDL_LogSetPriority](#sdl_logsetpriority)
+* [SDL_LogGetPriority](#sdl_loggetpriority)
+* [SDL_LogResetPriorities](#sdl_logresetpriorities)
+* [SDL_Log](#sdl_log)
+* [SDL_LogVerbose](#sdl_logverbose)
+* [SDL_LogDebug](#sdl_logdebug)
+* [SDL_LogInfo](#sdl_loginfo)
+* [SDL_LogWarn](#sdl_logwarn)
+* [SDL_LogError](#sdl_logerror)
+* [SDL_LogCritical](#sdl_logcritical)
+* [SDL_LogMessage](#sdl_logmessage)
+* [SDL_LogMessageV](#sdl_logmessagev)
+* [SDL_LogOutputFunction](#sdl_logoutputfunction)
+* [SDL_LogGetOutputFunction](#sdl_loggetoutputfunction)
+* [SDL_LogSetOutputFunction](#sdl_logsetoutputfunction)
+* [SDL_MessageBoxFlags](#sdl_messageboxflags)
+* [SDL_MessageBoxButtonFlags](#sdl_messageboxbuttonflags)
+* [SDL_MessageBoxButtonData](#sdl_messageboxbuttondata)
+* [SDL_MessageBoxColor](#sdl_messageboxcolor)
+* [SDL_MessageBoxColorType](#sdl_messageboxcolortype)
+* [SDL_MessageBoxColorScheme](#sdl_messageboxcolorscheme)
+* [SDL_MessageBoxData](#sdl_messageboxdata)
+* [SDL_ShowMessageBox](#sdl_showmessagebox)
+* [SDL_ShowSimpleMessageBox](#sdl_showsimplemessagebox)
+* [SDL_MetalView](#sdl_metalview)
+* [SDL_Metal_CreateView](#sdl_metal_createview)
+* [SDL_Metal_DestroyView](#sdl_metal_destroyview)
+* [SDL_Metal_GetLayer](#sdl_metal_getlayer)
+* [SDL_Metal_GetDrawableSize](#sdl_metal_getdrawablesize)
+* [SDL_PowerState](#sdl_powerstate)
+* [SDL_GetPowerInfo](#sdl_getpowerinfo)
+* [SDL_RendererFlags](#sdl_rendererflags)
+* [SDL_RendererInfo](#sdl_rendererinfo)
+* [SDL_ScaleMode](#sdl_scalemode)
+* [SDL_TextureAccess](#sdl_textureaccess)
+* [SDL_TextureModulate](#sdl_texturemodulate)
+* [SDL_RendererFlip](#sdl_rendererflip)
+* [SDL_Renderer](#sdl_renderer)
+* [SDL_Texture](#sdl_texture)
+* [SDL_GetNumRenderDrivers](#sdl_getnumrenderdrivers)
+* [SDL_GetRenderDriverInfo](#sdl_getrenderdriverinfo)
+* [SDL_CreateWindowAndRenderer](#sdl_createwindowandrenderer)
+* [SDL_CreateRenderer](#sdl_createrenderer)
+* [SDL_CreateSoftwareRenderer](#sdl_createsoftwarerenderer)
+* [SDL_GetRenderer](#sdl_getrenderer)
+* [SDL_GetRendererInfo](#sdl_getrendererinfo)
+* [SDL_GetRendererOutputSize](#sdl_getrendereroutputsize)
+* [SDL_CreateTexture](#sdl_createtexture)
+* [SDL_CreateTextureFromSurface](#sdl_createtexturefromsurface)
+* [SDL_QueryTexture](#sdl_querytexture)
+* [SDL_SetTextureColorMod](#sdl_settexturecolormod)
+* [SDL_GetTextureColorMod](#sdl_gettexturecolormod)
+* [SDL_SetTextureAlphaMod](#sdl_settexturealphamod)
+* [SDL_GetTextureAlphaMod](#sdl_gettexturealphamod)
+* [SDL_SetTextureBlendMode](#sdl_settextureblendmode)
+* [SDL_GetTextureBlendMode](#sdl_gettextureblendmode)
+* [SDL_SetTextureScaleMode](#sdl_settexturescalemode)
+* [SDL_GetTextureScaleMode](#sdl_gettexturescalemode)
+* [SDL_UpdateTexture](#sdl_updatetexture)
+* [SDL_UpdateYUVTexture](#sdl_updateyuvtexture)
+* [SDL_UpdateNVTexture](#sdl_updatenvtexture)
+* [SDL_LockTexture](#sdl_locktexture)
+* [SDL_LockTextureToSurface](#sdl_locktexturetosurface)
+* [SDL_UnlockTexture](#sdl_unlocktexture)
+* [SDL_RenderTargetSupported](#sdl_rendertargetsupported)
+* [SDL_SetRenderTarget](#sdl_setrendertarget)
+* [SDL_GetRenderTarget](#sdl_getrendertarget)
+* [SDL_RenderSetLogicalSize](#sdl_rendersetlogicalsize)
+* [SDL_RenderGetLogicalSize](#sdl_rendergetlogicalsize)
+* [SDL_RenderSetIntegerScale](#sdl_rendersetintegerscale)
+* [SDL_RenderGetIntegerScale](#sdl_rendergetintegerscale)
+* [SDL_RenderSetViewport](#sdl_rendersetviewport)
+* [SDL_RenderGetViewport](#sdl_rendergetviewport)
+* [SDL_RenderSetClipRect](#sdl_rendersetcliprect)
+* [SDL_RenderGetClipRect](#sdl_rendergetcliprect)
+* [SDL_RenderIsClipEnabled](#sdl_renderisclipenabled)
+* [SDL_RenderSetScale](#sdl_rendersetscale)
+* [SDL_RenderGetScale](#sdl_rendergetscale)
+* [SDL_SetRenderDrawColor](#sdl_setrenderdrawcolor)
+* [SDL_GetRenderDrawColor](#sdl_getrenderdrawcolor)
+* [SDL_SetRenderDrawBlendMode](#sdl_setrenderdrawblendmode)
+* [SDL_GetRenderDrawBlendMode](#sdl_getrenderdrawblendmode)
+* [SDL_RenderClear](#sdl_renderclear)
+* [SDL_RenderDrawPoint](#sdl_renderdrawpoint)
+* [SDL_RenderDrawPoints](#sdl_renderdrawpoints)
+* [SDL_RenderDrawLine](#sdl_renderdrawline)
+* [SDL_RenderDrawLines](#sdl_renderdrawlines)
+* [SDL_RenderDrawRect](#sdl_renderdrawrect)
+* [SDL_RenderDrawRects](#sdl_renderdrawrects)
+* [SDL_RenderFillRect](#sdl_renderfillrect)
+* [SDL_RenderFillRects](#sdl_renderfillrects)
+* [SDL_RenderCopy](#sdl_rendercopy)
+* [SDL_RenderCopyEx](#sdl_rendercopyex)
+* [SDL_RenderDrawPointF](#sdl_renderdrawpointf)
+* [SDL_RenderDrawPointsF](#sdl_renderdrawpointsf)
+* [SDL_RenderDrawLineF](#sdl_renderdrawlinef)
+* [SDL_RenderDrawLinesF](#sdl_renderdrawlinesf)
+* [SDL_RenderDrawRectF](#sdl_renderdrawrectf)
+* [SDL_RenderDrawRectsF](#sdl_renderdrawrectsf)
+* [SDL_RenderFillRectF](#sdl_renderfillrectf)
+* [SDL_RenderFillRectsF](#sdl_renderfillrectsf)
+* [SDL_RenderCopyF](#sdl_rendercopyf)
+* [SDL_RenderCopyExF](#sdl_rendercopyexf)
+* [SDL_RenderReadPixels](#sdl_renderreadpixels)
+* [SDL_RenderPresent](#sdl_renderpresent)
+* [SDL_DestroyTexture](#sdl_destroytexture)
+* [SDL_DestroyRenderer](#sdl_destroyrenderer)
+* [SDL_RenderFlush](#sdl_renderflush)
+* [SDL_GL_BindTexture](#sdl_gl_bindtexture)
+* [SDL_GL_UnbindTexture](#sdl_gl_unbindtexture)
+* [SDL_RenderGetMetalLayer](#sdl_rendergetmetallayer)
+* [SDL_RenderGetMetalCommandEncoder](#sdl_rendergetmetalcommandencoder)
+* [SDL_CreateShapedWindow](#sdl_createshapedwindow)
+* [SDL_IsShapedWindow](#sdl_isshapedwindow)
+* [WindowShapeMode](#windowshapemode)
+* [SDL_WindowShapeParams](#sdl_windowshapeparams)
+* [SDL_WindowShapeMode](#sdl_windowshapemode)
+* [SDL_SetWindowShape](#sdl_setwindowshape)
+* [SDL_GetShapedWindowMode](#sdl_getshapedwindowmode)
+* [SDL_LinuxSetThreadPriority](#sdl_linuxsetthreadpriority)
+* [SDL_IsTablet](#sdl_istablet)
+* [SDL_OnApplicationWillTerminate](#sdl_onapplicationwillterminate)
+* [SDL_OnApplicationDidReceiveMemoryWarning](#sdl_onapplicationdidreceivememorywarning)
+* [SDL_OnApplicationWillResignActive](#sdl_onapplicationwillresignactive)
+* [SDL_OnApplicationDidEnterBackground](#sdl_onapplicationdidenterbackground)
+* [SDL_OnApplicationWillEnterForeground](#sdl_onapplicationwillenterforeground)
+* [SDL_OnApplicationDidBecomeActive](#sdl_onapplicationdidbecomeactive)
+* [SDL_GetTicks](#sdl_getticks)
+* [SDL_GetPerformanceCounter](#sdl_getperformancecounter)
+* [SDL_GetPerformanceFrequency](#sdl_getperformancefrequency)
+* [SDL_Delay](#sdl_delay)
+* [SDL_TimerCallback](#sdl_timercallback)
+* [SDL_AddTimer](#sdl_addtimer)
+* [SDL_RemoveTimer](#sdl_removetimer)
+* [SDL_version](#sdl_version)
+* [SDL_GetVersion](#sdl_getversion)
+* [SDL_GetRevision](#sdl_getrevision)
+* [SDL_GetRevisionNumber](#sdl_getrevisionnumber)
+* [SDL_Locale](#sdl_locale)
+* [SDL_GetPreferredLocales](#sdl_getpreferredlocales)
+* [SDL_OpenURL](#sdl_openurl)
+* [SDL_Init](#sdl_init)
+* [SDL_InitSubSystem](#sdl_initsubsystem)
+* [SDL_QuitSubSystem](#sdl_quitsubsystem)
+* [SDL_WasInit](#sdl_wasinit)
+* [SDL_Quit](#sdl_quit)
+* [SDL_ICONV_ERROR](#sdl_iconv_error)
+* [SDL_ICONV_E2BIG](#sdl_iconv_e2big)
+* [SDL_ICONV_EILSEQ](#sdl_iconv_eilseq)
+* [SDL_ICONV_EINVAL](#sdl_iconv_einval)
+* [SDL_LIL_ENDIAN](#sdl_lil_endian)
+* [SDL_BIG_ENDIAN](#sdl_big_endian)
+* [SDL_BYTEORDER](#sdl_byteorder)
+* [SDL_MUTEX_TIMEDOUT](#sdl_mutex_timedout)
+* [SDL_MUTEX_MAXWAIT](#sdl_mutex_maxwait)
+* [SDL_RWOPS_UNKNOWN](#sdl_rwops_unknown)
+* [SDL_RWOPS_WINFILE](#sdl_rwops_winfile)
+* [SDL_RWOPS_STDFILE](#sdl_rwops_stdfile)
+* [SDL_RWOPS_JNIFILE](#sdl_rwops_jnifile)
+* [SDL_RWOPS_MEMORY](#sdl_rwops_memory)
+* [SDL_RWOPS_MEMORY_RO](#sdl_rwops_memory_ro)
+* [SDL_AUDIO_MASK_BITSIZE](#sdl_audio_mask_bitsize)
+* [SDL_AUDIO_MASK_DATATYPE](#sdl_audio_mask_datatype)
+* [SDL_AUDIO_MASK_ENDIAN](#sdl_audio_mask_endian)
+* [SDL_AUDIO_MASK_SIGNED](#sdl_audio_mask_signed)
+* [SDL_AUDIO_ALLOW_FREQUENCY_CHANGE](#sdl_audio_allow_frequency_change)
+* [SDL_AUDIO_ALLOW_FORMAT_CHANGE](#sdl_audio_allow_format_change)
+* [SDL_AUDIO_ALLOW_CHANNELS_CHANGE](#sdl_audio_allow_channels_change)
+* [SDL_AUDIO_ALLOW_SAMPLES_CHANGE](#sdl_audio_allow_samples_change)
+* [SDL_AUDIO_ALLOW_ANY_CHANGE](#sdl_audio_allow_any_change)
+* [SDL_AUDIOCVT_MAX_FILTERS](#sdl_audiocvt_max_filters)
+* [SDL_MIX_MAXVOLUME](#sdl_mix_maxvolume)
+* [SDL_CACHELINE_SIZE](#sdl_cacheline_size)
+* [SDL_ALPHA_OPAQUE](#sdl_alpha_opaque)
+* [SDL_ALPHA_TRANSPARENT](#sdl_alpha_transparent)
+* [SDL_SWSURFACE](#sdl_swsurface)
+* [SDL_PREALLOC](#sdl_prealloc)
+* [SDL_RLEACCEL](#sdl_rleaccel)
+* [SDL_DONTFREE](#sdl_dontfree)
+* [SDL_SIMD_ALIGNED](#sdl_simd_aligned)
+* [SDL_WINDOWPOS_UNDEFINED_MASK](#sdl_windowpos_undefined_mask)
+* [SDL_WINDOWPOS_UNDEFINED](#sdl_windowpos_undefined)
+* [SDL_WINDOWPOS_CENTERED_MASK](#sdl_windowpos_centered_mask)
+* [SDL_WINDOWPOS_CENTERED](#sdl_windowpos_centered)
+* [SDL_BUTTON_LEFT](#sdl_button_left)
+* [SDL_BUTTON_MIDDLE](#sdl_button_middle)
+* [SDL_BUTTON_RIGHT](#sdl_button_right)
+* [SDL_BUTTON_X1](#sdl_button_x1)
+* [SDL_BUTTON_X2](#sdl_button_x2)
+* [SDL_BUTTON_LMASK](#sdl_button_lmask)
+* [SDL_BUTTON_MMASK](#sdl_button_mmask)
+* [SDL_BUTTON_RMASK](#sdl_button_rmask)
+* [SDL_BUTTON_X1MASK](#sdl_button_x1mask)
+* [SDL_BUTTON_X2MASK](#sdl_button_x2mask)
+* [SDL_JOYSTICK_AXIS_MAX](#sdl_joystick_axis_max)
+* [SDL_JOYSTICK_AXIS_MIN](#sdl_joystick_axis_min)
+* [SDL_HAT_CENTERED](#sdl_hat_centered)
+* [SDL_HAT_UP](#sdl_hat_up)
+* [SDL_HAT_RIGHT](#sdl_hat_right)
+* [SDL_HAT_DOWN](#sdl_hat_down)
+* [SDL_HAT_LEFT](#sdl_hat_left)
+* [SDL_HAT_RIGHTUP](#sdl_hat_rightup)
+* [SDL_HAT_RIGHTDOWN](#sdl_hat_rightdown)
+* [SDL_HAT_LEFTUP](#sdl_hat_leftup)
+* [SDL_HAT_LEFTDOWN](#sdl_hat_leftdown)
+* [SDL_STANDARD_GRAVITY](#sdl_standard_gravity)
+* [SDL_TOUCH_MOUSEID](#sdl_touch_mouseid)
+* [SDL_MOUSE_TOUCHID](#sdl_mouse_touchid)
+* [SDL_RELEASED](#sdl_released)
+* [SDL_PRESSED](#sdl_pressed)
+* [SDL_TEXTEDITINGEVENT_TEXT_SIZE](#sdl_texteditingevent_text_size)
+* [SDL_TEXTINPUTEVENT_TEXT_SIZE](#sdl_textinputevent_text_size)
+* [SDL_QUERY](#sdl_query)
+* [SDL_IGNORE](#sdl_ignore)
+* [SDL_DISABLE](#sdl_disable)
+* [SDL_ENABLE](#sdl_enable)
+* [SDL_HAPTIC_CONSTANT](#sdl_haptic_constant)
+* [SDL_HAPTIC_SINE](#sdl_haptic_sine)
+* [SDL_HAPTIC_LEFTRIGHT](#sdl_haptic_leftright)
+* [SDL_HAPTIC_TRIANGLE](#sdl_haptic_triangle)
+* [SDL_HAPTIC_SAWTOOTHUP](#sdl_haptic_sawtoothup)
+* [SDL_HAPTIC_SAWTOOTHDOWN](#sdl_haptic_sawtoothdown)
+* [SDL_HAPTIC_RAMP](#sdl_haptic_ramp)
+* [SDL_HAPTIC_SPRING](#sdl_haptic_spring)
+* [SDL_HAPTIC_DAMPER](#sdl_haptic_damper)
+* [SDL_HAPTIC_INERTIA](#sdl_haptic_inertia)
+* [SDL_HAPTIC_FRICTION](#sdl_haptic_friction)
+* [SDL_HAPTIC_CUSTOM](#sdl_haptic_custom)
+* [SDL_HAPTIC_GAIN](#sdl_haptic_gain)
+* [SDL_HAPTIC_AUTOCENTER](#sdl_haptic_autocenter)
+* [SDL_HAPTIC_STATUS](#sdl_haptic_status)
+* [SDL_HAPTIC_PAUSE](#sdl_haptic_pause)
+* [SDL_HAPTIC_POLAR](#sdl_haptic_polar)
+* [SDL_HAPTIC_CARTESIAN](#sdl_haptic_cartesian)
+* [SDL_HAPTIC_SPHERICAL](#sdl_haptic_spherical)
+* [SDL_HAPTIC_STEERING_AXIS](#sdl_haptic_steering_axis)
+* [SDL_HAPTIC_INFINITY](#sdl_haptic_infinity)
+* [SDL_HINT_ACCELEROMETER_AS_JOYSTICK](#sdl_hint_accelerometer_as_joystick)
+* [SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED](#sdl_hint_allow_alt_tab_while_grabbed)
+* [SDL_HINT_ALLOW_TOPMOST](#sdl_hint_allow_topmost)
+* [SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION](#sdl_hint_android_apk_expansion_main_file_version)
+* [SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION](#sdl_hint_android_apk_expansion_patch_file_version)
+* [SDL_HINT_ANDROID_BLOCK_ON_PAUSE](#sdl_hint_android_block_on_pause)
+* [SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO](#sdl_hint_android_block_on_pause_pauseaudio)
+* [SDL_HINT_ANDROID_TRAP_BACK_BUTTON](#sdl_hint_android_trap_back_button)
+* [SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS](#sdl_hint_apple_tv_controller_ui_events)
+* [SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION](#sdl_hint_apple_tv_remote_allow_rotation)
+* [SDL_HINT_AUDIO_CATEGORY](#sdl_hint_audio_category)
+* [SDL_HINT_AUDIO_DEVICE_APP_NAME](#sdl_hint_audio_device_app_name)
+* [SDL_HINT_AUDIO_DEVICE_STREAM_NAME](#sdl_hint_audio_device_stream_name)
+* [SDL_HINT_AUDIO_DEVICE_STREAM_ROLE](#sdl_hint_audio_device_stream_role)
+* [SDL_HINT_AUDIO_RESAMPLING_MODE](#sdl_hint_audio_resampling_mode)
+* [SDL_HINT_AUTO_UPDATE_JOYSTICKS](#sdl_hint_auto_update_joysticks)
+* [SDL_HINT_AUTO_UPDATE_SENSORS](#sdl_hint_auto_update_sensors)
+* [SDL_HINT_BMP_SAVE_LEGACY_FORMAT](#sdl_hint_bmp_save_legacy_format)
+* [SDL_HINT_DISPLAY_USABLE_BOUNDS](#sdl_hint_display_usable_bounds)
+* [SDL_HINT_EMSCRIPTEN_ASYNCIFY](#sdl_hint_emscripten_asyncify)
+* [SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT](#sdl_hint_emscripten_keyboard_element)
+* [SDL_HINT_ENABLE_STEAM_CONTROLLERS](#sdl_hint_enable_steam_controllers)
+* [SDL_HINT_EVENT_LOGGING](#sdl_hint_event_logging)
+* [SDL_HINT_FRAMEBUFFER_ACCELERATION](#sdl_hint_framebuffer_acceleration)
+* [SDL_HINT_GAMECONTROLLERCONFIG](#sdl_hint_gamecontrollerconfig)
+* [SDL_HINT_GAMECONTROLLERCONFIG_FILE](#sdl_hint_gamecontrollerconfig_file)
+* [SDL_HINT_GAMECONTROLLERTYPE](#sdl_hint_gamecontrollertype)
+* [SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES](#sdl_hint_gamecontroller_ignore_devices)
+* [SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT](#sdl_hint_gamecontroller_ignore_devices_except)
+* [SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS](#sdl_hint_gamecontroller_use_button_labels)
+* [SDL_HINT_GRAB_KEYBOARD](#sdl_hint_grab_keyboard)
+* [SDL_HINT_IDLE_TIMER_DISABLED](#sdl_hint_idle_timer_disabled)
+* [SDL_HINT_IME_INTERNAL_EDITING](#sdl_hint_ime_internal_editing)
+* [SDL_HINT_IOS_HIDE_HOME_INDICATOR](#sdl_hint_ios_hide_home_indicator)
+* [SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS](#sdl_hint_joystick_allow_background_events)
+* [SDL_HINT_JOYSTICK_HIDAPI](#sdl_hint_joystick_hidapi)
+* [SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE](#sdl_hint_joystick_hidapi_gamecube)
+* [SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS](#sdl_hint_joystick_hidapi_joy_cons)
+* [SDL_HINT_JOYSTICK_HIDAPI_LUNA](#sdl_hint_joystick_hidapi_luna)
+* [SDL_HINT_JOYSTICK_HIDAPI_PS4](#sdl_hint_joystick_hidapi_ps4)
+* [SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE](#sdl_hint_joystick_hidapi_ps4_rumble)
+* [SDL_HINT_JOYSTICK_HIDAPI_PS5](#sdl_hint_joystick_hidapi_ps5)
+* [SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED](#sdl_hint_joystick_hidapi_ps5_player_led)
+* [SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE](#sdl_hint_joystick_hidapi_ps5_rumble)
+* [SDL_HINT_JOYSTICK_HIDAPI_STADIA](#sdl_hint_joystick_hidapi_stadia)
+* [SDL_HINT_JOYSTICK_HIDAPI_STEAM](#sdl_hint_joystick_hidapi_steam)
+* [SDL_HINT_JOYSTICK_HIDAPI_SWITCH](#sdl_hint_joystick_hidapi_switch)
+* [SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED](#sdl_hint_joystick_hidapi_switch_home_led)
+* [SDL_HINT_JOYSTICK_HIDAPI_XBOX](#sdl_hint_joystick_hidapi_xbox)
+* [SDL_HINT_JOYSTICK_RAWINPUT](#sdl_hint_joystick_rawinput)
+* [SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT](#sdl_hint_joystick_rawinput_correlate_xinput)
+* [SDL_HINT_JOYSTICK_THREAD](#sdl_hint_joystick_thread)
+* [SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER](#sdl_hint_kmsdrm_require_drm_master)
+* [SDL_HINT_LINUX_JOYSTICK_DEADZONES](#sdl_hint_linux_joystick_deadzones)
+* [SDL_HINT_MAC_BACKGROUND_APP](#sdl_hint_mac_background_app)
+* [SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK](#sdl_hint_mac_ctrl_click_emulate_right_click)
+* [SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS](#sdl_hint_mouse_double_click_radius)
+* [SDL_HINT_MOUSE_DOUBLE_CLICK_TIME](#sdl_hint_mouse_double_click_time)
+* [SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH](#sdl_hint_mouse_focus_clickthrough)
+* [SDL_HINT_MOUSE_NORMAL_SPEED_SCALE](#sdl_hint_mouse_normal_speed_scale)
+* [SDL_HINT_MOUSE_RELATIVE_MODE_WARP](#sdl_hint_mouse_relative_mode_warp)
+* [SDL_HINT_MOUSE_RELATIVE_SCALING](#sdl_hint_mouse_relative_scaling)
+* [SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE](#sdl_hint_mouse_relative_speed_scale)
+* [SDL_HINT_MOUSE_TOUCH_EVENTS](#sdl_hint_mouse_touch_events)
+* [SDL_HINT_NO_SIGNAL_HANDLERS](#sdl_hint_no_signal_handlers)
+* [SDL_HINT_OPENGL_ES_DRIVER](#sdl_hint_opengl_es_driver)
+* [SDL_HINT_ORIENTATIONS](#sdl_hint_orientations)
+* [SDL_HINT_PREFERRED_LOCALES](#sdl_hint_preferred_locales)
+* [SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION](#sdl_hint_qtwayland_content_orientation)
+* [SDL_HINT_QTWAYLAND_WINDOW_FLAGS](#sdl_hint_qtwayland_window_flags)
+* [SDL_HINT_RENDER_BATCHING](#sdl_hint_render_batching)
+* [SDL_HINT_RENDER_DIRECT3D11_DEBUG](#sdl_hint_render_direct3d11_debug)
+* [SDL_HINT_RENDER_DIRECT3D_THREADSAFE](#sdl_hint_render_direct3d_threadsafe)
+* [SDL_HINT_RENDER_DRIVER](#sdl_hint_render_driver)
+* [SDL_HINT_RENDER_LOGICAL_SIZE_MODE](#sdl_hint_render_logical_size_mode)
+* [SDL_HINT_RENDER_OPENGL_SHADERS](#sdl_hint_render_opengl_shaders)
+* [SDL_HINT_RENDER_SCALE_QUALITY](#sdl_hint_render_scale_quality)
+* [SDL_HINT_RENDER_VSYNC](#sdl_hint_render_vsync)
+* [SDL_HINT_RETURN_KEY_HIDES_IME](#sdl_hint_return_key_hides_ime)
+* [SDL_HINT_RPI_VIDEO_LAYER](#sdl_hint_rpi_video_layer)
+* [SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL](#sdl_hint_thread_force_realtime_time_critical)
+* [SDL_HINT_THREAD_PRIORITY_POLICY](#sdl_hint_thread_priority_policy)
+* [SDL_HINT_THREAD_STACK_SIZE](#sdl_hint_thread_stack_size)
+* [SDL_HINT_TIMER_RESOLUTION](#sdl_hint_timer_resolution)
+* [SDL_HINT_TOUCH_MOUSE_EVENTS](#sdl_hint_touch_mouse_events)
+* [SDL_HINT_TV_REMOTE_AS_JOYSTICK](#sdl_hint_tv_remote_as_joystick)
+* [SDL_HINT_VIDEO_ALLOW_SCREENSAVER](#sdl_hint_video_allow_screensaver)
+* [SDL_HINT_VIDEO_DOUBLE_BUFFER](#sdl_hint_video_double_buffer)
+* [SDL_HINT_VIDEO_EXTERNAL_CONTEXT](#sdl_hint_video_external_context)
+* [SDL_HINT_VIDEO_HIGHDPI_DISABLED](#sdl_hint_video_highdpi_disabled)
+* [SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES](#sdl_hint_video_mac_fullscreen_spaces)
+* [SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS](#sdl_hint_video_minimize_on_focus_loss)
+* [SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR](#sdl_hint_video_wayland_allow_libdecor)
+* [SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT](#sdl_hint_video_window_share_pixel_format)
+* [SDL_HINT_VIDEO_WIN_D3DCOMPILER](#sdl_hint_video_win_d3dcompiler)
+* [SDL_HINT_VIDEO_X11_FORCE_EGL](#sdl_hint_video_x11_force_egl)
+* [SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR](#sdl_hint_video_x11_net_wm_bypass_compositor)
+* [SDL_HINT_VIDEO_X11_NET_WM_PING](#sdl_hint_video_x11_net_wm_ping)
+* [SDL_HINT_VIDEO_X11_WINDOW_VISUALID](#sdl_hint_video_x11_window_visualid)
+* [SDL_HINT_VIDEO_X11_XINERAMA](#sdl_hint_video_x11_xinerama)
+* [SDL_HINT_VIDEO_X11_XRANDR](#sdl_hint_video_x11_xrandr)
+* [SDL_HINT_VIDEO_X11_XVIDMODE](#sdl_hint_video_x11_xvidmode)
+* [SDL_HINT_WAVE_FACT_CHUNK](#sdl_hint_wave_fact_chunk)
+* [SDL_HINT_WAVE_RIFF_CHUNK_SIZE](#sdl_hint_wave_riff_chunk_size)
+* [SDL_HINT_WAVE_TRUNCATION](#sdl_hint_wave_truncation)
+* [SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING](#sdl_hint_windows_disable_thread_naming)
+* [SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP](#sdl_hint_windows_enable_messageloop)
+* [SDL_HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS](#sdl_hint_windows_force_mutex_critical_sections)
+* [SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL](#sdl_hint_windows_force_semaphore_kernel)
+* [SDL_HINT_WINDOWS_INTRESOURCE_ICON](#sdl_hint_windows_intresource_icon)
+* [SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL](#sdl_hint_windows_intresource_icon_small)
+* [SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4](#sdl_hint_windows_no_close_on_alt_f4)
+* [SDL_HINT_WINDOWS_USE_D3D9EX](#sdl_hint_windows_use_d3d9ex)
+* [SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN](#sdl_hint_window_frame_usable_while_cursor_hidden)
+* [SDL_HINT_WINRT_HANDLE_BACK_BUTTON](#sdl_hint_winrt_handle_back_button)
+* [SDL_HINT_WINRT_PRIVACY_POLICY_LABEL](#sdl_hint_winrt_privacy_policy_label)
+* [SDL_HINT_WINRT_PRIVACY_POLICY_URL](#sdl_hint_winrt_privacy_policy_url)
+* [SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT](#sdl_hint_x11_force_override_redirect)
+* [SDL_HINT_XINPUT_ENABLED](#sdl_hint_xinput_enabled)
+* [SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING](#sdl_hint_xinput_use_old_joystick_mapping)
+* [SDL_HINT_AUDIO_INCLUDE_MONITORS](#sdl_hint_audio_include_monitors)
+* [SDL_MAX_LOG_MESSAGE](#sdl_max_log_message)
+* [SDL_NONSHAPEABLE_WINDOW](#sdl_nonshapeable_window)
+* [SDL_INVALID_SHAPE_ARGUMENT](#sdl_invalid_shape_argument)
+* [SDL_WINDOW_LACKS_SHAPE](#sdl_window_lacks_shape)
+* [SDL_MAJOR_VERSION](#sdl_major_version)
+* [SDL_MINOR_VERSION](#sdl_minor_version)
+* [SDL_PATCHLEVEL](#sdl_patchlevel)
+* [SDL_COMPILEDVERSION](#sdl_compiledversion)
+* [SDL_INIT_TIMER](#sdl_init_timer)
+* [SDL_INIT_AUDIO](#sdl_init_audio)
+* [SDL_INIT_VIDEO](#sdl_init_video)
+* [SDL_INIT_JOYSTICK](#sdl_init_joystick)
+* [SDL_INIT_HAPTIC](#sdl_init_haptic)
+* [SDL_INIT_GAMECONTROLLER](#sdl_init_gamecontroller)
+* [SDL_INIT_EVENTS](#sdl_init_events)
+* [SDL_INIT_SENSOR](#sdl_init_sensor)
+* [SDL_INIT_NOPARACHUTE](#sdl_init_noparachute)
+* [SDL_INIT_EVERYTHING](#sdl_init_everything)
+* [SDL_BlitSurface](#sdl_blitsurface)
+* [SDL_BlitScaled](#sdl_blitscaled)
+* [SDL_TriggerBreakpoint](#sdl_triggerbreakpoint)
+* [SDL_CompilerBarrier](#sdl_compilerbarrier)
+* [SDL_MemoryBarrierRelease](#sdl_memorybarrierrelease)
+* [SDL_MemoryBarrierAcquire](#sdl_memorybarrieracquire)
+* [SDL_AtomicIncRef](#sdl_atomicincref)
+* [SDL_AtomicDecRef](#sdl_atomicdecref)
+* [SDL_OutOfMemory](#sdl_outofmemory)
+* [SDL_Unsupported](#sdl_unsupported)
+* [SDL_InvalidParamError](#sdl_invalidparamerror)
+* [SDL_SwapLE16](#sdl_swaple16)
+* [SDL_SwapLE32](#sdl_swaple32)
+* [SDL_SwapLE64](#sdl_swaple64)
+* [SDL_SwapFloatLE](#sdl_swapfloatle)
+* [SDL_SwapBE16](#sdl_swapbe16)
+* [SDL_SwapBE32](#sdl_swapbe32)
+* [SDL_SwapBE64](#sdl_swapbe64)
+* [SDL_SwapFloatBE](#sdl_swapfloatbe)
+* [SDL_LoadWAV](#sdl_loadwav)
+* [SDL_LoadBMP](#sdl_loadbmp)
+* [SDL_SaveBMP](#sdl_savebmp)
+* [SDL_GameControllerAddMappingsFromFile](#sdl_gamecontrolleraddmappingsfromfile)
+* [SDL_QuitRequested](#sdl_quitrequested)
+* [SDL_GetEventState](#sdl_geteventstate)
+* [SDL_AUDIO_BITSIZE](#sdl_audio_bitsize)
+* [SDL_AUDIO_ISFLOAT](#sdl_audio_isfloat)
+* [SDL_AUDIO_ISBIGENDIAN](#sdl_audio_isbigendian)
+* [SDL_AUDIO_ISSIGNED](#sdl_audio_issigned)
+* [SDL_AUDIO_ISINT](#sdl_audio_isint)
+* [SDL_AUDIO_ISLITTLEENDIAN](#sdl_audio_islittleendian)
+* [SDL_AUDIO_ISUNSIGNED](#sdl_audio_isunsigned)
+* [SDL_PIXELFLAG](#sdl_pixelflag)
+* [SDL_PIXELTYPE](#sdl_pixeltype)
+* [SDL_PIXELORDER](#sdl_pixelorder)
+* [SDL_PIXELLAYOUT](#sdl_pixellayout)
+* [SDL_BITSPERPIXEL](#sdl_bitsperpixel)
+* [SDL_BYTESPERPIXEL](#sdl_bytesperpixel)
+* [SDL_ISPIXELFORMAT_INDEXED](#sdl_ispixelformat_indexed)
+* [SDL_ISPIXELFORMAT_PACKED](#sdl_ispixelformat_packed)
+* [SDL_ISPIXELFORMAT_ARRAY](#sdl_ispixelformat_array)
+* [SDL_ISPIXELFORMAT_ALPHA](#sdl_ispixelformat_alpha)
+* [SDL_ISPIXELFORMAT_FOURCC](#sdl_ispixelformat_fourcc)
+* [SDL_WINDOWPOS_ISUNDEFINED](#sdl_windowpos_isundefined)
+* [SDL_WINDOWPOS_ISCENTERED](#sdl_windowpos_iscentered)
+* [SDL_MUSTLOCK](#sdl_mustlock)
+* [SDL_SCANCODE_TO_KEYCODE](#sdl_scancode_to_keycode)
+* [SDL_SHAPEMODEALPHA](#sdl_shapemodealpha)
+* [SDL_VERSION](#sdl_version)
+* [SDL_VERSION_ATLEAST](#sdl_version_atleast)
+
 ### SDL_GetPlatform
 
 ```lua
 global function SDL_GetPlatform(): cstring
+```
+
+
+
+### FILE
+
+```lua
+global FILE: type = @record{}
 ```
 
 
@@ -137,10 +1339,58 @@ global function SDL_abs(x: cint): cint
 
 
 
+### SDL_isalpha
+
+```lua
+global function SDL_isalpha(x: cint): cint
+```
+
+
+
+### SDL_isalnum
+
+```lua
+global function SDL_isalnum(x: cint): cint
+```
+
+
+
+### SDL_isblank
+
+```lua
+global function SDL_isblank(x: cint): cint
+```
+
+
+
+### SDL_iscntrl
+
+```lua
+global function SDL_iscntrl(x: cint): cint
+```
+
+
+
 ### SDL_isdigit
 
 ```lua
 global function SDL_isdigit(x: cint): cint
+```
+
+
+
+### SDL_isxdigit
+
+```lua
+global function SDL_isxdigit(x: cint): cint
+```
+
+
+
+### SDL_ispunct
+
+```lua
+global function SDL_ispunct(x: cint): cint
 ```
 
 
@@ -165,6 +1415,22 @@ global function SDL_isupper(x: cint): cint
 
 ```lua
 global function SDL_islower(x: cint): cint
+```
+
+
+
+### SDL_isprint
+
+```lua
+global function SDL_isprint(x: cint): cint
+```
+
+
+
+### SDL_isgraph
+
+```lua
+global function SDL_isgraph(x: cint): cint
 ```
 
 
@@ -817,6 +2083,38 @@ global function SDL_powf(x: float32, y: float32): float32
 
 
 
+### SDL_round
+
+```lua
+global function SDL_round(x: float64): float64
+```
+
+
+
+### SDL_roundf
+
+```lua
+global function SDL_roundf(x: float32): float32
+```
+
+
+
+### SDL_lround
+
+```lua
+global function SDL_lround(x: float64): clong
+```
+
+
+
+### SDL_lroundf
+
+```lua
+global function SDL_lroundf(x: float32): clong
+```
+
+
+
 ### SDL_scalbn
 
 ```lua
@@ -1200,30 +2498,6 @@ global function SDL_Error(code: SDL_errorcode): cint
 
 
 
-### SDL_Swap16
-
-```lua
-global function SDL_Swap16(x: uint16): uint16
-```
-
-
-
-### SDL_Swap32
-
-```lua
-global function SDL_Swap32(x: uint32): uint32
-```
-
-
-
-### SDL_Swap64
-
-```lua
-global function SDL_Swap64(x: uint64): uint64
-```
-
-
-
 ### SDL_SwapFloat
 
 ```lua
@@ -1521,6 +2795,14 @@ global function SDL_TLSGet(id: cuint): pointer
 
 ```lua
 global function SDL_TLSSet(id: cuint, value: pointer, destructor: function(pointer)): cint
+```
+
+
+
+### SDL_TLSCleanup
+
+```lua
+global function SDL_TLSCleanup()
 ```
 
 
@@ -1859,6 +3141,14 @@ global function SDL_GetNumAudioDevices(iscapture: cint): cint
 
 ```lua
 global function SDL_GetAudioDeviceName(index: cint, iscapture: cint): cstring
+```
+
+
+
+### SDL_GetAudioDeviceSpec
+
+```lua
+global function SDL_GetAudioDeviceSpec(index: cint, iscapture: cint, spec: *SDL_AudioSpec): cint
 ```
 
 
@@ -3063,6 +4353,14 @@ global function SDL_SoftStretch(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL
 
 
 
+### SDL_SoftStretchLinear
+
+```lua
+global function SDL_SoftStretchLinear(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint
+```
+
+
+
 ### SDL_UpperBlitScaled
 
 ```lua
@@ -3137,7 +4435,7 @@ global SDL_WindowFlags: type = @enum(cint){
   SDL_WINDOW_RESIZABLE = 32,
   SDL_WINDOW_MINIMIZED = 64,
   SDL_WINDOW_MAXIMIZED = 128,
-  SDL_WINDOW_INPUT_GRABBED = 256,
+  SDL_WINDOW_MOUSE_GRABBED = 256,
   SDL_WINDOW_INPUT_FOCUS = 512,
   SDL_WINDOW_MOUSE_FOCUS = 1024,
   SDL_WINDOW_FULLSCREEN_DESKTOP = 4097,
@@ -3149,8 +4447,10 @@ global SDL_WindowFlags: type = @enum(cint){
   SDL_WINDOW_UTILITY = 131072,
   SDL_WINDOW_TOOLTIP = 262144,
   SDL_WINDOW_POPUP_MENU = 524288,
+  SDL_WINDOW_KEYBOARD_GRABBED = 1048576,
   SDL_WINDOW_VULKAN = 268435456,
-  SDL_WINDOW_METAL = 536870912
+  SDL_WINDOW_METAL = 536870912,
+  SDL_WINDOW_INPUT_GRABBED = 256
 }
 ```
 
@@ -3204,6 +4504,18 @@ global SDL_DisplayOrientation: type = @enum(cint){
   SDL_ORIENTATION_LANDSCAPE_FLIPPED = 2,
   SDL_ORIENTATION_PORTRAIT = 3,
   SDL_ORIENTATION_PORTRAIT_FLIPPED = 4
+}
+```
+
+
+
+### SDL_FlashOperation
+
+```lua
+global SDL_FlashOperation: type = @enum(cint){
+  SDL_FLASH_CANCEL = 0,
+  SDL_FLASH_BRIEFLY = 1,
+  SDL_FLASH_UNTIL_FOCUSED = 2
 }
 ```
 
@@ -3628,6 +4940,14 @@ global function SDL_SetWindowResizable(window: *SDL_Window, resizable: SDL_bool)
 
 
 
+### SDL_SetWindowAlwaysOnTop
+
+```lua
+global function SDL_SetWindowAlwaysOnTop(window: *SDL_Window, on_top: SDL_bool)
+```
+
+
+
 ### SDL_ShowWindow
 
 ```lua
@@ -3716,10 +5036,42 @@ global function SDL_SetWindowGrab(window: *SDL_Window, grabbed: SDL_bool)
 
 
 
+### SDL_SetWindowKeyboardGrab
+
+```lua
+global function SDL_SetWindowKeyboardGrab(window: *SDL_Window, grabbed: SDL_bool)
+```
+
+
+
+### SDL_SetWindowMouseGrab
+
+```lua
+global function SDL_SetWindowMouseGrab(window: *SDL_Window, grabbed: SDL_bool)
+```
+
+
+
 ### SDL_GetWindowGrab
 
 ```lua
 global function SDL_GetWindowGrab(window: *SDL_Window): SDL_bool
+```
+
+
+
+### SDL_GetWindowKeyboardGrab
+
+```lua
+global function SDL_GetWindowKeyboardGrab(window: *SDL_Window): SDL_bool
+```
+
+
+
+### SDL_GetWindowMouseGrab
+
+```lua
+global function SDL_GetWindowMouseGrab(window: *SDL_Window): SDL_bool
 ```
 
 
@@ -3827,6 +5179,14 @@ global SDL_HitTest: type = @function(*SDL_Window, *SDL_Point, pointer): SDL_HitT
 
 ```lua
 global function SDL_SetWindowHitTest(window: *SDL_Window, callback: SDL_HitTest, callback_data: pointer): cint
+```
+
+
+
+### SDL_FlashWindow
+
+```lua
+global function SDL_FlashWindow(window: *SDL_Window, operation: SDL_FlashOperation): cint
 ```
 
 
@@ -5274,6 +6634,14 @@ global function SDL_JoystickSetLED(joystick: *SDL_Joystick, red: uint8, green: u
 
 
 
+### SDL_JoystickSendEffect
+
+```lua
+global function SDL_JoystickSendEffect(joystick: *SDL_Joystick, data: pointer, size: cint): cint
+```
+
+
+
 ### SDL_JoystickClose
 
 ```lua
@@ -5458,7 +6826,9 @@ global SDL_GameControllerType: type = @enum(cint){
   SDL_CONTROLLER_TYPE_PS4 = 4,
   SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO = 5,
   SDL_CONTROLLER_TYPE_VIRTUAL = 6,
-  SDL_CONTROLLER_TYPE_PS5 = 7
+  SDL_CONTROLLER_TYPE_PS5 = 7,
+  SDL_CONTROLLER_TYPE_AMAZON_LUNA = 8,
+  SDL_CONTROLLER_TYPE_GOOGLE_STADIA = 9
 }
 ```
 
@@ -5715,7 +7085,7 @@ global SDL_GameControllerAxis: type = @enum(cint){
 ### SDL_GameControllerGetAxisFromString
 
 ```lua
-global function SDL_GameControllerGetAxisFromString(pchString: cstring): SDL_GameControllerAxis
+global function SDL_GameControllerGetAxisFromString(str: cstring): SDL_GameControllerAxis
 ```
 
 
@@ -5787,7 +7157,7 @@ global SDL_GameControllerButton: type = @enum(cint){
 ### SDL_GameControllerGetButtonFromString
 
 ```lua
-global function SDL_GameControllerGetButtonFromString(pchString: cstring): SDL_GameControllerButton
+global function SDL_GameControllerGetButtonFromString(str: cstring): SDL_GameControllerButton
 ```
 
 
@@ -5872,6 +7242,14 @@ global function SDL_GameControllerIsSensorEnabled(gamecontroller: *SDL_GameContr
 
 
 
+### SDL_GameControllerGetSensorDataRate
+
+```lua
+global function SDL_GameControllerGetSensorDataRate(gamecontroller: *SDL_GameController, type: SDL_SensorType): float32
+```
+
+
+
 ### SDL_GameControllerGetSensorData
 
 ```lua
@@ -5908,6 +7286,14 @@ global function SDL_GameControllerHasLED(gamecontroller: *SDL_GameController): S
 
 ```lua
 global function SDL_GameControllerSetLED(gamecontroller: *SDL_GameController, red: uint8, green: uint8, blue: uint8): cint
+```
+
+
+
+### SDL_GameControllerSendEffect
+
+```lua
+global function SDL_GameControllerSendEffect(gamecontroller: *SDL_GameController, data: pointer, size: cint): cint
 ```
 
 
@@ -7845,6 +9231,14 @@ global function SDL_UpdateYUVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Ypl
 
 
 
+### SDL_UpdateNVTexture
+
+```lua
+global function SDL_UpdateNVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, UVplane: *uint8, UVpitch: cint): cint
+```
+
+
+
 ### SDL_LockTexture
 
 ```lua
@@ -9271,274 +10665,66 @@ global SDL_HAPTIC_INFINITY: uint32
 
 
 
-### SDL_HINT_FRAMEBUFFER_ACCELERATION
+### SDL_HINT_ACCELEROMETER_AS_JOYSTICK
 
 ```lua
-global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring
+global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_DRIVER
+### SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
 
 ```lua
-global SDL_HINT_RENDER_DRIVER: cstring
+global SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_OPENGL_SHADERS
+### SDL_HINT_ALLOW_TOPMOST
 
 ```lua
-global SDL_HINT_RENDER_OPENGL_SHADERS: cstring
+global SDL_HINT_ALLOW_TOPMOST: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_DIRECT3D_THREADSAFE
+### SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION
 
 ```lua
-global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring
+global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_DIRECT3D11_DEBUG
+### SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION
 
 ```lua
-global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring
+global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_LOGICAL_SIZE_MODE
+### SDL_HINT_ANDROID_BLOCK_ON_PAUSE
 
 ```lua
-global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring
+global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_SCALE_QUALITY
+### SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO
 
 ```lua
-global SDL_HINT_RENDER_SCALE_QUALITY: cstring
+global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_VSYNC
+### SDL_HINT_ANDROID_TRAP_BACK_BUTTON
 
 ```lua
-global SDL_HINT_RENDER_VSYNC: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_ALLOW_SCREENSAVER
-
-```lua
-global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_EXTERNAL_CONTEXT
-
-```lua
-global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_XVIDMODE
-
-```lua
-global SDL_HINT_VIDEO_X11_XVIDMODE: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_XINERAMA
-
-```lua
-global SDL_HINT_VIDEO_X11_XINERAMA: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_XRANDR
-
-```lua
-global SDL_HINT_VIDEO_X11_XRANDR: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_WINDOW_VISUALID
-
-```lua
-global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_NET_WM_PING
-
-```lua
-global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR
-
-```lua
-global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_X11_FORCE_EGL
-
-```lua
-global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring
-```
-
-
-
-### SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN
-
-```lua
-global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring
-```
-
-
-
-### SDL_HINT_WINDOWS_INTRESOURCE_ICON
-
-```lua
-global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring
-```
-
-
-
-### SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL
-
-```lua
-global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring
-```
-
-
-
-### SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
-
-```lua
-global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring
-```
-
-
-
-### SDL_HINT_GRAB_KEYBOARD
-
-```lua
-global SDL_HINT_GRAB_KEYBOARD: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_DOUBLE_CLICK_TIME
-
-```lua
-global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
-
-```lua
-global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_NORMAL_SPEED_SCALE
-
-```lua
-global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE
-
-```lua
-global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_RELATIVE_SCALING
-
-```lua
-global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_RELATIVE_MODE_WARP
-
-```lua
-global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH
-
-```lua
-global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring
-```
-
-
-
-### SDL_HINT_TOUCH_MOUSE_EVENTS
-
-```lua
-global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring
-```
-
-
-
-### SDL_HINT_MOUSE_TOUCH_EVENTS
-
-```lua
-global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS
-
-```lua
-global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring
-```
-
-
-
-### SDL_HINT_IDLE_TIMER_DISABLED
-
-```lua
-global SDL_HINT_IDLE_TIMER_DISABLED: cstring
-```
-
-
-
-### SDL_HINT_ORIENTATIONS
-
-```lua
-global SDL_HINT_ORIENTATIONS: cstring
+global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring
 ```
 
 
@@ -9559,50 +10745,114 @@ global SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: cstring
 
 
 
-### SDL_HINT_IOS_HIDE_HOME_INDICATOR
+### SDL_HINT_AUDIO_CATEGORY
 
 ```lua
-global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring
+global SDL_HINT_AUDIO_CATEGORY: cstring
 ```
 
 
 
-### SDL_HINT_ACCELEROMETER_AS_JOYSTICK
+### SDL_HINT_AUDIO_DEVICE_APP_NAME
 
 ```lua
-global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring
+global SDL_HINT_AUDIO_DEVICE_APP_NAME: cstring
 ```
 
 
 
-### SDL_HINT_TV_REMOTE_AS_JOYSTICK
+### SDL_HINT_AUDIO_DEVICE_STREAM_NAME
 
 ```lua
-global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring
+global SDL_HINT_AUDIO_DEVICE_STREAM_NAME: cstring
 ```
 
 
 
-### SDL_HINT_XINPUT_ENABLED
+### SDL_HINT_AUDIO_DEVICE_STREAM_ROLE
 
 ```lua
-global SDL_HINT_XINPUT_ENABLED: cstring
+global SDL_HINT_AUDIO_DEVICE_STREAM_ROLE: cstring
 ```
 
 
 
-### SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING
+### SDL_HINT_AUDIO_RESAMPLING_MODE
 
 ```lua
-global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring
+global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring
 ```
 
 
 
-### SDL_HINT_GAMECONTROLLERTYPE
+### SDL_HINT_AUTO_UPDATE_JOYSTICKS
 
 ```lua
-global SDL_HINT_GAMECONTROLLERTYPE: cstring
+global SDL_HINT_AUTO_UPDATE_JOYSTICKS: cstring
+```
+
+
+
+### SDL_HINT_AUTO_UPDATE_SENSORS
+
+```lua
+global SDL_HINT_AUTO_UPDATE_SENSORS: cstring
+```
+
+
+
+### SDL_HINT_BMP_SAVE_LEGACY_FORMAT
+
+```lua
+global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring
+```
+
+
+
+### SDL_HINT_DISPLAY_USABLE_BOUNDS
+
+```lua
+global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring
+```
+
+
+
+### SDL_HINT_EMSCRIPTEN_ASYNCIFY
+
+```lua
+global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring
+```
+
+
+
+### SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT
+
+```lua
+global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring
+```
+
+
+
+### SDL_HINT_ENABLE_STEAM_CONTROLLERS
+
+```lua
+global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring
+```
+
+
+
+### SDL_HINT_EVENT_LOGGING
+
+```lua
+global SDL_HINT_EVENT_LOGGING: cstring
+```
+
+
+
+### SDL_HINT_FRAMEBUFFER_ACCELERATION
+
+```lua
+global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring
 ```
 
 
@@ -9619,6 +10869,14 @@ global SDL_HINT_GAMECONTROLLERCONFIG: cstring
 
 ```lua
 global SDL_HINT_GAMECONTROLLERCONFIG_FILE: cstring
+```
+
+
+
+### SDL_HINT_GAMECONTROLLERTYPE
+
+```lua
+global SDL_HINT_GAMECONTROLLERTYPE: cstring
 ```
 
 
@@ -9647,6 +10905,38 @@ global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring
 
 
 
+### SDL_HINT_GRAB_KEYBOARD
+
+```lua
+global SDL_HINT_GRAB_KEYBOARD: cstring
+```
+
+
+
+### SDL_HINT_IDLE_TIMER_DISABLED
+
+```lua
+global SDL_HINT_IDLE_TIMER_DISABLED: cstring
+```
+
+
+
+### SDL_HINT_IME_INTERNAL_EDITING
+
+```lua
+global SDL_HINT_IME_INTERNAL_EDITING: cstring
+```
+
+
+
+### SDL_HINT_IOS_HIDE_HOME_INDICATOR
+
+```lua
+global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
 
 ```lua
@@ -9663,10 +10953,42 @@ global SDL_HINT_JOYSTICK_HIDAPI: cstring
 
 
 
+### SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_LUNA
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_LUNA: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_HIDAPI_PS4
 
 ```lua
 global SDL_HINT_JOYSTICK_HIDAPI_PS4: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring
 ```
 
 
@@ -9679,10 +11001,26 @@ global SDL_HINT_JOYSTICK_HIDAPI_PS5: cstring
 
 
 
-### SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE
+### SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED
 
 ```lua
-global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring
+global SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_STADIA
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_STADIA: cstring
 ```
 
 
@@ -9703,34 +11041,18 @@ global SDL_HINT_JOYSTICK_HIDAPI_SWITCH: cstring
 
 
 
+### SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_HIDAPI_XBOX
 
 ```lua
 global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring
-```
-
-
-
-### SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT
-
-```lua
-global SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT: cstring
-```
-
-
-
-### SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE
-
-```lua
-global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring
-```
-
-
-
-### SDL_HINT_ENABLE_STEAM_CONTROLLERS
-
-```lua
-global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring
 ```
 
 
@@ -9743,10 +11065,26 @@ global SDL_HINT_JOYSTICK_RAWINPUT: cstring
 
 
 
+### SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT
+
+```lua
+global SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_THREAD
 
 ```lua
 global SDL_HINT_JOYSTICK_THREAD: cstring
+```
+
+
+
+### SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER
+
+```lua
+global SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER: cstring
 ```
 
 
@@ -9759,18 +11097,114 @@ global SDL_HINT_LINUX_JOYSTICK_DEADZONES: cstring
 
 
 
-### SDL_HINT_ALLOW_TOPMOST
+### SDL_HINT_MAC_BACKGROUND_APP
 
 ```lua
-global SDL_HINT_ALLOW_TOPMOST: cstring
+global SDL_HINT_MAC_BACKGROUND_APP: cstring
 ```
 
 
 
-### SDL_HINT_TIMER_RESOLUTION
+### SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK
 
 ```lua
-global SDL_HINT_TIMER_RESOLUTION: cstring
+global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
+
+```lua
+global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_DOUBLE_CLICK_TIME
+
+```lua
+global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH
+
+```lua
+global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_NORMAL_SPEED_SCALE
+
+```lua
+global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_RELATIVE_MODE_WARP
+
+```lua
+global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_RELATIVE_SCALING
+
+```lua
+global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE
+
+```lua
+global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_TOUCH_EVENTS
+
+```lua
+global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring
+```
+
+
+
+### SDL_HINT_NO_SIGNAL_HANDLERS
+
+```lua
+global SDL_HINT_NO_SIGNAL_HANDLERS: cstring
+```
+
+
+
+### SDL_HINT_OPENGL_ES_DRIVER
+
+```lua
+global SDL_HINT_OPENGL_ES_DRIVER: cstring
+```
+
+
+
+### SDL_HINT_ORIENTATIONS
+
+```lua
+global SDL_HINT_ORIENTATIONS: cstring
+```
+
+
+
+### SDL_HINT_PREFERRED_LOCALES
+
+```lua
+global SDL_HINT_PREFERRED_LOCALES: cstring
 ```
 
 
@@ -9791,146 +11225,66 @@ global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring
 
 
 
-### SDL_HINT_THREAD_STACK_SIZE
+### SDL_HINT_RENDER_BATCHING
 
 ```lua
-global SDL_HINT_THREAD_STACK_SIZE: cstring
+global SDL_HINT_RENDER_BATCHING: cstring
 ```
 
 
 
-### SDL_HINT_THREAD_PRIORITY_POLICY
+### SDL_HINT_RENDER_DIRECT3D11_DEBUG
 
 ```lua
-global SDL_HINT_THREAD_PRIORITY_POLICY: cstring
+global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring
 ```
 
 
 
-### SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL
+### SDL_HINT_RENDER_DIRECT3D_THREADSAFE
 
 ```lua
-global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring
+global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring
 ```
 
 
 
-### SDL_HINT_VIDEO_HIGHDPI_DISABLED
+### SDL_HINT_RENDER_DRIVER
 
 ```lua
-global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring
+global SDL_HINT_RENDER_DRIVER: cstring
 ```
 
 
 
-### SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK
+### SDL_HINT_RENDER_LOGICAL_SIZE_MODE
 
 ```lua
-global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring
+global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring
 ```
 
 
 
-### SDL_HINT_VIDEO_WIN_D3DCOMPILER
+### SDL_HINT_RENDER_OPENGL_SHADERS
 
 ```lua
-global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring
+global SDL_HINT_RENDER_OPENGL_SHADERS: cstring
 ```
 
 
 
-### SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT
+### SDL_HINT_RENDER_SCALE_QUALITY
 
 ```lua
-global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring
+global SDL_HINT_RENDER_SCALE_QUALITY: cstring
 ```
 
 
 
-### SDL_HINT_WINRT_PRIVACY_POLICY_URL
+### SDL_HINT_RENDER_VSYNC
 
 ```lua
-global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring
-```
-
-
-
-### SDL_HINT_WINRT_PRIVACY_POLICY_LABEL
-
-```lua
-global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring
-```
-
-
-
-### SDL_HINT_WINRT_HANDLE_BACK_BUTTON
-
-```lua
-global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring
-```
-
-
-
-### SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES
-
-```lua
-global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring
-```
-
-
-
-### SDL_HINT_MAC_BACKGROUND_APP
-
-```lua
-global SDL_HINT_MAC_BACKGROUND_APP: cstring
-```
-
-
-
-### SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION
-
-```lua
-global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring
-```
-
-
-
-### SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION
-
-```lua
-global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring
-```
-
-
-
-### SDL_HINT_IME_INTERNAL_EDITING
-
-```lua
-global SDL_HINT_IME_INTERNAL_EDITING: cstring
-```
-
-
-
-### SDL_HINT_ANDROID_TRAP_BACK_BUTTON
-
-```lua
-global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring
-```
-
-
-
-### SDL_HINT_ANDROID_BLOCK_ON_PAUSE
-
-```lua
-global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring
-```
-
-
-
-### SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO
-
-```lua
-global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring
+global SDL_HINT_RENDER_VSYNC: cstring
 ```
 
 
@@ -9943,58 +11297,66 @@ global SDL_HINT_RETURN_KEY_HIDES_IME: cstring
 
 
 
-### SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT
-
-```lua
-global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring
-```
-
-
-
-### SDL_HINT_EMSCRIPTEN_ASYNCIFY
-
-```lua
-global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring
-```
-
-
-
-### SDL_HINT_NO_SIGNAL_HANDLERS
-
-```lua
-global SDL_HINT_NO_SIGNAL_HANDLERS: cstring
-```
-
-
-
-### SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4
-
-```lua
-global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring
-```
-
-
-
-### SDL_HINT_BMP_SAVE_LEGACY_FORMAT
-
-```lua
-global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring
-```
-
-
-
-### SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING
-
-```lua
-global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring
-```
-
-
-
 ### SDL_HINT_RPI_VIDEO_LAYER
 
 ```lua
 global SDL_HINT_RPI_VIDEO_LAYER: cstring
+```
+
+
+
+### SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL
+
+```lua
+global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring
+```
+
+
+
+### SDL_HINT_THREAD_PRIORITY_POLICY
+
+```lua
+global SDL_HINT_THREAD_PRIORITY_POLICY: cstring
+```
+
+
+
+### SDL_HINT_THREAD_STACK_SIZE
+
+```lua
+global SDL_HINT_THREAD_STACK_SIZE: cstring
+```
+
+
+
+### SDL_HINT_TIMER_RESOLUTION
+
+```lua
+global SDL_HINT_TIMER_RESOLUTION: cstring
+```
+
+
+
+### SDL_HINT_TOUCH_MOUSE_EVENTS
+
+```lua
+global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring
+```
+
+
+
+### SDL_HINT_TV_REMOTE_AS_JOYSTICK
+
+```lua
+global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_ALLOW_SCREENSAVER
+
+```lua
+global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring
 ```
 
 
@@ -10007,58 +11369,122 @@ global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring
 
 
 
-### SDL_HINT_OPENGL_ES_DRIVER
+### SDL_HINT_VIDEO_EXTERNAL_CONTEXT
 
 ```lua
-global SDL_HINT_OPENGL_ES_DRIVER: cstring
+global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring
 ```
 
 
 
-### SDL_HINT_AUDIO_RESAMPLING_MODE
+### SDL_HINT_VIDEO_HIGHDPI_DISABLED
 
 ```lua
-global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring
+global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring
 ```
 
 
 
-### SDL_HINT_AUDIO_CATEGORY
+### SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES
 
 ```lua
-global SDL_HINT_AUDIO_CATEGORY: cstring
+global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring
 ```
 
 
 
-### SDL_HINT_RENDER_BATCHING
+### SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS
 
 ```lua
-global SDL_HINT_RENDER_BATCHING: cstring
+global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring
 ```
 
 
 
-### SDL_HINT_AUTO_UPDATE_JOYSTICKS
+### SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR
 
 ```lua
-global SDL_HINT_AUTO_UPDATE_JOYSTICKS: cstring
+global SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR: cstring
 ```
 
 
 
-### SDL_HINT_AUTO_UPDATE_SENSORS
+### SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT
 
 ```lua
-global SDL_HINT_AUTO_UPDATE_SENSORS: cstring
+global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring
 ```
 
 
 
-### SDL_HINT_EVENT_LOGGING
+### SDL_HINT_VIDEO_WIN_D3DCOMPILER
 
 ```lua
-global SDL_HINT_EVENT_LOGGING: cstring
+global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_FORCE_EGL
+
+```lua
+global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR
+
+```lua
+global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_NET_WM_PING
+
+```lua
+global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_WINDOW_VISUALID
+
+```lua
+global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_XINERAMA
+
+```lua
+global SDL_HINT_VIDEO_X11_XINERAMA: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_XRANDR
+
+```lua
+global SDL_HINT_VIDEO_X11_XRANDR: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_X11_XVIDMODE
+
+```lua
+global SDL_HINT_VIDEO_X11_XVIDMODE: cstring
+```
+
+
+
+### SDL_HINT_WAVE_FACT_CHUNK
+
+```lua
+global SDL_HINT_WAVE_FACT_CHUNK: cstring
 ```
 
 
@@ -10079,42 +11505,130 @@ global SDL_HINT_WAVE_TRUNCATION: cstring
 
 
 
-### SDL_HINT_WAVE_FACT_CHUNK
+### SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING
 
 ```lua
-global SDL_HINT_WAVE_FACT_CHUNK: cstring
+global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring
 ```
 
 
 
-### SDL_HINT_DISPLAY_USABLE_BOUNDS
+### SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
 
 ```lua
-global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring
+global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring
 ```
 
 
 
-### SDL_HINT_AUDIO_DEVICE_APP_NAME
+### SDL_HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS
 
 ```lua
-global SDL_HINT_AUDIO_DEVICE_APP_NAME: cstring
+global SDL_HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS: cstring
 ```
 
 
 
-### SDL_HINT_AUDIO_DEVICE_STREAM_NAME
+### SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL
 
 ```lua
-global SDL_HINT_AUDIO_DEVICE_STREAM_NAME: cstring
+global SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL: cstring
 ```
 
 
 
-### SDL_HINT_PREFERRED_LOCALES
+### SDL_HINT_WINDOWS_INTRESOURCE_ICON
 
 ```lua
-global SDL_HINT_PREFERRED_LOCALES: cstring
+global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring
+```
+
+
+
+### SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL
+
+```lua
+global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring
+```
+
+
+
+### SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4
+
+```lua
+global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring
+```
+
+
+
+### SDL_HINT_WINDOWS_USE_D3D9EX
+
+```lua
+global SDL_HINT_WINDOWS_USE_D3D9EX: cstring
+```
+
+
+
+### SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN
+
+```lua
+global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring
+```
+
+
+
+### SDL_HINT_WINRT_HANDLE_BACK_BUTTON
+
+```lua
+global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring
+```
+
+
+
+### SDL_HINT_WINRT_PRIVACY_POLICY_LABEL
+
+```lua
+global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring
+```
+
+
+
+### SDL_HINT_WINRT_PRIVACY_POLICY_URL
+
+```lua
+global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring
+```
+
+
+
+### SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT
+
+```lua
+global SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT: cstring
+```
+
+
+
+### SDL_HINT_XINPUT_ENABLED
+
+```lua
+global SDL_HINT_XINPUT_ENABLED: cstring
+```
+
+
+
+### SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING
+
+```lua
+global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring
+```
+
+
+
+### SDL_HINT_AUDIO_INCLUDE_MONITORS
+
+```lua
+global SDL_HINT_AUDIO_INCLUDE_MONITORS: cstring
 ```
 
 
