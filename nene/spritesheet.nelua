@@ -25,7 +25,17 @@ function SpriteSheet:get_source_rect(column: isize, row: isize)
 end
 
 -- draw the sprite from the spritesheet
-function SpriteSheet:draw(nene: Nene, position: Vec2, spritesheet_texture: Texture, sprite_index: isize, color: facultative(Color))
+function SpriteSheet:draw(
+  nene: Nene,
+  position: Vec2,
+  spritesheet_texture: Texture,
+  sprite_index: isize,
+  color: facultative(Color),
+  angle: facultative(number),
+  center: facultative(Vec2),
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
+)
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
@@ -40,5 +50,5 @@ function SpriteSheet:draw(nene: Nene, position: Vec2, spritesheet_texture: Textu
     h = sprite_source.h
   }
 
-  spritesheet_texture:draw(nene, color, sprite_source, destination)
+  spritesheet_texture:draw(nene, color, sprite_source, destination, angle, center, flip_horizontal, flip_vertical)
 end

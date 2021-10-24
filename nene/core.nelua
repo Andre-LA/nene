@@ -374,7 +374,8 @@ function Nene:render_copy(
   destination: facultative(Rect),
   angle: facultative(number),
   center: facultative(Vec2),
-  flip: facultative(record{horizontal: boolean, vertical: boolean})
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
 )
   check(Nene.initialized, 'Nene is not initialized')
 
@@ -391,7 +392,7 @@ function Nene:render_copy(
   dest = &dest_rect
   ## end
 
-  ## local use_ex = not (angle.type.is_niltype or center.type.is_niltype or flip.type.is_niltype)
+  ## local use_ex = not (angle.type.is_niltype and center.type.is_niltype and flip_horizontal.type.is_niltype and flip_vertical.type.is_niltype)
 
   ## if not use_ex then
     SDLWrapper.render_copy(self.renderer, texture, src, dest)
@@ -400,7 +401,7 @@ function Nene:render_copy(
     local angle = 0
     ## end
     local center_vl: SDL_Point = {0, 0}
-    local center_ptr = nilptr
+    local center_ptr: *SDL_Point = nilptr
     local flip_vl = SDL_FLIP_NONE
 
     ## if not center.type.is_niltype then
@@ -408,9 +409,15 @@ function Nene:render_copy(
       center_ptr = &center_vl
     ## end
 
-    ## if not flip.type.is_niltype then
-      flip_vl = (flip.horizontal and SDL_FLIP_HORIZONTAL or SDL_FLIP_NONE) | (flip.vertical and SDL_FLIP_VERTICAL or SDL_FLIP_NONE)
+    ## if not flip_horizontal.type.is_niltype then
+      flip_vl = flip_horizontal and SDL_FLIP_HORIZONTAL or SDL_FLIP_NONE
     ## end
+
+    ## if not flip_vertical.type.is_niltype then
+      flip_vl = flip_vl | (flip_vertical and SDL_FLIP_VERTICAL or SDL_FLIP_NONE)
+    ## end
+
+    print('angle', angle)
 
     SDLWrapper.render_copy_ex(self.renderer, texture, src, dest, angle, center_ptr, flip_vl)
   ## end

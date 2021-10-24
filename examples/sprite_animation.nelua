@@ -21,6 +21,9 @@ local function game()
   -- defer nene termination
   defer nene:terminate() end
 
+  -- rotation parameter, will be increasing over time
+  local rotation = 0.0
+
   -- create a texture with img_shapes.png image on it
   -- then test initialization and defers it's destruction
   -- note that img_shapes images contains four shapes, on a 32x32 alignment.
@@ -48,6 +51,9 @@ local function game()
     -- updates the nene internal state
     nene:poll_events()
 
+    -- increase rotation over time
+    rotation = nene.current_time * 0.01
+
     -- if the difference between the last time we changed the sprite and now
     -- is greater than one second, then we updates prev_time and change
     -- the sprite index used on spritesheet rendering.
@@ -64,7 +70,7 @@ local function game()
     -- note that spritesheet doesn't contains the texture it should render on the
     -- fields, this should be passed as an argument, the reason for this is that
     -- when a module needs an external resource, it "asks" for it through parameters.
-    spritesheet:draw(nene, {x = 10, y = 10}, sprites_texture, sprite_index)
+    spritesheet:draw(nene, {x = 10, y = 10}, sprites_texture, sprite_index, Color.Palette.white, rotation)
 
     -- finally, swap buffers and present our final result
     nene:render_present()

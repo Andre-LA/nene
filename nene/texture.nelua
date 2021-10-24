@@ -141,7 +141,16 @@ Related Nene documentation:
 * [Math.Rect](math.md#mathrect)
 * [Math.Vec2](math.md#mathvec2)
 ]]
-function Texture:draw(nene: Nene, color: facultative(Color), source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
+function Texture:draw(
+  nene: Nene,
+  color: facultative(Color),
+  source: facultative(Rect),
+  destination: overload(Vec2, Rect, niltype),
+  angle: facultative(number),
+  center: facultative(Vec2),
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
+)
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
@@ -153,5 +162,5 @@ function Texture:draw(nene: Nene, color: facultative(Color), source: facultative
   ## end
 
   SDLWrapper.set_texture_color_modulation(internal_tex, color)
-  nene:render_copy(internal_tex, source, destination)
+  nene:render_copy(internal_tex, source, destination, angle, center, flip_horizontal, flip_vertical)
 end
