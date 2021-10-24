@@ -405,7 +405,7 @@ function Nene:render_copy(
     local flip_vl = SDL_FLIP_NONE
 
     ## if not center.type.is_niltype then
-      center_vl.x, center_vl.y = math.ifloor(center.x), math.ifloor(center.y)
+      center_vl.x, center_vl.y = math.ifloor(destination.w * center.x), math.ifloor(destination.h * center.y)
       center_ptr = &center_vl
     ## end
 
