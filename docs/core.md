@@ -214,7 +214,15 @@ Related SDLWrapper documentation:
 ### Nene:render_copy
 
 ```lua
-function Nene:render_copy(texture: *SDL_Texture, source: facultative(Rect), destination: facultative(Rect))
+function Nene:render_copy(
+  texture: *SDL_Texture,
+  source: facultative(Rect),
+  destination: facultative(Rect),
+  angle: facultative(number),
+  center: facultative(Vec2),
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
+)
 ```
 
 Wrapper of `SDL_RenderCopy`.
@@ -234,6 +242,7 @@ Related SDL documentation:
 
 Related SDLWrapper documentation:
 * [SDLWrapper.render_copy](wrappers/sdl.md#sdlwrapperrender_copy)
+* [SDLWrapper.render_copy_ex](wrappers/sdl.md#sdlwrapperrender_copy_ex)
 
 ### Nene:set_render_target
 

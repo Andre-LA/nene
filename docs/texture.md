@@ -102,7 +102,16 @@ Related SDLWrapper documentation:
 ### Texture:draw
 
 ```lua
-function Texture:draw(nene: Nene, color: facultative(Color), source: facultative(Rect), destination: overload(Vec2, Rect, niltype))
+function Texture:draw(
+  nene: Nene,
+  color: facultative(Color),
+  source: facultative(Rect),
+  destination: overload(Vec2, Rect, niltype),
+  angle: facultative(number),
+  center: facultative(Vec2),
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
+)
 ```
 
 Draw the texture at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),

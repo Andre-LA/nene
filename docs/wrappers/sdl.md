@@ -25,6 +25,7 @@
 * [SDLWrapper.render_draw_rect](#sdlwrapperrender_draw_rect)
 * [SDLWrapper.render_fill_rect](#sdlwrapperrender_fill_rect)
 * [SDLWrapper.render_copy](#sdlwrapperrender_copy)
+* [SDLWrapper.render_copy_ex](#sdlwrapperrender_copy_ex)
 * [SDLWrapper.set_render_target](#sdlwrapperset_render_target)
 * [SDLWrapper.create_texture](#sdlwrappercreate_texture)
 
@@ -392,6 +393,24 @@ Related SDL documentation:
 * [SDL_Rect](https://wiki.libsdl.org/SDL_Rect)
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 * [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
+
+### SDLWrapper.render_copy_ex
+
+```lua
+function SDLWrapper.render_copy_ex(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect, angle: number, center: *SDL_Point, flip: SDL_RendererFlip): boolean
+```
+
+Wrapper of `SDL_RenderCopy`
+
+Copy a portion of the texture to the current rendering target, with optional rotation and flipping.
+
+You can pass `nilptr` to both `srcrect`, `dstrect` and `center` variables.
+
+Related SDL documentation:
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_Rect](https://wiki.libsdl.org/SDL_Rect)
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+* [SDL_RenderCopyEx](https://wiki.libsdl.org/SDL_RenderCopyEx)
 
 ### SDLWrapper.set_render_target
 

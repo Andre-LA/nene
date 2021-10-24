@@ -34,7 +34,17 @@ get the source get from the spritesheet at the column and row.
 ### SpriteSheet:draw
 
 ```lua
-function SpriteSheet:draw(nene: Nene, position: Vec2, spritesheet_texture: Texture, sprite_index: isize, color: facultative(Color))
+function SpriteSheet:draw(
+  nene: Nene,
+  position: Vec2,
+  spritesheet_texture: Texture,
+  sprite_index: isize,
+  color: facultative(Color),
+  angle: facultative(number),
+  center: facultative(Vec2),
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
+)
 ```
 
 draw the sprite from the spritesheet
