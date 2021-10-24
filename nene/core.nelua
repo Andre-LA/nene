@@ -417,8 +417,6 @@ function Nene:render_copy(
       flip_vl = flip_vl | (flip_vertical and SDL_FLIP_VERTICAL or SDL_FLIP_NONE)
     ## end
 
-    print('angle', angle)
-
     SDLWrapper.render_copy_ex(self.renderer, texture, src, dest, angle, center_ptr, flip_vl)
   ## end
 end
