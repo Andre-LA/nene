@@ -274,6 +274,22 @@ function Nene:set_render_draw_color(color: Color)
 end
 
 --[[
+Set clip rectangle for rendering
+
+Related Nene documentation:
+* [Math.Rect](math.md)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.render_set_clip_rect](wrappers/sdl.md#sdlwrapperrender_set_clip_rect)
+]]
+function Nene:set_clip(rect: Rect)
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local sdl_rect: SDL_Rect = rect:to_sdlrect()
+  SDLWrapper.render_set_clip_rect(self.renderer, sdl_rect)
+end
+
+--[[
 it clears the rendering target with the given `color`.
 
 Related Nene documentation:

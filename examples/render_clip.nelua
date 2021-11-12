@@ -1,0 +1,38 @@
+-- see pong and spritesheet for more details about nene itself
+
+require 'nene.core'
+require 'nene.colors'
+require 'nene.math'
+
+local function rects()
+  local ok, nene = Nene.init('nene render rect clip', 256, 256)
+  assert(ok, 'error: nene initialization failed')
+  defer nene:terminate() end
+
+  -- create two rects
+  local rect_clip: Math.Rect = {0, 0, 48, 48}
+
+  repeat
+    nene:poll_events()
+
+    -- copy mouse position to rect_clip position
+    rect_clip:set_pos(nene.mouse_pos)
+
+    nene:render_clear(Color.Palette.bg)
+
+    -- draw grid
+    for i = 0, 16 do
+      nene:render_draw_line({16 * i, 0}, {16 * i, 256}, Color.Palette.black)
+      nene:render_draw_line({0, 16 * i}, {256, 16 * i}, Color.Palette.black)
+    end
+
+    nene:set_clip(rect_clip)
+
+    -- draw both rects with white lines
+    nene:render_draw_rect(rect_clip, true, Color.Palette.red)
+
+    nene:render_present()
+  until nene.quit
+end
+
+rects()

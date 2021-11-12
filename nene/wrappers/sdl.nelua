@@ -530,6 +530,27 @@ function SDLWrapper.set_render_target(renderer: *SDL_Renderer, texture: *SDL_Tex
 end
 
 --[[
+Wrapper of `SDL_RenderSetClipRect`.
+
+Set the clip rectangle for rendering.
+
+Related SDL documentation:
+* [SDL_RenderSetClipRect](https://wiki.libsdl.org/SDL_RenderSetClipRect)
+]]
+function SDLWrapper.render_set_clip_rect(renderer: *SDL_Renderer, rect: *SDL_Rect): boolean
+  check(renderer ~= nilptr, 'renderer is nilptr')
+  check(rect ~= nilptr, 'rect is nilptr')
+
+  local ok = SDL_RenderSetClipRect(renderer, rect) == 0
+
+  if not ok then
+    ## warn_msg('render_set_clip_rect', 'could not set clip rectangle for renderering')
+  end
+
+  return ok
+end
+
+--[[
 Wrapper of `SDL_CreateTexture`
 
 Create a texture.
