@@ -1,3 +1,4 @@
+require 'nene.wrappers.sdl'
 require 'math'
 
 global Math = @record{}
