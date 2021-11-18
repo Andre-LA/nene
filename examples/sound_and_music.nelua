@@ -22,7 +22,7 @@ local function audio_and_music()
   repeat
     nene:poll_events()
 
-    if nene:get_scancode(SDL_SCANCODE_SPACE, true) then
+    if nene:get_scancode(SDL_SCANCODE_SPACE, true) or nene:get_mouse_button(0, true) then
       click:play()
     end
 
