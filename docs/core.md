@@ -6,7 +6,9 @@
 * [Nene:poll_events](#nenepoll_events)
 * [Nene:get_window_size](#neneget_window_size)
 * [Nene:get_scancode](#neneget_scancode)
+* [Nene:get_mouse_button](#neneget_mouse_button)
 * [Nene:set_render_draw_color](#neneset_render_draw_color)
+* [Nene:set_clip](#neneset_clip)
 * [Nene:render_clear](#nenerender_clear)
 * [Nene:render_draw_line](#nenerender_draw_line)
 * [Nene:render_draw_rect](#nenerender_draw_rect)
@@ -42,8 +44,9 @@ global Nene = @record{
   -- input states
   keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
   prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
-  mouse_pos: Vec2,            -- store the mouse position relative to window
-  mouse_buttons: [32]boolean, -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
+  mouse_pos: Vec2,                 -- store the mouse position relative to window
+  mouse_buttons: [32]boolean,      -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
+  prev_mouse_buttons: [32]boolean, -- same as mouse_buttons, but from the previous frame
 }
 ```
 
@@ -145,6 +148,18 @@ Related SDL documentation:
 Related SDLWrapper documentation:
 * [SDLWrapper.get_keyboard_state](wrappers/sdl.md#sdlwrapperget_keyboard_state)
 
+### Nene:get_mouse_button
+
+```lua
+function Nene:get_mouse_button(mouse_button: isize, is_down: facultative(boolean)): boolean
+```
+
+Returns the state of a mouse button.
+
+* if `is_down` is `true`, then it returns if this mouse button was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
+* if `is_down` is `false`, then it returns if this mouse button was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
+* if `is_down` is `nil`, then it returns if is simply currently pressed.
+
 ### Nene:set_render_draw_color
 
 ```lua
@@ -162,6 +177,20 @@ Related SDL documentation:
 
 Related SDLWrapper documentation:
 * [SDLWrapper.set_render_draw_color](wrappers/sdl.md#sdlwrapperset_render_draw_color)
+
+### Nene:set_clip
+
+```lua
+function Nene:set_clip(rect: Rect)
+```
+
+Set clip rectangle for rendering
+
+Related Nene documentation:
+* [Math.Rect](math.md)
+
+Related SDLWrapper documentation:
+* [SDLWrapper.render_set_clip_rect](wrappers/sdl.md#sdlwrapperrender_set_clip_rect)
 
 ### Nene:render_clear
 

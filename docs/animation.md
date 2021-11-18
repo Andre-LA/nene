@@ -10,9 +10,10 @@ Animation range type, used on Spritesheets
 
 ```lua
 global AnimationRange = @record{
-  fps: number, -- frames per second of this animation
-  from: usize, -- first frame
-  to: usize,   -- last frame
+  fps: number,   -- frames per second of this animation
+  from: usize,   -- first frame
+  to: usize,     -- last frame
+  loop: boolean, -- should animation loop?
 }
 ```
 
