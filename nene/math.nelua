@@ -211,11 +211,10 @@ end
 
     local self_center = self:get_center()
     local intersected_center = intersected:get_center()
-    local centers_diff = intersected_center - self_center
 
-    if math.abs(centers_diff.y) > math.abs(centers_diff.x) then -- is vertical
+    if intersection.w > intersection.h then -- is vertical
       result = resolve_vertical(result, self, self_center, intersected, intersected_center)
-    elseif math.abs(centers_diff.x) > math.abs(centers_diff.y) then -- is horizontal
+    elseif intersection.h > intersection.w then -- is horizontal
       result = resolve_horizontal(result, self, self_center, intersected, intersected_center)
     else -- is diagonal
       result = resolve_vertical(result, self, self_center, intersected, intersected_center)
