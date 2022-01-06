@@ -1,4 +1,4 @@
-require 'math'
+local math = require 'math'
 
 require 'nene.math'
 require 'nene.wrappers.sdl'
@@ -158,7 +158,12 @@ function Texture:draw(
   local internal_tex = self:get()
 
   ## if destination.type.is_vec2 then -- shadow the vec2 destination with a rect destination
-  local destination: Rect = { x = destination.x, y = destination.y, w = self.width, h = self.height }
+  local destination: Rect = {
+    x = math.ifloor(destination.x),
+    y = math.ifloor(destination.y),
+    w = self.width,
+    h = self.height
+  }
   ## end
 
   SDLWrapper.set_texture_color_modulation(internal_tex, color)
