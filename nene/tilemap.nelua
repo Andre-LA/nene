@@ -1,10 +1,11 @@
-require 'io'
-require 'math'
-require 'vector'
+local io = require 'io'
+local math = require 'math'
+local vector = require 'vector'
 
-require 'nene.core'
-require 'nene.texture'
-require 'nene.math'
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Texture = require 'nene.texture'
+local Math = require 'nene.math'
 
 local Vec2, Rect, Grid = Math.Vec2, Math.Rect, Math.Grid
 
@@ -18,7 +19,7 @@ left to right, top to bottom direction.
 * when the entry value is `0`, then it's an empty space, othewise it refers to a tile from the tileset (`1` = "1st tile", and so on),
 just as tilemap it starts from top-left and goes from left to right, top to bottom.
 ]]
-global Tilemap = @record{
+local Tilemap = @record{
   tilemap_width: isize,
   tileset_width: isize,
   grid: Math.Grid,
@@ -146,7 +147,9 @@ Related Nene documentation:
 * [Texture](texture.md#texture)
 * [Color](colors.md#color)
 ]]
-function Tilemap.draw(self: Tilemap, nene: Nene, tileset: Texture, position: Vec2, color: facultative(Color))
+function Tilemap.draw(self: Tilemap, tileset: Texture, position: Vec2, color: facultative(Color))
+  local nene = Nene.instance()
+
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
@@ -168,7 +171,9 @@ function Tilemap.draw(self: Tilemap, nene: Nene, tileset: Texture, position: Vec
         h = tileset_rect.h,
       }
 
-      tileset:draw(nene, color, tileset_rect, tile_rect)
+      tileset:draw(color, tileset_rect, tile_rect)
     end
   end
 end
+
+return Tilemap

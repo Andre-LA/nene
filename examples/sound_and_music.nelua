@@ -1,6 +1,6 @@
-require 'nene.core'
-require 'nene.colors'
-require 'nene.audio'
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Audio = require 'nene.audio'
 
 local function audio_and_music()
   -- nene initialization and deferred de-initialization
@@ -9,8 +9,10 @@ local function audio_and_music()
   defer nene:terminate() end
 
   -- sound and music loading and deferred destroyment
-  local click = Sound.load('resources/pixelclick.wav')
-  local bossa = Music.load('resources/8bit Bossa.ogg')
+  local ok, click = Audio.Sound.load('resources/pixelclick.wav')
+  assert(ok, 'could not load pixelclick sound')
+  local ok, bossa = Audio.Music.load('resources/8bit Bossa.ogg')
+  assert(ok, 'could not load 8bit Bossa music')
 
   defer
     click:destroy()

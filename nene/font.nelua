@@ -1,21 +1,25 @@
-require 'hashmap'
+local hashmap = require 'hashmap'
 
-require 'nene.core'
-require 'nene.math'
-require 'nene.wrappers.ttf'
+local Nene = require 'nene'
+local Math = require 'nene.math'
+
+require 'nene.macros'
+## local warn_msg = macros.warn_msg
 
 -- Wraps a (SDL_TTF) font
-global Font = @record{
+local Font = @record{
   _data: *TTF_Font,
 }
 
 --[[
-It checks if the internal data is `nilptr` and then returns it.
+Returns the `pointer(TTF_Font)` internal data.
 
-Related TTFWrapper documentation:
-* [TTF_Font](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_56.html#SEC56)
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
+
+Related TTF documentation:
+* [TTF_Font](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L107-L108)
 ]]
-function Font:get(): *TTF_Font
+function Font:get_raw(): *TTF_Font
   check(self._data ~= nilptr, 'cannot get an unitilialized font')
   return self._data
 end
@@ -23,27 +27,33 @@ end
 --[[
 try to load a font from a file.
 
-it returns:
-* `Font` value, with internal data properly initialized if load is successful
-* a boolean which is `true` when the load succeeds.
+Returns an `ok` status with `true` value and an initialized font if successful.
 
-Related TTFWrapper documentation:
-* [TTFWrapper.open_font](wrappers/ttf.md#ttfwrapperopen_font)
+Related TTF documentation:
+* [TTF_OpenFont](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L113-L117)
 ]]
-function Font.load(filename: string, ptsize: cint): (Font, boolean)
-  local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)
-  local new_font: Font = { _data = ttf_font }
-  return new_font, ok
+function Font.load(filename: string, ptsize: cint): (boolean, Font)
+  local raw_font = TTF_OpenFont(filename, ptsize)
+
+  if not raw_font then
+    warn_msg!('Font.load', 'could not open font', 'TTF_GetError')
+    return false, (@Font)()
+  end
+
+  local new_font: Font = { _data = raw_font }
+  return true, new_font
 end
 
 --[[
 Destroy the font and resets to zeroed state.
 
-Related TTFWrapper documentation:
-* [TTFWrapper.close_font](wrappers/ttf.md#ttfwrapperclose_font)
+Related TTF documentation:
+* [TTF_CloseFont](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L354-L355)
 ]]
 function Font:destroy()
-  local internal_font = self:get()
-  TTFWrapper.close_font(internal_font)
-  self._data = nilptr
+  local raw_font = self:get_raw()
+  TTF_CloseFont(raw_font)
+  $self = (@Font)()
 end
+
+return Font

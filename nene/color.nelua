@@ -1,4 +1,4 @@
-require 'nene.sdl2'
+require 'nene.raw.sdl2'
 
 --[[
 `Nene.Color` is an alias of `SDL_Color`, see it's documentation for more information.
@@ -6,7 +6,7 @@ require 'nene.sdl2'
 Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
 ]]
-global Color = @SDL_Color
+local Color = @SDL_Color
 
 --[[
 The general color pallete of Nene
@@ -32,3 +32,5 @@ global Color.Palette: record{
   { 0x00, 0xff, 0xff, 0xff },
   { 0x69, 0x46, 0x6b, 0xff }
 }
+
+return Color

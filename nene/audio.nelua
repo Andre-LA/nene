@@ -1,21 +1,29 @@
-require 'nene.wrappers.mix'
-require 'nene.core'
+local Nene = require 'nene'
 
-local MixWrapper = MixWrapper
+require 'nene.raw.sdl2_mixer'
+
+require 'nene.macros'
+## local warn_msg = macros.warn_msg
+
+local Audio = @record{}
 
 -- Wraps a (SDL_mixer) sound associated with a sound channel
-global Sound = @record{
+local Sound = @record{
   _data: *Mix_Chunk, -- internal data, don't use it directly, use methods instead
   channel: integer, -- -1 when no channel is being used
 }
 
+global Audio.Sound = Sound
+
 --[[
-It checks if the internal data is `nilptr` and then returns it.
+Returns the `pointer(Mix_Chunk)` internal data.
+
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
 
 Related SDL_mixer documentation:
 * [Mix_Chunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html#SEC85)
 ]]
-function Sound:get(): *Mix_Chunk
+function Sound:get_raw(): *Mix_Chunk
   check(self._data ~= nilptr, 'Sound.get: Sound internal data is `nilptr`')
   return self._data
 end
@@ -23,22 +31,25 @@ end
 --[[
 try to load a sound from a file.
 
-it returns:
-* `Sound` value, with internal data properly initialized if load is successful
-* a boolean which is `true` when the load succeeds.
+Returns an `ok` status with `true` value and an sound if successful.
 
-Related MixWrapper documentation:
-* [MixWrapper.load_wav](wrappers/mix.md#mixwrapperload_wav)
+Related SDL_mixer documentation:
+* [Mix_LoadWAV](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_19.html)
 ]]
-function Sound.load(filename: string): (Sound, boolean)
-  local sound_data, ok = MixWrapper.load_wav(filename)
+function Sound.load(filename: string): (boolean, Sound)
+  local raw_sound = Mix_LoadWAV(filename)
+
+  if not raw_sound then
+    warn_msg!('Sound.load', 'could not load the sound file', 'Mix_GetError')
+    return false, (@Sound)()
+  end
 
   local new_sound: Sound = {
-    _data = sound_data,
+    _data = raw_sound,
     channel = -1
   }
 
-  return new_sound, ok
+  return true, new_sound
 end
 
 --[[
@@ -50,13 +61,15 @@ plays the loaded sound.
 When there is no sound loaded (that is, the internal data is `nilptr`), then this method
 does nothing, though it also `check`s if the internal is `nilptr` (unless the `nochecks` pragma is enabled)
 
-Related MixWrapper documentation:
-* [MixWrapper.play_channel](wrappers/mix.md#mixwrapperplay_channel)
-]]
-function Sound:play(loop: overload(boolean, integer, niltype))
-  local data = self:get()
+Returns an `ok` status with `true` value if successful.
 
-  if data ~= nilptr then
+Related SDL_mixer documentation:
+* [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_28.html)
+]]
+function Sound:play(loop: overload(boolean, integer, niltype)): (boolean)
+  local raw_sound = self:get_raw()
+
+  if raw_sound ~= nilptr then
     local loops = 0
 
     ## if loop.type.is_boolean then
@@ -65,19 +78,28 @@ function Sound:play(loop: overload(boolean, integer, niltype))
       loops = ĺoop
     ## end
 
-    self.channel = MixWrapper.play_channel(-1, data, loops)
+    self.channel = Mix_PlayChannel(-1, raw_sound, loops)
+    if self.channel == -1 then
+      warn_msg!('Sound.play', 'could not play the sound', 'Mix_GetError')
+      return false
+    end
+  else
+    warn('Sound.play: sound is uninitialized, run a non-release build with nochecks pragma disabled')
+    return false
   end
+
+  return true
 end
 
 --[[
 Halts (stop, interrupt) the sound.
 
-Related MixWrapper documentation:
-* [MixWrapper.halt_channel](wrappers/mix.md#mixwrapperhalt_channel)
+Related SDL_mixer documentation:
+* [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html)
 ]]
 function Sound:stop()
   if self.channel >= 0 then
-    MixWrapper.halt_channel(self.channel)
+    Mix_HaltChannel(self.channel)
     self.channel = -1
   end
 end
@@ -87,53 +109,56 @@ Destroy the sound and resets to zeroed state,
 
 > Note: It will first stop the sound and then free the sound's memory.
 
-Related MixWrapper documentation:
-* [MixWrapper.free_chunk](wrappers/mix.md#mixwrapperfree_chunk)
+Related SDL_mixer documentation:
+* [Mix_FreeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_24.html)
 ]]
 function Sound:destroy()
-  local data = self:get()
-
+  local raw_sound = self:get_raw()
   self:stop()
-
-  MixWrapper.free_chunk(data)
-
-  self._data = nilptr
-  self.channel = 0
+  Mix_FreeChunk(raw_sound)
+  $self = (@Sound)()
 end
 
 -- Wraps a (SDL_mixer) music
-global Music = @record{
+local Music = @record{
   _data: *Mix_Music,
 }
 
+global Audio.Music = Music
+
 --[[
-It checks if the internal data is `nilptr` and then returns it.
+Returns the `pointer(Mix_Music)` internal data.
+
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
 
 Related SDL_mixer documentation:
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
 ]]
-function Music:get(): *Mix_Music
-  check(self._data ~= nilptr, 'Music.get: Music internal data is `nilptr`')
+function Music:get_raw(): *Mix_Music
+  check(self._data ~= nilptr, 'Music.get_raw: Music internal data is `nilptr`')
   return self._data
 end
 
 --[[
 Load music file.
 
-Related MixWrapper documentation:
-* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperload_mus)
-
 Related SDL_mixer documentation:
 * [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+* [Mix_LoadMUS](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_55.html)
 ]]
-function Music.load(filename: string): (Music, boolean)
-  local music_data, ok = MixWrapper.load_mus(filename)
+function Music.load(filename: string): (boolean, Music)
+  local raw_music = Mix_LoadMUS(filename)
+
+  if not raw_music then
+    warn_msg!('Music.load', 'could not load music file', 'Mix_GetError')
+    return false, (@Music)()
+  end
 
   local new_music: Music = {
-    _data = music_data
+    _data = raw_music
   }
 
-  return new_music, ok
+  return true, new_music
 end
 
 --[[
@@ -144,41 +169,40 @@ You can also pass a `loop` argument, this makes the music loop `loop` times, als
 * Passing `1` will make it only once.
 * Passing `-1` will make it looping forever, this is the default value.
 
-Related MixWrapper documentation:
-* [MixWrapper.play_music](wrappers/mix.md#mixwrapperplay_music)
-* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperhalt_music)
+Related SDL_mixer documentation:
+* [Mix_PlayMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_57.html)
 ]]
 function Music:play(loops: facultative(integer))
   ## if loops.type.is_niltype then
   local loops: cint = -1
   ## end
 
-  local data = self:get()
-  MixWrapper.play_music(data, loops)
+  local raw_music = self:get_raw()
+  Mix_PlayMusic(raw_music, loops)
 end
 
 --[[
 Stops any playing music.
 
-Related MixWrapper documentation:
-* [MixWrapper.halt_music](wrappers/mix.md#mixwrapperhalt_music)
-* [MixWrapper.play_music](wrappers/mix.md#mixwrapperplay_music)
+Related SDL_mixer documentation:
+* [Mix_HaltMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_67.html)
 ]]
 function Music.stop()
-  MixWrapper.halt_music()
+  Mix_HaltMusic()
 end
 
 --[[
 Destroy the music and resets to zeroed state.
 
-> Note: SDL_mixer first halts the music if it's playing, it also wait if it's still fading out.
+> Note: SDL_mixer first halts (stops) the music if it's playing, it also wait if it's still fading out.
 
-Related MixWrapper documentation:
-* [MixWrapper.free_music](wrappers/mix.md#mixwrapperfree_music)
+Related SDL_mixer documentation:
+* [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html)
 ]]
 function Music:destroy()
-  local data = self:get()
-  MixWrapper.free_music(data)
-
-  self._data = nilptr
+  local raw_music = self:get_raw()
+  Mix_FreeMusic(raw_music)
+  $self = (@Music)()
 end
+
+return Audio

@@ -1,7 +1,7 @@
-require 'nene.core'
-require 'nene.math'
-require 'nene.texture'
-require 'nene.tilemap'
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Texture = require 'nene.texture'
+local Tilemap = require 'nene.tilemap'
 
 local function game()
   local win_w <comptime>, win_h <comptime> = 550, 260
@@ -10,10 +10,11 @@ local function game()
   assert(ok, 'error: nene initialization failed')
   defer nene:terminate() end
 
-  local screen = Texture.create_texture(nene, win_w, win_h, nil, SDL_TEXTUREACCESS_TARGET)
+  local ok, screen = Texture.create_texture(win_w, win_h, nil, SDL_TEXTUREACCESS_TARGET)
+  assert(ok, 'could not create a target texture')
   defer screen:destroy() end
 
-  local tileset, ok = Texture.load(nene, 'resources/img_shapes.png')
+  local ok, tileset= Texture.load('resources/img_shapes.png')
   assert(ok, "error: 'img_shapes.png' could not be loaded")
   defer tileset:destroy() end
 
@@ -41,14 +42,14 @@ local function game()
   repeat
     nene:poll_events()
 
-    nene:set_render_target(screen:get())
+    nene:set_render_target(screen:get_raw())
 
     nene:render_clear(Color.Palette.bg)
 
     nene:set_render_target()
 
-    screen:draw(nene)
-    tilemap:draw(nene, tileset, {20,20})
+    screen:draw()
+    tilemap:draw(tileset, {20,20})
 
     nene:render_present()
   until nene.quit

@@ -1,0 +1,179 @@
+local Vec2 = require 'nene.math.vec2'
+
+## local macro_decl_rect = function(name, T)
+  ## staticassert(T.value.is_arithmetic, 'T is not arithmetic')
+
+  local T: type = @#[T]#
+
+  -- Rect type, but also Rectf, note that Rectf may be removed, so don't use it while this warning is here.
+  local #|name|# = @record{
+    x: T,
+    y: T,
+    w: T,
+    h: T
+  }
+
+  local RectT: type = @#|name|#
+  ## RectT.subtype = T
+
+  -- convert this
+  function RectT.to_sdlrect(rect: RectT): SDL_Rect
+    ## if T.type.is_integral then
+      return SDL_Rect{
+        x = math.ifloor(rect.x), y = math.ifloor(rect.y),
+        w = math.ifloor(rect.w), h = math.ifloor(rect.h)
+      }
+    ## else
+      return SDL_Rect{
+        x = rect.x, y = rect.y,
+        w = rect.w, h = rect.h
+      }
+    ## end
+  end
+
+  -- Creates a Rect from two bi-dimensional vectors
+  function RectT.from_vec2(position: Vec2, size: Vec2): RectT
+    return (@RectT){
+      x = math.ifloor(position.x),
+      y = math.ifloor(position.y),
+      w = math.ifloor(size.x),
+      h = math.ifloor(size.y)
+    }
+  end
+
+  -- set the rectangle's position from a `Vec2`
+  function RectT:set_pos(position: Vec2)
+    self.x, self.y = math.ifloor(position.x), math.ifloor(position.y)
+  end
+
+  -- set the rectangle's size from a `Vec2`
+  function RectT:set_size(size: Vec2)
+    self.w, self.h = math.ifloor(size.x), math.ifloor(size.y)
+  end
+
+  -- Test if an another rect or point it's intersecting
+  function RectT.is_intersecting(self: RectT, other: overload(RectT, Vec2)): boolean
+    ## if other.type.is_vec2 then -- other is Vec2
+      return (
+        other.x >= self.x and
+        other.x <= self.x + self.w and
+        other.y >= self.y and
+        other.y <= self.y + self.h
+      )
+    ## else -- then other is is RectT
+      return not (
+        ( self.x +  self.w) < other.x or -- is `self `on left of `other`? if so, is not intersecting
+        (other.x + other.w) <  self.x or -- is `other` on left of `self`? if so, is not intersecting
+        ( self.y +  self.h) < other.y or -- is `self `on top of `other`? if so, is not intersecting
+        (other.y + other.h) <  self.y    -- is `other` on top of `self`? if so, is not intersecting
+      )
+    ## end
+  end
+
+  -- Get an intersection rect between two rects and also if the two rects are actually intersecting.
+  --
+  -- It's not necessary to test if the two rects are intersecting before using this function, just check
+  -- the second return value for that.
+  function RectT.get_intersection(a: RectT, b: RectT): (RectT, boolean)
+    if not a:is_intersecting(b) then
+      return (@RectT)(), false
+    end
+
+    local max_px = math.max(a.x, b.x)
+    local max_py = math.max(a.y, b.y)
+    local min_xw = math.min(a.x + a.w, b.x + b.w)
+    local min_yh = math.min(a.y + a.h, b.y + b.h)
+
+    local pmin: Vec2 = { max_px, max_py }
+    local pmax: Vec2 = { min_xw, min_yh }
+
+    local intersection: RectT = {
+      x = pmin.x, y = pmin.y,
+      w = math.abs(pmax.x - pmin.x), h = math.abs(pmax.y - pmin.y)
+    }
+
+    return intersection, true
+  end
+
+  -- get the center of rectangle.
+  function RectT.get_center(self: RectT): Vec2
+    return (@Vec2){
+      x = self.x + (self.w / 2),
+      y = self.y + (self.h / 2),
+    }
+  end
+
+  -- a very simple collision resolution, it returns a rectangle result from the resolution,
+  -- it may be improved on future releases.
+  --
+  -- It returns:
+  -- * a boolean which contains if the two rectangles were really intersecting
+  -- * a new rectangle with the collision resolved
+  function RectT.simple_collision(self: RectT, intersected: RectT): (boolean, RectT)
+    local function resolve_vertical(result: RectT, self: RectT, self_center: Vec2, intersected: RectT, intersected_center: Vec2): (RectT)
+      if self_center.y < intersected_center.y then -- go to top
+        result.y = intersected.y - self.h
+      else -- go to bottom
+        result.y = intersected.y + intersected.h
+      end
+
+      return result
+    end
+
+    local function resolve_horizontal(result: RectT, self: RectT, self_center: Vec2, intersected: RectT, intersected_center: Vec2): (RectT)
+      if self_center.x < intersected_center.x then -- go to left
+        result.x = intersected.x - self.w
+      else -- go to right
+        result.x = intersected.x + intersected.w
+      end
+
+      return result
+    end
+
+    local intersection, is_intersecting = self:get_intersection(intersected)
+
+    -- skip if is not actually intersecting
+    if not is_intersecting then
+      return false, (@RectT)()
+    end
+
+    local result = self -- copy self
+
+    local self_center = self:get_center()
+    local intersected_center = intersected:get_center()
+
+    if intersection.w > intersection.h then -- is vertical
+      result = resolve_vertical(result, self, self_center, intersected, intersected_center)
+    elseif intersection.h > intersection.w then -- is horizontal
+      result = resolve_horizontal(result, self, self_center, intersected, intersected_center)
+    else -- is diagonal
+      result = resolve_vertical(result, self, self_center, intersected, intersected_center)
+      result = resolve_horizontal(result, self, self_center, intersected, intersected_center)
+    end
+
+    return true, result
+  end
+
+  ## RectT.value.is_rect = true
+## end
+
+## macro_decl_rect('Rectf', number)
+## macro_decl_rect('Rect', integer)
+
+function Rectf:to_rect(): Rect
+  return Rect.from_vec2( { self.x, self.y }, { self.w, self.h } )
+end
+
+function Rect:to_rectf(): Rectf
+  return (@Rectf){
+    x = self.x, y = self.y,
+    w = self.w, h = self.h
+  }
+end
+
+local Rects = @record{}
+
+global Rects.Rect = Rect
+global Rects.Rectf = Rectf
+
+return Rects

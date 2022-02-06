@@ -28,23 +28,26 @@
 if ccinfo.is_emscripten then
   -- this preloads the resources, this way we can load the img_shapes.png
   cflags '--preload-file resources'
+
   -- enable png format for SDL2_image
   cflags [[-s SDL2_IMAGE_FORMATS='["png"]']]
+
   -- allow memory growth
   cflags '-s ALLOW_MEMORY_GROWTH=1'
 end
 ]=]
 
--- in this example only the necessary nene modules will be required, but
--- you can also just `require 'nene'` to get everything once.
-require 'nene.core'
-require 'nene.spritesheet'
+local Nene = require 'nene'
+local SpriteSheet = require 'nene.spritesheet'
+local Texture = require 'nene.texture'
+local Color = require 'nene.color'
 
 local ok, nene = Nene.init('nene web', 128, 128)
 assert(ok, 'error: nene initialization failed')
 defer nene:terminate() end
 
-local spritesheet_tex = Texture.load(nene, 'resources/img_shapes.png')
+local ok, spritesheet_tex = Texture.load('resources/img_shapes.png')
+assert(ok, 'could not load img_shapes.png texture')
 defer spritesheet_tex:destroy() end
 
 local spritesheet: SpriteSheet = {
@@ -64,7 +67,7 @@ local function run_frame()
     end
 
     nene:render_clear(Color.Palette.bg)
-    spritesheet:draw(nene, {x = 32, y = 32}, spritesheet_tex, sprite_index)
+    spritesheet:draw({x = 32, y = 32}, spritesheet_tex, sprite_index)
 
     nene:render_present()
 end

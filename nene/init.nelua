@@ -1,13 +1,835 @@
--- require basics
-require 'nene.core'
-require 'nene.colors'
-require 'nene.math'
+local span = require 'span'
 
--- require features
-require 'nene.font'
-require 'nene.text_texture'
-require 'nene.animation'
-require 'nene.audio'
-require 'nene.spritesheet'
-require 'nene.texture'
-require 'nene.tilemap'
+require 'nene.raw.sdl2'
+require 'nene.raw.sdl2_ttf'
+require 'nene.raw.sdl2_image'
+require 'nene.raw.sdl2_mixer'
+
+local Color = require 'nene.color'
+local Math = require 'nene.math'
+
+require 'nene.macros'
+## local warn_msg = macros.warn_msg
+
+##if ccinfo.is_emscripten then
+  global function emscripten_set_main_loop(func: function(), fps: cint, simulate_infinite_loop: cint) <cimport,cinclude'<emscripten.h>',nodecl> end
+
+  ##[[
+  primtypes.integer = primtypes.int32
+  primtypes.uinteger = primtypes.uint32
+  primtypes.number = primtypes.float32
+  ]]
+##end
+
+local Vec2, Rect = @Math.Vec2, @Math.Rect
+
+--[[
+The core of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
+`Math` and `Color`).
+
+Many of the `Core`'s functions wraps SDL's functions actually.
+]]
+local Nene = @record{
+  -- general data
+  quit: boolean,           -- `true` when the application will quit, `false` otherwise;
+  current_time: uint32,    -- time since initialization (in milliseconds!).
+  delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
+  render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
+
+  -- SDL references
+  window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
+  renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
+
+  -- input states
+  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+  mouse_pos: Vec2,                 -- store the mouse position relative to window
+  mouse_buttons: [32]boolean,      -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
+  prev_mouse_buttons: [32]boolean, -- same as mouse_buttons, but from the previous frame
+}
+
+--[[
+  The initialization state of Nene, it's set to `true` by `Nene.init` and
+  set to `false` by `Nene.terminate`, it shouldn't be modified by any other function.
+]]
+global Nene.initialized = false
+
+local instance: Nene;
+
+function Nene.instance(): *Nene
+  check(Nene.initialized, 'Nene is not initialized')
+  return &instance
+end
+
+--[[
+The callbacks that can be passed on `Core:poll_events` method
+
+Related SDL documentation:
+* [SDL_Event](https://wiki.libsdl.org/SDL_Event)
+* [SDL_WindowEvent](https://wiki.libsdl.org/SDL_WindowEvent)
+* [SDL_KeyboardEvent](https://wiki.libsdl.org/SDL_KeyboardEvent)
+* [SDL_TextEditingEvent](https://wiki.libsdl.org/SDL_TextEditingEvent)
+* [SDL_TextInputEvent](https://wiki.libsdl.org/SDL_TextInputEvent)
+* [SDL_MouseMotionEvent](https://wiki.libsdl.org/SDL_MouseMotionEvent)
+* [SDL_MouseButtonEvent](https://wiki.libsdl.org/SDL_MouseButtonEvent)
+* [SDL_MouseWheelEvent](https://wiki.libsdl.org/SDL_MouseWheelEvent)
+* [SDL_JoyAxisEvent](https://wiki.libsdl.org/SDL_JoyAxisEvent)
+* [SDL_JoyBallEvent](https://wiki.libsdl.org/SDL_JoyBallEvent)
+* [SDL_JoyHatEvent](https://wiki.libsdl.org/SDL_JoyHatEvent)
+* [SDL_JoyButtonEvent](https://wiki.libsdl.org/SDL_JoyButtonEvent)
+* [SDL_JoyDeviceEvent](https://wiki.libsdl.org/SDL_JoyDeviceEvent)
+* [SDL_ControllerAxisEvent](https://wiki.libsdl.org/SDL_ControllerAxisEvent)
+* [SDL_ControllerButtonEvent](https://wiki.libsdl.org/SDL_ControllerButtonEvent)
+* [SDL_ControllerDeviceEvent](https://wiki.libsdl.org/SDL_ControllerDeviceEvent)
+* [SDL_AudioDeviceEvent](https://wiki.libsdl.org/SDL_AudioDeviceEvent)
+* [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)
+* [SDL_UserEvent](https://wiki.libsdl.org/SDL_UserEvent)
+* [SDL_SysWMEvent](https://wiki.libsdl.org/SDL_SysWMEvent)
+* [SDL_TouchFingerEvent](https://wiki.libsdl.org/SDL_TouchFingerEvent)
+* [SDL_MultiGestureEvent](https://wiki.libsdl.org/SDL_MultiGestureEvent)
+* [SDL_DollarGestureEvent](https://wiki.libsdl.org/SDL_DollarGestureEvent)
+* [SDL_DropEvent](https://wiki.libsdl.org/SDL_DropEvent)
+]]
+global Nene.EventsCallbacks = @record{
+  window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
+  key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
+  edit_cb    : function(edit    : SDL_TextEditingEvent),      -- edit text editing event data
+  text_cb    : function(text    : SDL_TextInputEvent),        -- text text input event data
+  motion_cb  : function(motion  : SDL_MouseMotionEvent),      -- motion mouse motion event data
+  button_cb  : function(button  : SDL_MouseButtonEvent),      -- button mouse button event data
+  wheel_cb   : function(wheel   : SDL_MouseWheelEvent),       -- wheel mouse wheel event data
+  jaxis_cb   : function(jaxis   : SDL_JoyAxisEvent),          -- jaxis joystick axis event data
+  jball_cb   : function(jball   : SDL_JoyBallEvent),          -- jball joystick ball event data
+  jhat_cb    : function(jhat    : SDL_JoyHatEvent),           -- jhat joystick hat event data
+  jbutton_cb : function(jbutton : SDL_JoyButtonEvent),        -- jbutton joystick button event data
+  jdevice_cb : function(jdevice : SDL_JoyDeviceEvent),        -- jdevice joystick device event data
+  caxis_cb   : function(caxis   : SDL_ControllerAxisEvent),   -- caxis game controller axis event data
+  cbutton_cb : function(cbutton : SDL_ControllerButtonEvent), -- cbutton game controller button event data
+  cdevice_cb : function(cdevice : SDL_ControllerDeviceEvent), -- cdevice game controller device event data
+  adevice_cb : function(adevice : SDL_AudioDeviceEvent),      -- adevice audio device event data (>= SDL 2.0.4)
+  quit_cb    : function(quit    : SDL_QuitEvent),             -- quit quit request event data
+  user_cb    : function(user    : SDL_UserEvent),             -- user custom event data
+  syswm_cb   : function(syswm   : SDL_SysWMEvent),            -- syswm system dependent window event data
+  tfinger_cb : function(tfinger : SDL_TouchFingerEvent),      -- tfinger touch finger event data
+  mgesture_cb: function(mgesture: SDL_MultiGestureEvent),     -- mgesture multi finger gesture data
+  dgesture_cb: function(dgesture: SDL_DollarGestureEvent),    -- dgesture multi finger gesture data
+  drop_cb    : function(drop    : SDL_DropEvent)              -- drag and drop event data
+}
+
+--[[
+You should call this method at the start of each game loop tick, it:
+1. Polls all SDL events;
+2. Updates the `self.quit` boolean value, it becomes `true` when the appplication will quit (see SDL_QuitEvent);
+3. Calls the respective callbacks if `evt_callbacks` is given.
+
+Related Nene documentation:
+* [Nene.EventsCallbacks](#neneeventscallbacks)
+
+Related SDL documentation:
+* [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent)
+]]
+function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local evt: SDL_Event;
+
+  while SDL_PollEvent(evt) == 1 do
+    if evt.type == SDL_QUIT	then
+      self.quit = true
+    end
+
+    ## if not evt_callbacks.type.is_niltype then
+      switch evt.type do
+        case SDL_QUIT then
+          if evt_callbacks.quit_cb then evt_callbacks.quit_cb(evt.quit) end
+
+        case SDL_CONTROLLERAXISMOTION then
+          if evt_callbacks.caxis_cb then evt_callbacks.caxis_cb(evt.caxis) end
+
+        case SDL_CONTROLLERBUTTONDOWN, SDL_CONTROLLERBUTTONUP then
+          if evt_callbacks.cbutton_cb then evt_callbacks.cbutton_cb(evt.cbutton) end
+
+        case SDL_CONTROLLERDEVICEADDED, SDL_CONTROLLERDEVICEREMOVED, SDL_CONTROLLERDEVICEREMAPPED then
+          if evt_callbacks.cdevice_cb then evt_callbacks.cdevice_cb(evt.cdevice) end
+
+        case SDL_DOLLARGESTURE, SDL_DOLLARRECORD then
+          if evt_callbacks.dgesture_cb then evt_callbacks.dgesture_cb(evt.dgesture) end
+
+        case SDL_DROPFILE, SDL_DROPTEXT, SDL_DROPBEGIN, SDL_DROPCOMPLETE then
+          if evt_callbacks.drop_cb then evt_callbacks.drop_cb(evt.drop) end
+
+        case SDL_FINGERMOTION, SDL_FINGERDOWN, SDL_FINGERUP then
+          if evt_callbacks.tfinger_cb then evt_callbacks.tfinger_cb(evt.tfinger) end
+
+        case SDL_KEYDOWN, SDL_KEYUP then
+          if evt_callbacks.key_cb then evt_callbacks.key_cb(evt.key) end
+
+        case SDL_JOYAXISMOTION then
+          if evt_callbacks.jaxis_cb then evt_callbacks.jaxis_cb(evt.jaxis) end
+
+        case SDL_JOYBALLMOTION then
+          if evt_callbacks.jball_cb then evt_callbacks.jball_cb(evt.jball) end
+
+        case SDL_JOYHATMOTION then
+          if evt_callbacks.jhat_cb then evt_callbacks.jhat_cb(evt.jhat) end
+
+        case SDL_JOYBUTTONDOWN, SDL_JOYBUTTONUP then
+          if evt_callbacks.jbutton_cb then evt_callbacks.jbutton_cb(evt.jbutton) end
+
+        case SDL_JOYDEVICEADDED, SDL_JOYDEVICEREMOVED then
+          if evt_callbacks.jdevice_cb then evt_callbacks.jdevice_cb(evt.jdevice) end
+
+        case SDL_MOUSEMOTION then
+          if evt_callbacks.motion_cb then evt_callbacks.motion_cb(evt.motion) end
+
+        case SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP then
+          if evt_callbacks.button_cb then evt_callbacks.button_cb(evt.button) end
+
+        case SDL_MOUSEWHEEL then
+          if evt_callbacks.wheel_cb then evt_callbacks.wheel_cb(evt.wheel) end
+
+        case SDL_MULTIGESTURE then
+          if evt_callbacks.mgesture_cb then evt_callbacks.mgesture_cb(evt.mgesture) end
+
+        case SDL_SYSWMEVENT then
+          if evt_callbacks.syswm_cb then evt_callbacks.syswm_cb(evt.syswm) end
+
+        case SDL_TEXTEDITING then
+          if evt_callbacks.edit_cb then evt_callbacks.edit_cb(evt.edit) end
+
+        case SDL_TEXTINPUT then
+          if evt_callbacks.text_cb then evt_callbacks.text_cb(evt.text) end
+
+        case SDL_USEREVENT then
+          if evt_callbacks.user_cb then evt_callbacks.user_cb(evt.user) end
+
+        case SDL_WINDOWEVENT then
+          if evt_callbacks.window_cb then evt_callbacks.window_cb(evt.window) end
+
+        case SDL_AUDIODEVICEADDED, SDL_AUDIODEVICEREMOVED then
+          if evt_callbacks.adevice_cb then evt_callbacks.adevice_cb(evt.adevice) end
+      end
+    ## end
+  end
+
+  -- update input states
+  do
+    -- update keyboard_state
+    self.prev_keyboard_state = self.keyboard_state
+
+    do
+      local arr_sz: cint;
+      local arr_ptr: *[0]uint8 = SDL_GetKeyboardState(&arr_sz)
+
+      for i = 0, < arr_sz do
+        self.keyboard_state[i] = arr_ptr[i] == 1
+      end
+    end
+
+    -- update mouse state
+    self.prev_mouse_buttons = self.mouse_buttons
+
+    local mx: cint, my: cint
+    local buttons_bitmask = SDL_GetMouseState(&mx, &my)
+
+    for i = 0, < #self.mouse_buttons do
+      self.mouse_buttons[i] = buttons_bitmask & (1 << i) ~= 0
+    end
+
+    self.mouse_pos = {mx, my}
+  end
+
+  -- update delta_time and current_time
+  local cur_time = SDL_GetTicks() -- Note: change to SDL_GetTicks64 in the future (not soon)
+  self.delta_time = (cur_time - self.current_time) / 1000
+  self.current_time = cur_time
+end
+
+--[[
+Get the size of the current window.
+
+Related SDL documentation:
+* [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
+]]
+function Nene:get_window_size(): (cint, cint)
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local w: cint, h: cint
+  SDL_GetWindowSize(self.window, &w, &h)
+
+  return w, h
+end
+
+--[[
+Returns the state of `scancode`.
+
+* if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
+* if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
+* if `is_down` is `nil`, then it returns if is simply currently pressed.
+
+Related SDL documentation:
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+]]
+function Nene:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  check(scancode < SDL_Scancode.SDL_NUM_SCANCODES, 'Invalid scancode')
+
+  ## if is_down.type.is_niltype then
+    return self.keyboard_state[scancode]
+  ## else
+    local currently_pressed = self.keyboard_state[scancode]
+    local previously_pressed = self.prev_keyboard_state[scancode]
+
+    if is_down then
+      return currently_pressed and not previously_pressed
+    else
+      return not currently_pressed and previously_pressed
+    end
+  ## end
+end
+
+--[[
+Returns the state of a mouse button.
+
+* if `is_down` is `true`, then it returns if this mouse button was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
+* if `is_down` is `false`, then it returns if this mouse button was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
+* if `is_down` is `nil`, then it returns if is simply currently pressed.
+]]
+function Nene:get_mouse_button(mouse_button: isize, is_down: facultative(boolean)): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  check(mouse_button >= 0 and mouse_button < (#self.mouse_buttons), 'Invalid button value')
+
+  ## if is_down.type.is_niltype then
+    return self.mouse_buttons[mouse_button]
+  ## else
+    local currently_pressed = self.mouse_buttons[mouse_button]
+    local previously_pressed = self.prev_mouse_buttons[mouse_button]
+
+    if is_down then
+      return currently_pressed and not previously_pressed
+    else
+      return not currently_pressed and previously_pressed
+    end
+  ## end
+end
+
+--[[
+Set the drawing color for rectangles, lines and points rendering.
+
+Returns an `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Color](colors.md#color)
+
+Related SDL documentation:
+* [SDL_Color](https://wiki.libsdl.org/SDL_Color)
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
+]]
+function Nene:set_render_draw_color(color: Color): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  if SDL_SetRenderDrawColor(self.renderer, color.r, color.g, color.b, color.a) ~= 0 then
+    warn_msg!('Nene.set_render_draw_color', 'could not set rendering color')
+    return false
+  end
+
+  return true
+end
+
+--[[
+Set the blend mode for drawing operations.
+
+Returns an `ok` status with `true` value if successful.
+
+Related SDL documentation:
+* [SDL_BlendMode](https://wiki.libsdl.org/SDL_BlendMode)
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL_SetRenderDrawBlendMode)
+]]
+function Nene:set_render_draw_blend_mode(blend_mode: SDL_BlendMode): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  if SDL_SetRenderDrawBlendMode(self.renderer, blend_mode) ~= 0 then
+    warn_msg!('Nene.set_render_draw_blend_mode', 'could not set the rendering blend mode')
+    return false
+  end
+
+  return true
+end
+
+--[[
+Set an additional color value multiplied into render copy operations on the passed raw texture.
+
+Returns an `ok` status with `true` value if successful.
+
+Related SDL documentation:
+* [SDL_SetTextureColorMod](https://wiki.libsdl.org/SDL_SetTextureColorMod)
+]]
+function Nene:set_raw_texture_color_mod(raw_texture: *SDL_Texture, color: Color): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  if SDL_SetTextureColorMod(raw_texture, color.r, color.g, color.b) ~= 0 then
+    warn_msg!('Nene.set_texture_color_mod', 'could not set the texture color modulation')
+    return false
+  end
+
+  return true
+end
+
+--[[
+Set clip rectangle for rendering
+
+Returns an `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Math.Rect](math.md)
+
+Related SDL documentation:
+* [SDL_RenderSetClipRect](https://wiki.libsdl.org/SDL_RenderSetClipRect)
+]]
+function Nene:set_render_clip(rect: Rect): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local sdl_rect: SDL_Rect = rect:to_sdlrect()
+
+  if SDL_RenderSetClipRect(self.renderer, sdl_rect) ~= 0 then
+    warn_msg!('Nene.set_render_clip', 'could not set the rendering clip rectangle')
+    return false
+  end
+
+  return true
+end
+
+--[[
+it clears the rendering target with the given `color`.
+
+Returns an `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Color](colors.md#color)
+* [Nene.set_render_draw_color](#neneset_render_draw_color)
+
+Related SDL documentation:
+* [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
+* [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
+]]
+function Nene:render_clear(color: Color): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  self:set_render_draw_color(color)
+  if SDL_RenderClear(self.renderer) ~= 0 then
+    warn_msg!('Nene.render_clear', 'could not clear the rendering target')
+    return false
+  end
+
+  return true
+end
+
+--[[
+renders a line from `origin` to `destination` with the given `color`.
+
+Returns an `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Math.Vec2](math.md#mathvec2)
+* [Color](colors.md#color)
+
+Related SDL documentation:
+* [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
+]]
+function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultative(Color)): boolean
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
+  check(Nene.initialized, 'Nene is not initialized')
+
+  self:set_render_draw_color(color)
+
+  local origin_px: cint, origin_py: cint, dest_px: cint, dest_py: cint = math.ifloor(origin.x - self.render_offset.x),
+                                                                         math.ifloor(origin.y - self.render_offset.y),
+                                                                         math.ifloor(destination.x - self.render_offset.x),
+                                                                         math.ifloor(destination.y - self.render_offset.y)
+
+  if SDL_RenderDrawLine(self.renderer, origin_px, origin_py, dest_px, dest_py) ~= 0 then
+    warn_msg!('Nene.render_draw_line', 'could not draw a line')
+    return false
+  end
+
+  return true
+end
+
+--[[
+renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
+
+Returns an `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Math.Rect](math.md)
+
+Related SDL documentation:
+* [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
+* [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
+]]
+function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color)): boolean
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
+  check(Nene.initialized, 'Nene is not initialized')
+
+  rectangle:set_pos({rectangle.x - self.render_offset.x, rectangle.y - self.render_offset.y})
+  local sdl_rect: SDL_Rect = rectangle:to_sdlrect()
+
+  self:set_render_draw_color(color)
+
+  if use_lines then
+    if SDL_RenderDrawRect(self.renderer, sdl_rect) ~= 0 then
+      warn_msg!('Nene.render_draw_rect', 'could not draw a rectangle')
+      return false
+    end
+  else
+    if SDL_RenderFillRect(self.renderer, sdl_rect) ~= 0 then
+      warn_msg!('Nene.render_fill_rect', 'could not draw a filled rectangle')
+      return false
+    end
+  end
+
+  return true
+end
+
+--[[
+Wrapper of `SDL_RenderCopy`.
+Copies `texture` on the rendering target.
+
+By default the whole texture is copied unless the `source` rectangle is given,
+in this case only the "source" part of the texture will be copied.
+
+By default the texture will be copied on the whole rendering target unless the `destination` rectangle is given,
+in this case it will be copied at this "destination" part of the rendering target.
+
+Returns an `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Math.Rect](math.md)
+
+Related SDL documentation:
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+* [SDL_RenderCopy](https://wiki.libsdl.org/SDL_RenderCopy)
+* [SDL_RenderCopyEx](https://wiki.libsdl.org/SDL_RenderCopyEx)
+]]
+function Nene:render_copy(
+  texture: *SDL_Texture,
+  source: facultative(Rect),
+  destination: facultative(Rect),
+  angle: facultative(number),
+  center: facultative(Vec2),
+  flip_horizontal: facultative(boolean),
+  flip_vertical: facultative(boolean)
+): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local src: *SDL_Rect, dest: *SDL_Rect;
+
+  ## if not source.type.is_niltype then
+  local src_rect: SDL_Rect = source:to_sdlrect()
+  src = &src_rect
+  ## end
+
+  ## if not destination.type.is_niltype then
+  destination:set_pos({destination.x - self.render_offset.x, destination.y - self.render_offset.y})
+  local dest_rect: SDL_Rect = destination:to_sdlrect()
+  dest = &dest_rect
+  ## end
+
+  ## local use_ex = not (angle.type.is_niltype and center.type.is_niltype and flip_horizontal.type.is_niltype and flip_vertical.type.is_niltype)
+
+  ## if not use_ex then
+    if SDL_RenderCopy(self.renderer, texture, src, dest) ~= 0 then
+      warn_msg!('Nene.render_copy', 'could not copy the texture portion to the rendering target')
+      return false
+    end
+  ## else
+    ## if angle.type.is_niltype then
+    local angle = 0
+    ## end
+
+    local center_vl: SDL_Point = {0, 0}
+    local center_ptr: *SDL_Point = nilptr
+    local flip_vl = SDL_FLIP_NONE
+
+    ## if not center.type.is_niltype then
+      center_vl.x, center_vl.y = math.ifloor(destination.w * center.x), math.ifloor(destination.h * center.y)
+      center_ptr = &center_vl
+    ## end
+
+    ## if not flip_horizontal.type.is_niltype then
+      flip_vl = flip_horizontal and SDL_FLIP_HORIZONTAL or SDL_FLIP_NONE
+    ## end
+
+    ## if not flip_vertical.type.is_niltype then
+      flip_vl = flip_vl | (flip_vertical and SDL_FLIP_VERTICAL or SDL_FLIP_NONE)
+    ## end
+
+    if SDL_RenderCopyEx(self.renderer, texture, src, dest, angle, center_ptr, flip_vl) ~= 0 then
+      warn_msg!('Nene.render_copy', 'could not copy the texture portion to the rendering target')
+      return false
+    end
+  ## end
+
+  return true
+end
+
+--[[
+Set a `texture_target` as rendering target.
+
+If `texture_target` is not given, then the target will be the window.
+
+Returns an `ok` status with `true` value if successful.
+
+Related SDL documentation:
+* [SDL_SetRenderTarget](https://wiki.libsdl.org/SDL_SetRenderTarget)
+]]
+function Nene:set_render_target(texture_target: facultative(*SDL_Texture)): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  ## if texture_target.type.is_niltype then
+  local texture_target: *SDL_Texture = nilptr
+  ## end
+
+  if SDL_SetRenderTarget(self.renderer, texture_target) ~= 0 then
+    warn_msg!('Nene.set_render_target', 'could not set the `texture_target` as the rendering target')
+    return false
+  end
+
+  return true
+end
+
+--[[
+Wrapper of `SDL_CreateTexture`.
+
+Creates a Texture for the rendering context.
+
+Returns an `ok` status with `true` value if successful and the created Texture as `SDL_Texture`.
+
+Related SDL documentation:
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+* [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
+]]
+function Nene:create_raw_texture(format: uint32, access: SDL_TextureAccess, width: cint, height: cint): (boolean, *SDL_Texture)
+  check(Nene.initialized, 'Nene is not initialized')
+
+  local ok = true
+  local texture = SDL_CreateTexture(self.renderer, format, access, width, height)
+
+  if not texture then
+    ok = false
+    warn_msg!('Nene.create_raw_texture', 'could not create texture for the rendering context')
+  end
+
+  return ok, texture
+end
+
+--[[
+Wrapper of `SDL_CreateTextureFromSurface`.
+
+Creates a Texture from the given surface.
+
+Returns an `ok` status with `true` value if successful and the created Texture as `SDL_Texture`.
+
+Related SDL documentation:
+* [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+* [SDL_Surface](https://wiki.libsdl.org/SDL_Surface)
+* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+]]
+function Nene:create_raw_texture_from_surface(surface_ref: *SDL_Surface): (boolean, *SDL_Texture)
+  check(Nene.initialized, 'Nene is not initialized')
+  check(surface_ref ~= nilptr, "cannot create a texture from a nilptr")
+
+  local ok = true
+  local texture = SDL_CreateTextureFromSurface(self.renderer, surface_ref)
+
+  if not texture then
+    ok = false
+    warn_msg!('Nene.create_raw_texture_from_surface', 'could not create texture from the given surface')
+  end
+
+  return ok, texture
+end
+
+--[[
+presents the SDL's composed backbuffer (any rendering operation is done on the SDL's backbuffer,
+this function presents it).
+
+This also does some modification on the state, preparing it for the next frame.
+
+Related SDL documentation:
+* [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
+]]
+function Nene:render_present()
+  check(Nene.initialized, 'Nene is not initialized')
+  SDL_RenderPresent(self.renderer)
+end
+
+--[[
+try to initialize and return a new initilized core state.
+
+returns:
+  * a boolean that indicates true on success
+  * a new state, only filled on success
+
+notes:
+  * You always should first check if the initialization
+  succeeded before trying to use the state.
+
+Code example:
+```lua
+-- initialize nene
+local ok, nene = Nene.init('My game title', 1280, 720)
+
+-- test if nene got successfully initialized, here `assert`
+-- is used instead of `check`, this way, this test is also done
+-- in release mode.
+assert(ok, 'error: nene initialization failed')
+
+-- defer nene termination, to release resources used by nene
+defer
+  nene:terminate()
+end
+```
+
+Related SDL documentation:
+* [SDL_Init](https://wiki.libsdl.org/SDL_Init)
+* [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow)
+* [SDL_CreateRenderer](https://wiki.libsdl.org/SDL_CreateRenderer)
+* [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL_SetRenderDrawBlendMode)
+
+Related SDL_mixer documentation:
+* [Mix_Init](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
+* [Mix_OpenAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
+
+Related SDL_image documentation:
+* [IMG_Init](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
+
+Related SDL_ttf documentation:
+* [TTF_Init](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L110-L111)
+]]
+function Nene.init(
+  title: string,
+  window_size_x: integer, window_size_y: integer,
+  pos_x: facultative(integer), pos_y: facultative(integer),
+  flags: facultative(uint32)
+): (boolean, *Nene)
+  check(not Nene.initialized, "Cannot re-initialize Nene")
+  check(window_size_x > 0 and window_size_y > 0, 'cannot create a window with `0` as a size parameter')
+
+  -- shadowing arguments with default settings
+  ## if pos_x.type.is_niltype then
+  local pos_x = SDL_WINDOWPOS_UNDEFINED
+  ## end
+  ## if pos_y.type.is_niltype then
+  local pos_y = SDL_WINDOWPOS_UNDEFINED
+  ## end
+  ## if flags.type.is_niltype then
+  local flags = SDL_WINDOW_SHOWN
+  ## end
+
+  -- init libraries
+  if SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) ~= 0 then
+    warn_msg!('Nene.init', 'could not initialize SDL')
+    return false, nilptr
+  end
+
+  local img_flags = IMG_INIT_PNG
+
+  if IMG_Init(img_flags) & img_flags ~= img_flags then
+    warn_msg!('Nene.init', 'could not initialize SDL_image', 'IMG_GetError')
+    return false, nilptr
+  end
+
+  if Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) ~= 0 then
+    warn_msg!('Nene.init', 'could not initialize mixer API', 'Mix_GetError')
+    return false, nilptr
+  end
+
+  local mix_flags = MIX_INIT_OGG
+  if Mix_Init(mix_flags) & mix_flags ~= mix_flags then
+    warn_msg!('Nene.init', 'could not initialize mixer', 'Mix_GetError')
+    return false, nilptr
+  end
+
+  if TTF_Init() ~= 0 then
+    warn_msg!('Nene.init', 'could not initialize mixer', 'TTF_GetError')
+    return false, nilptr
+  end
+
+  local window = SDL_CreateWindow(title, pos_x, pos_y, window_size_x, window_size_y, flags)
+  if not window then
+    warn_msg!('Nene.init', 'could not create the window')
+    return false, nilptr
+  end
+
+  local renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
+  if not renderer then
+    warn_msg!('Nene.init', 'could not create the 2D renderer')
+    return false, nilptr
+  end
+
+  -- libraries initialized, window and renderer initialized and created, thus Nene is considered initialized
+  Nene.initialized = true
+
+  -- almost everything setup!
+  instance = {
+    delta_time = (1 / 60), -- fake delta time targeting 60 fps, this avoids a wrong delta time of 0s.
+    =window,
+    =renderer,
+  }
+
+  instance:set_render_draw_color(Color.Palette.white)
+  instance:set_render_draw_blend_mode(SDL_BLENDMODE_BLEND)
+
+  return true, &instance
+end
+
+--[[
+Finalize application and quits all SDL subsystems
+
+Related SDL documentation:
+* [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer)
+* [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow)
+* [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
+
+Related SDL_image documentation:
+* [IMG_Quit](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
+
+Related SDL_ttf documentation:
+* [TTF_Quit](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h)
+
+Related SDL_mixer documentation:
+* [Mix_CloseAudio](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_12.html)
+* [Mix_Quit](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_10.html)
+]]
+function Nene:terminate()
+  check(Nene.initialized, 'Nene is not initialized')
+
+  Nene.initialized = false
+
+  SDL_DestroyRenderer(self.renderer)
+  self.renderer = nilptr
+
+  SDL_DestroyWindow(self.window)
+  self.window = nilptr
+
+  TTF_Quit()
+
+  Mix_Quit()
+  Mix_CloseAudio()
+
+  IMG_Quit()
+
+  SDL_Quit()
+end
+
+return Nene

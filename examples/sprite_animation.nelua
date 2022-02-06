@@ -1,15 +1,15 @@
 -- spritesheet example, more detailed explanation about nene
 -- is available at pong example.
 
-require 'math'
+local math = require 'math'
 
 -- here we only require the core and the spritesheet  of course, others nene modules
 -- will be required as dependencies, like the Colors module, since it's one
 -- of the a spritesheet depedencies.
-require 'nene.core'
-require 'nene.wrappers.sdl'
-require 'nene.texture'
-require 'nene.spritesheet'
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Texture = require 'nene.texture'
+local SpriteSheet = require 'nene.spritesheet'
 
 -- Here all the game code is inside a "game" function because it make address sanitizer more detailed.
 -- In your games, you may use a "game frame" function, this makes web port easier.
@@ -27,7 +27,7 @@ local function game()
   -- create a texture with img_shapes.png image on it
   -- then test initialization and defers it's destruction
   -- note that img_shapes images contains four shapes, on a 32x32 alignment.
-  local sprites_texture, ok = Texture.load(nene, 'resources/img_shapes.png')
+  local ok, sprites_texture = Texture.load('resources/img_shapes.png')
   assert(ok, "error: 'img_shapes.png' could not be loaded")
   defer sprites_texture:destroy() end
 
@@ -70,7 +70,7 @@ local function game()
     -- note that spritesheet doesn't contains the texture it should render on the
     -- fields, this should be passed as an argument, the reason for this is that
     -- when a module needs an external resource, it "asks" for it through parameters.
-    spritesheet:draw(nene, {x = 10, y = 10}, sprites_texture, sprite_index, Color.Palette.white, rotation)
+    spritesheet:draw({x = 10, y = 10}, sprites_texture, sprite_index, Color.Palette.white, rotation)
 
     -- finally, swap buffers and present our final result
     nene:render_present()
