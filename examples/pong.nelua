@@ -140,8 +140,6 @@ function Ball:draw(nene: Nene)
 end
 
 local function update_points(pts_text: *TextTexture, points: integer, font: Font)
-  local nene = Nene.instance()
-
   local pts_str <close> = tostring(points)
   pts_text:update_text(pts_str, font)
 end
@@ -190,7 +188,7 @@ local function game()
   defer font:destroy() end
 
   -- creates both players texts and then defer it's destroy calls
-  local r1_text, r2_text = TextTexture.new('0', font), TextTexture.new('0', font)
+  local r1_text, r2_text = TextTexture.init('0', font), TextTexture.init('0', font)
   defer
     r1_text:destroy()
     r2_text:destroy()
