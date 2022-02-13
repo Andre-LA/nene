@@ -12,8 +12,10 @@ local Math = @record{}
 
 global Math.Vec2i = Vec2i
 global Math.Vec2 = Vec2
+
 global Math.Rect = Rect
 global Math.Rectf = Rectf
+
 global Math.Grid = Grid
 
 return Math
