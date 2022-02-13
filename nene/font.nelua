@@ -175,4 +175,9 @@ function Font:destroy()
   $self = (@Font)()
 end
 
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Font:__close()
+  self:destroy()
+end
+
 return Font

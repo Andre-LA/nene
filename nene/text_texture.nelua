@@ -33,6 +33,11 @@ function TextTexture:destroy()
   self.texture:destroy()
 end
 
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function TextTexture:__close()
+  self:destroy()
+end
+
 --[[
 Updates the text texture with a new UTF-8 `text`, with the given `font`.
 

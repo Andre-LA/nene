@@ -46,6 +46,11 @@ function Texture:destroy()
   $self = (@Texture)()
 end
 
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Texture:__close()
+  self:destroy()
+end
+
 --[[
 Applies a new internal texture (with a `pointer(SDL_Texture)`).
 

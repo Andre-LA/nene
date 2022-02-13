@@ -119,6 +119,11 @@ function Sound:destroy()
   $self = (@Sound)()
 end
 
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Sound:__close()
+  self:destroy()
+end
+
 -- Wraps a (SDL_mixer) music
 local Music = @record{
   _data: *Mix_Music,
@@ -203,6 +208,11 @@ function Music:destroy()
   local raw_music = self:get_raw()
   Mix_FreeMusic(raw_music)
   $self = (@Music)()
+end
+
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Music:__close()
+  self:destroy()
 end
 
 return Audio

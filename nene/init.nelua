@@ -832,4 +832,9 @@ function Nene:terminate()
   SDL_Quit()
 end
 
+-- Effectively the same as `terminate`, called when a to-be-closed variable goes out of scope.
+function Nene:__close()
+  self:terminate()
+end
+
 return Nene

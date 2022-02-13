@@ -36,6 +36,11 @@ function Tilemap:destroy()
   self.map = (@vector(isize))()
 end
 
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Tilemap:__close()
+  self:destroy()
+end
+
 --[[
 Gets the proper column and row from a certain tile from the tilemap.
 
