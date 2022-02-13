@@ -7,10 +7,8 @@
 -- You can modify this field in order to add a basic camera control.
 
 local Nene = require 'nene'
-local Math = require 'nene.math'
 local Color = require 'nene.color'
-
-local Rect = Math.Rect
+local Rect = require 'nene.math.rect'
 
 -- In this example it also be showcased how to split your game logic in functions.
 --

@@ -1,24 +1,42 @@
-local Vec2 = require 'nene.math.vec2'
+local Vec2n = require 'nene.math.vec2n'
 
-## local macro_decl_rect = function(name, T)
-  ## staticassert(T.value.is_arithmetic, 'T is not arithmetic')
+local Vec2i = require 'nene.math.vec2i'
+local Vec2f = require 'nene.math.vec2'
 
-  local T: type = @#[T]#
+local math = require 'math'
 
-  -- Rect type, but also Rectf, note that Rectf may be removed, so don't use it while this warning is here.
-  local #|name|# = @record{
-    x: T,
-    y: T,
-    w: T,
-    h: T
+local ov_vec2: type = @overload(Vec2i, Vec2f)
+
+
+## local make_rect = generalize(function(T)
+  ## static_assert(T.is_arithmetic, '%s is not arithmetic', T)
+
+  local T: type = #[T]#
+
+  local RectT: type <nickname(#[ string.format('Rect(%s)', T) ]#)> = @record{
+    x: T, y: T, -- position
+    w: T, h: T, -- size
   }
 
-  local RectT: type = @#|name|#
-  ## RectT.subtype = T
+  ## RectT.value.subtype = T
+  ## RectT.value.is_rect = true
+
+  local Vec2T: type = @Vec2n(T)
+
+  ## local function rect_init(x, y)
+    ## static_assert(x.type.is_vec2 and y.type.is_vec2, "rect_init: either x or y isn't Vec2 type")
+
+    ## if T.is_integral and not Vec2T.value.subtype.is_integral then
+    local x = math.ifloor(#[x]#)
+    local y = math.ifloor(#[y]#)
+    ## end
+
+    in RectT{ =x, =y}
+  ## end
 
   -- convert this
-  function RectT.to_sdlrect(rect: RectT): SDL_Rect
-    ## if T.type.is_integral then
+  function RectT.to_raw_rect(rect: RectT): SDL_Rect
+    ## if not T.is_integral then
       return SDL_Rect{
         x = math.ifloor(rect.x), y = math.ifloor(rect.y),
         w = math.ifloor(rect.w), h = math.ifloor(rect.h)
@@ -31,28 +49,42 @@ local Vec2 = require 'nene.math.vec2'
     ## end
   end
 
-  -- Creates a Rect from two bi-dimensional vectors
-  function RectT.from_vec2(position: Vec2, size: Vec2): RectT
-    return (@RectT){
-      x = math.ifloor(position.x),
-      y = math.ifloor(position.y),
-      w = math.ifloor(size.x),
-      h = math.ifloor(size.y)
+  -- Get rect position
+  function RectT:get_position(): Vec2T
+    return Vec2T{ self.x, self.y }
+  end
+
+  -- Get rect size
+  function RectT:get_size(): Vec2T
+    return Vec2T{ self.w, self.h }
+  end
+
+  -- Returns a copy with a new position
+  function RectT:with_position(pos: ov_vec2): RectT
+    return RectT{
+      x = pos.x, y = pos.y,
+      w = self.w, h = self.h
     }
   end
 
-  -- set the rectangle's position from a `Vec2`
-  function RectT:set_pos(position: Vec2)
-    self.x, self.y = math.ifloor(position.x), math.ifloor(position.y)
+  -- Returns a copy with a new size
+  function RectT:with_size(size: ov_vec2): RectT
+    return RectT{
+      x = self.x, y = self.y,
+      w = size.x, h = size.y
+    }
   end
 
-  -- set the rectangle's size from a `Vec2`
-  function RectT:set_size(size: Vec2)
-    self.w, self.h = math.ifloor(size.x), math.ifloor(size.y)
+  -- Creates a Rect from two bi-dimensional vectors
+  function RectT.from_vec2(pos: ov_vec2, size: ov_vec2): RectT
+    return (@RectT){
+      x = math.ifloor(pos.x) , y = math.ifloor(pos.y),
+      w = math.ifloor(size.x), h = math.ifloor(size.y)
+    }
   end
 
-  -- Test if an another rect or point it's intersecting
-  function RectT.is_intersecting(self: RectT, other: overload(RectT, Vec2)): boolean
+  -- Test if another rect or point it's intersecting the rect
+  function RectT.is_intersecting(self: RectT, other: overload(RectT, ov_vec2)): boolean
     ## if other.type.is_vec2 then -- other is Vec2
       return (
         other.x >= self.x and
@@ -60,7 +92,7 @@ local Vec2 = require 'nene.math.vec2'
         other.y >= self.y and
         other.y <= self.y + self.h
       )
-    ## else -- then other is is RectT
+    ## else -- then other it's RectT
       return not (
         ( self.x +  self.w) < other.x or -- is `self `on left of `other`? if so, is not intersecting
         (other.x + other.w) <  self.x or -- is `other` on left of `self`? if so, is not intersecting
@@ -84,8 +116,8 @@ local Vec2 = require 'nene.math.vec2'
     local min_xw = math.min(a.x + a.w, b.x + b.w)
     local min_yh = math.min(a.y + a.h, b.y + b.h)
 
-    local pmin: Vec2 = { max_px, max_py }
-    local pmax: Vec2 = { min_xw, min_yh }
+    local pmin: Vec2T = { max_px, max_py }
+    local pmax: Vec2T = { min_xw, min_yh }
 
     local intersection: RectT = {
       x = pmin.x, y = pmin.y,
@@ -96,8 +128,8 @@ local Vec2 = require 'nene.math.vec2'
   end
 
   -- get the center of rectangle.
-  function RectT.get_center(self: RectT): Vec2
-    return (@Vec2){
+  function RectT.get_center(self: RectT): Vec2T
+    return (@Vec2T){
       x = self.x + (self.w / 2),
       y = self.y + (self.h / 2),
     }
@@ -110,7 +142,7 @@ local Vec2 = require 'nene.math.vec2'
   -- * a boolean which contains if the two rectangles were really intersecting
   -- * a new rectangle with the collision resolved
   function RectT.simple_collision(self: RectT, intersected: RectT): (boolean, RectT)
-    local function resolve_vertical(result: RectT, self: RectT, self_center: Vec2, intersected: RectT, intersected_center: Vec2): (RectT)
+    local function resolve_vertical(result: RectT, self: RectT, self_center: Vec2T, intersected: RectT, intersected_center: Vec2T): (RectT)
       if self_center.y < intersected_center.y then -- go to top
         result.y = intersected.y - self.h
       else -- go to bottom
@@ -120,7 +152,7 @@ local Vec2 = require 'nene.math.vec2'
       return result
     end
 
-    local function resolve_horizontal(result: RectT, self: RectT, self_center: Vec2, intersected: RectT, intersected_center: Vec2): (RectT)
+    local function resolve_horizontal(result: RectT, self: RectT, self_center: Vec2T, intersected: RectT, intersected_center: Vec2T): (RectT)
       if self_center.x < intersected_center.x then -- go to left
         result.x = intersected.x - self.w
       else -- go to right
@@ -154,26 +186,8 @@ local Vec2 = require 'nene.math.vec2'
     return true, result
   end
 
-  ## RectT.value.is_rect = true
-## end
+  ## return RectT
+## end)
 
-## macro_decl_rect('Rectf', number)
-## macro_decl_rect('Rect', integer)
-
-function Rectf:to_rect(): Rect
-  return Rect.from_vec2( { self.x, self.y }, { self.w, self.h } )
-end
-
-function Rect:to_rectf(): Rectf
-  return (@Rectf){
-    x = self.x, y = self.y,
-    w = self.w, h = self.h
-  }
-end
-
-local Rects = @record{}
-
-global Rects.Rect = Rect
-global Rects.Rectf = Rectf
-
-return Rects
+local Rectn: type = #[make_rect]#
+return Rectn

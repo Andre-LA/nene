@@ -2,7 +2,7 @@
 
 local Nene = require 'nene'
 local Color = require 'nene.color'
-local Math = require 'nene.math'
+local Rect = require 'nene.math.rect'
 
 local function rects()
   local ok, nene = Nene.init('nene render rect clip', 256, 256)
@@ -10,13 +10,13 @@ local function rects()
   defer nene:terminate() end
 
   -- create two rects
-  local rect_clip: Math.Rect = {0, 0, 48, 48}
+  local rect_clip: Rect = {0, 0, 48, 48}
 
   repeat
     nene:poll_events()
 
     -- copy mouse position to rect_clip position
-    rect_clip:set_pos(nene.mouse_pos)
+    rect_clip = rect_clip:with_position(nene.mouse_pos)
 
     nene:render_clear(Color.Palette.bg)
 

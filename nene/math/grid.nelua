@@ -1,5 +1,4 @@
-local Rects = require 'nene.math.rects'
-local Rect = Rects.Rect
+local Rect = require 'nene.math.rect'
 
 -- This record is intended to generate rectangles from an infinite grid.
 local Grid = @record{

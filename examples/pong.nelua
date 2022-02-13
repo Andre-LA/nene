@@ -7,10 +7,8 @@ local string = require 'string'
 -- require nene librarise and modules
 local Nene = require 'nene'
 local Color = require 'nene.color'
-local Rects = require 'nene.math.rects'
+local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
-
-local Rect = Rects.Rect
 
 local Font = require 'nene.font'
 local Texture = require 'nene.texture'

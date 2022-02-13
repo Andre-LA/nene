@@ -1,0 +1,3 @@
+local Rectn = require 'nene.math.rectn'
+local Rectf: type = @Rectn(number)
+return Rectf

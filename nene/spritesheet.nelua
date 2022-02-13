@@ -3,10 +3,12 @@ local vector = require 'vector'
 
 local Nene = require 'nene'
 local Color = require 'nene.color'
-local Math = require 'nene.math'
-local Texture = require 'nene.texture'
 
-local Vec2, Rect, Grid = Math.Vec2, Math.Rect, Math.Grid
+local Vec2 = require 'nene.math.vec2'
+local Rect = require 'nene.math.rect'
+local Grid = require 'nene.math.grid'
+
+local Texture = require 'nene.texture'
 
 -- The `SpriteSheet` module is used to use and draw sprites.
 local SpriteSheet = @record{

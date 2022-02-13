@@ -2,7 +2,7 @@
 
 local Nene = require 'nene'
 local Color = require 'nene.color'
-local Math = require 'nene.math'
+local Rect = require 'nene.math.rect'
 
 local function rects()
   local ok, nene = Nene.init('nene rects', 256, 256)
@@ -10,13 +10,13 @@ local function rects()
   defer nene:terminate() end
 
   -- create two rects
-  local rect_a: Math.Rect, rect_b: Math.Rect = {0, 0, 42, 32}, {64, 64, 128, 64}
+  local rect_a: Rect, rect_b: Rect = {0, 0, 42, 32}, {64, 64, 128, 64}
 
   repeat
     nene:poll_events()
 
     -- copy mouse position to rect_a position
-    rect_a:set_pos(nene.mouse_pos)
+    rect_a = rect_a:with_position(nene.mouse_pos)
 
     -- create a third rect, which is a resolved collision between the
     -- two above, note that is a very simple collision algorhythm

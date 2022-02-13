@@ -2,9 +2,8 @@ local Nene = require 'nene'
 local Color = require 'nene.color'
 local Font = require 'nene.font'
 local Texture = require 'nene.texture'
-local Math = require 'nene.math'
-
-local Vec2, Rect = Math.Vec2, Math.Rect
+local Vec2 = require 'nene.math.vec2'
+local Rect = require 'nene.math.rect'
 
 require 'nene.macros'
 ## local warn_msg = macros.warn_msg

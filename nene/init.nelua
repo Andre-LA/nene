@@ -6,7 +6,9 @@ require 'nene.raw.sdl2_image'
 require 'nene.raw.sdl2_mixer'
 
 local Color = require 'nene.color'
-local Math = require 'nene.math'
+
+local Vec2 = require 'nene.math.vec2'
+local Rect = require 'nene.math.rect'
 
 require 'nene.macros'
 ## local warn_msg = macros.warn_msg
@@ -20,8 +22,6 @@ require 'nene.macros'
   primtypes.number = primtypes.float32
   ]]
 ##end
-
-local Vec2, Rect = @Math.Vec2, @Math.Rect
 
 --[[
 The core of Nene, it contains pointers made by SDL2, and doesn't requires any other Nene modules (except
@@ -392,7 +392,7 @@ Related SDL documentation:
 function Nene:set_render_clip(rect: Rect): boolean
   check(Nene.initialized, 'Nene is not initialized')
 
-  local sdl_rect: SDL_Rect = rect:to_sdlrect()
+  local sdl_rect: SDL_Rect = rect:to_raw_rect()
 
   if SDL_RenderSetClipRect(self.renderer, sdl_rect) ~= 0 then
     warn_msg!('Nene.set_render_clip', 'could not set the rendering clip rectangle')
@@ -480,8 +480,8 @@ function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facul
 
   check(Nene.initialized, 'Nene is not initialized')
 
-  rectangle:set_pos({rectangle.x - self.render_offset.x, rectangle.y - self.render_offset.y})
-  local sdl_rect: SDL_Rect = rectangle:to_sdlrect()
+  local rectangle = rectangle:with_position(rectangle:get_position() - self.render_offset)
+  local sdl_rect: SDL_Rect = rectangle:to_raw_rect()
 
   self:set_render_draw_color(color)
 
@@ -534,13 +534,13 @@ function Nene:render_copy(
   local src: *SDL_Rect, dest: *SDL_Rect;
 
   ## if not source.type.is_niltype then
-  local src_rect: SDL_Rect = source:to_sdlrect()
+  local src_rect: SDL_Rect = source:to_raw_rect()
   src = &src_rect
   ## end
 
   ## if not destination.type.is_niltype then
-  destination:set_pos({destination.x - self.render_offset.x, destination.y - self.render_offset.y})
-  local dest_rect: SDL_Rect = destination:to_sdlrect()
+  local destination = destination:with_position(destination:get_position() - self.render_offset)
+  local dest_rect: SDL_Rect = destination:to_raw_rect()
   dest = &dest_rect
   ## end
 

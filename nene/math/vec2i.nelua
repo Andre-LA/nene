@@ -1,0 +1,3 @@
+local Vec2n = require 'nene.math.vec2n'
+local Vec2i: type = @Vec2n(integer)
+return Vec2i

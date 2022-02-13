@@ -5,9 +5,10 @@ local vector = require 'vector'
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
-local Math = require 'nene.math'
 
-local Vec2, Rect, Grid = Math.Vec2, Math.Rect, Math.Grid
+local Vec2 = require 'nene.math.vec2'
+local Rect = require 'nene.math.rect'
+local Grid = require 'nene.math.grid'
 
 --[[
 A tilemap contains a `width` number of tiles and a `map` of numbers which are the tiles from the tileset.
@@ -22,7 +23,7 @@ just as tilemap it starts from top-left and goes from left to right, top to bott
 local Tilemap = @record{
   tilemap_width: isize,
   tileset_width: isize,
-  grid: Math.Grid,
+  grid: Grid,
   map: vector(isize),
 }
 
