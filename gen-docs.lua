@@ -37,7 +37,6 @@ local function doc_dir(dirname)
   local path = string.gsub(dirname, 'nene/', '')
 
   local ignored_files = {
-    ['init.nelua'] = true
   }
 
   for filename in lfs.dir(dirname) do
