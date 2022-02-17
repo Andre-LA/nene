@@ -10,17 +10,19 @@ local Nene = require 'nene'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
--- In this example it also be showcased how to split your game logic in functions.
+-- In this example it also be showcased how to split your game logic into multiple functions.
 --
 -- It's pretty simple, you can use `Nene.instance()` to get the Nene instance on the
--- function body, this is a singleton, for better safety is always checked if Nene is
--- initialized when calling this function on non-release builds (unless you set the
--- nochecks pragma)
+-- function body, this is called "singleton".
+--
+-- For better safety, it's always checked if Nene is initialized when calling this
+-- function on non-release builds (unless you set the `nochecks` pragma)
 local function draw_parallax_grid()
-  -- get the nene instance
+  -- let's draw a grid with parallax effect! --
+
+  -- get the running nene instance
   local nene = Nene.instance()
 
-  -- draw a grid with parallax effect!
   -- save our original render_offset value
   local original_offset = nene.render_offset
 
@@ -38,7 +40,8 @@ local function draw_parallax_grid()
 end
 
 local function draw_parallax_shadow()
-  -- same logic as draw_parallax_grid
+  -- same logic as draw_parallax_grid --
+
   local nene = Nene.instance()
 
   local original_offset = nene.render_offset
@@ -53,18 +56,16 @@ end
 
 -- all the life-cycle of this example is contained in this function
 local function camera()
-
-  -- initialize and test nene initialization and defer it's termination.
+  -- initialize and test nene initialization and defer it's termination using a to-be-closed variable.
   --
   -- When nene is initialized, you get an ok status which should be asserted
   -- and a nene instance, when the nene instance is initialized, the ok status is
   -- `true`, otherwise, it's `false` and the nene instance contains only zeroed data.
-  local ok, nene = Nene.init('nene basic camera', 256, 256)
+  local ok, nene <close> = Nene.init('nene basic camera', 256, 256)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
-  -- create a rect, note that is <const>
-  local rect_on_center: Rect <const> = {112, 112, 32, 32}
+  -- create a rect
+  local rect_on_center: Rect = {112, 112, 32, 32}
 
   repeat
     -- update logic --
@@ -72,7 +73,7 @@ local function camera()
     -- update nene state
     nene:poll_events()
 
-    -- modify `render_offset` field in order to get a basic camera control
+    -- modify `render_offset` field in order to get a basic camera control --
     if nene:get_scancode(SDL_SCANCODE_RIGHT) then
       nene.render_offset.x = nene.render_offset.x + 1
     elseif nene:get_scancode(SDL_SCANCODE_LEFT) then
@@ -86,6 +87,7 @@ local function camera()
     end
 
     -- rendering logic --
+
     nene:render_clear(Color.Palette.bg)
     do
       draw_parallax_grid()
@@ -97,6 +99,8 @@ local function camera()
 
     nene:render_present()
   until nene.quit
+
+  -- since `nene` it's a to-be-closed variable, it will terminated here in the end scope --
 end
 
 -- run example

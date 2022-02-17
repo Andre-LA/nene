@@ -5,9 +5,8 @@ local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
 local function rects()
-  local ok, nene = Nene.init('nene render rect clip', 256, 256)
+  local ok, nene <close> = Nene.init('nene render rect clip', 256, 256)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
   -- create two rects
   local rect_clip: Rect = {0, 0, 48, 48}

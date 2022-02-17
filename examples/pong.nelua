@@ -27,8 +27,8 @@ local SETTINGS: record{
     velocity: integer,
   }
 } <const> = {
-  screen_size = { 320, 240 },
-  win_size = { (320*2), (240*2) },
+  screen_size = { 400, 240 },
+  win_size = { (400*2), (240*2) },
   racket = {
     size = { 20, 100 },
     velocity = 120,
@@ -143,20 +143,17 @@ local function update_points(pts_text: *TextTexture, points: integer, font: Font
 end
 
 local function game()
-  -- == nene setup == --
+  -- nene setup --
 
-  -- nene initialization
-  local ok, nene = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
+  -- nene initialization and to-be-closed termination
+  --
+  -- when nene is marked with the <close> annotation, then the nene variable becomes
+  -- a "to-be-closed" variable, this means that the `__close` method will be called at the end scope,
+  -- `_cllose` calls the `terminate` method, which de-initializes nene and free the internal resources
+  local ok, nene <close> = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
   assert(ok, 'nene initialization failed')
 
-  -- the `terminate` method deinitializes nene and SDL libraries
-  -- here defer is used to make it called only after all the above code
-  -- see about defer: https://nelua.io/overview/#defer
-  defer
-    nene:terminate()
-  end
-
-  -- == game setup == --
+  -- game setup --
 
   -- this creates a new "Nene Texture" which will be used as low resolution
   -- screen through using render target (sometimes called as Render Texture on some engines),
@@ -165,11 +162,8 @@ local function game()
   -- note that the value comes from SDL directly, while Nene abstracts SDL many
   -- times, it doesn't try to hide it, so you will interact with SDL sometimes,
   -- especially to go beyond Nene capabilities if needed.
-  local ok, screen = Texture.create_texture(SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, SDL_TEXTUREACCESS_TARGET)
+  local ok, screen <close> = Texture.create_texture(SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, SDL_TEXTUREACCESS_TARGET)
   assert(ok, 'could not create the screen texture target')
-
-  -- Textures needs to be destroyed after usage
-  defer screen:destroy() end
 
   -- creates players rackets and the ball
   local pl_1: Racket, pl_2: Racket;
@@ -179,18 +173,11 @@ local function game()
   }
 
   -- "monogram_extended" font is available with nene, but it's not loaded automatically.
-  local ok, font = Font.load('resources/monogram_extended.ttf', 72)
+  local ok, font <close> = Font.load('resources/monogram_extended.ttf', 72)
   assert(ok, 'could not load monogram_extended font')
 
-  -- also needs to be destroyed after usage
-  defer font:destroy() end
-
   -- creates both players texts and then defer it's destroy calls
-  local r1_text, r2_text = TextTexture.init('0', font), TextTexture.init('0', font)
-  defer
-    r1_text:destroy()
-    r2_text:destroy()
-  end
+  local r1_text <close>, r2_text <close> = TextTexture.init('0', font), TextTexture.init('0', font)
 
   -- finally, the game loop
   -- In Nene, you just `repeat` the loop until Nene gets a "quit" state

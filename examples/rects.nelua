@@ -1,13 +1,14 @@
--- see pong and spritesheet for more details about nene itself
+-- require nene modules
 
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
+-- using a function to
+
 local function rects()
-  local ok, nene = Nene.init('nene rects', 256, 256)
+  local ok, nene <close> = Nene.init('nene rects', 256, 256)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
   -- create two rects
   local rect_a: Rect, rect_b: Rect = {0, 0, 42, 32}, {64, 64, 128, 64}

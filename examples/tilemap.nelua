@@ -1,29 +1,23 @@
+-- this example shows how to use the tilemap module to make basic tilemap based maps
+
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local Tilemap = require 'nene.tilemap'
 
 local function game()
-  local win_w <comptime>, win_h <comptime> = 550, 260
-
-  local ok, nene = Nene.init('nene tilemap', win_w, win_h)
+  local ok, nene <close> = Nene.init('nene tilemap', 550, 260)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
-  local ok, screen = Texture.create_texture(win_w, win_h, nil, SDL_TEXTUREACCESS_TARGET)
-  assert(ok, 'could not create a target texture')
-  defer screen:destroy() end
-
-  local ok, tileset= Texture.load('resources/img_shapes.png')
+  local ok, tileset <close> = Texture.load('resources/img_shapes.png')
   assert(ok, "error: 'img_shapes.png' could not be loaded")
-  defer tileset:destroy() end
 
-  local tilemap: Tilemap = {
+  local tilemap: Tilemap <close> = {
     tilemap_width = 16,
     tileset_width = 2,
 
     grid = { cell_size = { 32, 32 } },
-    map = {
+    map = { -- note: map is a `vector`, thus, it will allocate memory dinamically
     --0                   1
     --0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6   height
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, -- 1
@@ -35,20 +29,14 @@ local function game()
       2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, -- 7
     }
   }
-  defer tilemap:destroy() end
 
   print('tilemap height of this is:', tilemap:get_height())
 
   repeat
     nene:poll_events()
 
-    nene:set_render_target(screen:get_raw())
-
     nene:render_clear(Color.Palette.bg)
 
-    nene:set_render_target()
-
-    screen:draw()
     tilemap:draw(tileset, {20,20})
 
     nene:render_present()

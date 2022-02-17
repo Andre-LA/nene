@@ -90,7 +90,7 @@ end
 -- by the SDL2 bindings and Nene's core, another very important change is that the `integer`,
 -- `uinteger` and `number` types are changed to `int32`, `uint32` and `float32` respectively.
 --
--- Also, the emscripten_set_main_loop function is automatically imported by Nene, but only when
+-- Also, the emscripten_set_main_loop function is automatically imported by Nene as a global, but only when
 -- compiling with emcc.
 --
 -- Though these flags are added, there is some that you need to add yourself, which can't be just
@@ -103,12 +103,12 @@ end
 -- https://emscripten.org/docs/porting/files/packaging_files.html
 --
 -- --shell-file
--- This is optional and not used in this example, but you may like to change the web user interface, this
--- is particularly useful when deploying to websites like itch.io, otherwise the screen of your game will get
--- really messed up on the platform's webpage game frame.
+-- This is optional and not used in this example, but you may like to change the web user interface (or just remove
+-- it entirely), this is particularly useful when deploying to websites like itch.io, otherwise the screen of your game
+-- will get really messed up on the platform's webpage game frame.
 --
 -- -s SDL2_IMAGE_FORMATS
--- this specifies which formats the emscripten's SDL2_image port will be able to open
+-- this specifies which formats the emscripten's SDL2_image port will be able to open, in our example, we specify just PNG support
 --
 -- -s SDL2_MIXER_FORMATS
 -- this specifies which formats the emscripten's SDL2_mixer port will be able to open
