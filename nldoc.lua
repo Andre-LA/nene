@@ -188,7 +188,7 @@ local syntax_grammar = [==[
 chunk           <-- SHEBANG? SKIP Block (!.)^UnexpectedSyntax
 
 Block           <==(local / global /
-                    FuncDef / Return /
+                    FuncDef / Return / In /
                     Do / Defer /
                     If / Switch /
                     for /
@@ -202,6 +202,7 @@ Block           <==(local / global /
 -- Statements
 Label           <== `::` @name @`::`
 Return          <== `return` (expr (`,` @expr)*)?
+In              <== `in` @expr
 Break           <== `break`
 Continue        <== `continue`
 Goto            <== `goto` @name
@@ -222,8 +223,8 @@ localfunc  : FuncDef  <== `function` $'local' @namedecl @funcbody
 globalfunc : FuncDef  <== `function` $'global' @namedecl @funcbody
 FuncDef         <== `function` $false @funcname @funcbody
 funcbody        <-- `(` funcargs @`)` (`:` @funcrets)~? annots~? Block @`end`
-localvar   : VarDecl  <== $'local' @iddecls (`=` @exprs)?
-globalvar  : VarDecl  <== $'global' @globaldecls (`=` @exprs)?
+localvar   : VarDecl  <== $'local' @suffixeddecls (`=` @exprs)?
+globalvar  : VarDecl  <== $'global' @suffixeddecls (`=` @exprs)?
 Assign          <== vars `=` @exprs
 Preprocess      <== PREPROCESS SKIP
 
@@ -236,9 +237,9 @@ Nil             <== `nil`
 Varargs         <== `...`
 Id              <== name
 IdDecl          <== name (`:` @typeexpr)~? annots?
-typeddecl  : IdDecl <== name `:` @typeexpr annots?
-globaldecl : IdDecl <== (idsuffixed / name) (`:` @typeexpr)~? annots?
-globaldeclexpr  <-- globaldecl / PreprocessExpr
+typeddecl    : IdDecl <== name `:` @typeexpr annots?
+suffixeddecl : IdDecl <== (idsuffixed / name) (`:` @typeexpr)~? annots?
+suffixeddeclexpr  <-- suffixeddecl / PreprocessExpr
 namedecl   : IdDecl <== name
 Function        <== `function` @funcbody
 InitList        <== `{` (field (fieldsep field)* fieldsep?)? @`}`
@@ -253,6 +254,7 @@ Annotation      <== name annotargs?
 -- Preprocessor replaceable nodes
 PreprocessExpr  <== `#[` {@expr->0} @`]#`
 PreprocessName  <== `#|` {@expr->0} @`|#`
+ppcallprim : PreprocessExpr <== {NAME->0} `!` &callsuffix
 
 -- Suffixes
 Call            <== callargs
@@ -276,7 +278,7 @@ callargs        <-| `(` (expr (`,` @expr)*)? @`)` / InitList / String
 annotargs       <-| `(` (expr (`,` @expr)*)? @`)` / InitList / String / PreprocessExpr
 iddecls         <-| iddecl (`,` @iddecl)*
 funcargs        <-| (iddecl (`,` iddecl)* (`,` VarargsType)? / VarargsType)?
-globaldecls     <-| globaldeclexpr (`,` @globaldeclexpr)*
+suffixeddecls   <-| suffixeddeclexpr (`,` @suffixeddeclexpr)*
 exprs           <-| expr (`,` @expr)*
 annots          <-| `<` @Annotation (`,` @Annotation)* @`>`
 funcrets        <-| `(` typeexpr (`,` @typeexpr)* @`)` / typeexpr
@@ -314,8 +316,8 @@ exprfact        <-- (exprunary opfact*)~>foldleft
 exprunary       <-- opunary / exprpow
 exprpow         <-- (exprsimple oppow*)~>foldleft
 exprsimple      <-- Number / String / Type / InitList / Boolean /
-                    Function / Nilptr / Nil / DoExpr / Varargs / exprsuffixed
-exprprim        <-- id / Paren
+                    Function / Nilptr / Nil / Varargs / exprsuffixed
+exprprim        <-- ppcallprim / id / DoExpr / Paren
 
 -- Types
 RecordType      <== 'record' WORDSKIP @`{` (RecordField (fieldsep RecordField)* fieldsep?)? @`}`
@@ -344,7 +346,7 @@ typeopptr : PointerType   <== `*`
 typeopopt : OptionalType  <== `?`
 typeoparr : ArrayType     <== `[` expr? @`]`
 typeopvar : VariantType   <== typevaris
-typeopgen : GenericType   <== `(` @typeargs @`)`
+typeopgen : GenericType   <== `(` @typeargs @`)` / &`{` {| InitList |}
 typevaris : VariantType   <== `|` @typeexprunary (`|` @typeexprunary)*
 
 typeopunary     <-- typeopptr / typeopopt / typeoparr
@@ -397,7 +399,7 @@ COMMENT_SHRT    <-- (!LINEBREAK .)*
 
 -- Preprocess
 PREPROCESS      <-- '##' (PREPROCESS_LONG / PREPROCESS_SHRT)
-PREPROCESS_LONG <-- {:LONG_OPEN {LONG_CONTENT} @LONG_CLOSE:}
+PREPROCESS_LONG <-- {:'[' {:eq: '='*:} '[' {LONG_CONTENT} @LONG_CLOSE:}
 PREPROCESS_SHRT <-- {(!LINEBREAK .)*} LINEBREAK?
 
 -- Long (used by string, comment and preprocess)
