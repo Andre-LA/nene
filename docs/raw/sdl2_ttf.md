@@ -1,5 +1,7 @@
 ### Summary
 * [TTF_Linked_Version](#ttf_linked_version)
+* [TTF_GetFreeTypeVersion](#ttf_getfreetypeversion)
+* [TTF_GetHarfBuzzVersion](#ttf_getharfbuzzversion)
 * [TTF_ByteSwappedUNICODE](#ttf_byteswappedunicode)
 * [TTF_Font](#ttf_font)
 * [TTF_Init](#ttf_init)
@@ -7,6 +9,12 @@
 * [TTF_OpenFontIndex](#ttf_openfontindex)
 * [TTF_OpenFontRW](#ttf_openfontrw)
 * [TTF_OpenFontIndexRW](#ttf_openfontindexrw)
+* [TTF_OpenFontDPI](#ttf_openfontdpi)
+* [TTF_OpenFontIndexDPI](#ttf_openfontindexdpi)
+* [TTF_OpenFontDPIRW](#ttf_openfontdpirw)
+* [TTF_OpenFontIndexDPIRW](#ttf_openfontindexdpirw)
+* [TTF_SetFontSize](#ttf_setfontsize)
+* [TTF_SetFontSizeDPI](#ttf_setfontsizedpi)
 * [TTF_GetFontStyle](#ttf_getfontstyle)
 * [TTF_SetFontStyle](#ttf_setfontstyle)
 * [TTF_GetFontOutline](#ttf_getfontoutline)
@@ -24,18 +32,31 @@
 * [TTF_FontFaceFamilyName](#ttf_fontfacefamilyname)
 * [TTF_FontFaceStyleName](#ttf_fontfacestylename)
 * [TTF_GlyphIsProvided](#ttf_glyphisprovided)
+* [TTF_GlyphIsProvided32](#ttf_glyphisprovided32)
 * [TTF_GlyphMetrics](#ttf_glyphmetrics)
+* [TTF_GlyphMetrics32](#ttf_glyphmetrics32)
 * [TTF_SizeText](#ttf_sizetext)
 * [TTF_SizeUTF8](#ttf_sizeutf8)
 * [TTF_SizeUNICODE](#ttf_sizeunicode)
+* [TTF_MeasureText](#ttf_measuretext)
+* [TTF_MeasureUTF8](#ttf_measureutf8)
+* [TTF_MeasureUNICODE](#ttf_measureunicode)
 * [TTF_RenderText_Solid](#ttf_rendertext_solid)
 * [TTF_RenderUTF8_Solid](#ttf_renderutf8_solid)
 * [TTF_RenderUNICODE_Solid](#ttf_renderunicode_solid)
+* [TTF_RenderText_Solid_Wrapped](#ttf_rendertext_solid_wrapped)
+* [TTF_RenderUTF8_Solid_Wrapped](#ttf_renderutf8_solid_wrapped)
+* [TTF_RenderUNICODE_Solid_Wrapped](#ttf_renderunicode_solid_wrapped)
 * [TTF_RenderGlyph_Solid](#ttf_renderglyph_solid)
+* [TTF_RenderGlyph32_Solid](#ttf_renderglyph32_solid)
 * [TTF_RenderText_Shaded](#ttf_rendertext_shaded)
 * [TTF_RenderUTF8_Shaded](#ttf_renderutf8_shaded)
 * [TTF_RenderUNICODE_Shaded](#ttf_renderunicode_shaded)
+* [TTF_RenderText_Shaded_Wrapped](#ttf_rendertext_shaded_wrapped)
+* [TTF_RenderUTF8_Shaded_Wrapped](#ttf_renderutf8_shaded_wrapped)
+* [TTF_RenderUNICODE_Shaded_Wrapped](#ttf_renderunicode_shaded_wrapped)
 * [TTF_RenderGlyph_Shaded](#ttf_renderglyph_shaded)
+* [TTF_RenderGlyph32_Shaded](#ttf_renderglyph32_shaded)
 * [TTF_RenderText_Blended](#ttf_rendertext_blended)
 * [TTF_RenderUTF8_Blended](#ttf_renderutf8_blended)
 * [TTF_RenderUNICODE_Blended](#ttf_renderunicode_blended)
@@ -43,11 +64,17 @@
 * [TTF_RenderUTF8_Blended_Wrapped](#ttf_renderutf8_blended_wrapped)
 * [TTF_RenderUNICODE_Blended_Wrapped](#ttf_renderunicode_blended_wrapped)
 * [TTF_RenderGlyph_Blended](#ttf_renderglyph_blended)
+* [TTF_RenderGlyph32_Blended](#ttf_renderglyph32_blended)
+* [TTF_SetDirection](#ttf_setdirection)
+* [TTF_SetScript](#ttf_setscript)
 * [TTF_CloseFont](#ttf_closefont)
 * [TTF_Quit](#ttf_quit)
 * [TTF_WasInit](#ttf_wasinit)
 * [TTF_GetFontKerningSize](#ttf_getfontkerningsize)
 * [TTF_GetFontKerningSizeGlyphs](#ttf_getfontkerningsizeglyphs)
+* [TTF_GetFontKerningSizeGlyphs32](#ttf_getfontkerningsizeglyphs32)
+* [TTF_SetFontSDF](#ttf_setfontsdf)
+* [TTF_GetFontSDF](#ttf_getfontsdf)
 * [SDL_TTF_MAJOR_VERSION](#sdl_ttf_major_version)
 * [SDL_TTF_MINOR_VERSION](#sdl_ttf_minor_version)
 * [SDL_TTF_PATCHLEVEL](#sdl_ttf_patchlevel)
@@ -76,10 +103,26 @@ global function TTF_Linked_Version(): *SDL_version
 
 
 
+### TTF_GetFreeTypeVersion
+
+```lua
+global function TTF_GetFreeTypeVersion(major: *cint, minor: *cint, patch: *cint): void
+```
+
+
+
+### TTF_GetHarfBuzzVersion
+
+```lua
+global function TTF_GetHarfBuzzVersion(major: *cint, minor: *cint, patch: *cint): void
+```
+
+
+
 ### TTF_ByteSwappedUNICODE
 
 ```lua
-global function TTF_ByteSwappedUNICODE(swapped: cint)
+global function TTF_ByteSwappedUNICODE(swapped: SDL_bool): void
 ```
 
 
@@ -132,6 +175,54 @@ global function TTF_OpenFontIndexRW(src: *SDL_RWops, freesrc: cint, ptsize: cint
 
 
 
+### TTF_OpenFontDPI
+
+```lua
+global function TTF_OpenFontDPI(file: cstring, ptsize: cint, hdpi: cuint, vdpi: cuint): *TTF_Font
+```
+
+
+
+### TTF_OpenFontIndexDPI
+
+```lua
+global function TTF_OpenFontIndexDPI(file: cstring, ptsize: cint, index: clong, hdpi: cuint, vdpi: cuint): *TTF_Font
+```
+
+
+
+### TTF_OpenFontDPIRW
+
+```lua
+global function TTF_OpenFontDPIRW(src: *SDL_RWops, freesrc: cint, ptsize: cint, hdpi: cuint, vdpi: cuint): *TTF_Font
+```
+
+
+
+### TTF_OpenFontIndexDPIRW
+
+```lua
+global function TTF_OpenFontIndexDPIRW(src: *SDL_RWops, freesrc: cint, ptsize: cint, index: clong, hdpi: cuint, vdpi: cuint): *TTF_Font
+```
+
+
+
+### TTF_SetFontSize
+
+```lua
+global function TTF_SetFontSize(font: *TTF_Font, ptsize: cint): cint
+```
+
+
+
+### TTF_SetFontSizeDPI
+
+```lua
+global function TTF_SetFontSizeDPI(font: *TTF_Font, ptsize: cint, hdpi: cuint, vdpi: cuint): cint
+```
+
+
+
 ### TTF_GetFontStyle
 
 ```lua
@@ -143,7 +234,7 @@ global function TTF_GetFontStyle(font: *TTF_Font): cint
 ### TTF_SetFontStyle
 
 ```lua
-global function TTF_SetFontStyle(font: *TTF_Font, style: cint)
+global function TTF_SetFontStyle(font: *TTF_Font, style: cint): void
 ```
 
 
@@ -159,7 +250,7 @@ global function TTF_GetFontOutline(font: *TTF_Font): cint
 ### TTF_SetFontOutline
 
 ```lua
-global function TTF_SetFontOutline(font: *TTF_Font, outline: cint)
+global function TTF_SetFontOutline(font: *TTF_Font, outline: cint): void
 ```
 
 
@@ -175,7 +266,7 @@ global function TTF_GetFontHinting(font: *TTF_Font): cint
 ### TTF_SetFontHinting
 
 ```lua
-global function TTF_SetFontHinting(font: *TTF_Font, hinting: cint)
+global function TTF_SetFontHinting(font: *TTF_Font, hinting: cint): void
 ```
 
 
@@ -223,7 +314,7 @@ global function TTF_GetFontKerning(font: *TTF_Font): cint
 ### TTF_SetFontKerning
 
 ```lua
-global function TTF_SetFontKerning(font: *TTF_Font, allowed: cint)
+global function TTF_SetFontKerning(font: *TTF_Font, allowed: cint): void
 ```
 
 
@@ -268,10 +359,26 @@ global function TTF_GlyphIsProvided(font: *TTF_Font, ch: uint16): cint
 
 
 
+### TTF_GlyphIsProvided32
+
+```lua
+global function TTF_GlyphIsProvided32(font: *TTF_Font, ch: uint32): cint
+```
+
+
+
 ### TTF_GlyphMetrics
 
 ```lua
 global function TTF_GlyphMetrics(font: *TTF_Font, ch: uint16, minx: *cint, maxx: *cint, miny: *cint, maxy: *cint, advance: *cint): cint
+```
+
+
+
+### TTF_GlyphMetrics32
+
+```lua
+global function TTF_GlyphMetrics32(font: *TTF_Font, ch: uint32, minx: *cint, maxx: *cint, miny: *cint, maxy: *cint, advance: *cint): cint
 ```
 
 
@@ -300,6 +407,30 @@ global function TTF_SizeUNICODE(font: *TTF_Font, text: *uint16, w: *cint, h: *ci
 
 
 
+### TTF_MeasureText
+
+```lua
+global function TTF_MeasureText(font: *TTF_Font, text: cstring, measure_width: cint, extent: *cint, count: *cint): cint
+```
+
+
+
+### TTF_MeasureUTF8
+
+```lua
+global function TTF_MeasureUTF8(font: *TTF_Font, text: cstring, measure_width: cint, extent: *cint, count: *cint): cint
+```
+
+
+
+### TTF_MeasureUNICODE
+
+```lua
+global function TTF_MeasureUNICODE(font: *TTF_Font, text: *uint16, measure_width: cint, extent: *cint, count: *cint): cint
+```
+
+
+
 ### TTF_RenderText_Solid
 
 ```lua
@@ -324,10 +455,42 @@ global function TTF_RenderUNICODE_Solid(font: *TTF_Font, text: *uint16, fg: SDL_
 
 
 
+### TTF_RenderText_Solid_Wrapped
+
+```lua
+global function TTF_RenderText_Solid_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderUTF8_Solid_Wrapped
+
+```lua
+global function TTF_RenderUTF8_Solid_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderUNICODE_Solid_Wrapped
+
+```lua
+global function TTF_RenderUNICODE_Solid_Wrapped(font: *TTF_Font, text: *uint16, fg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
 ### TTF_RenderGlyph_Solid
 
 ```lua
 global function TTF_RenderGlyph_Solid(font: *TTF_Font, ch: uint16, fg: SDL_Color): *SDL_Surface
+```
+
+
+
+### TTF_RenderGlyph32_Solid
+
+```lua
+global function TTF_RenderGlyph32_Solid(font: *TTF_Font, ch: uint32, fg: SDL_Color): *SDL_Surface
 ```
 
 
@@ -356,10 +519,42 @@ global function TTF_RenderUNICODE_Shaded(font: *TTF_Font, text: *uint16, fg: SDL
 
 
 
+### TTF_RenderText_Shaded_Wrapped
+
+```lua
+global function TTF_RenderText_Shaded_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderUTF8_Shaded_Wrapped
+
+```lua
+global function TTF_RenderUTF8_Shaded_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderUNICODE_Shaded_Wrapped
+
+```lua
+global function TTF_RenderUNICODE_Shaded_Wrapped(font: *TTF_Font, text: *uint16, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
 ### TTF_RenderGlyph_Shaded
 
 ```lua
 global function TTF_RenderGlyph_Shaded(font: *TTF_Font, ch: uint16, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
+```
+
+
+
+### TTF_RenderGlyph32_Shaded
+
+```lua
+global function TTF_RenderGlyph32_Shaded(font: *TTF_Font, ch: uint32, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
 ```
 
 
@@ -420,10 +615,34 @@ global function TTF_RenderGlyph_Blended(font: *TTF_Font, ch: uint16, fg: SDL_Col
 
 
 
+### TTF_RenderGlyph32_Blended
+
+```lua
+global function TTF_RenderGlyph32_Blended(font: *TTF_Font, ch: uint32, fg: SDL_Color): *SDL_Surface
+```
+
+
+
+### TTF_SetDirection
+
+```lua
+global function TTF_SetDirection(direction: cint): cint
+```
+
+
+
+### TTF_SetScript
+
+```lua
+global function TTF_SetScript(script: cint): cint
+```
+
+
+
 ### TTF_CloseFont
 
 ```lua
-global function TTF_CloseFont(font: *TTF_Font)
+global function TTF_CloseFont(font: *TTF_Font): void
 ```
 
 
@@ -431,7 +650,7 @@ global function TTF_CloseFont(font: *TTF_Font)
 ### TTF_Quit
 
 ```lua
-global function TTF_Quit()
+global function TTF_Quit(): void
 ```
 
 
@@ -456,6 +675,30 @@ global function TTF_GetFontKerningSize(font: *TTF_Font, prev_index: cint, index:
 
 ```lua
 global function TTF_GetFontKerningSizeGlyphs(font: *TTF_Font, previous_ch: uint16, ch: uint16): cint
+```
+
+
+
+### TTF_GetFontKerningSizeGlyphs32
+
+```lua
+global function TTF_GetFontKerningSizeGlyphs32(font: *TTF_Font, previous_ch: uint32, ch: uint32): cint
+```
+
+
+
+### TTF_SetFontSDF
+
+```lua
+global function TTF_SetFontSDF(font: *TTF_Font, on_off: SDL_bool): cint
+```
+
+
+
+### TTF_GetFontSDF
+
+```lua
+global function TTF_GetFontSDF(font: *TTF_Font): SDL_bool
 ```
 
 

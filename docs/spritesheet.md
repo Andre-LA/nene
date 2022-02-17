@@ -7,7 +7,7 @@
 ### SpriteSheet
 
 ```lua
-global SpriteSheet = @record{
+local SpriteSheet = @record{
   grid: Grid,              -- spritesheet grid
   sprites_per_line: isize, -- how many sprites fit in a line of this grid
 }
@@ -35,7 +35,6 @@ get the source get from the spritesheet at the column and row.
 
 ```lua
 function SpriteSheet:draw(
-  nene: Nene,
   position: Vec2,
   spritesheet_texture: Texture,
   sprite_index: isize,

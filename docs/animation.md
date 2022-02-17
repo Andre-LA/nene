@@ -2,14 +2,14 @@
 * [AnimationRange](#animationrange)
 * [AnimationRange.__eq](#animationrange__eq)
 
-## TESTE
+## animation
 
 Animation range type, used on Spritesheets
 
 ### AnimationRange
 
 ```lua
-global AnimationRange = @record{
+local AnimationRange = @record{
   fps: number,   -- frames per second of this animation
   from: usize,   -- first frame
   to: usize,     -- last frame

@@ -1,9 +1,10 @@
 ### Summary
 * [Texture](#texture)
-* [Texture:get](#textureget)
+* [Texture:get_raw](#textureget_raw)
 * [Texture:destroy](#texturedestroy)
-* [Texture:apply_sdltex](#textureapply_sdltex)
-* [Texture.new](#texturenew)
+* [Texture:__close](#texture__close)
+* [Texture:apply_raw](#textureapply_raw)
+* [Texture.init](#textureinit)
 * [Texture.create_texture](#texturecreate_texture)
 * [Texture.load](#textureload)
 * [Texture:draw](#texturedraw)
@@ -11,22 +12,26 @@
 ### Texture
 
 ```lua
-global Texture = @record{
-  _data: *SDL_Texture,  -- internal data, don't use it directly, use methods instead
-  width: uinteger,      -- width of the texture in pixels
-  height: uinteger,     -- height of the texture in pixels
+local Texture = @record{
+  _data: *SDL_Texture,         -- internal data, don't use it directly, use methods instead
+  width: cint,                 -- width of the texture in pixels
+  height: cint,                -- height of the texture in pixels
+  format: SDL_PixelFormatEnum, -- texture pixel format
+  access: SDL_TextureAccess,   -- texture access pattern
 }
 ```
 
 Wraps an internal (SDL) Texture
 
-### Texture:get
+### Texture:get_raw
 
 ```lua
-function Texture:get(): *SDL_Texture
+function Texture:get_raw(): *SDL_Texture
 ```
 
-It checks if the internal data is `nilptr` and then returns it.
+Returns the `pointer(SDL_Texture)` internal data.
+
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
 
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
@@ -39,71 +44,89 @@ function Texture:destroy()
 
 Free internal data and resets to zeroed state.
 
-Related SDLWrapper documentation:
-* [SDLWrapper.destroy_texture](wrappers/sdl.md#sdlwrapperdestroy_texture)
+Related SDL2 documentation:
+* [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
 
-### Texture:apply_sdltex
+### Texture:__close
 
 ```lua
-function Texture:apply_sdltex(new_tex: *SDL_Texture)
+function Texture:__close()
+```
+
+Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+
+### Texture:apply_raw
+
+```lua
+function Texture:apply_raw(new_tex: *SDL_Texture): (boolean)
 ```
 
 Applies a new internal texture (with a `pointer(SDL_Texture)`).
 
 If there is non-`nilptr` internal texture, then it's freed before applying this new internal texture.
 
-It also updates `width` and `height` fields.
+It also updates `width`, `height`, `format` and `access` fields.
+
+Returns an `ok` status with `true` value if the texture query is successful.
 
 Related Nene documentation:
-* [SDLWrapper.query_texture_size](wrappers/sdl.md#sdlwrapperquery_texture_size)
 * [Texture.destroy](#texturedestroy)
 
-### Texture.new
+Related SDL documentation:
+* [SDL_QueryTexture](https://wiki.libsdl.org/SDL_QueryTexture)
+
+### Texture.init
 
 ```lua
-function Texture.new(tex: *SDL_Texture): Texture
+function Texture.init(raw_tex: *SDL_Texture): Texture
 ```
 
-Returns an initialized `Texture` with the given `tex` applied.
+Returns an initialized `Texture` with the given `raw_tex` applied.
 
 Related Nene documentation:
-* [Texture.apply_sdltex](#textureapply_sdltex)
+* [Texture.apply_raw](#textureapply_sdltex)
 
 ### Texture.create_texture
 
 ```lua
-function Texture.create_texture(nene: Nene, width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): Texture
+function Texture.create_texture(width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): (boolean, Texture)
 ```
 
-Creates a `Texture` from `Nene.create_sdl_texture` using the given `access` and `format`.
+Creates a `Texture` using the given `access` and `format`.
 
 `format` and `access` are optional.
 
 By default, `format` is SDL_PIXELFORMAT_RGBA8888 and access is `SDL_TEXTUREACCESS_STATIC`.
 
 Related Nene documentation:
-* [Nene.create_sdl_texture](core.md#nenecreate_sdl_texture)
+* [Nene.create_raw_texture](core.md#nenecreate_raw_texture)
+
+Related SDL2 documentation:
+* [SDL_PixelFormatEnum](https://wiki.libsdl.org/SDL_PixelFormatEnum)
+* [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
+* [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
 
 ### Texture.load
 
 ```lua
-function Texture.load(nene: Nene, filepath: cstring): (Texture, boolean)
+function Texture.load(filepath: cstring): (boolean, Texture)
 ```
 
-Loads an image file and returns a Texture and an ok status.
+Loads an image file and returns an ok status and a `Texture` from the loaded image.
 
-If the operations fails, the ok status will be `false` and uninitialized texture.
+Returns an `ok` status with `true` value and the created texture if successful.
 
-Related SDLWrapper documentation:
-* [ImgWrapper.img_load](wrappers/img.md#imgwrapperimg_load)
-* [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
-* [SDLWrapper.free_surface](wrappers/sdl.md#sdlwrapperfree_surface)
+If the operations fails, a warning is sent and return will be a `false` ok status and an uninitialized texture.
+
+Related SDL2 documentation:
+* [IMG_Load](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_11.html)
+* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+* [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
 
 ### Texture:draw
 
 ```lua
 function Texture:draw(
-  nene: Nene,
   color: facultative(Color),
   source: facultative(Rect),
   destination: overload(Vec2, Rect, niltype),
@@ -120,9 +143,9 @@ you can optionally pass the `source` rectangle if you want to draw a slice of th
 A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
-* [Color](colors.md#color)
-* [SDLWrapper.set_texture_color_modulation](wrappers/sdl.md#sdlwrapperset_texture_color_modulation)
+* [Nene.set_raw_texture_color_mod](core.md#neneset_raw_texture_color_mod)
 * [Nene.render_copy](core.md#nenerender_copy)
+* [Color](colors.md#color)
 * [Math.Rect](math.md#mathrect)
 * [Math.Vec2](math.md#mathvec2)
 

@@ -86,7 +86,7 @@ global function IMG_Init(flags: cint): cint
 ### IMG_Quit
 
 ```lua
-global function IMG_Quit()
+global function IMG_Quit(): void
 ```
 
 

@@ -136,7 +136,7 @@ global function Mix_Init(flags: cint): cint
 ### Mix_Quit
 
 ```lua
-global function Mix_Quit()
+global function Mix_Quit(): void
 ```
 
 
@@ -277,7 +277,7 @@ global function Mix_QuickLoad_RAW(mem: *uint8, len: uint32): *Mix_Chunk
 ### Mix_FreeChunk
 
 ```lua
-global function Mix_FreeChunk(chunk: *Mix_Chunk)
+global function Mix_FreeChunk(chunk: *Mix_Chunk): void
 ```
 
 
@@ -285,7 +285,7 @@ global function Mix_FreeChunk(chunk: *Mix_Chunk)
 ### Mix_FreeMusic
 
 ```lua
-global function Mix_FreeMusic(music: *Mix_Music)
+global function Mix_FreeMusic(music: *Mix_Music): void
 ```
 
 
@@ -349,7 +349,7 @@ global function Mix_GetMusicType(music: *Mix_Music): Mix_MusicType
 ### Mix_SetPostMix
 
 ```lua
-global function Mix_SetPostMix(mix_func: function(pointer, *uint8, cint), arg: pointer)
+global function Mix_SetPostMix(mix_func: function(pointer, *uint8, cint): void, arg: pointer): void
 ```
 
 
@@ -357,7 +357,7 @@ global function Mix_SetPostMix(mix_func: function(pointer, *uint8, cint), arg: p
 ### Mix_HookMusic
 
 ```lua
-global function Mix_HookMusic(mix_func: function(pointer, *uint8, cint), arg: pointer)
+global function Mix_HookMusic(mix_func: function(pointer, *uint8, cint): void, arg: pointer): void
 ```
 
 
@@ -365,7 +365,7 @@ global function Mix_HookMusic(mix_func: function(pointer, *uint8, cint), arg: po
 ### Mix_HookMusicFinished
 
 ```lua
-global function Mix_HookMusicFinished(music_finished: function())
+global function Mix_HookMusicFinished(music_finished: function(): void): void
 ```
 
 
@@ -381,7 +381,7 @@ global function Mix_GetMusicHookData(): pointer
 ### Mix_ChannelFinished
 
 ```lua
-global function Mix_ChannelFinished(channel_finished: function(cint))
+global function Mix_ChannelFinished(channel_finished: function(cint): void): void
 ```
 
 
@@ -389,7 +389,7 @@ global function Mix_ChannelFinished(channel_finished: function(cint))
 ### Mix_EffectFunc_t
 
 ```lua
-global Mix_EffectFunc_t: type = @function(cint, pointer, cint, pointer)
+global Mix_EffectFunc_t: type = @function(cint, pointer, cint, pointer): void
 ```
 
 
@@ -397,7 +397,7 @@ global Mix_EffectFunc_t: type = @function(cint, pointer, cint, pointer)
 ### Mix_EffectDone_t
 
 ```lua
-global Mix_EffectDone_t: type = @function(cint, pointer)
+global Mix_EffectDone_t: type = @function(cint, pointer): void
 ```
 
 
@@ -653,7 +653,7 @@ global function Mix_FadingChannel(which: cint): Mix_Fading
 ### Mix_Pause
 
 ```lua
-global function Mix_Pause(channel: cint)
+global function Mix_Pause(channel: cint): void
 ```
 
 
@@ -661,7 +661,7 @@ global function Mix_Pause(channel: cint)
 ### Mix_Resume
 
 ```lua
-global function Mix_Resume(channel: cint)
+global function Mix_Resume(channel: cint): void
 ```
 
 
@@ -677,7 +677,7 @@ global function Mix_Paused(channel: cint): cint
 ### Mix_PauseMusic
 
 ```lua
-global function Mix_PauseMusic()
+global function Mix_PauseMusic(): void
 ```
 
 
@@ -685,7 +685,7 @@ global function Mix_PauseMusic()
 ### Mix_ResumeMusic
 
 ```lua
-global function Mix_ResumeMusic()
+global function Mix_ResumeMusic(): void
 ```
 
 
@@ -693,7 +693,7 @@ global function Mix_ResumeMusic()
 ### Mix_RewindMusic
 
 ```lua
-global function Mix_RewindMusic()
+global function Mix_RewindMusic(): void
 ```
 
 
@@ -789,7 +789,7 @@ global function Mix_GetChunk(channel: cint): *Mix_Chunk
 ### Mix_CloseAudio
 
 ```lua
-global function Mix_CloseAudio()
+global function Mix_CloseAudio(): void
 ```
 
 

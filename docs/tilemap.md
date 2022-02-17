@@ -1,6 +1,7 @@
 ### Summary
 * [Tilemap](#tilemap)
 * [Tilemap:destroy](#tilemapdestroy)
+* [Tilemap:__close](#tilemap__close)
 * [Tilemap:get_tile_column_row](#tilemapget_tile_column_row)
 * [Tilemap:get_tile_pos](#tilemapget_tile_pos)
 * [Tilemap.get_height](#tilemapget_height)
@@ -9,10 +10,10 @@
 ### Tilemap
 
 ```lua
-global Tilemap = @record{
+local Tilemap = @record{
   tilemap_width: isize,
   tileset_width: isize,
-  grid: Math.Grid,
+  grid: Grid,
   map: vector(isize),
 }
 ```
@@ -33,6 +34,14 @@ function Tilemap:destroy()
 ```
 
 destroys the internal map vector and set tilemap to zeroed state
+
+### Tilemap:__close
+
+```lua
+function Tilemap:__close()
+```
+
+Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
 
 ### Tilemap:get_tile_column_row
 
@@ -136,7 +145,7 @@ in it's map, then the map looks like this:
 ### Tilemap.draw
 
 ```lua
-function Tilemap.draw(self: Tilemap, nene: Nene, tileset: Texture, position: Vec2, color: facultative(Color))
+function Tilemap.draw(self: Tilemap, tileset: Texture, position: Vec2, color: facultative(Color))
 ```
 
 Draw the whole `tilemap` using the given `tileset` texture at `position` (relative to screen) using the `color` tint.

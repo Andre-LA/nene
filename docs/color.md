@@ -5,7 +5,7 @@
 ### Color
 
 ```lua
-global Color = @SDL_Color
+local Color = @SDL_Color
 ```
 
 `Nene.Color` is an alias of `SDL_Color`, see it's documentation for more information.
