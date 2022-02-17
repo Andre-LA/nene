@@ -1,4 +1,5 @@
 -- LPegRex is the only external dependency.
+local ins = require 'inspect'
 local lpegrex = require 'lpegrex'
 
 --------------------------------------------------------------------------------
@@ -600,14 +601,34 @@ function Generator:emit(source, filename, ast, comments, options, emitter)
   if topcomment and visitors.TopComment then
     visitors.TopComment(context, topcomment, emitter)
   end
+
+  -- search for the last return node (which would be the return module) that matches
+  -- a variable declaration, then store it for later use
+  local ret_symbol = nil
+
+  for node, parent in walk_nodes(ast) do
+    node.parent = parent
+
+    if node.tag == 'Return' then
+      local ret_name = node[1][1]
+
+      for k, v in ipairs(node.parent) do
+        if v.tag == 'VarDecl' and ret_name == v[2][1][1] then
+          ret_symbol = v[2][1][1]
+        end
+      end
+    end
+  end
+
   -- emit nodes
   for node, parent in walk_nodes(ast) do
     node.parent = parent
     local visit = visitors[node.tag]
     if visit then
-      visit(context, node, emitter)
+      visit(context, node, emitter, ret_symbol)
     end
   end
+
   emitter:add(bottom_template)
   return emitter
 end
@@ -659,18 +680,18 @@ local function trimdef(text)
 end
 
 -- Filter symbol by name.
-local function document_symbol(context, symbol, emitter)
+local function document_symbol(context, symbol, emitter, ret_symbol)
   if not symbol.name then
     -- probably a preprocessor name, ignore
     return false
   end
   local symbols, inclnames = context.symbols, context.options.include_names
   local classname = symbol.name:match('(.*)[.:][_%w]+$')
-  if classname and not symbols[classname] and not inclnames[classname] then
+  if symbol.name ~= ret_symbol and (classname and not symbols[classname] and not inclnames[classname]) then
     -- class symbol is not wanted
     return false
   end
-  if not symbol.topscope or (symbol.declscope == 'local' and not inclnames[symbol.name]) then
+  if symbol.name ~= ret_symbol and (not symbol.topscope or (symbol.declscope == 'local' and not inclnames[symbol.name])) then
     -- not a global or wanted symbol
     return false
   end
@@ -725,7 +746,7 @@ function visitors.FuncDef(context, node, emitter)
 end
 
 -- Visit variable declarations.
-function visitors.VarDecl(context, node, emitter)
+function visitors.VarDecl(context, node, emitter, ret_symbol)
   local declscope = node[1]
   local varnodes = node[2]
   local valnodes = node[3]
@@ -760,7 +781,7 @@ function visitors.VarDecl(context, node, emitter)
       node = node,
       lang = context.lang,
     }
-    document_symbol(context, symbol, emitter)
+    document_symbol(context, symbol, emitter, ret_symbol)
   end
 end
 
