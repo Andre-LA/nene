@@ -1,0 +1,6 @@
+local Audio = @record{}
+
+global Audio.Sound = require 'nene.audio.sound'
+global Audio.Music = require 'nene.audio.music'
+
+return Audio

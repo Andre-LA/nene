@@ -48,4 +48,5 @@ end
 
 doc_dir('nene/')
 doc_dir('nene/math/')
+doc_dir('nene/audio/')
 doc_dir('nene/raw/')

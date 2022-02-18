@@ -1,0 +1,95 @@
+require 'nene.raw.sdl2_mixer'
+require 'nene.macros'
+
+## local warn_msg = macros.warn_msg
+
+-- Wraps a (SDL_mixer) music
+local Music = @record{
+  _data: *Mix_Music,
+}
+
+--[[
+Returns the `pointer(Mix_Music)` internal data.
+
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
+
+Related SDL_mixer documentation:
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+]]
+function Music:get_raw(): *Mix_Music
+  check(self._data ~= nilptr, 'Music.get_raw: Music internal data is `nilptr`')
+  return self._data
+end
+
+--[[
+Load music file.
+
+Related SDL_mixer documentation:
+* [Mix_Music](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html#SEC86)
+* [Mix_LoadMUS](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_55.html)
+]]
+function Music.load(filename: string): (boolean, Music)
+  local raw_music = Mix_LoadMUS(filename)
+
+  if not raw_music then
+    warn_msg!('Music.load', 'could not load music file', 'Mix_GetError')
+    return false, (@Music)()
+  end
+
+  local new_music: Music = {
+    _data = raw_music
+  }
+
+  return true, new_music
+end
+
+--[[
+Plays the music (forever by default), note that this stops any playing music.
+
+You can also pass a `loop` argument, this makes the music loop `loop` times, also note that:
+* Passing `0` will make it play the music `0` times.
+* Passing `1` will make it only once.
+* Passing `-1` will make it looping forever, this is the default value.
+
+Related SDL_mixer documentation:
+* [Mix_PlayMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_57.html)
+]]
+function Music:play(loops: facultative(integer))
+  ## if loops.type.is_niltype then
+  local loops: cint = -1
+  ## end
+
+  local raw_music = self:get_raw()
+  Mix_PlayMusic(raw_music, loops)
+end
+
+--[[
+Stops any playing music.
+
+Related SDL_mixer documentation:
+* [Mix_HaltMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_67.html)
+]]
+function Music.stop()
+  Mix_HaltMusic()
+end
+
+--[[
+Destroy the music and resets to zeroed state.
+
+> Note: SDL_mixer first halts (stops) the music if it's playing, it also wait if it's still fading out.
+
+Related SDL_mixer documentation:
+* [Mix_FreeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_56.html)
+]]
+function Music:destroy()
+  local raw_music = self:get_raw()
+  Mix_FreeMusic(raw_music)
+  $self = (@Music)()
+end
+
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Music:__close()
+  self:destroy()
+end
+
+return Music
