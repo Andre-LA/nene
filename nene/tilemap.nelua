@@ -1,3 +1,8 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
 local io = require 'io'
 local math = require 'math'
 local vector = require 'vector'

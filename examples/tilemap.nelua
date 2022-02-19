@@ -1,3 +1,8 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
 -- this example shows how to use the tilemap module to make basic tilemap based maps
 
 local Nene = require 'nene'

@@ -1,3 +1,8 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
 -- The color module, it's an alias for SDL_Color, contains rgba fields with one byte each,
 -- in other words, the range of each channel are [0, 255], not [0, 1].
 --

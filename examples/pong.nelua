@@ -1,4 +1,9 @@
--- === basic pong example! ===
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+-- basic pong example! --
 
 -- require basic libraries
 local math = require 'math'

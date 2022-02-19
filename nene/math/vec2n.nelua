@@ -1,3 +1,8 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
 local math = require 'math'
 
 local a_vec2 = #[ concept(function(attr) return attr.type.is_vec2 end) ]#

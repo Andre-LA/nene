@@ -1,4 +1,9 @@
--- see pong and spritesheet for more details about nene itself
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+-- This example shows how to using render clipping using a rectangle.
 
 local Nene = require 'nene'
 local Color = require 'nene.color'
@@ -25,6 +30,7 @@ local function rects()
       nene:render_draw_line({0, 16 * i}, {256, 16 * i}, Color.Palette.black)
     end
 
+    -- set render clipping
     nene:set_render_clip(rect_clip)
 
     -- draw both rects with white lines
