@@ -70,7 +70,7 @@ print(column, row) -- prints '2       1'
 
 Related Nene documentation:
 * [Tilemap.get_tile_pos](#tilemapget_tile_pos)
-* [Math.Grid.get_nth_cell_column_row](math.md#mathgridget_nth_cell_column_row)
+* [Math.Grid.get_nth_cell_column_row](grid.md#gridget_nth_cell_column_row)
 
 ### Tilemap:get_tile_pos
 
@@ -120,8 +120,8 @@ local tile_pos = my_tilemap:get_tile_pos(column, row)
 
 Related Nene documentation:
 * [Tilemap.get_tile_column_row](#tilemapget_tile_column_row)
-* [Math.Vec2](math.md#mathvec2)
-* [Math.Grid](math.md#mathgrid)
+* [Math.Vec2](vec2.md#vec2)
+* [Math.Grid](grid.md#grid)
 
 ### Tilemap.get_height
 
@@ -137,7 +137,7 @@ in it's map, then the map looks like this:
 ```
 ┌───┬───┬───┐ ┬ 0
 │ 1 │ 2 │ 3 │ │
-├───┼───┼───┘ ┼ height
+├───┼───┼───┘ ┼ 1 height
 │ 4 │ 5 │     │
 └───┴───┘     ┴ 2 --> this is the result
 ```
@@ -153,10 +153,9 @@ Draw the whole `tilemap` using the given `tileset` texture at `position` (relati
 A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
-* [Nene](core.md#nene)
-* [Math.Grid](math.md#mathgrid)
-* [Math.Vec2](math.md#mathvec2)
+* [Math.Grid](grid.md#grid)
+* [Math.Vec2](vec2.md#vec2)
 * [Texture](texture.md#texture)
-* [Color](colors.md#color)
+* [Color](color.md#color)
 
 ---

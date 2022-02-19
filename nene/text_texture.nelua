@@ -49,8 +49,8 @@ Another optional string argument is how the renderer should render your text, tw
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Nene.create_raw_texture_from_surface](core.md#nenecreate_raw_texture_from_surface)
-* [Texture.apply_sdltex](texture.md#textureapply_sdltex)
+* [Nene.create_raw_texture_from_surface](init.md#nenecreate_raw_texture_from_surface)
+* [Texture.apply_raw](texture.md#textureapply_raw)
 
 Related SDL and SDL_TTF documentation:
 * [TTF_RenderUTF8_Solid](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L224-L225)
@@ -102,9 +102,9 @@ A `color` tint can be passed optionally, it's white by default.
 
 Related Nene documentation:
 * [Texture.draw](texture.md#texturedraw)
-* [Math.Vec2](math.md#mathvec2)
-* [Math.Rect](math.md#mathrect)
-* [Color](colors.md#color)
+* [Math.Vec2](vec2.md#vec2)
+* [Math.Rect](rect.md#rect)
+* [Color](color.md#color)
 ]]
 function TextTexture:draw(position: Vec2, color: facultative(Color))
   local nene = Nene.instance()

@@ -1,3 +1,7 @@
+--[[
+The spritesheet module, it makes easier to draw single sprites from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
+]]
+
 local hashmap = require 'hashmap'
 local vector = require 'vector'
 
@@ -16,17 +20,17 @@ local SpriteSheet = @record{
   sprites_per_line: isize, -- how many sprites fit in a line of this grid
 }
 
--- get the column and row of the grid from an index of this spritesheet.
+-- Get the column and row of the grid from an index of this spritesheet.
 function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
   return Grid.get_nth_cell_column_row(index, self.sprites_per_line)
 end
 
--- get the source get from the spritesheet at the column and row.
+-- Get the source get from the spritesheet at the column and row.
 function SpriteSheet:get_source_rect(column: isize, row: isize)
   return self.grid:gen_rect(column, row)
 end
 
--- draw the sprite from the spritesheet
+-- Draw the sprite from the spritesheet
 function SpriteSheet:draw(
   position: Vec2,
   spritesheet_texture: Texture,

@@ -13,6 +13,10 @@
 * [Font:destroy](#fontdestroy)
 * [Font:__close](#font__close)
 
+## font
+
+The font module, it wraps `TTF_Font` and it's associated methods.
+
 ### Font
 
 ```lua
@@ -33,7 +37,7 @@ global Font.GlyphMetrics = @record{
 }
 ```
 
-
+To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
 
 ### Font:get_raw
 
@@ -69,7 +73,7 @@ function Font:get_glyph_metrics(glyph: overload(uint16, uint32)): (boolean, Font
 
 Get the metrics of a 16-bit or 32-bit glyph.
 
-To get a better understanding about these metrics, see: http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html
+To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
 
 Returns an `ok` status with `true` value and an initialized glyph metrics if successful.
 

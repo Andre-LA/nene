@@ -24,31 +24,42 @@
 * [Nene:terminate](#neneterminate)
 * [Nene:__close](#nene__close)
 
+## init
+
+The core of Nene, this is the main module, which should be initialized and terminated in the same life-cycle as
+your game.
+
 ### emscripten_set_main_loop
 
 ```lua
 global function emscripten_set_main_loop(func: function(), fps: cint, simulate_infinite_loop: cint)
 ```
 
+This global function is only imported when `is_emscripten` is set, that is, when the emscripten is used to make a web build
+note that the types `integer`, `uinteger` and `number` are also set to be 32-bit.
 
+Related Emscripten documentation:
+- [emscripten_set_main_loop](https://emscripten.org/docs/api_reference/emscripten.h.html#c.emscripten_set_main_loop)
 
 ### Nene
 
 ```lua
 local Nene = @record{
   -- general data
-  quit: boolean,           -- `true` when the application will quit, `false` otherwise;
-  current_time: uint32,    -- time since initialization (in milliseconds!).
-  delta_time: number,      -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
-  render_offset: Vec2,     -- rendering offset, this is useful for some basic camera control
+  quit: boolean,        -- `true` when the application will quit, `false` otherwise;
+  current_time: uint32, -- time since initialization (in milliseconds!).
+  delta_time: number,   -- frame's delta time (in seconds!), that is, how much time passed between previous and current frame.
+  render_offset: Vec2,  -- rendering offset, this is useful for some basic camera control
 
   -- SDL references
   window: *SDL_Window,     -- reference to the window created on initialization; using more than 1 window is a non-goal for Nene;
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
 
-  -- input states
+  -- keyboard state
   keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
   prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+
+  -- mouse state
   mouse_pos: Vec2,                 -- store the mouse position relative to window
   mouse_buttons: [32]boolean,      -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
   prev_mouse_buttons: [32]boolean, -- same as mouse_buttons, but from the previous frame
@@ -63,7 +74,7 @@ Many of the `Core`'s functions wraps SDL's functions actually.
 ### Nene.initialized
 
 ```lua
-global Nene.initialized
+global Nene.initialized: boolean
 ```
 
 The initialization state of Nene, it's set to `true` by `Nene.init` and
@@ -75,7 +86,7 @@ set to `false` by `Nene.terminate`, it shouldn't be modified by any other functi
 function Nene.instance(): *Nene
 ```
 
-
+[Check](https://nelua.io/libraries/#check)s if Nene is initialized and then returns the running nene instance.
 
 ### Nene.EventsCallbacks
 
@@ -108,6 +119,9 @@ global Nene.EventsCallbacks = @record{
 ```
 
 The callbacks that can be passed on `Core:poll_events` method
+
+Related Nene documentation:
+- [Nene.poll_events](#nenepoll_events)
 
 Related SDL documentation:
 * [SDL_Event](https://wiki.libsdl.org/SDL_Event)
@@ -202,7 +216,7 @@ Set the drawing color for rectangles, lines and points rendering.
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Color](colors.md#color)
+* [Color](color.md#color)
 
 Related SDL documentation:
 * [SDL_Color](https://wiki.libsdl.org/SDL_Color)
@@ -248,7 +262,7 @@ Set clip rectangle for rendering
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Rect](math.md)
+* [Math.Rect](rect.md#rect)
 
 Related SDL documentation:
 * [SDL_RenderSetClipRect](https://wiki.libsdl.org/SDL_RenderSetClipRect)
@@ -264,7 +278,7 @@ it clears the rendering target with the given `color`.
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Color](colors.md#color)
+* [Color](color.md#color)
 * [Nene.set_render_draw_color](#neneset_render_draw_color)
 
 Related SDL documentation:
@@ -282,8 +296,8 @@ renders a line from `origin` to `destination` with the given `color`.
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Vec2](math.md#mathvec2)
-* [Color](colors.md#color)
+* [Math.Vec2](vec2.md#vec2)
+* [Color](color.md#color)
 
 Related SDL documentation:
 * [SDL_RenderDrawLine](https://wiki.libsdl.org/SDL_RenderDrawLine)
@@ -299,7 +313,7 @@ renders the given `rectangle` with the given `color`; it will be filled if `use_
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Rect](math.md)
+* [Math.Rect](rect.md#rect)
 
 Related SDL documentation:
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
@@ -331,7 +345,7 @@ in this case it will be copied at this "destination" part of the rendering targe
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Rect](math.md)
+* [Math.Rect](rect.md#rect)
 
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)

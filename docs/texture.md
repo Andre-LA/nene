@@ -84,7 +84,7 @@ function Texture.init(raw_tex: *SDL_Texture): Texture
 Returns an initialized `Texture` with the given `raw_tex` applied.
 
 Related Nene documentation:
-* [Texture.apply_raw](#textureapply_sdltex)
+* [Texture.apply_raw](#textureapply_raw)
 
 ### Texture.create_texture
 
@@ -99,7 +99,7 @@ Creates a `Texture` using the given `access` and `format`.
 By default, `format` is SDL_PIXELFORMAT_RGBA8888 and access is `SDL_TEXTUREACCESS_STATIC`.
 
 Related Nene documentation:
-* [Nene.create_raw_texture](core.md#nenecreate_raw_texture)
+* [Nene.create_raw_texture](init.md#nenecreate_raw_texture)
 
 Related SDL2 documentation:
 * [SDL_PixelFormatEnum](https://wiki.libsdl.org/SDL_PixelFormatEnum)
@@ -143,10 +143,10 @@ you can optionally pass the `source` rectangle if you want to draw a slice of th
 A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
-* [Nene.set_raw_texture_color_mod](core.md#neneset_raw_texture_color_mod)
-* [Nene.render_copy](core.md#nenerender_copy)
-* [Color](colors.md#color)
-* [Math.Rect](math.md#mathrect)
-* [Math.Vec2](math.md#mathvec2)
+* [Nene.set_raw_texture_color_mod](init.md#neneset_raw_texture_color_mod)
+* [Nene.render_copy](init.md#nenerender_copy)
+* [Color](color.md#color)
+* [Math.Rect](rect.md#rect)
+* [Math.Vec2](vec2.md#vec2)
 
 ---

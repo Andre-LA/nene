@@ -4,6 +4,10 @@
 * [SpriteSheet:get_source_rect](#spritesheetget_source_rect)
 * [SpriteSheet:draw](#spritesheetdraw)
 
+## spritesheet
+
+The spritesheet module, it makes easier to draw single sprites from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
+
 ### SpriteSheet
 
 ```lua
@@ -21,7 +25,7 @@ The `SpriteSheet` module is used to use and draw sprites.
 function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
 ```
 
-get the column and row of the grid from an index of this spritesheet.
+Get the column and row of the grid from an index of this spritesheet.
 
 ### SpriteSheet:get_source_rect
 
@@ -29,7 +33,7 @@ get the column and row of the grid from an index of this spritesheet.
 function SpriteSheet:get_source_rect(column: isize, row: isize)
 ```
 
-get the source get from the spritesheet at the column and row.
+Get the source get from the spritesheet at the column and row.
 
 ### SpriteSheet:draw
 
@@ -46,6 +50,6 @@ function SpriteSheet:draw(
 )
 ```
 
-draw the sprite from the spritesheet
+Draw the sprite from the spritesheet
 
 ---

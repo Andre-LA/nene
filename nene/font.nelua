@@ -1,3 +1,5 @@
+-- The font module, it wraps `TTF_Font` and it's associated methods.
+
 require 'nene.macros'
 ## local warn_msg = macros.warn_msg
 
@@ -6,6 +8,7 @@ local Font = @record{
   _data: *TTF_Font,
 }
 
+-- To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
 global Font.GlyphMetrics = @record{
   minx: cint, maxx: cint,
   miny: cint, maxy: cint,
@@ -48,7 +51,7 @@ end
 --[[
 Get the metrics of a 16-bit or 32-bit glyph.
 
-To get a better understanding about these metrics, see: http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html
+To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
 
 Returns an `ok` status with `true` value and an initialized glyph metrics if successful.
 

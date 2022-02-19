@@ -4,7 +4,7 @@
 
 ## animation
 
-Animation range type, used on Spritesheets
+Animation module, contains just a single record that can be useful for animation
 
 ### AnimationRange
 
