@@ -1,21 +1,23 @@
-require 'nene.core'
-require 'nene.colors'
-require 'nene.audio'
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Sound = require 'nene.audio.sound'
+local Music = require 'nene.audio.music'
 
 local function audio_and_music()
-  -- nene initialization and deferred de-initialization
-  local ok, nene = Nene.init('nene audio and music', 128, 128)
+  -- nene initialization and deferred de-initialization with to-be-closed variable
+  local ok, nene <close> = Nene.init('nene audio and music', 128, 128)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
   -- sound and music loading and deferred destroyment
-  local click = Sound.load('resources/pixelclick.wav')
-  local bossa = Music.load('resources/8bit Bossa.ogg')
-
-  defer
-    click:destroy()
-    bossa:destroy()
-  end
+  local ok, click <close> = Sound.load('resources/pixelclick.wav')
+  assert(ok, 'could not load pixelclick sound')
+  local ok, bossa <close> = Music.load('resources/8bit Bossa.ogg')
+  assert(ok, 'could not load 8bit Bossa music')
 
   bossa:play()
 

@@ -1,22 +1,28 @@
--- see pong and spritesheet for more details about nene itself
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
 
-require 'nene.core'
-require 'nene.colors'
-require 'nene.math'
+-- require nene modules
+
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Rect = require 'nene.math.rect'
+
+-- using a function to
 
 local function rects()
-  local ok, nene = Nene.init('nene rects', 256, 256)
+  local ok, nene <close> = Nene.init('nene rects', 256, 256)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
   -- create two rects
-  local rect_a: Math.Rect, rect_b: Math.Rect = {0, 0, 42, 32}, {64, 64, 128, 64}
+  local rect_a: Rect, rect_b: Rect = {0, 0, 42, 32}, {64, 64, 128, 64}
 
   repeat
     nene:poll_events()
 
     -- copy mouse position to rect_a position
-    rect_a:set_pos(nene.mouse_pos)
+    rect_a = rect_a:with_position(nene.mouse_pos)
 
     -- create a third rect, which is a resolved collision between the
     -- two above, note that is a very simple collision algorhythm
@@ -28,11 +34,12 @@ local function rects()
     nene:render_draw_rect(rect_a, true, Color.Palette.white)
     nene:render_draw_rect(rect_b, true) -- when a color is not passed, then `Color.Palette.white` will be used
 
+    -- draw cyan filled rect with the collision resolved
     if is_intersecting then
       nene:render_draw_rect(col_rect, false, Color.Palette.cyan)
     end
 
-    -- draw intersection with red filled rect
+    -- draw intersection with yellow filled rect
     local intersection, is_intersecting = rect_a:get_intersection(rect_b)
     if is_intersecting then
       nene:render_draw_rect(intersection, false, Color.Palette.yellow)

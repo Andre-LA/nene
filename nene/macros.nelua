@@ -1,3 +1,8 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
 require 'string'
 
 global macros = @record{}
@@ -22,3 +27,9 @@ end
     warn_msg:destroy()
   end
 ## end
+
+##[[
+function macros.warn_msg(fn_name, msg, get_error_fn)
+  macros.warn_sdl_msg_macro(fn_name, msg, 'SDL', get_error_fn or 'SDL_GetError')
+end
+]]

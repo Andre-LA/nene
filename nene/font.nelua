@@ -1,21 +1,34 @@
-require 'hashmap'
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
 
-require 'nene.core'
-require 'nene.math'
-require 'nene.wrappers.ttf'
+-- The font module, it wraps `TTF_Font` and it's associated methods.
+
+require 'nene.macros'
+## local warn_msg = macros.warn_msg
 
 -- Wraps a (SDL_TTF) font
-global Font = @record{
+local Font = @record{
   _data: *TTF_Font,
 }
 
---[[
-It checks if the internal data is `nilptr` and then returns it.
+-- To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
+global Font.GlyphMetrics = @record{
+  minx: cint, maxx: cint,
+  miny: cint, maxy: cint,
+  advance: cint
+}
 
-Related TTFWrapper documentation:
-* [TTF_Font](https://libsdl.org/projects/SDL_ttf/docs/SDL_ttf_56.html#SEC56)
+--[[
+Returns the `pointer(TTF_Font)` internal data.
+
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
+
+Related TTF documentation:
+* [TTF_Font](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L107-L108)
 ]]
-function Font:get(): *TTF_Font
+function Font:get_raw(): *TTF_Font
   check(self._data ~= nilptr, 'cannot get an unitilialized font')
   return self._data
 end
@@ -23,27 +36,151 @@ end
 --[[
 try to load a font from a file.
 
-it returns:
-* `Font` value, with internal data properly initialized if load is successful
-* a boolean which is `true` when the load succeeds.
+Returns an `ok` status with `true` value and an initialized font if successful.
 
-Related TTFWrapper documentation:
-* [TTFWrapper.open_font](wrappers/ttf.md#ttfwrapperopen_font)
+Related TTF documentation:
+* [TTF_OpenFont](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L113-L117)
 ]]
-function Font.load(filename: string, ptsize: cint): (Font, boolean)
-  local ttf_font, ok = TTFWrapper.open_font(filename, ptsize)
-  local new_font: Font = { _data = ttf_font }
-  return new_font, ok
+function Font.load(filename: string, ptsize: cint): (boolean, Font)
+  local raw_font = TTF_OpenFont(filename, ptsize)
+
+  if not raw_font then
+    warn_msg!('Font.load', 'could not open font', 'TTF_GetError')
+    return false, (@Font)()
+  end
+
+  local new_font: Font = { _data = raw_font }
+  return true, new_font
+end
+
+--[[
+Get the metrics of a 16-bit or 32-bit glyph.
+
+To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
+
+Returns an `ok` status with `true` value and an initialized glyph metrics if successful.
+
+Related TTF documentation:
+* [TTF_GlyphMetrics](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L187-L196)
+]]
+function Font:get_glyph_metrics(glyph: overload(uint16, uint32)): (boolean, Font.GlyphMetrics)
+  local raw_font = self:get_raw()
+
+  local minx: cint, maxx: cint, miny: cint, maxy: cint, advance: cint
+
+  ## if glyph.type.is_uint32 then
+    if TTF_GlyphMetrics32(raw_font, glyph, &minx, &maxx, &miny, &maxy, &advance) ~= 0 then
+      warn_msg!('Font.get_glyph_metrics', 'could not get glyph metrics', 'TTF_GetError')
+      return false, (@Font.GlyphMetrics)()
+    end
+  ## else
+    if TTF_GlyphMetrics(raw_font, glyph, &minx, &maxx, &miny, &maxy, &advance) ~= 0 then
+      warn_msg!('Font.get_glyph_metrics', 'could not get glyph metrics', 'TTF_GetError')
+      return false, (@Font.GlyphMetrics)()
+    end
+  ## end
+
+  return true, Font.GlyphMetrics{
+    =minx, =maxx,
+    =miny, =maxy,
+    =advance
+  }
+end
+
+--[[
+Returns the maximum pixel height of all glyphs in a given font.
+
+Related TTF documentation:
+* [TTF_FontHeight](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L155-L156)
+]]
+function Font:get_height(): cint
+  local raw_font = self:get_raw()
+  return TTF_FontHeight(raw_font)
+end
+
+--[[
+Returns the offset from the baseline to the top of the font.
+
+This is a positive value, relative to the baseline.
+
+Related TTF documentation:
+* [TTF_FontAscent](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L158-L161)
+]]
+function Font:get_ascent(): cint
+  local raw_font = self:get_raw()
+  return TTF_FontAscent(raw_font)
+end
+
+--[[
+Returns the offset from the baseline to the bottom of the font
+
+This is a negative value, relative to the baseline.
+
+Related TTF documentation:
+* [TTF_FontDescent](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L163-L166)
+]]
+function Font:get_descent(): cint
+  local raw_font = self:get_raw()
+  return TTF_FontDescent(raw_font)
+end
+
+--[[
+Get the recommended spacing between lines of text for this font
+
+Related TTF documentation:
+* [TTF_FontLineSkip](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L168-L169)
+]]
+function Font:get_line_skip(): cint
+  local raw_font = self:get_raw()
+  return TTF_FontLineSkip(raw_font)
+end
+
+--[[
+Get the dimensions of a rendered string of text.
+
+Returns an `ok` status with `true` value and the dimensions if successful, otherwise it returns `false` and zeroed dimensions.
+
+Related TTF documentation:
+* [TTF_FontLineSkip](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L168-L169)
+]]
+function Font:get_text_dimensions(text: string): (boolean, cint, cint)
+  local raw_font = self:get_raw()
+  local w: cint, h: cint
+
+  if TTF_SizeUTF8(raw_font, text, &w, &h) ~= 0 then
+    warn_msg!('Font.get_text_dimensions', 'could not get the text dimensions', 'TTF_GetError')
+    return false, 0, 0
+  end
+
+  return true, w, h
+end
+
+--[[
+Returns if the current font face of the font is a fixed width font (monospace).
+
+Related TTF documentation:
+* [TTF_FontFaceIsFixedWidth](https://github.com/libsdl-org/SDL_ttf/blob/9a8650d82824bd8d971dd77d74b67315c4150b07/SDL_ttf.h#L179)
+]]
+function Font:is_monospaced(): boolean
+  local raw_font = self:get_raw()
+  return TTF_FontFaceIsFixedWidth(raw_font) ~= 0
 end
 
 --[[
 Destroy the font and resets to zeroed state.
 
-Related TTFWrapper documentation:
-* [TTFWrapper.close_font](wrappers/ttf.md#ttfwrapperclose_font)
+Related TTF documentation:
+* [TTF_CloseFont](https://github.com/libsdl-org/SDL_ttf/blob/9a2cb0e452a52045419c3554e4c6696a3cd0a714/SDL_ttf.h#L354-L355)
 ]]
 function Font:destroy()
-  local internal_font = self:get()
-  TTFWrapper.close_font(internal_font)
-  self._data = nilptr
+  local raw_font = self:get_raw()
+  TTF_CloseFont(raw_font)
+  $self = (@Font)()
 end
+
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Font:__close()
+  self:destroy()
+end
+
+return Font

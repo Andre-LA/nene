@@ -1,4 +1,5 @@
 -- LPegRex is the only external dependency.
+local ins = require 'inspect'
 local lpegrex = require 'lpegrex'
 
 --------------------------------------------------------------------------------
@@ -188,7 +189,7 @@ local syntax_grammar = [==[
 chunk           <-- SHEBANG? SKIP Block (!.)^UnexpectedSyntax
 
 Block           <==(local / global /
-                    FuncDef / Return /
+                    FuncDef / Return / In /
                     Do / Defer /
                     If / Switch /
                     for /
@@ -202,6 +203,7 @@ Block           <==(local / global /
 -- Statements
 Label           <== `::` @name @`::`
 Return          <== `return` (expr (`,` @expr)*)?
+In              <== `in` @expr
 Break           <== `break`
 Continue        <== `continue`
 Goto            <== `goto` @name
@@ -222,8 +224,8 @@ localfunc  : FuncDef  <== `function` $'local' @namedecl @funcbody
 globalfunc : FuncDef  <== `function` $'global' @namedecl @funcbody
 FuncDef         <== `function` $false @funcname @funcbody
 funcbody        <-- `(` funcargs @`)` (`:` @funcrets)~? annots~? Block @`end`
-localvar   : VarDecl  <== $'local' @iddecls (`=` @exprs)?
-globalvar  : VarDecl  <== $'global' @globaldecls (`=` @exprs)?
+localvar   : VarDecl  <== $'local' @suffixeddecls (`=` @exprs)?
+globalvar  : VarDecl  <== $'global' @suffixeddecls (`=` @exprs)?
 Assign          <== vars `=` @exprs
 Preprocess      <== PREPROCESS SKIP
 
@@ -236,9 +238,9 @@ Nil             <== `nil`
 Varargs         <== `...`
 Id              <== name
 IdDecl          <== name (`:` @typeexpr)~? annots?
-typeddecl  : IdDecl <== name `:` @typeexpr annots?
-globaldecl : IdDecl <== (idsuffixed / name) (`:` @typeexpr)~? annots?
-globaldeclexpr  <-- globaldecl / PreprocessExpr
+typeddecl    : IdDecl <== name `:` @typeexpr annots?
+suffixeddecl : IdDecl <== (idsuffixed / name) (`:` @typeexpr)~? annots?
+suffixeddeclexpr  <-- suffixeddecl / PreprocessExpr
 namedecl   : IdDecl <== name
 Function        <== `function` @funcbody
 InitList        <== `{` (field (fieldsep field)* fieldsep?)? @`}`
@@ -253,6 +255,7 @@ Annotation      <== name annotargs?
 -- Preprocessor replaceable nodes
 PreprocessExpr  <== `#[` {@expr->0} @`]#`
 PreprocessName  <== `#|` {@expr->0} @`|#`
+ppcallprim : PreprocessExpr <== {NAME->0} `!` &callsuffix
 
 -- Suffixes
 Call            <== callargs
@@ -276,7 +279,7 @@ callargs        <-| `(` (expr (`,` @expr)*)? @`)` / InitList / String
 annotargs       <-| `(` (expr (`,` @expr)*)? @`)` / InitList / String / PreprocessExpr
 iddecls         <-| iddecl (`,` @iddecl)*
 funcargs        <-| (iddecl (`,` iddecl)* (`,` VarargsType)? / VarargsType)?
-globaldecls     <-| globaldeclexpr (`,` @globaldeclexpr)*
+suffixeddecls   <-| suffixeddeclexpr (`,` @suffixeddeclexpr)*
 exprs           <-| expr (`,` @expr)*
 annots          <-| `<` @Annotation (`,` @Annotation)* @`>`
 funcrets        <-| `(` typeexpr (`,` @typeexpr)* @`)` / typeexpr
@@ -314,8 +317,8 @@ exprfact        <-- (exprunary opfact*)~>foldleft
 exprunary       <-- opunary / exprpow
 exprpow         <-- (exprsimple oppow*)~>foldleft
 exprsimple      <-- Number / String / Type / InitList / Boolean /
-                    Function / Nilptr / Nil / DoExpr / Varargs / exprsuffixed
-exprprim        <-- id / Paren
+                    Function / Nilptr / Nil / Varargs / exprsuffixed
+exprprim        <-- ppcallprim / id / DoExpr / Paren
 
 -- Types
 RecordType      <== 'record' WORDSKIP @`{` (RecordField (fieldsep RecordField)* fieldsep?)? @`}`
@@ -344,7 +347,7 @@ typeopptr : PointerType   <== `*`
 typeopopt : OptionalType  <== `?`
 typeoparr : ArrayType     <== `[` expr? @`]`
 typeopvar : VariantType   <== typevaris
-typeopgen : GenericType   <== `(` @typeargs @`)`
+typeopgen : GenericType   <== `(` @typeargs @`)` / &`{` {| InitList |}
 typevaris : VariantType   <== `|` @typeexprunary (`|` @typeexprunary)*
 
 typeopunary     <-- typeopptr / typeopopt / typeoparr
@@ -397,7 +400,7 @@ COMMENT_SHRT    <-- (!LINEBREAK .)*
 
 -- Preprocess
 PREPROCESS      <-- '##' (PREPROCESS_LONG / PREPROCESS_SHRT)
-PREPROCESS_LONG <-- {:LONG_OPEN {LONG_CONTENT} @LONG_CLOSE:}
+PREPROCESS_LONG <-- {:'[' {:eq: '='*:} '[' {LONG_CONTENT} @LONG_CLOSE:}
 PREPROCESS_SHRT <-- {(!LINEBREAK .)*} LINEBREAK?
 
 -- Long (used by string, comment and preprocess)
@@ -598,14 +601,34 @@ function Generator:emit(source, filename, ast, comments, options, emitter)
   if topcomment and visitors.TopComment then
     visitors.TopComment(context, topcomment, emitter)
   end
+
+  -- search for the last return node (which would be the return module) that matches
+  -- a variable declaration, then store it for later use
+  local ret_symbol = nil
+
+  for node, parent in walk_nodes(ast) do
+    node.parent = parent
+
+    if node.tag == 'Return' then
+      local ret_name = node[1][1]
+
+      for k, v in ipairs(node.parent) do
+        if v.tag == 'VarDecl' and ret_name == v[2][1][1] then
+          ret_symbol = v[2][1][1]
+        end
+      end
+    end
+  end
+
   -- emit nodes
   for node, parent in walk_nodes(ast) do
     node.parent = parent
     local visit = visitors[node.tag]
     if visit then
-      visit(context, node, emitter)
+      visit(context, node, emitter, ret_symbol)
     end
   end
+
   emitter:add(bottom_template)
   return emitter
 end
@@ -657,18 +680,18 @@ local function trimdef(text)
 end
 
 -- Filter symbol by name.
-local function document_symbol(context, symbol, emitter)
+local function document_symbol(context, symbol, emitter, ret_symbol)
   if not symbol.name then
     -- probably a preprocessor name, ignore
     return false
   end
   local symbols, inclnames = context.symbols, context.options.include_names
   local classname = symbol.name:match('(.*)[.:][_%w]+$')
-  if classname and not symbols[classname] and not inclnames[classname] then
+  if symbol.name ~= ret_symbol and (classname and not symbols[classname] and not inclnames[classname]) then
     -- class symbol is not wanted
     return false
   end
-  if not symbol.topscope or (symbol.declscope == 'local' and not inclnames[symbol.name]) then
+  if symbol.name ~= ret_symbol and (not symbol.topscope or (symbol.declscope == 'local' and not inclnames[symbol.name])) then
     -- not a global or wanted symbol
     return false
   end
@@ -723,7 +746,7 @@ function visitors.FuncDef(context, node, emitter)
 end
 
 -- Visit variable declarations.
-function visitors.VarDecl(context, node, emitter)
+function visitors.VarDecl(context, node, emitter, ret_symbol)
   local declscope = node[1]
   local varnodes = node[2]
   local valnodes = node[3]
@@ -758,7 +781,7 @@ function visitors.VarDecl(context, node, emitter)
       node = node,
       lang = context.lang,
     }
-    document_symbol(context, symbol, emitter)
+    document_symbol(context, symbol, emitter, ret_symbol)
   end
 end
 

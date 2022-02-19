@@ -1,25 +1,38 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
 local math = require 'math'
 
-require 'nene.math'
-require 'nene.wrappers.sdl'
-require 'nene.core'
+local Nene = require 'nene'
+local Vec2 = require 'nene.math.vec2'
+local Rect = require 'nene.math.rect'
+local Color = require 'nene.color'
 
-local Vec2, Rect = Math.Vec2, Math.Rect
+require 'nene.macros'
+## local warn_msg = macros.warn_msg
+
+require 'nene.raw.sdl2'
 
 -- Wraps an internal (SDL) Texture
-global Texture = @record{
-  _data: *SDL_Texture,  -- internal data, don't use it directly, use methods instead
-  width: uinteger,      -- width of the texture in pixels
-  height: uinteger,     -- height of the texture in pixels
+local Texture = @record{
+  _data: *SDL_Texture,         -- internal data, don't use it directly, use methods instead
+  width: cint,                 -- width of the texture in pixels
+  height: cint,                -- height of the texture in pixels
+  format: SDL_PixelFormatEnum, -- texture pixel format
+  access: SDL_TextureAccess,   -- texture access pattern
 }
 
 --[[
-It checks if the internal data is `nilptr` and then returns it.
+Returns the `pointer(SDL_Texture)` internal data.
+
+It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.
 
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 ]]
-function Texture:get(): *SDL_Texture
+function Texture:get_raw(): *SDL_Texture
   check(self._data ~= nilptr, 'Texture.get: Texture internal data is `nilptr`')
   return self._data
 end
@@ -27,15 +40,18 @@ end
 --[[
 Free internal data and resets to zeroed state.
 
-Related SDLWrapper documentation:
-* [SDLWrapper.destroy_texture](wrappers/sdl.md#sdlwrapperdestroy_texture)
+Related SDL2 documentation:
+* [SDL_DestroyTexture](https://wiki.libsdl.org/SDL_DestroyTexture)
 ]]
 function Texture:destroy()
-  local internal_tex = self:get()
-  SDLWrapper.destroy_texture(internal_tex)
+  local internal_tex = self:get_raw()
+  SDL_DestroyTexture(internal_tex)
+  $self = (@Texture)()
+end
 
-  self._data = nilptr
-  self.width, self.height = 0, 0
+-- Effectively the same as `destroy`, called when a to-be-closed variable goes out of scope.
+function Texture:__close()
+  self:destroy()
 end
 
 --[[
@@ -43,89 +59,113 @@ Applies a new internal texture (with a `pointer(SDL_Texture)`).
 
 If there is non-`nilptr` internal texture, then it's freed before applying this new internal texture.
 
-It also updates `width` and `height` fields.
+It also updates `width`, `height`, `format` and `access` fields.
+
+Returns an `ok` status with `true` value if the texture query is successful.
 
 Related Nene documentation:
-* [SDLWrapper.query_texture_size](wrappers/sdl.md#sdlwrapperquery_texture_size)
 * [Texture.destroy](#texturedestroy)
+
+Related SDL documentation:
+* [SDL_QueryTexture](https://wiki.libsdl.org/SDL_QueryTexture)
 ]]
-function Texture:apply_sdltex(new_tex: *SDL_Texture)
-  check(new_tex ~= nilptr, "Can't apply a nil SDL_Texture")
+function Texture:apply_raw(new_tex: *SDL_Texture): (boolean)
+  check(new_tex ~= nilptr, "Can't apply a nilptr SDL_Texture")
 
   if self._data ~= nilptr then
     self:destroy()
   end
 
-  local w: cint, h: cint;
-  local w, h = SDLWrapper.query_texture_size(new_tex)
+  local fmt: uint32, access: cint, w: cint, h: cint;
 
-  self._data = new_tex
-  self.width = w
-  self.height = h
+  if SDL_QueryTexture(new_tex, &fmt, &access, &w, &h) ~= 0 then
+    warn_msg!('Texture.apply_raw', 'failed to query applied texture')
+    return true
+  end
+
+  self._data, self.width, self.height, self.format, self.access = new_tex, w, h, fmt, access
+
+  return false
 end
 
 --[[
-Returns an initialized `Texture` with the given `tex` applied.
+Returns an initialized `Texture` with the given `raw_tex` applied.
 
 Related Nene documentation:
-* [Texture.apply_sdltex](#textureapply_sdltex)
+* [Texture.apply_raw](#textureapply_raw)
 ]]
-function Texture.new(tex: *SDL_Texture): Texture
+function Texture.init(raw_tex: *SDL_Texture): Texture
   local new: Texture = {}
-  new:apply_sdltex(tex)
+  new:apply_raw(raw_tex)
   return new
 end
 
 --[[
-Creates a `Texture` from `Nene.create_sdl_texture` using the given `access` and `format`.
+Creates a `Texture` using the given `access` and `format`.
 
 `format` and `access` are optional.
 
 By default, `format` is SDL_PIXELFORMAT_RGBA8888 and access is `SDL_TEXTUREACCESS_STATIC`.
 
 Related Nene documentation:
-* [Nene.create_sdl_texture](core.md#nenecreate_sdl_texture)
+* [Nene.create_raw_texture](init.md#nenecreate_raw_texture)
+
+Related SDL2 documentation:
+* [SDL_PixelFormatEnum](https://wiki.libsdl.org/SDL_PixelFormatEnum)
+* [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
+* [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
 ]]
-function Texture.create_texture(nene: Nene, width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): Texture
+function Texture.create_texture(width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): (boolean, Texture)
+  local nene: *Nene = Nene.instance()
+
   ## if format.type.is_niltype then
-  local format = SDL_PIXELFORMAT_RGBA8888
+  local format: SDL_PixelFormatEnum = SDL_PIXELFORMAT_RGBA8888
   ## end
 
   ## if access.type.is_niltype then
-  local access = SDL_TEXTUREACCESS_STATIC
+  local access: SDL_TextureAccess = SDL_TEXTUREACCESS_STATIC
   ## end
 
-  local sdl_tex = SDLWrapper.create_texture(nene.renderer, format, access, width, height)
-  return Texture.new(sdl_tex)
+  local ok, raw_texture = nene:create_raw_texture(format, access, width, height)
+
+  if not ok then
+    return false, (@Texture)()
+  end
+
+  return true, Texture.init(raw_texture)
 end
 
 --[[
-Loads an image file and returns a Texture and an ok status.
+Loads an image file and returns an ok status and a `Texture` from the loaded image.
 
-If the operations fails, the ok status will be `false` and uninitialized texture.
+Returns an `ok` status with `true` value and the created texture if successful.
 
-Related SDLWrapper documentation:
-* [ImgWrapper.img_load](wrappers/img.md#imgwrapperimg_load)
-* [SDLWrapper.create_texture_from_surface](wrappers/sdl.md#sdlwrappercreate_texture_from_surface)
-* [SDLWrapper.free_surface](wrappers/sdl.md#sdlwrapperfree_surface)
+If the operations fails, a warning is sent and return will be a `false` ok status and an uninitialized texture.
+
+Related SDL2 documentation:
+* [IMG_Load](https://www.libsdl.org/projects/SDL_image/docs/SDL_image_11.html)
+* [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL_CreateTextureFromSurface)
+* [SDL_FreeSurface](https://wiki.libsdl.org/SDL_FreeSurface)
 ]]
-function Texture.load(nene: Nene, filepath: cstring): (Texture, boolean)
-  local img_surface, ok = ImgWrapper.img_load(filepath)
+function Texture.load(filepath: cstring): (boolean, Texture)
+  local nene = Nene.instance()
 
-  if not ok then
-    return (@Texture)(), false
+  local raw_surface: *SDL_Surface = IMG_Load(filepath)
+
+  if not raw_surface then
+    warn_msg!('Texture.load', 'error while loading image', 'IMG_GetError')
+    return false, (@Texture)()
   end
 
-  defer
-    SDLWrapper.free_surface(img_surface)
+  defer SDL_FreeSurface(raw_surface) end
+
+  local ok, raw_texture = nene:create_raw_texture_from_surface(raw_surface)
+
+  if not raw_texture then
+    return false, (@Texture)()
   end
 
-  local sdl_texture, ok = SDLWrapper.create_texture_from_surface(nene.renderer, img_surface)
-  if not ok then
-    return (@Texture)(), false
-  end
-
-  return Texture.new(sdl_texture), true
+  return true, Texture.init(raw_texture)
 end
 
 --[[
@@ -135,14 +175,13 @@ you can optionally pass the `source` rectangle if you want to draw a slice of th
 A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
-* [Color](colors.md#color)
-* [SDLWrapper.set_texture_color_modulation](wrappers/sdl.md#sdlwrapperset_texture_color_modulation)
-* [Nene.render_copy](core.md#nenerender_copy)
-* [Math.Rect](math.md#mathrect)
-* [Math.Vec2](math.md#mathvec2)
+* [Nene.set_raw_texture_color_mod](init.md#neneset_raw_texture_color_mod)
+* [Nene.render_copy](init.md#nenerender_copy)
+* [Color](color.md#color)
+* [Math.Rect](math/rect.md#rect)
+* [Math.Vec2](math/vec2.md#vec2)
 ]]
 function Texture:draw(
-  nene: Nene,
   color: facultative(Color),
   source: facultative(Rect),
   destination: overload(Vec2, Rect, niltype),
@@ -151,11 +190,11 @@ function Texture:draw(
   flip_horizontal: facultative(boolean),
   flip_vertical: facultative(boolean)
 )
+  local nene: *Nene = Nene.instance()
+
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
-
-  local internal_tex = self:get()
 
   ## if destination.type.is_vec2 then -- shadow the vec2 destination with a rect destination
   local destination: Rect = {
@@ -166,6 +205,15 @@ function Texture:draw(
   }
   ## end
 
-  SDLWrapper.set_texture_color_modulation(internal_tex, color)
-  nene:render_copy(internal_tex, source, destination, angle, center, flip_horizontal, flip_vertical)
+  local raw_tex = self:get_raw()
+
+  if not nene:set_raw_texture_color_mod(raw_tex, color) then
+    warn_msg!('Texture.draw', 'could not set the texture color modulation')
+  end
+
+  if not nene:render_copy(raw_tex, source, destination, angle, center, flip_horizontal, flip_vertical) then
+    warn_msg!('Texture.render_copy', 'could not draw the texture on the rendering target')
+  end
 end
+
+return Texture

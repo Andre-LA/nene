@@ -1,0 +1,26 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+local math = require 'math'
+
+local Vec2i = require 'nene.math.vec2i'
+local Vec2 = require 'nene.math.vec2'
+
+local Rect = require 'nene.math.rect'
+local Rectf = require 'nene.math.rectf'
+
+local Grid = require 'nene.math.grid'
+
+local Math = @record{}
+
+global Math.Vec2i = Vec2i
+global Math.Vec2 = Vec2
+
+global Math.Rect = Rect
+global Math.Rectf = Rectf
+
+global Math.Grid = Grid
+
+return Math

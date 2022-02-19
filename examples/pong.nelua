@@ -1,15 +1,23 @@
--- === basic pong example! ===
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+-- basic pong example! --
 
 -- require basic libraries
-require 'math'
-require 'string'
+local math = require 'math'
+local string = require 'string'
 
--- you can require each nene module individually, by requiring "nene",
--- all nene modules will be required at once.
-require 'nene'
+-- require nene librarise and modules
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Rect = require 'nene.math.rect'
+local Vec2 = require 'nene.math.vec2'
 
--- localizing types to avoid verbosity
-local Rect, Vec2 = Math.Rect, Math.Vec2
+local Font = require 'nene.font'
+local Texture = require 'nene.texture'
+local TextTexture = require 'nene.text_texture'
 
 -- general game settings
 local SETTINGS: record{
@@ -24,8 +32,8 @@ local SETTINGS: record{
     velocity: integer,
   }
 } <const> = {
-  screen_size = { 320, 240 },
-  win_size = { (320*2), (240*2) },
+  screen_size = { 400, 240 },
+  win_size = { (400*2), (240*2) },
   racket = {
     size = { 20, 100 },
     velocity = 120,
@@ -53,7 +61,9 @@ function Racket:get_rect(is_player_one: boolean): Rect
 end
 
 -- racket's gameplay code
-function Racket:update(nene: Nene, is_player_one: boolean <comptime>)
+function Racket:update(is_player_one: boolean <comptime>)
+  local nene = Nene.instance()
+
   -- input
   local is_up, is_down = false, false
 
@@ -76,7 +86,8 @@ function Racket:update(nene: Nene, is_player_one: boolean <comptime>)
 end
 
 -- draw a racket
-function Racket:draw(nene: Nene, is_player_one: boolean)
+function Racket:draw(is_player_one: boolean)
+  local nene = Nene.instance()
   nene:render_draw_rect(self:get_rect(is_player_one), false, Color.Palette.yellow)
 end
 
@@ -131,27 +142,23 @@ function Ball:draw(nene: Nene)
   nene:render_draw_rect(self:get_rect(), false)
 end
 
-local function update_points(nene: Nene, pts_text: *TextTexture, points: integer, font: Font)
-  local pts_str = tostring(points)
-  defer pts_str:destroy() end
-  pts_text:update_text(nene, pts_str, font)
+local function update_points(pts_text: *TextTexture, points: integer, font: Font)
+  local pts_str <close> = tostring(points)
+  pts_text:update_text(pts_str, font)
 end
 
 local function game()
-  -- == nene setup == --
+  -- nene setup --
 
-  -- nene initialization
-  local ok, nene = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
+  -- nene initialization and to-be-closed termination
+  --
+  -- when nene is marked with the <close> annotation, then the nene variable becomes
+  -- a "to-be-closed" variable, this means that the `__close` method will be called at the end scope,
+  -- `_cllose` calls the `terminate` method, which de-initializes nene and free the internal resources
+  local ok, nene <close> = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
   assert(ok, 'nene initialization failed')
 
-  -- the `terminate` method deinitializes nene and SDL libraries
-  -- here defer is used to make it called only after all the above code
-  -- see about defer: https://nelua.io/overview/#defer
-  defer
-    nene:terminate()
-  end
-
-  -- == game setup == --
+  -- game setup --
 
   -- this creates a new "Nene Texture" which will be used as low resolution
   -- screen through using render target (sometimes called as Render Texture on some engines),
@@ -160,10 +167,8 @@ local function game()
   -- note that the value comes from SDL directly, while Nene abstracts SDL many
   -- times, it doesn't try to hide it, so you will interact with SDL sometimes,
   -- especially to go beyond Nene capabilities if needed.
-  local screen = Texture.create_texture(nene, SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, SDL_TEXTUREACCESS_TARGET)
-
-  -- Textures needs to be destroyed after usage
-  defer screen:destroy() end
+  local ok, screen <close> = Texture.create_texture(SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, SDL_TEXTUREACCESS_TARGET)
+  assert(ok, 'could not create the screen texture target')
 
   -- creates players rackets and the ball
   local pl_1: Racket, pl_2: Racket;
@@ -173,17 +178,11 @@ local function game()
   }
 
   -- "monogram_extended" font is available with nene, but it's not loaded automatically.
-  local font = Font.load('resources/monogram_extended.ttf', 72)
-
-  -- also needs to be destroyed after usage
-  defer font:destroy() end
+  local ok, font <close> = Font.load('resources/monogram_extended.ttf', 72)
+  assert(ok, 'could not load monogram_extended font')
 
   -- creates both players texts and then defer it's destroy calls
-  local r1_text, r2_text = TextTexture.new(nene, '0', font), TextTexture.new(nene, '0', font)
-  defer
-    r1_text:destroy()
-    r2_text:destroy()
-  end
+  local r1_text <close>, r2_text <close> = TextTexture.init('0', font), TextTexture.init('0', font)
 
   -- finally, the game loop
   -- In Nene, you just `repeat` the loop until Nene gets a "quit" state
@@ -197,22 +196,22 @@ local function game()
     do
       local prev_r1_points, prev_r2_points = pl_1.points, pl_2.points
 
-      pl_1:update(nene, true)
-      pl_2:update(nene, false)
+      pl_1:update(true)
+      pl_2:update(false)
       ball:update(pl_1, pl_2, nene.delta_time)
 
       if prev_r1_points ~= pl_1.points then
-        update_points(nene, r1_text, pl_1.points, font)
+        update_points(r1_text, pl_1.points, font)
       end
       if prev_r2_points ~= pl_2.points then
-        update_points(nene, r2_text, pl_2.points, font)
+        update_points(r2_text, pl_2.points, font)
       end
     end
 
     -- draw step
     do
       -- set a low-resolution screen as the render target, this is very useful to make pixel-art games.
-      nene:set_render_target(screen:get())
+      nene:set_render_target(screen:get_raw())
 
       -- clear screen, otherwise the game would draw frame on top of previous frames,
       -- which gives weird results.
@@ -221,20 +220,20 @@ local function game()
       -- rendering on the screen
       do
         -- draw rackets and ball
-        pl_1:draw(nene, true)
-        pl_2:draw(nene, false)
+        pl_1:draw(true)
+        pl_2:draw(false)
         ball:draw(nene)
 
         -- draw points texts
-        r1_text:draw(nene, {10, 0})
-        r2_text:draw(nene, {SETTINGS.screen_size.x - r1_text.texture.width - 10, 0})
+        r1_text:draw({10, 0})
+        r2_text:draw({SETTINGS.screen_size.x - r1_text.texture.width - 10, 0})
       end
 
       -- reset render target to window screen, this is the default when no render target is used.
       nene:set_render_target()
 
       -- draw the whole screen on the whole window screen.
-      screen:draw(nene)
+      screen:draw()
 
       -- present the "drawing result".
       -- In SDL (and consequently Nene) applies all draw operations on a backbuffer, this is very

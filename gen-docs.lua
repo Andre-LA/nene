@@ -17,7 +17,7 @@ local function doc(filename, path)
   if string.find(filename, '.nelua') then
     print('documenting '..path..filename..'..')
 
-    nldoc.generate_doc(emitter, 'nene/'..path..filename, { symbol_template = symbol_template, name = "TESTE" })
+    nldoc.generate_doc(emitter, 'nene/'..path..filename, { symbol_template = symbol_template })
 
     local emitted = emitter:generate()
 
@@ -37,7 +37,6 @@ local function doc_dir(dirname)
   local path = string.gsub(dirname, 'nene/', '')
 
   local ignored_files = {
-    ['init.nelua'] = true
   }
 
   for filename in lfs.dir(dirname) do
@@ -48,4 +47,6 @@ local function doc_dir(dirname)
 end
 
 doc_dir('nene/')
-doc_dir('nene/wrappers/')
+doc_dir('nene/math/')
+doc_dir('nene/audio/')
+doc_dir('nene/raw/')
