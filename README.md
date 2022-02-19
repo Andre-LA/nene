@@ -32,7 +32,7 @@ For further details and other operating systems, read [SDL2's installing documen
 
 Note that Nelua compiles to C and, theorically, you can follow any C with SDL2 programming tutorial in order to install SDL2.
 
-Finally, just download `nene` (see below) and use in your game as a library.
+Finally, just download `nene` (see below) and use it in your game as a library.
 
 ### Download
 You can either download or clone the latest nene or the latest release

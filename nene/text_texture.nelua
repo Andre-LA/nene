@@ -102,8 +102,8 @@ A `color` tint can be passed optionally, it's white by default.
 
 Related Nene documentation:
 * [Texture.draw](texture.md#texturedraw)
-* [Math.Vec2](vec2.md#vec2)
-* [Math.Rect](rect.md#rect)
+* [Math.Vec2](math/vec2.md#vec2)
+* [Math.Rect](math/rect.md#rect)
 * [Color](color.md#color)
 ]]
 function TextTexture:draw(position: Vec2, color: facultative(Color))
