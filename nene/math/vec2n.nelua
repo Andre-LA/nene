@@ -1,3 +1,6 @@
+-- The `Vec2n` module, it implements a Vec2 (a vertor of two dimensions) using `n` type for `x` and `y` components,
+-- where `n` is an arithmetic type.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details

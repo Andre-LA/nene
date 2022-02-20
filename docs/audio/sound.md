@@ -7,6 +7,12 @@
 * [Sound:destroy](#sounddestroy)
 * [Sound:__close](#sound__close)
 
+## sound
+
+The Sound module, used mainly for sound effects, but it can be used for any kind of sound in general.
+
+> Note: For music, you should look for the [`Music` module](music.md).
+
 ### Sound
 
 ```lua

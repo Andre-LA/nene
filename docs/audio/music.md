@@ -7,6 +7,10 @@
 * [Music:destroy](#musicdestroy)
 * [Music:__close](#music__close)
 
+## music
+
+The Music module, for music handling.
+
 ### Music
 
 ```lua

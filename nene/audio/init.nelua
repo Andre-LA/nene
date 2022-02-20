@@ -1,3 +1,5 @@
+-- Wraps all audio modules.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details
@@ -5,7 +7,9 @@
 
 local Audio = @record{}
 
-global Audio.Sound = require 'nene.audio.sound'
-global Audio.Music = require 'nene.audio.music'
+-- [Sound module](sound.md)
+global Audio.Sound: type = require 'nene.audio.sound'
+-- [Music module](music.md)
+global Audio.Music: type = require 'nene.audio.music'
 
 return Audio

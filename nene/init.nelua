@@ -1,10 +1,10 @@
+-- The core of Nene, this is the main module, which should be initialized and terminated in the same life-cycle as
+-- your game.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
-
--- The core of Nene, this is the main module, which should be initialized and terminated in the same life-cycle as
--- your game.
 
 ##if ccinfo.is_emscripten then
   --[[
@@ -714,7 +714,10 @@ local ok, nene = Nene.init('My game title', 1280, 720)
 -- in release mode.
 assert(ok, 'error: nene initialization failed')
 
--- defer nene termination, to release resources used by nene
+-- defers nene termination, to release resources used by nene;
+-- you can also declare nene as a to-be-closed variable using `nene <close> = ...`
+-- syntax, this way, nene will be terminated at the scope end and the defer block
+-- will be unnecessary.
 defer
   nene:terminate()
 end

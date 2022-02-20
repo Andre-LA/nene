@@ -3,6 +3,10 @@
 * [Grid.gen_rect](#gridgen_rect)
 * [Grid.get_nth_cell_column_row](#gridget_nth_cell_column_row)
 
+## grid
+
+The grid module, used as a way to use grids mathematically.
+
 ### Grid
 
 ```lua

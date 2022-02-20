@@ -1,3 +1,5 @@
+-- The grid module, used as a way to use grids mathematically.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details

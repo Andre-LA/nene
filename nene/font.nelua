@@ -1,9 +1,9 @@
+-- The font module, it wraps `TTF_Font` and it's associated methods.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
-
--- The font module, it wraps `TTF_Font` and it's associated methods.
 
 require 'nene.macros'
 ## local warn_msg = macros.warn_msg

@@ -6,6 +6,11 @@
 * [Math.Rectf](#mathrectf)
 * [Math.Grid](#mathgrid)
 
+## init
+
+The general math module, in case you prefer just requiring the `nene.math` module
+instead of requiring each math module.
+
 ### Math
 
 ```lua

@@ -13,6 +13,11 @@
 * [Vec2n.normalized](#vec2nnormalized)
 * [Vec2n](#vec2n)
 
+## vec2n
+
+The `Vec2n` module, it implements a Vec2 (a vertor of two dimensions) using `n` type for `x` and `y` components,
+where `n` is an arithmetic type.
+
 ### Vec2n
 
 ```lua

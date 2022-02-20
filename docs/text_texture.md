@@ -6,6 +6,10 @@
 * [TextTexture:draw](#texttexturedraw)
 * [TextTexture.init](#texttextureinit)
 
+## text_texture
+
+The TextTexture module, it implements a record which owns a internal Texture where a text is drawn on.
+
 ### TextTexture
 
 ```lua
@@ -77,8 +81,8 @@ A `color` tint can be passed optionally, it's white by default.
 
 Related Nene documentation:
 * [Texture.draw](texture.md#texturedraw)
-* [Math.Vec2](vec2.md#vec2)
-* [Math.Rect](rect.md#rect)
+* [Math.Vec2](math/vec2.md#vec2)
+* [Math.Rect](math/rect.md#rect)
 * [Color](color.md#color)
 
 ### TextTexture.init

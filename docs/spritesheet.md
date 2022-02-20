@@ -6,7 +6,8 @@
 
 ## spritesheet
 
-The spritesheet module, it makes easier to draw single sprites from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
+The spritesheet module, it makes easier to draw single sprites
+from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
 
 ### SpriteSheet
 

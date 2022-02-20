@@ -262,7 +262,7 @@ Set clip rectangle for rendering
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Rect](rect.md#rect)
+* [Math.Rect](math/rect.md#rect)
 
 Related SDL documentation:
 * [SDL_RenderSetClipRect](https://wiki.libsdl.org/SDL_RenderSetClipRect)
@@ -296,7 +296,7 @@ renders a line from `origin` to `destination` with the given `color`.
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Vec2](vec2.md#vec2)
+* [Math.Vec2](math/vec2.md#vec2)
 * [Color](color.md#color)
 
 Related SDL documentation:
@@ -313,7 +313,7 @@ renders the given `rectangle` with the given `color`; it will be filled if `use_
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Rect](rect.md#rect)
+* [Math.Rect](math/rect.md#rect)
 
 Related SDL documentation:
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
@@ -345,7 +345,7 @@ in this case it will be copied at this "destination" part of the rendering targe
 Returns an `ok` status with `true` value if successful.
 
 Related Nene documentation:
-* [Math.Rect](rect.md#rect)
+* [Math.Rect](math/rect.md#rect)
 
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
@@ -445,7 +445,10 @@ local ok, nene = Nene.init('My game title', 1280, 720)
 -- in release mode.
 assert(ok, 'error: nene initialization failed')
 
--- defer nene termination, to release resources used by nene
+-- defers nene termination, to release resources used by nene;
+-- you can also declare nene as a to-be-closed variable using `nene <close> = ...`
+-- syntax, this way, nene will be terminated at the scope end and the defer block
+-- will be unnecessary.
 defer
   nene:terminate()
 end

@@ -7,6 +7,12 @@
 * [Tilemap.get_height](#tilemapget_height)
 * [Tilemap.draw](#tilemapdraw)
 
+## tilemap
+
+The Tilemap module, it implements a simple tilemap implementation to quickstart your maps.
+
+> Note: this module uses memory allocation with the default allocator.
+
 ### Tilemap
 
 ```lua
@@ -70,7 +76,7 @@ print(column, row) -- prints '2       1'
 
 Related Nene documentation:
 * [Tilemap.get_tile_pos](#tilemapget_tile_pos)
-* [Math.Grid.get_nth_cell_column_row](grid.md#gridget_nth_cell_column_row)
+* [Math.Grid.get_nth_cell_column_row](math/grid.md#gridget_nth_cell_column_row)
 
 ### Tilemap:get_tile_pos
 
@@ -120,8 +126,8 @@ local tile_pos = my_tilemap:get_tile_pos(column, row)
 
 Related Nene documentation:
 * [Tilemap.get_tile_column_row](#tilemapget_tile_column_row)
-* [Math.Vec2](vec2.md#vec2)
-* [Math.Grid](grid.md#grid)
+* [Math.Vec2](math/vec2.md#vec2)
+* [Math.Grid](math/grid.md#grid)
 
 ### Tilemap.get_height
 
@@ -153,8 +159,8 @@ Draw the whole `tilemap` using the given `tileset` texture at `position` (relati
 A `color` tint can be optionally passed, which is white by default.
 
 Related Nene documentation:
-* [Math.Grid](grid.md#grid)
-* [Math.Vec2](vec2.md#vec2)
+* [Math.Grid](math/grid.md#grid)
+* [Math.Vec2](math/vec2.md#vec2)
 * [Texture](texture.md#texture)
 * [Color](color.md#color)
 

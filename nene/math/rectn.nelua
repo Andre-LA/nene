@@ -1,3 +1,6 @@
+-- The `Rectn` module, it implements a rectangle using `n` type for `x`, `y`, `w` and `h` components,
+-- where `n` is an arithmetic type.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details
@@ -12,19 +15,18 @@ local math = require 'math'
 
 local ov_vec2: type = @overload(Vec2i, Vec2f)
 
-
 ## local make_rect = generalize(function(T)
   ## static_assert(T.is_arithmetic, '%s is not arithmetic', T)
 
   local T: type = #[T]#
 
-  local RectT: type <nickname(#[ string.format('Rect(%s)', T) ]#)> = @record{
+  local Rectn: type <nickname(#[ string.format('Rect(%s)', T) ]#)> = @record{
     x: T, y: T, -- position
     w: T, h: T, -- size
   }
 
-  ## RectT.value.subtype = T
-  ## RectT.value.is_rect = true
+  ## Rectn.value.subtype = T
+  ## Rectn.value.is_rect = true
 
   local Vec2T: type = @Vec2n(T)
 
@@ -36,11 +38,11 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
     local y = math.ifloor(#[y]#)
     ## end
 
-    in RectT{ =x, =y}
+    in Rectn{ =x, =y}
   ## end
 
   -- convert this
-  function RectT.to_raw_rect(rect: RectT): SDL_Rect
+  function Rectn.to_raw_rect(rect: Rectn): SDL_Rect
     ## if not T.is_integral then
       return SDL_Rect{
         x = math.ifloor(rect.x), y = math.ifloor(rect.y),
@@ -55,41 +57,41 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
   end
 
   -- Get rect position
-  function RectT:get_position(): Vec2T
+  function Rectn:get_position(): Vec2T
     return Vec2T{ self.x, self.y }
   end
 
   -- Get rect size
-  function RectT:get_size(): Vec2T
+  function Rectn:get_size(): Vec2T
     return Vec2T{ self.w, self.h }
   end
 
   -- Returns a copy with a new position
-  function RectT:with_position(pos: ov_vec2): RectT
-    return RectT{
+  function Rectn:with_position(pos: ov_vec2): Rectn
+    return Rectn{
       x = pos.x, y = pos.y,
       w = self.w, h = self.h
     }
   end
 
   -- Returns a copy with a new size
-  function RectT:with_size(size: ov_vec2): RectT
-    return RectT{
+  function Rectn:with_size(size: ov_vec2): Rectn
+    return Rectn{
       x = self.x, y = self.y,
       w = size.x, h = size.y
     }
   end
 
   -- Creates a Rect from two bi-dimensional vectors
-  function RectT.from_vec2(pos: ov_vec2, size: ov_vec2): RectT
-    return (@RectT){
+  function Rectn.from_vec2(pos: ov_vec2, size: ov_vec2): Rectn
+    return (@Rectn){
       x = math.ifloor(pos.x) , y = math.ifloor(pos.y),
       w = math.ifloor(size.x), h = math.ifloor(size.y)
     }
   end
 
   -- Test if another rect or point it's intersecting the rect
-  function RectT.is_intersecting(self: RectT, other: overload(RectT, ov_vec2)): boolean
+  function Rectn.is_intersecting(self: Rectn, other: overload(Rectn, ov_vec2)): boolean
     ## if other.type.is_vec2 then -- other is Vec2
       return (
         other.x >= self.x and
@@ -97,7 +99,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
         other.y >= self.y and
         other.y <= self.y + self.h
       )
-    ## else -- then other it's RectT
+    ## else -- then other it's Rectn
       return not (
         ( self.x +  self.w) < other.x or -- is `self `on left of `other`? if so, is not intersecting
         (other.x + other.w) <  self.x or -- is `other` on left of `self`? if so, is not intersecting
@@ -111,9 +113,9 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
   --
   -- It's not necessary to test if the two rects are intersecting before using this function, just check
   -- the second return value for that.
-  function RectT.get_intersection(a: RectT, b: RectT): (RectT, boolean)
+  function Rectn.get_intersection(a: Rectn, b: Rectn): (Rectn, boolean)
     if not a:is_intersecting(b) then
-      return (@RectT)(), false
+      return (@Rectn)(), false
     end
 
     local max_px = math.max(a.x, b.x)
@@ -124,7 +126,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
     local pmin: Vec2T = { max_px, max_py }
     local pmax: Vec2T = { min_xw, min_yh }
 
-    local intersection: RectT = {
+    local intersection: Rectn = {
       x = pmin.x, y = pmin.y,
       w = math.abs(pmax.x - pmin.x), h = math.abs(pmax.y - pmin.y)
     }
@@ -133,7 +135,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
   end
 
   -- get the center of rectangle.
-  function RectT.get_center(self: RectT): Vec2T
+  function Rectn.get_center(self: Rectn): Vec2T
     return (@Vec2T){
       x = self.x + (self.w / 2),
       y = self.y + (self.h / 2),
@@ -146,8 +148,8 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
   -- It returns:
   -- * a boolean which contains if the two rectangles were really intersecting
   -- * a new rectangle with the collision resolved
-  function RectT.simple_collision(self: RectT, intersected: RectT): (boolean, RectT)
-    local function resolve_vertical(result: RectT, self: RectT, self_center: Vec2T, intersected: RectT, intersected_center: Vec2T): (RectT)
+  function Rectn.simple_collision(self: Rectn, intersected: Rectn): (boolean, Rectn)
+    local function resolve_vertical(result: Rectn, self: Rectn, self_center: Vec2T, intersected: Rectn, intersected_center: Vec2T): (Rectn)
       if self_center.y < intersected_center.y then -- go to top
         result.y = intersected.y - self.h
       else -- go to bottom
@@ -157,7 +159,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
       return result
     end
 
-    local function resolve_horizontal(result: RectT, self: RectT, self_center: Vec2T, intersected: RectT, intersected_center: Vec2T): (RectT)
+    local function resolve_horizontal(result: Rectn, self: Rectn, self_center: Vec2T, intersected: Rectn, intersected_center: Vec2T): (Rectn)
       if self_center.x < intersected_center.x then -- go to left
         result.x = intersected.x - self.w
       else -- go to right
@@ -171,7 +173,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
 
     -- skip if is not actually intersecting
     if not is_intersecting then
-      return false, (@RectT)()
+      return false, (@Rectn)()
     end
 
     local result = self -- copy self
@@ -191,7 +193,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
     return true, result
   end
 
-  ## return RectT
+  ## return Rectn
 ## end)
 
 local Rectn: type = #[make_rect]#

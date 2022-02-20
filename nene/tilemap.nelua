@@ -1,3 +1,7 @@
+-- The Tilemap module, it implements a simple tilemap implementation to quickstart your maps.
+--
+-- > Note: this module uses memory allocation with the default allocator.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details

@@ -1,12 +1,10 @@
+-- The spritesheet module, it makes easier to draw single sprites
+-- from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
-
---[[
-The spritesheet module, it makes easier to draw single sprites
-from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
-]]
 
 local hashmap = require 'hashmap'
 local vector = require 'vector'

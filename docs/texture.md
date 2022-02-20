@@ -9,6 +9,10 @@
 * [Texture.load](#textureload)
 * [Texture:draw](#texturedraw)
 
+## texture
+
+The Texture module.
+
 ### Texture
 
 ```lua
@@ -146,7 +150,7 @@ Related Nene documentation:
 * [Nene.set_raw_texture_color_mod](init.md#neneset_raw_texture_color_mod)
 * [Nene.render_copy](init.md#nenerender_copy)
 * [Color](color.md#color)
-* [Math.Rect](rect.md#rect)
-* [Math.Vec2](vec2.md#vec2)
+* [Math.Rect](math/rect.md#rect)
+* [Math.Vec2](math/vec2.md#vec2)
 
 ---

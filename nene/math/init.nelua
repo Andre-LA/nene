@@ -1,3 +1,6 @@
+-- The general math module, in case you prefer just requiring the `nene.math` module
+-- instead of requiring each math module.
+
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
 -- Please refer to the LICENSE file for details
