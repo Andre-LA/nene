@@ -1,32 +1,43 @@
-require 'hashmap'
-require 'vector'
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
 
-require 'nene.core'
-require 'nene.colors'
-require 'nene.math'
-require 'nene.texture'
+--[[
+The spritesheet module, it makes easier to draw single sprites
+from a [spritesheet](https://en.wikipedia.org/wiki/Texture_atlas).
+]]
 
-local Vec2, Rect, Grid = Math.Vec2, Math.Rect, Math.Grid
+local hashmap = require 'hashmap'
+local vector = require 'vector'
+
+local Nene = require 'nene'
+local Color = require 'nene.color'
+
+local Vec2 = require 'nene.math.vec2'
+local Rect = require 'nene.math.rect'
+local Grid = require 'nene.math.grid'
+
+local Texture = require 'nene.texture'
 
 -- The `SpriteSheet` module is used to use and draw sprites.
-global SpriteSheet = @record{
+local SpriteSheet = @record{
   grid: Grid,              -- spritesheet grid
   sprites_per_line: isize, -- how many sprites fit in a line of this grid
 }
 
--- get the column and row of the grid from an index of this spritesheet.
+-- Get the column and row of the grid from an index of this spritesheet.
 function SpriteSheet:get_sprite_column_row(index: isize): (isize, isize)
   return Grid.get_nth_cell_column_row(index, self.sprites_per_line)
 end
 
--- get the source get from the spritesheet at the column and row.
+-- Get the source get from the spritesheet at the column and row.
 function SpriteSheet:get_source_rect(column: isize, row: isize)
   return self.grid:gen_rect(column, row)
 end
 
--- draw the sprite from the spritesheet
+-- Draw the sprite from the spritesheet
 function SpriteSheet:draw(
-  nene: Nene,
   position: Vec2,
   spritesheet_texture: Texture,
   sprite_index: isize,
@@ -36,6 +47,8 @@ function SpriteSheet:draw(
   flip_horizontal: facultative(boolean),
   flip_vertical: facultative(boolean)
 )
+  local nene = Nene.instance()
+
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
@@ -50,5 +63,7 @@ function SpriteSheet:draw(
     h = sprite_source.h
   }
 
-  spritesheet_texture:draw(nene, color, sprite_source, destination, angle, center, flip_horizontal, flip_vertical)
+  spritesheet_texture:draw(color, sprite_source, destination, angle, center, flip_horizontal, flip_vertical)
 end
+
+return SpriteSheet

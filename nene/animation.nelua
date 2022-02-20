@@ -1,5 +1,12 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+-- Animation module, contains just a single record that can be useful for animation
+
 -- Animation range type, used on Spritesheets
-global AnimationRange = @record{
+local AnimationRange = @record{
   fps: number,   -- frames per second of this animation
   from: usize,   -- first frame
   to: usize,     -- last frame
@@ -10,3 +17,5 @@ global AnimationRange = @record{
 function AnimationRange.__eq(l: AnimationRange, r: AnimationRange): boolean
   return l.from == r.from and l.to == r.to and l.fps == r.fps
 end
+
+return AnimationRange

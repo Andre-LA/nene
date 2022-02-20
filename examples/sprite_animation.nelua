@@ -1,40 +1,38 @@
--- spritesheet example, more detailed explanation about nene
--- is available at pong example.
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
 
-require 'math'
+-- this demo presents how to use the spritesheet module and using some more advanced texture drawing
 
--- here we only require the core and the spritesheet  of course, others nene modules
--- will be required as dependencies, like the Colors module, since it's one
--- of the a spritesheet depedencies.
-require 'nene.core'
-require 'nene.wrappers.sdl'
-require 'nene.texture'
-require 'nene.spritesheet'
+local math = require 'math'
+
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Texture = require 'nene.texture'
+local SpriteSheet = require 'nene.spritesheet'
 
 -- Here all the game code is inside a "game" function because it make address sanitizer more detailed.
 -- In your games, you may use a "game frame" function, this makes web port easier.
 -- Since a web port is beyond this example, using just a "game" function is enough.
 local function game()
   -- initialize nene and test if got succesfully initialized
-  local ok, nene = Nene.init('nene sprite animation', (64*4), (64*4))
+  local ok, nene <close> = Nene.init('nene sprite animation', (64*4), (64*4))
   assert(ok, 'error: nene initialization failed')
-  -- defer nene termination
-  defer nene:terminate() end
 
   -- rotation parameter, will be increasing over time
   local rotation = 0.0
 
   -- create a texture with img_shapes.png image on it
-  -- then test initialization and defers it's destruction
+  -- then test initialization and defers it's destruction using to-be-closed variable
   -- note that img_shapes images contains four shapes, on a 32x32 alignment.
-  local sprites_texture, ok = Texture.load(nene, 'resources/img_shapes.png')
+  local ok, sprites_texture <close> = Texture.load('resources/img_shapes.png')
   assert(ok, "error: 'img_shapes.png' could not be loaded")
-  defer sprites_texture:destroy() end
 
   -- set the spritesheet values which will be used with the texture created above
   local spritesheet: SpriteSheet = {
-    grid = { cell_size = {32, 32} }, -- sprite dimensions
-    sprites_per_line = 2, -- how many sprites exists per line
+    grid = { cell_size = {32, 32} }, -- each sprite dimensions, the Grid module also permits using gaps
+    sprites_per_line = 2,            -- how many sprites exists per line
   }
 
   -- let's create a timer, this will store the time just after SDL (nene) initialization.
@@ -67,10 +65,11 @@ local function game()
 
     -- then, draw the sprite from the spritesheet at {10, 10} position, using
     -- the sprite texture, using the sprite index.
+    --
     -- note that spritesheet doesn't contains the texture it should render on the
     -- fields, this should be passed as an argument, the reason for this is that
     -- when a module needs an external resource, it "asks" for it through parameters.
-    spritesheet:draw(nene, {x = 10, y = 10}, sprites_texture, sprite_index, Color.Palette.white, rotation)
+    spritesheet:draw({x = 10, y = 10}, sprites_texture, sprite_index, Color.Palette.white, rotation)
 
     -- finally, swap buffers and present our final result
     nene:render_present()

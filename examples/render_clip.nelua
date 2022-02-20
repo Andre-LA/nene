@@ -1,22 +1,26 @@
--- see pong and spritesheet for more details about nene itself
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
 
-require 'nene.core'
-require 'nene.colors'
-require 'nene.math'
+-- This example shows how to using render clipping using a rectangle.
+
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Rect = require 'nene.math.rect'
 
 local function rects()
-  local ok, nene = Nene.init('nene render rect clip', 256, 256)
+  local ok, nene <close> = Nene.init('nene render rect clip', 256, 256)
   assert(ok, 'error: nene initialization failed')
-  defer nene:terminate() end
 
   -- create two rects
-  local rect_clip: Math.Rect = {0, 0, 48, 48}
+  local rect_clip: Rect = {0, 0, 48, 48}
 
   repeat
     nene:poll_events()
 
     -- copy mouse position to rect_clip position
-    rect_clip:set_pos(nene.mouse_pos)
+    rect_clip = rect_clip:with_position(nene.mouse_pos)
 
     nene:render_clear(Color.Palette.bg)
 
@@ -26,7 +30,8 @@ local function rects()
       nene:render_draw_line({0, 16 * i}, {256, 16 * i}, Color.Palette.black)
     end
 
-    nene:set_clip(rect_clip)
+    -- set render clipping
+    nene:set_render_clip(rect_clip)
 
     -- draw both rects with white lines
     nene:render_draw_rect(rect_clip, true, Color.Palette.red)
