@@ -1,5 +1,7 @@
 ### Summary
 * [Texture](#texture)
+* [Texture.Access](#textureaccess)
+* [Texture.Modulate](#texturemodulate)
 * [Texture:get_raw](#textureget_raw)
 * [Texture:destroy](#texturedestroy)
 * [Texture:__close](#texture__close)
@@ -26,6 +28,40 @@ local Texture = @record{
 ```
 
 Wraps an internal (SDL) Texture
+
+### Texture.Access
+
+```lua
+global Texture.Access = @enum(cint){
+  Static = 0,
+  Streaming = 1,
+  Target = 2
+}
+```
+
+"An enumeration of texture access patterns"
+
+It's actually a copy of SDL_TextureAccess enum
+
+Related SDL documentation:
+  * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
+
+### Texture.Modulate
+
+```lua
+global Texture.Modulate = @enum(cint){
+  None = 0,
+  Color = 1,
+  Alpha = 2
+}
+```
+
+"An enumeration of the texture channel modulation"
+
+It's actually a copy of SDL_TextureModulate enum
+
+Related SDL documentation:
+  * [SDL_TextureModulate](https://wiki.libsdl.org/SDL_TextureModulate)
 
 ### Texture:get_raw
 

@@ -27,6 +27,34 @@ local Texture = @record{
 }
 
 --[[
+"An enumeration of texture access patterns"
+
+It's actually a copy of SDL_TextureAccess enum
+
+Related SDL documentation:
+  * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
+]]
+global Texture.Access = @enum(cint){
+  Static = 0,
+  Streaming = 1,
+  Target = 2
+}
+
+--[[
+"An enumeration of the texture channel modulation"
+
+It's actually a copy of SDL_TextureModulate enum
+
+Related SDL documentation:
+  * [SDL_TextureModulate](https://wiki.libsdl.org/SDL_TextureModulate)
+]]
+global Texture.Modulate = @enum(cint){
+  None = 0,
+  Color = 1,
+  Alpha = 2
+}
+
+--[[
 Returns the `pointer(SDL_Texture)` internal data.
 
 It also [`check`](https://nelua.io/libraries/#check)s if the internal data is `nilptr`.

@@ -68,9 +68,9 @@ function Racket:update(is_player_one: boolean <comptime>)
   local is_up, is_down = false, false
 
   ## if is_player_one.value then
-    is_up, is_down = nene:get_scancode(SDL_SCANCODE_W), nene:get_scancode(SDL_SCANCODE_S)
+    is_up, is_down = nene:get_scancode(Nene.Scancode.W), nene:get_scancode(Nene.Scancode.S)
   ## else
-    is_up, is_down = nene:get_scancode(SDL_SCANCODE_I), nene:get_scancode(SDL_SCANCODE_K)
+    is_up, is_down = nene:get_scancode(Nene.Scancode.I), nene:get_scancode(Nene.Scancode.K)
   ## end
 
   -- movement
@@ -167,7 +167,7 @@ local function game()
   -- note that the value comes from SDL directly, while Nene abstracts SDL many
   -- times, it doesn't try to hide it, so you will interact with SDL sometimes,
   -- especially to go beyond Nene capabilities if needed.
-  local ok, screen <close> = Texture.create_texture(SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, SDL_TEXTUREACCESS_TARGET)
+  local ok, screen <close> = Texture.create_texture(SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, Texture.Access.Target)
   assert(ok, 'could not create the screen texture target')
 
   -- creates players rackets and the ball
