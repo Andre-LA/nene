@@ -642,7 +642,7 @@ Returns an `ok` status with `true` value if successful and the created Texture a
 > Note: You can pass a `Texture.Acess` argument on the `access` parameter.
 
 Related Nene documentation:
-* [Texture.Access](texture.md)
+* [Texture.Access](texture.md#textureaccess)
 
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
