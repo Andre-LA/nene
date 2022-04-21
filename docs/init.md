@@ -3,6 +3,7 @@
 * [Nene](#nene)
 * [Nene.initialized](#neneinitialized)
 * [Nene.instance](#neneinstance)
+* [Nene.Scancode](#nenescancode)
 * [Nene.EventsCallbacks](#neneeventscallbacks)
 * [Nene:poll_events](#nenepoll_events)
 * [Nene:get_window_size](#neneget_window_size)
@@ -87,6 +88,14 @@ function Nene.instance(): *Nene
 ```
 
 [Check](https://nelua.io/libraries/#check)s if Nene is initialized and then returns the running nene instance.
+
+### Nene.Scancode
+
+```lua
+global Nene.Scancode: type
+```
+
+Nene's scancode, aliases of SDL's scancode, for more details, open [scancode's documentation](scancode.md)
 
 ### Nene.EventsCallbacks
 
@@ -180,7 +189,7 @@ Related SDL documentation:
 ### Nene:get_scancode
 
 ```lua
-function Nene:get_scancode(scancode: SDL_Scancode, is_down: facultative(boolean)): boolean
+function Nene:get_scancode(scancode: Nene.Scancode, is_down: facultative(boolean)): boolean
 ```
 
 Returns the state of `scancode`.
@@ -188,6 +197,9 @@ Returns the state of `scancode`.
 * if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
 * if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
 * if `is_down` is `nil`, then it returns if is simply currently pressed.
+
+Related Nene documentation:
+* [Scancode](scancode.md)
 
 Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
@@ -379,9 +391,15 @@ Creates a Texture for the rendering context.
 
 Returns an `ok` status with `true` value if successful and the created Texture as `SDL_Texture`.
 
+> Note: You can pass a `Texture.Acess` argument on the `access` parameter.
+
+Related Nene documentation:
+* [Texture.Access](texture.md#textureaccess)
+
 Related SDL documentation:
 * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
 * [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
+* [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
 
 ### Nene:create_raw_texture_from_surface
 

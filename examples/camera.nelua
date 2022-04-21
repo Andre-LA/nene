@@ -79,15 +79,15 @@ local function camera()
     nene:poll_events()
 
     -- modify `render_offset` field in order to get a basic camera control --
-    if nene:get_scancode(SDL_SCANCODE_RIGHT) then
+    if nene:get_scancode(Nene.Scancode.Right) then
       nene.render_offset.x = nene.render_offset.x + 1
-    elseif nene:get_scancode(SDL_SCANCODE_LEFT) then
+    elseif nene:get_scancode(Nene.Scancode.Left) then
       nene.render_offset.x = nene.render_offset.x - 1
     end
 
-    if nene:get_scancode(SDL_SCANCODE_UP) then
+    if nene:get_scancode(Nene.Scancode.Up) then
       nene.render_offset.y = nene.render_offset.y - 1
-    elseif nene:get_scancode(SDL_SCANCODE_DOWN) then
+    elseif nene:get_scancode(Nene.Scancode.Down) then
       nene.render_offset.y = nene.render_offset.y + 1
     end
 
