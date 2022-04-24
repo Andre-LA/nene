@@ -230,7 +230,7 @@ local function game()
       end
 
       -- reset render target to window screen, this is the default when no render target is used.
-      nene:set_render_target()
+      nene:set_render_target(nilptr)
 
       -- draw the whole screen on the whole window screen.
       screen:draw()

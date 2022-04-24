@@ -455,7 +455,7 @@ function Nene:set_render_target(texture_target: facultative(*SDL_Texture)): bool
 
 Set a `texture_target` as rendering target.
 
-If `texture_target` is not given, then the target will be the window.
+If `nilptr` is given for `texture_target`, then the target will be the window itself.
 
 Returns an `ok` status with `true` value if successful.
 
