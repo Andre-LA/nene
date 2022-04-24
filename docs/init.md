@@ -7,7 +7,11 @@
 * [Nene.EventsCallbacks](#neneeventscallbacks)
 * [Nene:poll_events](#nenepoll_events)
 * [Nene:get_window_size](#neneget_window_size)
+* [Nene:get_scancode_down](#neneget_scancode_down)
+* [Nene:get_scancode_up](#neneget_scancode_up)
 * [Nene:get_scancode](#neneget_scancode)
+* [Nene:get_mouse_button_down](#neneget_mouse_button_down)
+* [Nene:get_mouse_button_up](#neneget_mouse_button_up)
 * [Nene:get_mouse_button](#neneget_mouse_button)
 * [Nene:set_render_draw_color](#neneset_render_draw_color)
 * [Nene:set_render_draw_blend_mode](#neneset_render_draw_blend_mode)
@@ -186,24 +190,98 @@ Get the size of the current window.
 Related SDL documentation:
 * [SDL_GetWindowSize](https://wiki.libsdl.org/SDL_GetWindowSize)
 
+### Nene:get_scancode_down
+
+```lua
+function Nene:get_scancode_down(scancode: Nene.Scancode): boolean
+```
+
+Returns if the passed `scancode` it's pressed down, that is, if it's currently pressed now, but it wasn't on
+the previous frame.
+
+> Scancode it's a keyboard-layout independent "key", for more details, read SDL's documentation about Scancodes.
+
+Related Nene documentation:
+* [Scancode](scancode.md)
+* [Nene.get_scancode](init.md#neneget_scancode)
+* [Nene.get_scancode_up](init.md#neneget_scancode_up)
+
+Related SDL documentation:
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+
+### Nene:get_scancode_up
+
+```lua
+function Nene:get_scancode_up(scancode: Nene.Scancode): boolean
+```
+
+Returns if the passed `scancode` was unpressed, that is, if it isn't currently pressed now, but it was on
+the previous frame.
+
+Related Nene documentation:
+* [Scancode](scancode.md)
+* [Nene.get_scancode](init.md#neneget_scancode)
+* [Nene.get_scancode_down](init.md#neneget_scancode_down)
+
+Related SDL documentation:
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+
 ### Nene:get_scancode
 
 ```lua
 function Nene:get_scancode(scancode: Nene.Scancode, is_down: facultative(boolean)): boolean
 ```
 
-Returns the state of `scancode`.
+Returns the current state of `scancode`, that is, if it's currently pressed now.
 
-* if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
-* if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
-* if `is_down` is `nil`, then it returns if is simply currently pressed.
+> Scancode it's a keyboard-layout independent "key", for more details, read SDL's documentation about Scancodes.
 
 Related Nene documentation:
 * [Scancode](scancode.md)
+* [Nene.get_scancode_down](init.md#neneget_scancode_down)
+* [Nene.get_scancode_up](init.md#neneget_scancode_up)
 
 Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+
+### Nene:get_mouse_button_down
+
+```lua
+function Nene:get_mouse_button_down(mouse_button: isize): boolean
+```
+
+Returns if the `mouse_button`-nth mouse button get's pressed, that is,
+if this mouse button was just pressed on the current frame, but it wasn't pressed on the previous frame.
+
+> 0 is the left-click, 1 is middle-click, 2 is right-click, and so on.
+
+Related Nene documentation:
+* [Nene.get_mouse_button](init.md#neneget_mouse_button)
+* [Nene.get_mouse_button_up](init.md#neneget_mouse_button_up)
+
+Related SDL documentation:
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
+
+### Nene:get_mouse_button_up
+
+```lua
+function Nene:get_mouse_button_up(mouse_button: isize): boolean
+```
+
+Returns if the `mouse_button`-nth mouse button got unpressed, that is,
+if this mouse button isn't pressed on the current frame, but it was pressed on the previous frame.
+
+> 0 is the left-click, 1 is middle-click, 2 is right-click, and so on.
+
+Related Nene documentation:
+* [Nene.get_mouse_button](init.md#neneget_mouse_button)
+* [Nene.get_mouse_button_down](init.md#neneget_mouse_button_down)
+
+Related SDL documentation:
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
 
 ### Nene:get_mouse_button
 
@@ -211,11 +289,16 @@ Related SDL documentation:
 function Nene:get_mouse_button(mouse_button: isize, is_down: facultative(boolean)): boolean
 ```
 
-Returns the state of a mouse button.
+Returns if the `mouse_button`-nth mouse button is currently pressed.
 
-* if `is_down` is `true`, then it returns if this mouse button was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
-* if `is_down` is `false`, then it returns if this mouse button was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
-* if `is_down` is `nil`, then it returns if is simply currently pressed.
+> 0 is the left-click, 1 is middle-clic, 2 is right-click, and so on.
+
+Related Nene documentation:
+* [Nene.get_mouse_button_down](init.md#neneget_mouse_button_down)
+* [Nene.get_mouse_button_up](init.md#neneget_mouse_button_up)
+
+Related SDL documentation:
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
 
 ### Nene:set_render_draw_color
 

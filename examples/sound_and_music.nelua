@@ -24,7 +24,7 @@ local function audio_and_music()
   repeat
     nene:poll_events()
 
-    if nene:get_scancode(Nene.Scancode.Space, true) or nene:get_mouse_button(0, true) then
+    if nene:get_scancode_down(Nene.Scancode.Space) or nene:get_mouse_button_down(0) then
       click:play()
     end
 

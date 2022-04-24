@@ -284,14 +284,52 @@ function Nene:get_window_size(): (cint, cint)
 end
 
 --[[
-Returns the state of `scancode`.
+Returns if the passed `scancode` it's pressed down, that is, if it's currently pressed now, but it wasn't on
+the previous frame.
 
-* if `is_down` is `true`, then it returns if this scancode was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
-* if `is_down` is `false`, then it returns if this scancode was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
-* if `is_down` is `nil`, then it returns if is simply currently pressed.
+> Scancode it's a keyboard-layout independent "key", for more details, read SDL's documentation about Scancodes.
 
 Related Nene documentation:
 * [Scancode](scancode.md)
+* [Nene.get_scancode](init.md#neneget_scancode)
+* [Nene.get_scancode_up](init.md#neneget_scancode_up)
+
+Related SDL documentation:
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+]]
+function Nene:get_scancode_down(scancode: Nene.Scancode): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  return self.keyboard_state[scancode] and not self.prev_keyboard_state[scancode]
+end
+
+--[[
+Returns if the passed `scancode` was unpressed, that is, if it isn't currently pressed now, but it was on
+the previous frame.
+
+Related Nene documentation:
+* [Scancode](scancode.md)
+* [Nene.get_scancode](init.md#neneget_scancode)
+* [Nene.get_scancode_down](init.md#neneget_scancode_down)
+
+Related SDL documentation:
+* [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
+* [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+]]
+function Nene:get_scancode_up(scancode: Nene.Scancode): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  return not self.keyboard_state[scancode] and self.prev_keyboard_state[scancode]
+end
+
+--[[
+Returns the current state of `scancode`, that is, if it's currently pressed now.
+
+> Scancode it's a keyboard-layout independent "key", for more details, read SDL's documentation about Scancodes.
+
+Related Nene documentation:
+* [Scancode](scancode.md)
+* [Nene.get_scancode_down](init.md#neneget_scancode_down)
+* [Nene.get_scancode_up](init.md#neneget_scancode_up)
 
 Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
@@ -303,38 +341,78 @@ function Nene:get_scancode(scancode: Nene.Scancode, is_down: facultative(boolean
   ## if is_down.type.is_niltype then
     return self.keyboard_state[scancode]
   ## else
-    local currently_pressed = self.keyboard_state[scancode]
-    local previously_pressed = self.prev_keyboard_state[scancode]
-
+    ## print('DEPRECATED: `is_down` parameter is now deprecated, please use `get_scancode_down` and `get_scancode_up` instead')
     if is_down then
-      return currently_pressed and not previously_pressed
+      return self:get_scancode_down(scancode)
     else
-      return not currently_pressed and previously_pressed
+      return self:get_scancode_up(scancode)
     end
   ## end
 end
 
 --[[
-Returns the state of a mouse button.
+Returns if the `mouse_button`-nth mouse button get's pressed, that is,
+if this mouse button was just pressed on the current frame, but it wasn't pressed on the previous frame.
 
-* if `is_down` is `true`, then it returns if this mouse button was just pressed on the current frame (that is, it wasn't pressed on the previous frame);
-* if `is_down` is `false`, then it returns if this mouse button was just released on the current frame (that is, it was pressed on the previous frame, but currently it isn't).
-* if `is_down` is `nil`, then it returns if is simply currently pressed.
+> 0 is the left-click, 1 is middle-click, 2 is right-click, and so on.
+
+Related Nene documentation:
+* [Nene.get_mouse_button](init.md#neneget_mouse_button)
+* [Nene.get_mouse_button_up](init.md#neneget_mouse_button_up)
+
+Related SDL documentation:
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
+]]
+function Nene:get_mouse_button_down(mouse_button: isize): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  check(mouse_button >= 0 and mouse_button < (#self.mouse_buttons), 'Invalid `mouse_button` value')
+  return self.mouse_buttons[mouse_button] and not self.prev_mouse_buttons[mouse_button]
+end
+
+--[[
+Returns if the `mouse_button`-nth mouse button got unpressed, that is,
+if this mouse button isn't pressed on the current frame, but it was pressed on the previous frame.
+
+> 0 is the left-click, 1 is middle-click, 2 is right-click, and so on.
+
+Related Nene documentation:
+* [Nene.get_mouse_button](init.md#neneget_mouse_button)
+* [Nene.get_mouse_button_down](init.md#neneget_mouse_button_down)
+
+Related SDL documentation:
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
+]]
+function Nene:get_mouse_button_up(mouse_button: isize): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+  check(mouse_button >= 0 and mouse_button < (#self.mouse_buttons), 'Invalid `mouse_button` value')
+  return not self.mouse_buttons[mouse_button] and self.prev_mouse_buttons[mouse_button]
+end
+
+--[[
+Returns if the `mouse_button`-nth mouse button is currently pressed.
+
+> 0 is the left-click, 1 is middle-clic, 2 is right-click, and so on.
+
+Related Nene documentation:
+* [Nene.get_mouse_button_down](init.md#neneget_mouse_button_down)
+* [Nene.get_mouse_button_up](init.md#neneget_mouse_button_up)
+
+Related SDL documentation:
+* [SDL_GetMouseState](https://wiki.libsdl.org/SDL_GetMouseState)
 ]]
 function Nene:get_mouse_button(mouse_button: isize, is_down: facultative(boolean)): boolean
   check(Nene.initialized, 'Nene is not initialized')
-  check(mouse_button >= 0 and mouse_button < (#self.mouse_buttons), 'Invalid button value')
+  check(mouse_button >= 0 and mouse_button < (#self.mouse_buttons), 'Invalid `mouse_button` value')
 
   ## if is_down.type.is_niltype then
     return self.mouse_buttons[mouse_button]
   ## else
-    local currently_pressed = self.mouse_buttons[mouse_button]
-    local previously_pressed = self.prev_mouse_buttons[mouse_button]
+    ## print('DEPRECATED: `is_down` parameter is now deprecated, please use `get_mouse_button_down` and `get_mouse_button_up` instead')
 
     if is_down then
-      return currently_pressed and not previously_pressed
+      return self:get_mouse_button_down(mouse_button)
     else
-      return not currently_pressed and previously_pressed
+      return self:get_mouse_button_up(mouse_button)
     end
   ## end
 end
