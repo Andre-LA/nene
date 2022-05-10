@@ -26,7 +26,7 @@ local function rects()
 
     -- create a third rect, which is a resolved collision between the
     -- two above, note that is a very simple collision algorhythm
-    local is_intersecting, col_rect = rect_a:simple_collision(rect_b)
+    local is_intersecting, col_rect, intersection = rect_a:simple_collision(rect_b)
 
     nene:render_clear(Color.Palette.bg)
 
@@ -34,14 +34,11 @@ local function rects()
     nene:render_draw_rect(rect_a, true, Color.Palette.white)
     nene:render_draw_rect(rect_b, true) -- when a color is not passed, then `Color.Palette.white` will be used
 
-    -- draw cyan filled rect with the collision resolved
     if is_intersecting then
+      -- draw cyan filled rect with the collision resolved
       nene:render_draw_rect(col_rect, false, Color.Palette.cyan)
-    end
 
-    -- draw intersection with yellow filled rect
-    local intersection, is_intersecting = rect_a:get_intersection(rect_b)
-    if is_intersecting then
+      -- draw intersection with yellow filled rect
       nene:render_draw_rect(intersection, false, Color.Palette.yellow)
     end
 

@@ -106,15 +106,15 @@ get the center of rectangle.
 ### Rectn.simple_collision
 
 ```lua
-function Rectn.simple_collision(self: Rectn, intersected: Rectn): (boolean, Rectn)
+function Rectn.simple_collision(self: Rectn, intersected: Rectn): (boolean, Rectn, Rectn)
 ```
 
-a very simple collision resolution, it returns a rectangle result from the resolution,
-it may be improved on future releases.
+A very simple collision resolution.
 
 It returns:
 * a boolean which contains if the two rectangles were really intersecting
-* a new rectangle with the collision resolved
+* a rectangle with the collision resolved
+* a rectangle of the intersection between the rectangles
 
 ### Rectn
 

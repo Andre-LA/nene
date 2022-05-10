@@ -142,13 +142,13 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
     }
   end
 
-  -- a very simple collision resolution, it returns a rectangle result from the resolution,
-  -- it may be improved on future releases.
+  -- A very simple collision resolution.
   --
   -- It returns:
   -- * a boolean which contains if the two rectangles were really intersecting
-  -- * a new rectangle with the collision resolved
-  function Rectn.simple_collision(self: Rectn, intersected: Rectn): (boolean, Rectn)
+  -- * a rectangle with the collision resolved
+  -- * a rectangle of the intersection between the rectangles
+  function Rectn.simple_collision(self: Rectn, intersected: Rectn): (boolean, Rectn, Rectn)
     local function resolve_vertical(result: Rectn, self: Rectn, self_center: Vec2T, intersected: Rectn, intersected_center: Vec2T): (Rectn)
       if self_center.y < intersected_center.y then -- go to top
         result.y = intersected.y - self.h
@@ -190,7 +190,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
       result = resolve_horizontal(result, self, self_center, intersected, intersected_center)
     end
 
-    return true, result
+    return true, result, intersection
   end
 
   ## return Rectn
