@@ -8,8 +8,8 @@
 local Audio = @record{}
 
 -- [Sound module](sound.md)
-global Audio.Sound: type = require 'nene.audio.sound'
+local Audio.Sound: type = require 'nene.audio.sound'
 -- [Music module](music.md)
-global Audio.Music: type = require 'nene.audio.music'
+local Audio.Music: type = require 'nene.audio.music'
 
 return Audio

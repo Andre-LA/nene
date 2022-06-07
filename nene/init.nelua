@@ -68,7 +68,7 @@ local Nene = @record{
   The initialization state of Nene, it's set to `true` by `Nene.init` and
   set to `false` by `Nene.terminate`, it shouldn't be modified by any other function.
 ]]
-global Nene.initialized: boolean = false
+local Nene.initialized: boolean = false
 
 local instance: Nene;
 
@@ -78,8 +78,8 @@ function Nene.instance(): *Nene
   return &instance
 end
 
--- Nene's scancode, aliases of SDL's scancode, for more details, open [scancode's documentation](scancode.md)
-global Nene.Scancode: type = require 'nene.scancode'
+-- Nene's scancodes, alias of [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode), for more details, open [scancode's documentation](scancode.md)
+local Nene.Scancode: type = require 'nene.scancode'
 
 --[[
 The callbacks that can be passed on `Core:poll_events` method
@@ -113,7 +113,7 @@ Related SDL documentation:
 * [SDL_DollarGestureEvent](https://wiki.libsdl.org/SDL_DollarGestureEvent)
 * [SDL_DropEvent](https://wiki.libsdl.org/SDL_DropEvent)
 ]]
-global Nene.EventsCallbacks = @record{
+local Nene.EventsCallbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
   edit_cb    : function(edit    : SDL_TextEditingEvent),      -- edit text editing event data

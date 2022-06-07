@@ -14,7 +14,7 @@ local Font = @record{
 }
 
 -- To get a better understanding about these metrics, read the ["FreeType 2 Tutorial; Step 2 — managing glyphs"](http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html)
-global Font.GlyphMetrics = @record{
+local Font.GlyphMetrics = @record{
   minx: cint, maxx: cint,
   miny: cint, maxy: cint,
   advance: cint

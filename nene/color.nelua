@@ -23,7 +23,7 @@ The general color pallete of Nene
 
 > Note: This is not related to [`SDL_Pallete`](https://wiki.libsdl.org/SDL_Palette) data structure.
 ]]
-global Color.Palette: record{
+local Color.Palette: record{
   black: Color,  --  = { 0x00, 0x00, 0x00, 0xff }
   white: Color,  --  = { 0xff, 0xff, 0xff, 0xff }
   red: Color,    --  = { 0xff, 0x00, 0x00, 0xff }

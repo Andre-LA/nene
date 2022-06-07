@@ -18,12 +18,12 @@ local Grid = require 'nene.math.grid'
 
 local Math = @record{}
 
-global Math.Vec2i = Vec2i
-global Math.Vec2 = Vec2
+local Math.Vec2i = Vec2i
+local Math.Vec2 = Vec2
 
-global Math.Rect = Rect
-global Math.Rectf = Rectf
+local Math.Rect = Rect
+local Math.Rectf = Rectf
 
-global Math.Grid = Grid
+local Math.Grid = Grid
 
 return Math
