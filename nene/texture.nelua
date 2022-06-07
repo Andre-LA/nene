@@ -17,41 +17,48 @@ require 'nene.macros'
 
 require 'nene.raw.sdl2'
 
--- Wraps an internal (SDL) Texture
+--[[
+Wraps an internal (SDL2) Texture
+
+Related SDL documentation:
+  * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+  * [SDL_PixelFormatEnum](https://wiki.libsdl.org/SDL_PixelFormatEnum)
+  * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
+]]
 local Texture = @record{
   _data: *SDL_Texture,         -- internal data, don't use it directly, use methods instead
   width: cint,                 -- width of the texture in pixels
   height: cint,                -- height of the texture in pixels
-  format: SDL_PixelFormatEnum, -- texture pixel format
-  access: SDL_TextureAccess,   -- texture access pattern
+  format: Nene.PixelFormat,    -- texture pixel format
+  access: SDL_TextureAccess,   -- texture access pattern, you can use Texture.Access type
 }
 
 --[[
-"An enumeration of texture access patterns"
+_"An enumeration of texture access patterns"_
 
-It's actually a copy of SDL_TextureAccess enum
+It's a copy of SDL_TextureAccess enum, see below:
 
 Related SDL documentation:
   * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
 ]]
-global Texture.Access = @enum(cint){
-  Static = 0,
-  Streaming = 1,
-  Target = 2
+local Texture.Access = @enum(cint){
+  Static = SDL_TEXTUREACCESS_STATIC,
+  Streaming = SDL_TEXTUREACCESS_STREAMING,
+  Target = SDL_TEXTUREACCESS_TARGET,
 }
 
 --[[
-"An enumeration of the texture channel modulation"
+_"An enumeration of the texture channel modulation used in SDL_RenderCopy()."_
 
-It's actually a copy of SDL_TextureModulate enum
+It's a copy of SDL_TextureModulate enum, see below:
 
 Related SDL documentation:
   * [SDL_TextureModulate](https://wiki.libsdl.org/SDL_TextureModulate)
 ]]
-global Texture.Modulate = @enum(cint){
-  None = 0,
-  Color = 1,
-  Alpha = 2
+local Texture.Modulate = @enum(cint) {
+  None = SDL_TEXTUREMODULATE_NONE,
+  Color = SDL_TEXTUREMODULATE_COLOR,
+  Alpha = SDL_TEXTUREMODULATE_ALPHA,
 }
 
 --[[
@@ -145,15 +152,15 @@ Related SDL2 documentation:
 * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
 * [SDL_CreateTexture](https://wiki.libsdl.org/SDL_CreateTexture)
 ]]
-function Texture.create_texture(width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): (boolean, Texture)
+function Texture.create_texture(width: cint, height: cint, format: facultative(Nene.PixelFormat), access: facultative(Texture.Access)): (boolean, Texture)
   local nene: *Nene = Nene.instance()
 
   ## if format.type.is_niltype then
-  local format: SDL_PixelFormatEnum = SDL_PIXELFORMAT_RGBA8888
+  local format: Nene.PixelFormat = Nene.PixelFormat.RGBA8888
   ## end
 
   ## if access.type.is_niltype then
-  local access: SDL_TextureAccess = SDL_TEXTUREACCESS_STATIC
+  local access: Texture.Access = Texture.Access.Static
   ## end
 
   local ok, raw_texture = nene:create_raw_texture(format, access, width, height)
