@@ -117,12 +117,12 @@ function Texture:apply_raw(new_tex: *SDL_Texture): (boolean)
 
   if SDL_QueryTexture(new_tex, &fmt, &access, &w, &h) ~= 0 then
     warn_msg!('Texture.apply_raw', 'failed to query applied texture')
-    return true
+    return false
   end
 
   self._data, self.width, self.height, self.format, self.access = new_tex, w, h, fmt, access
 
-  return false
+  return true
 end
 
 --[[
@@ -211,6 +211,8 @@ you can optionally pass the `source` rectangle if you want to draw a slice of th
 
 A `color` tint can be optionally passed, which is white by default.
 
+Returns an `ok` status with `true` value if the texture was successfully painted.
+
 Related Nene documentation:
 * [Nene.set_raw_texture_color_mod](init.md#neneset_raw_texture_color_mod)
 * [Nene.render_copy](init.md#nenerender_copy)
@@ -226,7 +228,7 @@ function Texture:draw(
   center: facultative(Vec2),
   flip_horizontal: facultative(boolean),
   flip_vertical: facultative(boolean)
-)
+): boolean
   local nene: *Nene = Nene.instance()
 
   ## if color.type.is_niltype then
@@ -246,11 +248,15 @@ function Texture:draw(
 
   if not nene:set_raw_texture_color_mod(raw_tex, color) then
     warn_msg!('Texture.draw', 'could not set the texture color modulation')
+    return false
   end
 
   if not nene:render_copy(raw_tex, source, destination, angle, center, flip_horizontal, flip_vertical) then
     warn_msg!('Texture.render_copy', 'could not draw the texture on the rendering target')
+    return false
   end
+
+  return true
 end
 
 return Texture
