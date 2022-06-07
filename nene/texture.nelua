@@ -126,6 +126,27 @@ function Texture:apply_raw(new_tex: *SDL_Texture): (boolean)
 end
 
 --[[
+Sets the texture's blend mode.
+
+Related Nene documentation:
+* [Nene.BlendMode](init.md#neneblendmode)
+
+Related SDL documentation
+* [SDL_BlendMode](https://wiki.libsdl.org/SDL_BlendMode)
+* [SDL_SetTextureBlendMode](https://wiki.libsdl.org/SDL_SetTextureBlendMode)
+]]
+function Texture:set_blend_mode(blend_mode: Nene.BlendMode): boolean
+  local raw_tex = self:get_raw()
+
+  if SDL_SetTextureBlendMode(raw_tex, blend_mode) ~= 0 then
+    warn_msg!('Texture.set_blend_mode', 'could not set the texture blend mode')
+    return false
+  end
+
+  return true
+end
+
+--[[
 Returns an initialized `Texture` with the given `raw_tex` applied.
 
 Related Nene documentation:
