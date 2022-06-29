@@ -349,10 +349,12 @@ Related SDL documentation:
 ### Nene:set_render_clip
 
 ```lua
-function Nene:set_render_clip(rect: Rect): boolean
+function Nene:set_render_clip(rect: facultative(Rect)): boolean
 ```
 
-Set clip rectangle for rendering
+Set clip rectangle for rendering.
+
+Set the passed `rect` as the clipping rectangle, if `nil` is passed, then the clipping is disabled.
 
 Returns an `ok` status with `true` value if successful.
 
