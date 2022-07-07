@@ -4,6 +4,7 @@
 * [Music.load](#musicload)
 * [Music:play](#musicplay)
 * [Music.stop](#musicstop)
+* [Music.set_volume](#musicset_volume)
 * [Music:destroy](#musicdestroy)
 * [Music:__close](#music__close)
 
@@ -72,6 +73,17 @@ Stops any playing music.
 
 Related SDL_mixer documentation:
 * [Mix_HaltMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_67.html)
+
+### Music.set_volume
+
+```lua
+function Music.set_volume(vol: number): number
+```
+
+Set the volume of the music by passing a number between 0 and 1 (0% and 100%).
+
+Related SDL_mixer documentation:
+* [Mix_VolumeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC61)
 
 ### Music:destroy
 

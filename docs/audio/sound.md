@@ -4,6 +4,7 @@
 * [Sound.load](#soundload)
 * [Sound:play](#soundplay)
 * [Sound:stop](#soundstop)
+* [Sound:set_volume](#soundset_volume)
 * [Sound:destroy](#sounddestroy)
 * [Sound:__close](#sound__close)
 
@@ -79,6 +80,17 @@ Halts (stop, interrupt) the sound.
 
 Related SDL_mixer documentation:
 * [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_34.html)
+
+### Sound:set_volume
+
+```lua
+function Sound:set_volume(vol: number): (boolean, number)
+```
+
+Set the volume of the sound by passing a number between 0 and 1 (0% and 100%).
+
+Related SDL_mixer documentation:
+* [Mix_VolumeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC23)
 
 ### Sound:destroy
 

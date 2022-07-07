@@ -7,6 +7,8 @@
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
 
+local math = require 'math'
+
 require 'nene.raw.sdl2_mixer'
 require 'nene.macros'
 
@@ -104,6 +106,26 @@ function Sound:stop()
   if self.channel >= 0 then
     Mix_HaltChannel(self.channel)
     self.channel = -1
+  end
+end
+
+--[[
+Set the volume of the sound by passing a number between 0 and 1 (0% and 100%).
+
+Related SDL_mixer documentation:
+* [Mix_VolumeChunk](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC23)
+]]
+function Sound:set_volume(vol: number): (boolean, number)
+  check(vol >= 0 and vol <= 1, "vol argument must a number between 0 and 1")
+  local new_volume: cint = math.clamp(math.ifloor(vol * MIX_MAX_VOLUME), 0, MIX_MAX_VOLUME)
+
+  local raw_sound = self:get_raw()
+
+  if raw_sound ~= nilptr then
+    local prev_vol = Mix_VolumeChunk(raw_sound, new_volume)
+    return true, (prev_vol / MIX_MAX_VOLUME)
+  else
+    return false
   end
 end
 

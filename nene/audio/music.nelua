@@ -5,6 +5,8 @@
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
 
+local math = require 'math'
+
 require 'nene.raw.sdl2_mixer'
 require 'nene.macros'
 
@@ -78,6 +80,19 @@ Related SDL_mixer documentation:
 ]]
 function Music.stop()
   Mix_HaltMusic()
+end
+
+--[[
+Set the volume of the music by passing a number between 0 and 1 (0% and 100%).
+
+Related SDL_mixer documentation:
+* [Mix_VolumeMusic](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC61)
+]]
+function Music.set_volume(vol: number): number
+  check(vol >= 0 and vol <= 1, "vol argument must a number between 0 and 1")
+  local new_volume: cint = math.clamp(math.ifloor(vol * MIX_MAX_VOLUME), 0, MIX_MAX_VOLUME)
+  local prev_vol = Mix_VolumeMusic(new_volume)
+  return prev_vol / MIX_MAX_VOLUME
 end
 
 --[[

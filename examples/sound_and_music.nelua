@@ -3,6 +3,8 @@
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
 
+local math = require 'math'
+
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Sound = require 'nene.audio.sound'
@@ -19,10 +21,28 @@ local function audio_and_music()
   local ok, bossa <close> = Music.load('resources/8bit Bossa.ogg')
   assert(ok, 'could not load 8bit Bossa music')
 
+  local mus_volume, click_volume = 1.0, 1.0
+
   bossa:play()
 
   repeat
     nene:poll_events()
+
+    if nene:get_scancode_down(Nene.Scancode.P) then
+      mus_volume = math.clamp(mus_volume + 0.1, 0.0, 1.0)
+      Music.set_volume(mus_volume)
+    elseif nene:get_scancode_down(Nene.Scancode.O) then
+      mus_volume = math.clamp(mus_volume - 0.1, 0.0, 1.0)
+      Music.set_volume(mus_volume)
+    end
+
+    if nene:get_scancode_down(Nene.Scancode.M) then
+      click_volume = math.clamp(click_volume + 0.1, 0.0, 1.0)
+      click:set_volume(click_volume)
+    elseif nene:get_scancode_down(Nene.Scancode.N) then
+      click_volume = math.clamp(click_volume - 0.1, 0.0, 1.0)
+      click:set_volume(click_volume)
+    end
 
     if nene:get_scancode_down(Nene.Scancode.Space) or nene:get_mouse_button_down(0) then
       click:play()
