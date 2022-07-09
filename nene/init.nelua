@@ -415,6 +415,37 @@ function Nene:get_scancode(scancode: Nene.Scancode, is_down: facultative(boolean
 end
 
 --[[
+This functions returns if the mouse cursor is visible or not, you can set this status by passing a boolean value.
+
+This function returns two booleans:
+
+1. It's the `ok` status, it's `true` when the function was successful.
+2. It's the cursor visibility status, it's `true` when it's visible.
+
+If you want to change the visibility, pass a boolean argument, where `true` make it visible.
+
+-- SDL related documentation:
+* [SDL_ShowCursor](https://wiki.libsdl.org/SDL_ShowCursor)
+]]
+function Nene.cursor_visibility(new_visibility: facultative(boolean)): (boolean, boolean)
+  ## if new_visibility.type.is_niltype then
+  local toggle: cint = SDL_QUERY
+  ## else
+  local toggle: cint = new_visibility and SDL_ENABLE or SDL_DISABLE
+  ## end
+
+  local ok = true
+  local raw_result = SDL_ShowCursor(toggle)
+
+  if raw_result < 0 then
+    ok = false
+    warn_msg!('Nene.cursor_visibility', 'could not get and/or set the cursor visibility')
+  end
+
+  return ok, raw_result == SDL_ENABLE
+end
+
+--[[
 Returns if the `mouse_button`-nth mouse button get's pressed, that is,
 if this mouse button was just pressed on the current frame, but it wasn't pressed on the previous frame.
 
