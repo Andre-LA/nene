@@ -589,6 +589,7 @@ function Generator:emit(source, filename, ast, comments, options, emitter)
     ast = ast,
     source = source,
     filename = filename,
+    mod_symbol_name = '',
     options = options,
     comments = comments,
     lang = self.lang,
@@ -600,6 +601,12 @@ function Generator:emit(source, filename, ast, comments, options, emitter)
   if topcomment and visitors.TopComment then
     visitors.TopComment(context, topcomment, emitter)
   end
+  -- get the module symbol name
+  local last_node = ast[#ast]
+  if last_node.tag and last_node.tag == 'Return' then
+    context.mod_symbol_name = last_node[1][1]
+  end
+
   -- emit nodes
   for node, parent in walk_nodes(ast) do
     node.parent = parent
@@ -664,14 +671,16 @@ local function document_symbol(context, symbol, emitter)
     -- probably a preprocessor name, ignore
     return false
   end
-  local symbols, inclnames = context.symbols, context.options.include_names
+  local mod_symbol_name, symbols, inclnames = context.mod_symbol_name, context.symbols, context.options.include_names
   local classname = symbol.name:match('(.*)[.:][_%w]+$')
+  local is_class_module = symbol.name == mod_symbol_name or classname == mod_symbol_name
+
   if classname and not symbols[classname] and not inclnames[classname] then
     -- class symbol is not wanted
     return false
   end
-  if not symbol.topscope or (symbol.declscope == 'local' and not inclnames[symbol.name]) then
-    -- not a global or wanted symbol
+  if not symbol.topscope or (symbol.declscope == 'local' and not is_class_module and not inclnames[symbol.name]) then
+    -- not a global, module or wanted symbol
     return false
   end
   table.insert(symbols, symbol)
