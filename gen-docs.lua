@@ -36,8 +36,7 @@ end
 local function doc_dir(dirname)
   local path = string.gsub(dirname, 'nene/', '')
 
-  local ignored_files = {
-  }
+  local ignored_files = {}
 
   for filename in lfs.dir(dirname) do
     if not ignored_files[filename] then

@@ -22,7 +22,7 @@ local Math = @record{}
 ### Math.Vec2i
 
 ```lua
-global Math.Vec2i
+local Math.Vec2i
 ```
 
 
@@ -30,7 +30,7 @@ global Math.Vec2i
 ### Math.Vec2
 
 ```lua
-global Math.Vec2
+local Math.Vec2
 ```
 
 
@@ -38,7 +38,7 @@ global Math.Vec2
 ### Math.Rect
 
 ```lua
-global Math.Rect
+local Math.Rect
 ```
 
 
@@ -46,7 +46,7 @@ global Math.Rect
 ### Math.Rectf
 
 ```lua
-global Math.Rectf
+local Math.Rectf
 ```
 
 
@@ -54,7 +54,7 @@ global Math.Rectf
 ### Math.Grid
 
 ```lua
-global Math.Grid
+local Math.Grid
 ```
 
 

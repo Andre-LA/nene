@@ -18,7 +18,7 @@ local Audio = @record{}
 ### Audio.Sound
 
 ```lua
-global Audio.Sound: type
+local Audio.Sound: type
 ```
 
 [Sound module](sound.md)
@@ -26,7 +26,7 @@ global Audio.Sound: type
 ### Audio.Music
 
 ```lua
-global Audio.Music: type
+local Audio.Music: type
 ```
 
 [Music module](music.md)

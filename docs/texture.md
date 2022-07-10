@@ -6,6 +6,7 @@
 * [Texture:destroy](#texturedestroy)
 * [Texture:__close](#texture__close)
 * [Texture:apply_raw](#textureapply_raw)
+* [Texture:set_blend_mode](#textureset_blend_mode)
 * [Texture.init](#textureinit)
 * [Texture.create_texture](#texturecreate_texture)
 * [Texture.load](#textureload)
@@ -22,26 +23,31 @@ local Texture = @record{
   _data: *SDL_Texture,         -- internal data, don't use it directly, use methods instead
   width: cint,                 -- width of the texture in pixels
   height: cint,                -- height of the texture in pixels
-  format: SDL_PixelFormatEnum, -- texture pixel format
-  access: SDL_TextureAccess,   -- texture access pattern
+  format: Nene.PixelFormat,    -- texture pixel format
+  access: SDL_TextureAccess,   -- texture access pattern, you can use Texture.Access type
 }
 ```
 
-Wraps an internal (SDL) Texture
+Wraps an internal (SDL2) Texture
+
+Related SDL documentation:
+  * [SDL_Texture](https://wiki.libsdl.org/SDL_Texture)
+  * [SDL_PixelFormatEnum](https://wiki.libsdl.org/SDL_PixelFormatEnum)
+  * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
 
 ### Texture.Access
 
 ```lua
-global Texture.Access = @enum(cint){
-  Static = 0,
-  Streaming = 1,
-  Target = 2
+local Texture.Access = @enum(cint){
+  Static = SDL_TEXTUREACCESS_STATIC,
+  Streaming = SDL_TEXTUREACCESS_STREAMING,
+  Target = SDL_TEXTUREACCESS_TARGET,
 }
 ```
 
-"An enumeration of texture access patterns"
+_"An enumeration of texture access patterns"_
 
-It's actually a copy of SDL_TextureAccess enum
+It's a copy of SDL_TextureAccess enum, see below:
 
 Related SDL documentation:
   * [SDL_TextureAccess](https://wiki.libsdl.org/SDL_TextureAccess)
@@ -49,16 +55,16 @@ Related SDL documentation:
 ### Texture.Modulate
 
 ```lua
-global Texture.Modulate = @enum(cint){
-  None = 0,
-  Color = 1,
-  Alpha = 2
+local Texture.Modulate = @enum(cint) {
+  None = SDL_TEXTUREMODULATE_NONE,
+  Color = SDL_TEXTUREMODULATE_COLOR,
+  Alpha = SDL_TEXTUREMODULATE_ALPHA,
 }
 ```
 
-"An enumeration of the texture channel modulation"
+_"An enumeration of the texture channel modulation used in SDL_RenderCopy()."_
 
-It's actually a copy of SDL_TextureModulate enum
+It's a copy of SDL_TextureModulate enum, see below:
 
 Related SDL documentation:
   * [SDL_TextureModulate](https://wiki.libsdl.org/SDL_TextureModulate)
@@ -115,6 +121,21 @@ Related Nene documentation:
 Related SDL documentation:
 * [SDL_QueryTexture](https://wiki.libsdl.org/SDL_QueryTexture)
 
+### Texture:set_blend_mode
+
+```lua
+function Texture:set_blend_mode(blend_mode: Nene.BlendMode): boolean
+```
+
+Sets the texture's blend mode.
+
+Related Nene documentation:
+* [Nene.BlendMode](init.md#neneblendmode)
+
+Related SDL documentation
+* [SDL_BlendMode](https://wiki.libsdl.org/SDL_BlendMode)
+* [SDL_SetTextureBlendMode](https://wiki.libsdl.org/SDL_SetTextureBlendMode)
+
 ### Texture.init
 
 ```lua
@@ -129,7 +150,7 @@ Related Nene documentation:
 ### Texture.create_texture
 
 ```lua
-function Texture.create_texture(width: cint, height: cint, format: facultative(SDL_PixelFormatEnum), access: facultative(SDL_TextureAccess)): (boolean, Texture)
+function Texture.create_texture(width: cint, height: cint, format: facultative(Nene.PixelFormat), access: facultative(Texture.Access)): (boolean, Texture)
 ```
 
 Creates a `Texture` using the given `access` and `format`.
@@ -174,13 +195,15 @@ function Texture:draw(
   center: facultative(Vec2),
   flip_horizontal: facultative(boolean),
   flip_vertical: facultative(boolean)
-)
+): boolean
 ```
 
 Draw the texture at the `destination` (which can be a position, a rectangle, or `nil` which will draw at the whole screen),
 you can optionally pass the `source` rectangle if you want to draw a slice of the texture.
 
 A `color` tint can be optionally passed, which is white by default.
+
+Returns an `ok` status with `true` value if the texture was successfully painted.
 
 Related Nene documentation:
 * [Nene.set_raw_texture_color_mod](init.md#neneset_raw_texture_color_mod)

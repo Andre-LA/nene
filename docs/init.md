@@ -4,12 +4,15 @@
 * [Nene.initialized](#neneinitialized)
 * [Nene.instance](#neneinstance)
 * [Nene.Scancode](#nenescancode)
+* [Nene.BlendMode](#neneblendmode)
+* [Nene.PixelFormat](#nenepixelformat)
 * [Nene.EventsCallbacks](#neneeventscallbacks)
 * [Nene:poll_events](#nenepoll_events)
 * [Nene:get_window_size](#neneget_window_size)
 * [Nene:get_scancode_down](#neneget_scancode_down)
 * [Nene:get_scancode_up](#neneget_scancode_up)
 * [Nene:get_scancode](#neneget_scancode)
+* [Nene.cursor_visibility](#nenecursor_visibility)
 * [Nene:get_mouse_button_down](#neneget_mouse_button_down)
 * [Nene:get_mouse_button_up](#neneget_mouse_button_up)
 * [Nene:get_mouse_button](#neneget_mouse_button)
@@ -79,7 +82,7 @@ Many of the `Core`'s functions wraps SDL's functions actually.
 ### Nene.initialized
 
 ```lua
-global Nene.initialized: boolean
+local Nene.initialized: boolean
 ```
 
 The initialization state of Nene, it's set to `true` by `Nene.init` and
@@ -96,15 +99,89 @@ function Nene.instance(): *Nene
 ### Nene.Scancode
 
 ```lua
-global Nene.Scancode: type
+local Nene.Scancode: type
 ```
 
-Nene's scancode, aliases of SDL's scancode, for more details, open [scancode's documentation](scancode.md)
+Nene's scancodes, alias of [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode), for more details, open [scancode's documentation](scancode.md)
+
+### Nene.BlendMode
+
+```lua
+local Nene.BlendMode = @enum(cint){
+  None    = SDL_BLENDMODE_NONE,
+  Blend   = SDL_BLENDMODE_BLEND,
+  Add     = SDL_BLENDMODE_ADD,
+  Mod     = SDL_BLENDMODE_MOD,
+  Mul     = SDL_BLENDMODE_MUL,
+  Invalid = SDL_BLENDMODE_INVALID,
+}
+```
+
+Nene's blend modes, alias of [SDL_BlendMode](https://wiki.libsdl.org/SDL_BlendMode).
+
+### Nene.PixelFormat
+
+```lua
+local Nene.PixelFormat = @enum(cint){
+  Unknown = SDL_PIXELFORMAT_UNKNOWN,
+  Index1LSB = SDL_PIXELFORMAT_INDEX1LSB,
+  Index1MSB = SDL_PIXELFORMAT_INDEX1MSB,
+  Index4LSB = SDL_PIXELFORMAT_INDEX4LSB,
+  Index4MSB = SDL_PIXELFORMAT_INDEX4MSB,
+  Index8 = SDL_PIXELFORMAT_INDEX8,
+  RGB332 = SDL_PIXELFORMAT_RGB332,
+  XRGB4444 = SDL_PIXELFORMAT_XRGB4444,
+  RGB444 = SDL_PIXELFORMAT_RGB444,
+  XBGR4444 = SDL_PIXELFORMAT_XBGR4444,
+  BGR444 = SDL_PIXELFORMAT_BGR444,
+  XRGB1555 = SDL_PIXELFORMAT_XRGB1555,
+  RGB555 = SDL_PIXELFORMAT_RGB555,
+  XBGR1555 = SDL_PIXELFORMAT_XBGR1555,
+  BGR555 = SDL_PIXELFORMAT_BGR555,
+  ARGB4444 = SDL_PIXELFORMAT_ARGB4444,
+  RGBA4444 = SDL_PIXELFORMAT_RGBA4444,
+  ABGR4444 = SDL_PIXELFORMAT_ABGR4444,
+  BGRA4444 = SDL_PIXELFORMAT_BGRA4444,
+  ARGB1555 = SDL_PIXELFORMAT_ARGB1555,
+  RGBA5551 = SDL_PIXELFORMAT_RGBA5551,
+  ABGR1555 = SDL_PIXELFORMAT_ABGR1555,
+  BGRA5551 = SDL_PIXELFORMAT_BGRA5551,
+  RGB565 = SDL_PIXELFORMAT_RGB565,
+  BGR565 = SDL_PIXELFORMAT_BGR565,
+  RGB24 = SDL_PIXELFORMAT_RGB24,
+  BGR24 = SDL_PIXELFORMAT_BGR24,
+  XRGB8888 = SDL_PIXELFORMAT_XRGB8888,
+  RGB888 = SDL_PIXELFORMAT_RGB888,
+  RGBX8888 = SDL_PIXELFORMAT_RGBX8888,
+  XBGR8888 = SDL_PIXELFORMAT_XBGR8888,
+  BGR888 = SDL_PIXELFORMAT_BGR888,
+  BGRX8888 = SDL_PIXELFORMAT_BGRX8888,
+  ARGB8888 = SDL_PIXELFORMAT_ARGB8888,
+  RGBA8888 = SDL_PIXELFORMAT_RGBA8888,
+  ABGR8888 = SDL_PIXELFORMAT_ABGR8888,
+  BGRA8888 = SDL_PIXELFORMAT_BGRA8888,
+  ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
+  RGBA32 = SDL_PIXELFORMAT_RGBA32,
+  ARGB32 = SDL_PIXELFORMAT_ARGB32,
+  BGRA32 = SDL_PIXELFORMAT_BGRA32,
+  ABGR32 = SDL_PIXELFORMAT_ABGR32,
+  YV12 = SDL_PIXELFORMAT_YV12,
+  IYUV = SDL_PIXELFORMAT_IYUV,
+  YUY2 = SDL_PIXELFORMAT_YUY2,
+  UYVY = SDL_PIXELFORMAT_UYVY,
+  YVYU = SDL_PIXELFORMAT_YVYU,
+  NV12 = SDL_PIXELFORMAT_NV12,
+  NV21 = SDL_PIXELFORMAT_NV21,
+  ExternalOES = SDL_PIXELFORMAT_EXTERNAL_OES,
+}
+```
+
+Nene's pixel formats, alias of [SDL_PixelFormatEnum](SDL_PixelFormatEnum).
 
 ### Nene.EventsCallbacks
 
 ```lua
-global Nene.EventsCallbacks = @record{
+local Nene.EventsCallbacks = @record{
   window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
   edit_cb    : function(edit    : SDL_TextEditingEvent),      -- edit text editing event data
@@ -246,6 +323,24 @@ Related Nene documentation:
 Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+
+### Nene.cursor_visibility
+
+```lua
+function Nene.cursor_visibility(new_visibility: facultative(boolean)): (boolean, boolean)
+```
+
+This functions returns if the mouse cursor is visible or not, you can set this status by passing a boolean value.
+
+This function returns two booleans:
+
+1. It's the `ok` status, it's `true` when the function was successful.
+2. It's the cursor visibility status, it's `true` when it's visible.
+
+If you want to change the visibility, pass a boolean argument, where `true` make it visible.
+
+-- SDL related documentation:
+* [SDL_ShowCursor](https://wiki.libsdl.org/SDL_ShowCursor)
 
 ### Nene:get_mouse_button_down
 

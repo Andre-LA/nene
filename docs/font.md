@@ -30,7 +30,7 @@ Wraps a (SDL_TTF) font
 ### Font.GlyphMetrics
 
 ```lua
-global Font.GlyphMetrics = @record{
+local Font.GlyphMetrics = @record{
   minx: cint, maxx: cint,
   miny: cint, maxy: cint,
   advance: cint
