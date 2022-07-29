@@ -6,20 +6,21 @@
 -- SPDX-License-Identifier: Zlib
 
 local Rect = require 'nene.math.rect'
+local Vec2i = require 'nene.math.vec2i'
 
 -- This record is intended to generate rectangles from an infinite grid.
 local Grid = @record{
-  cell_size: record{ width: integer, height: integer }, -- size of the rectangles
-  gap: record{ x: integer, y: integer } -- gap between rectagles
+  cell_size: Vec2i, -- size of the rectangles
+  gap: Vec2i -- gap between rectagles
 }
 
 -- Generates the rectangle from the grid mathematically. Both the first `column` and `row` are `0` and not `1`.
 function Grid.gen_rect(grid: Grid, column: integer, row: integer): Rect
   return (@Rect){
-    x = grid.cell_size.width * column + grid.gap.x * column,
-    y = grid.cell_size.height * row + grid.gap.y * row,
-    w = grid.cell_size.width,
-    h = grid.cell_size.height,
+    x = grid.cell_size.x * column + grid.gap.x * column,
+    y = grid.cell_size.y * row + grid.gap.y * row,
+    w = grid.cell_size.x,
+    h = grid.cell_size.y,
   }
 end
 

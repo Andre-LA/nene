@@ -127,8 +127,8 @@ Related Nene documentation:
 ]]
 function Tilemap:get_tile_pos(column: isize, row: isize): Vec2
   return (@Vec2){
-    x = column * self.grid.cell_size.width,
-    y = row * self.grid.cell_size.height
+    x = column * self.grid.cell_size.x,
+    y = row * self.grid.cell_size.y
   }
 end
 

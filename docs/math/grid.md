@@ -11,8 +11,8 @@ The grid module, used as a way to use grids mathematically.
 
 ```lua
 local Grid = @record{
-  cell_size: record{ width: integer, height: integer }, -- size of the rectangles
-  gap: record{ x: integer, y: integer } -- gap between rectagles
+  cell_size: Vec2i, -- size of the rectangles
+  gap: Vec2i -- gap between rectagles
 }
 ```
 
