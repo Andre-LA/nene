@@ -339,7 +339,7 @@ This function returns two booleans:
 
 If you want to change the visibility, pass a boolean argument, where `true` make it visible.
 
--- SDL related documentation:
+Related SDL documentation:
 * [SDL_ShowCursor](https://wiki.libsdl.org/SDL_ShowCursor)
 
 ### Nene:get_mouse_button_down
