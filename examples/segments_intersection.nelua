@@ -19,8 +19,7 @@ local Vec2 = require 'nene.math.vec2'
 --   * a number, the scalar of cd that intersects ab
 local function intersecting_segments(a: Vec2, b: Vec2, c: Vec2, d: Vec2): (boolean, boolean, Vec2, number, number)
   -- reference: https://www.youtube.com/watch?v=5FkOO1Wwb8w
-  --            https://replit.com/@thehappycheese/linetools#LineTools/line_tools.py
-
+  
   -- the segments of the vectors
   local ab = b - a
   local cd = d - c
@@ -50,7 +49,6 @@ local function example()
   local a: Vec2 = { 16, 16 }
   local b: Vec2 = { 240, 240 }
   local c: Vec2 = { 240, 16 }
-
 
   repeat
     nene:poll_events()
