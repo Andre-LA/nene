@@ -1,0 +1,78 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+-- This example shows how intersection between two segments works
+
+-- nene modules
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Rect = require 'nene.math.rect'
+local Vec2 = require 'nene.math.vec2'
+
+-- finds a intersection point between ab and cd segments, it returns:
+--   * a boolean, true if an intersection is found
+--   * a boolean, true if both segments are parallel (which can't intersect)
+--   * a 2d vector, the intersection point, if not intersection is found then is { 0, 0 }
+--   * a number, the scalar of ab that intersects cd
+--   * a number, the scalar of cd that intersects ab
+local function intersecting_segments(a: Vec2, b: Vec2, c: Vec2, d: Vec2): (boolean, boolean, Vec2, number, number)
+  -- reference: https://www.youtube.com/watch?v=5FkOO1Wwb8w
+  --            https://replit.com/@thehappycheese/linetools#LineTools/line_tools.py
+
+  -- the segments of the vectors
+  local ab = b - a
+  local cd = d - c
+
+  local ab_x_cd = ab:cross(cd)
+
+  if ab_x_cd == 0 then
+    return false, true
+  else
+    local ac = c - a
+    local t1 = ac:cross(cd) / ab_x_cd
+    local t2 = -ab:cross(ac) / ab_x_cd
+    local p = a + ab * t1
+    local is_intersecting = 0.0 <= t1 and t1 <= 1.0 and 0.0 <= t2 and t2 <= 1.0
+
+    return is_intersecting, false, p, t1, t2
+  end
+end
+
+-- example
+local function example()
+  local ok, nene <close> = Nene.init('nene segments intersection', 256, 256)
+  assert(ok, 'error: nene initialization failed')
+
+  -- create the points of intersection ab and cd
+  -- d is declared below because it'll be the mouse position
+  local a: Vec2 = { 16, 16 }
+  local b: Vec2 = { 240, 240 }
+  local c: Vec2 = { 240, 16 }
+
+
+  repeat
+    nene:poll_events()
+
+    local d: Vec2 = nene.mouse_pos
+
+    local intersects, parallel, intersection, s1, s2 = intersecting_segments(a, b, c, d)
+
+    nene:render_clear(Color.Palette.black)
+
+    -- draw ab segment
+    nene:render_draw_line(a, b, Color.Palette.blue)
+    -- draw cd segment
+    nene:render_draw_line(c, d, Color.Palette.green)
+
+    -- draw intersection point if an intersection exists
+    if intersects then
+      nene:render_draw_rect(Rect.from_vec2(intersection - Vec2{1,1}, {3, 3}), false, Color.Palette.red)
+    end
+
+    nene:render_present()
+  until nene.quit
+end
+
+example()
