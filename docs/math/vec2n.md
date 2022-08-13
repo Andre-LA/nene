@@ -10,12 +10,13 @@
 * [Vec2n.len_sqr](#vec2nlen_sqr)
 * [Vec2n.__len](#vec2n__len)
 * [Vec2n.dot](#vec2ndot)
+* [Vec2n.cross](#vec2ncross)
 * [Vec2n.normalized](#vec2nnormalized)
 * [Vec2n](#vec2n)
 
 ## vec2n
 
-The `Vec2n` module, it implements a Vec2 (a vertor of two dimensions) using `n` type for `x` and `y` components,
+The `Vec2n` module, it implements a 2D Vector using `n` type for `x` and `y` components,
 where `n` is an arithmetic type.
 
 ### Vec2n
@@ -104,6 +105,14 @@ function Vec2n.__len(v: a_vec2): number
 
 ```lua
 function Vec2n.dot(a: a_vec2, b: a_vec2): T
+```
+
+
+
+### Vec2n.cross
+
+```lua
+function Vec2n.cross(a: a_vec2, b: a_vec2): T
 ```
 
 
