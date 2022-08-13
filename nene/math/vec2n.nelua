@@ -1,4 +1,4 @@
--- The `Vec2n` module, it implements a Vec2 (a vertor of two dimensions) using `n` type for `x` and `y` components,
+-- The `Vec2n` module, it implements a 2D Vector using `n` type for `x` and `y` components,
 -- where `n` is an arithmetic type.
 
 -- Copyright (c) 2021-2022 André Luiz Alvares
@@ -69,6 +69,12 @@ local a_vec2_or_scalar = #[ concept(function(attr) return attr.type.is_vec2 or a
 
   function Vec2n.dot(a: a_vec2, b: a_vec2): T
     return a.x * b.x + a.y * b.y
+  end
+
+  function Vec2n.cross(a: a_vec2, b: a_vec2): T
+    -- note: since this is a 2D vector (or z=0), the cross product returns
+    -- the magnitude of the cross product vector instead of the vector itself.
+    return a.x * b.y - a.y * b.x
   end
 
   ## if not T.is_integral then

@@ -3,14 +3,12 @@
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
 
--- require nene modules
-
+-- nene modules
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
--- using a function to
-
+-- example
 local function rects()
   local ok, nene <close> = Nene.init('nene rects', 256, 256)
   assert(ok, 'error: nene initialization failed')
