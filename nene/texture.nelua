@@ -260,9 +260,16 @@ function Texture:draw(
   local destination: Rect = {
     x = math.ifloor(destination.x),
     y = math.ifloor(destination.y),
-    w = self.width,
-    h = self.height
   }
+
+  ## if source.type.is_niltype then
+    destination.w = self.width
+    destination.h = self.height
+  ## else
+    destination.w = source.w
+    destination.h = source.h
+  ## end
+
   ## end
 
   local raw_tex = self:get_raw()
