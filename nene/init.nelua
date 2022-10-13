@@ -622,8 +622,12 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 ]]
-function Nene:render_clear(color: Color): boolean
+function Nene:render_clear(color: facultative(Color)): boolean
   check(Nene.initialized, 'Nene is not initialized')
+
+  ## if color.type.is_niltype then
+  local color = Color.Palette.bg
+  ## end
 
   self:set_render_draw_color(color)
   if SDL_RenderClear(self.renderer) ~= 0 then
