@@ -1,10 +1,11 @@
 # nene
+[![Matrix](https://img.shields.io/matrix/nene-and-friends:matrix.org?label=Matrix%20chat&logo=matrix)](https://matrix.to/#/#nene-and-friends:matrix.org)
+
+
 Tiny game library built around SDL2 and it's extension libraries (SDL_image, SDL_ttf, SDL_mixer).
 
 Is a very simple game library for simple games, for now, using any dependency than the SDL2's ones is a
  non-goal.
-
-**Note: This library is Work in Progress**
 
 ## Installing
 `Nene` is a library and thus, it doesn't require installation, just the files, however, since it uses SDL2 and nelua language,
