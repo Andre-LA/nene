@@ -208,7 +208,7 @@ local Nene.EventsCallbacks = @record{
 You should call this method at the start of each game loop tick, it:
 1. Polls all SDL events;
 2. Updates the `self.quit` boolean value, it becomes `true` when the appplication will quit (see SDL_QuitEvent);
-3. Calls the respective callbacks if `evt_callbacks` is given.
+3. Calls the respective callbacks.
 
 Related Nene documentation:
 * [Nene.EventsCallbacks](#neneeventscallbacks)

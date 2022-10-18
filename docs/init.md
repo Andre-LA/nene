@@ -64,11 +64,12 @@ local Nene = @record{
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
 
   -- keyboard state
-  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
-  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+  keyboard_state: [SDL_NUM_SCANCODES]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [SDL_NUM_SCANCODES]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
 
   -- mouse state
   mouse_pos: Vec2,                 -- store the mouse position relative to window
+  mouse_relative_motion: Vec2,     -- store the mouse relative motion
   mouse_buttons: [32]boolean,      -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
   prev_mouse_buttons: [32]boolean, -- same as mouse_buttons, but from the previous frame
 }
@@ -242,13 +243,13 @@ Related SDL documentation:
 ### Nene:poll_events
 
 ```lua
-function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
+function Nene:poll_events(evt_callbacks: Nene.EventsCallbacks)
 ```
 
 You should call this method at the start of each game loop tick, it:
 1. Polls all SDL events;
 2. Updates the `self.quit` boolean value, it becomes `true` when the appplication will quit (see SDL_QuitEvent);
-3. Calls the respective callbacks if `evt_callbacks` is given.
+3. Calls the respective callbacks.
 
 Related Nene documentation:
 * [Nene.EventsCallbacks](#neneeventscallbacks)
@@ -462,7 +463,7 @@ Related SDL documentation:
 ### Nene:render_clear
 
 ```lua
-function Nene:render_clear(color: Color): boolean
+function Nene:render_clear(color: facultative(Color)): boolean
 ```
 
 it clears the rendering target with the given `color`.
