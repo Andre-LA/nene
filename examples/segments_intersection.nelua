@@ -11,15 +11,17 @@ local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
 
--- finds a intersection point between ab and cd segments, it returns:
---   * a boolean, true if an intersection is found
---   * a boolean, true if both segments are parallel (which can't intersect)
---   * a 2d vector, the intersection point, if not intersection is found then is { 0, 0 }
---   * a number, the scalar of ab that intersects cd
---   * a number, the scalar of cd that intersects ab
+--[[
+Finds a intersection point between ab and cd segments, it returns:
+  * a boolean: true if an intersection is found
+  * a boolean: true if both segments are parallel (which can't intersect)
+  * a 2d vector: the intersection point, if not intersection is found then is { 0, 0 }
+  * a number: the scalar of ab that intersects cd
+  * a number: the scalar of cd that intersects ab
+]]
 local function intersecting_segments(a: Vec2, b: Vec2, c: Vec2, d: Vec2): (boolean, boolean, Vec2, number, number)
   -- reference: https://www.youtube.com/watch?v=5FkOO1Wwb8w
-  
+
   -- the segments of the vectors
   local ab = b - a
   local cd = d - c
@@ -46,14 +48,25 @@ local function example()
 
   -- create the points of intersection ab and cd
   -- d is declared below because it'll be the mouse position
-  local a: Vec2 = { 16, 16 }
+  local a: Vec2 = {  16,  16 }
   local b: Vec2 = { 240, 240 }
-  local c: Vec2 = { 240, 16 }
+  local c: Vec2 = { 240,  16 }
+  local d: Vec2 = {  16, 240 }
+
+  local controlling_d: boolean
 
   repeat
     nene:poll_events()
 
-    local d: Vec2 = nene.mouse_pos
+    if nene:get_mouse_button_down(0) then
+      controlling_d = not controlling_d
+    end
+
+    if controlling_d then
+      d = nene.mouse_pos
+    else
+      b = nene.mouse_pos
+    end
 
     local intersects, parallel, intersection, s1, s2 = intersecting_segments(a, b, c, d)
 

@@ -55,11 +55,12 @@ local Nene = @record{
   renderer: *SDL_Renderer, -- reference to the window's renderer, created on initialization
 
   -- keyboard state
-  keyboard_state: [(SDL_NUM_SCANCODES)]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
-  prev_keyboard_state: [(SDL_NUM_SCANCODES)]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+  keyboard_state: [SDL_NUM_SCANCODES]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
+  prev_keyboard_state: [SDL_NUM_SCANCODES]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
 
   -- mouse state
   mouse_pos: Vec2,                 -- store the mouse position relative to window
+  mouse_relative_motion: Vec2,     -- store the mouse relative motion
   mouse_buttons: [32]boolean,      -- store the mouse buttons state, each index per button (0 is left-button, 1 is middle-button, 2 is right-button)
   prev_mouse_buttons: [32]boolean, -- same as mouse_buttons, but from the previous frame
 }
@@ -215,115 +216,119 @@ Related Nene documentation:
 Related SDL documentation:
 * [SDL_PollEvent](https://wiki.libsdl.org/SDL_PollEvent)
 ]]
-function Nene:poll_events(evt_callbacks: facultative(Nene.EventsCallbacks))
+function Nene:poll_events(evt_callbacks: Nene.EventsCallbacks)
   check(Nene.initialized, 'Nene is not initialized')
+
+  -- internal state updates
+  local function update_keyboard_state(self: *Nene, key: *SDL_KeyboardEvent)
+    check(self, 'self argument is nilptr')
+    check(key, 'key argument is nilptr')
+
+    self.keyboard_state[key.keysym.scancode] = key.state == SDL_PRESSED
+  end
+
+  local function update_mouse_buttons_state(self: *Nene, button: *SDL_MouseButtonEvent)
+    check(self, 'self argument is nilptr')
+    check(button, 'button argument is nilptr')
+
+    self.mouse_pos = { button.x, button.y }
+    self.mouse_buttons[button.button - 1] = button.state == SDL_PRESSED
+  end
+
+  local function update_mouse_motion_state(self: *Nene, motion: *SDL_MouseMotionEvent)
+    check(self, 'self argument is nilptr')
+    check(motion, 'motion argument is nilptr')
+
+    self.mouse_pos = { motion.x, motion.y  }
+    self.mouse_relative_motion = { motion.xrel, motion.yrel }
+  end
+
+  -- reset some state manually
+  self.mouse_relative_motion = {}
+  self.prev_keyboard_state = self.keyboard_state
+  self.prev_mouse_buttons = self.mouse_buttons
 
   local evt: SDL_Event;
 
+  -- poll all the events and update the respective internal states
   while SDL_PollEvent(evt) == 1 do
     if evt.type == SDL_QUIT	then
       self.quit = true
     end
 
-    ## if not evt_callbacks.type.is_niltype then
-      switch evt.type do
-        case SDL_QUIT then
-          if evt_callbacks.quit_cb then evt_callbacks.quit_cb(evt.quit) end
+    switch evt.type do
+      case SDL_QUIT then
+        if evt_callbacks.quit_cb then evt_callbacks.quit_cb(evt.quit) end
 
-        case SDL_CONTROLLERAXISMOTION then
-          if evt_callbacks.caxis_cb then evt_callbacks.caxis_cb(evt.caxis) end
+      case SDL_CONTROLLERAXISMOTION then
+        if evt_callbacks.caxis_cb then evt_callbacks.caxis_cb(evt.caxis) end
 
-        case SDL_CONTROLLERBUTTONDOWN, SDL_CONTROLLERBUTTONUP then
-          if evt_callbacks.cbutton_cb then evt_callbacks.cbutton_cb(evt.cbutton) end
+      case SDL_CONTROLLERBUTTONDOWN, SDL_CONTROLLERBUTTONUP then
+        if evt_callbacks.cbutton_cb then evt_callbacks.cbutton_cb(evt.cbutton) end
 
-        case SDL_CONTROLLERDEVICEADDED, SDL_CONTROLLERDEVICEREMOVED, SDL_CONTROLLERDEVICEREMAPPED then
-          if evt_callbacks.cdevice_cb then evt_callbacks.cdevice_cb(evt.cdevice) end
+      case SDL_CONTROLLERDEVICEADDED, SDL_CONTROLLERDEVICEREMOVED, SDL_CONTROLLERDEVICEREMAPPED then
+        if evt_callbacks.cdevice_cb then evt_callbacks.cdevice_cb(evt.cdevice) end
 
-        case SDL_DOLLARGESTURE, SDL_DOLLARRECORD then
-          if evt_callbacks.dgesture_cb then evt_callbacks.dgesture_cb(evt.dgesture) end
+      case SDL_DOLLARGESTURE, SDL_DOLLARRECORD then
+        if evt_callbacks.dgesture_cb then evt_callbacks.dgesture_cb(evt.dgesture) end
 
-        case SDL_DROPFILE, SDL_DROPTEXT, SDL_DROPBEGIN, SDL_DROPCOMPLETE then
-          if evt_callbacks.drop_cb then evt_callbacks.drop_cb(evt.drop) end
+      case SDL_DROPFILE, SDL_DROPTEXT, SDL_DROPBEGIN, SDL_DROPCOMPLETE then
+        if evt_callbacks.drop_cb then evt_callbacks.drop_cb(evt.drop) end
 
-        case SDL_FINGERMOTION, SDL_FINGERDOWN, SDL_FINGERUP then
-          if evt_callbacks.tfinger_cb then evt_callbacks.tfinger_cb(evt.tfinger) end
+      case SDL_FINGERMOTION, SDL_FINGERDOWN, SDL_FINGERUP then
+        if evt_callbacks.tfinger_cb then evt_callbacks.tfinger_cb(evt.tfinger) end
 
-        case SDL_KEYDOWN, SDL_KEYUP then
-          if evt_callbacks.key_cb then evt_callbacks.key_cb(evt.key) end
+      case SDL_KEYDOWN, SDL_KEYUP then
+        update_keyboard_state(self, evt.key)
+        if evt_callbacks.key_cb then evt_callbacks.key_cb(evt.key) end
 
-        case SDL_JOYAXISMOTION then
-          if evt_callbacks.jaxis_cb then evt_callbacks.jaxis_cb(evt.jaxis) end
+      case SDL_JOYAXISMOTION then
+        if evt_callbacks.jaxis_cb then evt_callbacks.jaxis_cb(evt.jaxis) end
 
-        case SDL_JOYBALLMOTION then
-          if evt_callbacks.jball_cb then evt_callbacks.jball_cb(evt.jball) end
+      case SDL_JOYBALLMOTION then
+        if evt_callbacks.jball_cb then evt_callbacks.jball_cb(evt.jball) end
 
-        case SDL_JOYHATMOTION then
-          if evt_callbacks.jhat_cb then evt_callbacks.jhat_cb(evt.jhat) end
+      case SDL_JOYHATMOTION then
+        if evt_callbacks.jhat_cb then evt_callbacks.jhat_cb(evt.jhat) end
 
-        case SDL_JOYBUTTONDOWN, SDL_JOYBUTTONUP then
-          if evt_callbacks.jbutton_cb then evt_callbacks.jbutton_cb(evt.jbutton) end
+      case SDL_JOYBUTTONDOWN, SDL_JOYBUTTONUP then
+        if evt_callbacks.jbutton_cb then evt_callbacks.jbutton_cb(evt.jbutton) end
 
-        case SDL_JOYDEVICEADDED, SDL_JOYDEVICEREMOVED then
-          if evt_callbacks.jdevice_cb then evt_callbacks.jdevice_cb(evt.jdevice) end
+      case SDL_JOYDEVICEADDED, SDL_JOYDEVICEREMOVED then
+        if evt_callbacks.jdevice_cb then evt_callbacks.jdevice_cb(evt.jdevice) end
 
-        case SDL_MOUSEMOTION then
-          if evt_callbacks.motion_cb then evt_callbacks.motion_cb(evt.motion) end
+      case SDL_MOUSEMOTION then
+        update_mouse_motion_state(self, evt.motion)
+        if evt_callbacks.motion_cb then evt_callbacks.motion_cb(evt.motion) end
 
-        case SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP then
-          if evt_callbacks.button_cb then evt_callbacks.button_cb(evt.button) end
+      case SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP then
+        update_mouse_buttons_state(self, evt.button)
+        if evt_callbacks.button_cb then evt_callbacks.button_cb(evt.button) end
 
-        case SDL_MOUSEWHEEL then
-          if evt_callbacks.wheel_cb then evt_callbacks.wheel_cb(evt.wheel) end
+      case SDL_MOUSEWHEEL then
+        if evt_callbacks.wheel_cb then evt_callbacks.wheel_cb(evt.wheel) end
 
-        case SDL_MULTIGESTURE then
-          if evt_callbacks.mgesture_cb then evt_callbacks.mgesture_cb(evt.mgesture) end
+      case SDL_MULTIGESTURE then
+        if evt_callbacks.mgesture_cb then evt_callbacks.mgesture_cb(evt.mgesture) end
 
-        case SDL_SYSWMEVENT then
-          if evt_callbacks.syswm_cb then evt_callbacks.syswm_cb(evt.syswm) end
+      case SDL_SYSWMEVENT then
+        if evt_callbacks.syswm_cb then evt_callbacks.syswm_cb(evt.syswm) end
 
-        case SDL_TEXTEDITING then
-          if evt_callbacks.edit_cb then evt_callbacks.edit_cb(evt.edit) end
+      case SDL_TEXTEDITING then
+        if evt_callbacks.edit_cb then evt_callbacks.edit_cb(evt.edit) end
 
-        case SDL_TEXTINPUT then
-          if evt_callbacks.text_cb then evt_callbacks.text_cb(evt.text) end
+      case SDL_TEXTINPUT then
+        if evt_callbacks.text_cb then evt_callbacks.text_cb(evt.text) end
 
-        case SDL_USEREVENT then
-          if evt_callbacks.user_cb then evt_callbacks.user_cb(evt.user) end
+      case SDL_USEREVENT then
+        if evt_callbacks.user_cb then evt_callbacks.user_cb(evt.user) end
 
-        case SDL_WINDOWEVENT then
-          if evt_callbacks.window_cb then evt_callbacks.window_cb(evt.window) end
+      case SDL_WINDOWEVENT then
+        if evt_callbacks.window_cb then evt_callbacks.window_cb(evt.window) end
 
-        case SDL_AUDIODEVICEADDED, SDL_AUDIODEVICEREMOVED then
-          if evt_callbacks.adevice_cb then evt_callbacks.adevice_cb(evt.adevice) end
-      end
-    ## end
-  end
-
-  -- update input states
-  do
-    -- update keyboard_state
-    self.prev_keyboard_state = self.keyboard_state
-
-    do
-      local arr_sz: cint;
-      local arr_ptr: *[0]uint8 = SDL_GetKeyboardState(&arr_sz)
-
-      for i = 0, < arr_sz do
-        self.keyboard_state[i] = arr_ptr[i] == 1
-      end
+      case SDL_AUDIODEVICEADDED, SDL_AUDIODEVICEREMOVED then
+        if evt_callbacks.adevice_cb then evt_callbacks.adevice_cb(evt.adevice) end
     end
-
-    -- update mouse state
-    self.prev_mouse_buttons = self.mouse_buttons
-
-    local mx: cint, my: cint
-    local buttons_bitmask = SDL_GetMouseState(&mx, &my)
-
-    for i = 0, < #self.mouse_buttons do
-      self.mouse_buttons[i] = buttons_bitmask & (1 << i) ~= 0
-    end
-
-    self.mouse_pos = {mx, my}
   end
 
   -- update delta_time and current_time
