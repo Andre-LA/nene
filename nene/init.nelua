@@ -33,8 +33,9 @@ require 'nene.raw.sdl2_mixer'
 ## local options = require 'nene.options'
 
 local Color = require 'nene.color'
-local Vec2 = require 'nene.math.vec2'
-local Rect = require 'nene.math.rect'
+local Vec2  = require 'nene.math.vec2'
+local Rect  = require 'nene.math.rect'
+local Rectf = require 'nene.math.rectf'
 
 local gamepad = require 'nene.gamepad'
 
@@ -906,7 +907,7 @@ Related SDL documentation:
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
 * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
 ]]
-function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color)): boolean
+function Nene:render_draw_rect(rectangle: overload(Rect, Rectf), use_lines: boolean, color: facultative(Color)): boolean
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
