@@ -12,6 +12,10 @@
 * [Nene:get_scancode_down](#neneget_scancode_down)
 * [Nene:get_scancode_up](#neneget_scancode_up)
 * [Nene:get_scancode](#neneget_scancode)
+* [Nene:get_gamepad_button_down](#neneget_gamepad_button_down)
+* [Nene:get_gamepad_button_up](#neneget_gamepad_button_up)
+* [Nene:get_gamepad_button](#neneget_gamepad_button)
+* [Nene:get_gamepad_axis](#neneget_gamepad_axis)
 * [Nene.cursor_visibility](#nenecursor_visibility)
 * [Nene:get_mouse_button_down](#neneget_mouse_button_down)
 * [Nene:get_mouse_button_up](#neneget_mouse_button_up)
@@ -66,6 +70,9 @@ local Nene = @record{
   -- keyboard state
   keyboard_state: [SDL_NUM_SCANCODES]boolean,      -- store the state of keyboard in the current frame (`true` means "pressed")
   prev_keyboard_state: [SDL_NUM_SCANCODES]boolean, -- store the state of keyboard in the previous frame (`true` means "pressed")
+
+  -- gamepads state
+  gamepads_state: [ #[options.gamepad_count]# ]GamepadState, -- store the state of `options.gamepad_count` gamepads
 
   -- mouse state
   mouse_pos: Vec2,                 -- store the mouse position relative to window
@@ -183,29 +190,40 @@ Nene's pixel formats, alias of [SDL_PixelFormatEnum](SDL_PixelFormatEnum).
 
 ```lua
 local Nene.EventsCallbacks = @record{
-  window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
+  -- keyboard-related events
   key_cb     : function(key     : SDL_KeyboardEvent),         -- key keyboard event data
   edit_cb    : function(edit    : SDL_TextEditingEvent),      -- edit text editing event data
   text_cb    : function(text    : SDL_TextInputEvent),        -- text text input event data
+
+  -- mouse events
   motion_cb  : function(motion  : SDL_MouseMotionEvent),      -- motion mouse motion event data
   button_cb  : function(button  : SDL_MouseButtonEvent),      -- button mouse button event data
   wheel_cb   : function(wheel   : SDL_MouseWheelEvent),       -- wheel mouse wheel event data
+
+  -- joystick events
   jaxis_cb   : function(jaxis   : SDL_JoyAxisEvent),          -- jaxis joystick axis event data
   jball_cb   : function(jball   : SDL_JoyBallEvent),          -- jball joystick ball event data
   jhat_cb    : function(jhat    : SDL_JoyHatEvent),           -- jhat joystick hat event data
   jbutton_cb : function(jbutton : SDL_JoyButtonEvent),        -- jbutton joystick button event data
   jdevice_cb : function(jdevice : SDL_JoyDeviceEvent),        -- jdevice joystick device event data
+
+  -- game controller events
   caxis_cb   : function(caxis   : SDL_ControllerAxisEvent),   -- caxis game controller axis event data
   cbutton_cb : function(cbutton : SDL_ControllerButtonEvent), -- cbutton game controller button event data
   cdevice_cb : function(cdevice : SDL_ControllerDeviceEvent), -- cdevice game controller device event data
+
+  -- touch/finger events
+  tfinger_cb : function(tfinger : SDL_TouchFingerEvent),      -- tfinger touch finger event data
+  mgesture_cb: function(mgesture: SDL_MultiGestureEvent),     -- mgesture multi finger gesture data
+  dgesture_cb: function(dgesture: SDL_DollarGestureEvent),    -- dgesture multi finger gesture data
+
+  -- etc
   adevice_cb : function(adevice : SDL_AudioDeviceEvent),      -- adevice audio device event data (>= SDL 2.0.4)
   quit_cb    : function(quit    : SDL_QuitEvent),             -- quit quit request event data
   user_cb    : function(user    : SDL_UserEvent),             -- user custom event data
   syswm_cb   : function(syswm   : SDL_SysWMEvent),            -- syswm system dependent window event data
-  tfinger_cb : function(tfinger : SDL_TouchFingerEvent),      -- tfinger touch finger event data
-  mgesture_cb: function(mgesture: SDL_MultiGestureEvent),     -- mgesture multi finger gesture data
-  dgesture_cb: function(dgesture: SDL_DollarGestureEvent),    -- dgesture multi finger gesture data
-  drop_cb    : function(drop    : SDL_DropEvent)              -- drag and drop event data
+  drop_cb    : function(drop    : SDL_DropEvent),             -- drag and drop event data
+  window_cb  : function(window  : SDL_WindowEvent),           -- window window event data
 }
 ```
 
@@ -324,6 +342,78 @@ Related Nene documentation:
 Related SDL documentation:
 * [SDL_Scancode](https://wiki.libsdl.org/SDL_Scancode)
 * [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL_GetKeyboardState)
+
+### Nene:get_gamepad_button_down
+
+```lua
+function Nene:get_gamepad_button_down(gamepad_index: usize, gamepad_button: gamepad.Button): boolean
+```
+
+Returns if a certain gamepad button from a gamepad device just got pressed at the current frame.
+
+This function returns `false` when the gamepad isn't opened by nene.
+
+> Note: Nene opens a gamepad automatically once connected.
+
+Related Nene documentation:
+* [Gamepad.Button](gamepad.md#gamepadbutton)
+* [Nene.get_gamepad_button](init.md#neneget_gamepad_button)
+* [Nene.get_gamepad_button_up](init.md#neneget_gamepad_button_up)
+* [Nene.get_gamepad_axis](init.md#neneget_gamepad_axis)
+
+### Nene:get_gamepad_button_up
+
+```lua
+function Nene:get_gamepad_button_up(gamepad_index: usize, gamepad_button: gamepad.Button): boolean
+```
+
+Returns if a certain gamepad button from a gamepad device just got released at the current frame.
+
+This function returns `false` when the gamepad isn't opened by nene.
+
+> Note: Nene opens a gamepad automatically once connected.
+
+Related Nene documentation:
+* [Gamepad.Button](gamepad.md#gamepadbutton)
+* [Nene.get_gamepad_button](init.md#neneget_gamepad_button)
+* [Nene.get_gamepad_button_down](init.md#neneget_gamepad_button_down)
+* [Nene.get_gamepad_axis](init.md#neneget_gamepad_axis)
+
+### Nene:get_gamepad_button
+
+```lua
+function Nene:get_gamepad_button(gamepad_index: usize, gamepad_button: gamepad.Button): boolean
+```
+
+Returns if a certain gamepad axis from a gamepad device.
+
+This function returns `false` when the gamepad isn't opened by nene.
+
+> Note: Nene opens a gamepad automatically once connected.
+
+Related Nene documentation:
+* [Gamepad.Button](gamepad.md#gamepadbutton)
+* [Nene.get_gamepad_button_down](init.md#neneget_gamepad_button_down)
+* [Nene.get_gamepad_button_up](init.md#neneget_gamepad_button_up)
+* [Nene.get_gamepad_axis](init.md#neneget_gamepad_axis)
+
+### Nene:get_gamepad_axis
+
+```lua
+function Nene:get_gamepad_axis(gamepad_index: usize, gamepad_axis: gamepad.Axis): number
+```
+
+Returns the value of a certain gamepad button from a gamepad device is currently pressed.
+
+This function returns `0.0` when the gamepad isn't opened by nene.
+
+> Note: Nene opens a gamepad automatically once connected.
+
+Related Nene documentation:
+* [Gamepad.Axis](gamepad.md#gamepadaxis)
+* [Nene.get_gamepad_button](init.md#neneget_gamepad_button)
+* [Nene.get_gamepad_button_down](init.md#neneget_gamepad_button_down)
+* [Nene.get_gamepad_button_up](init.md#neneget_gamepad_button_up)
 
 ### Nene.cursor_visibility
 
@@ -675,9 +765,12 @@ Related SDL_ttf documentation:
 function Nene:terminate()
 ```
 
-Finalize application and quits all SDL subsystems
+Closes all game controllers, destroys internal required resources and quits all SDL subsystems.
+
+Note that you still should destroy your own resources like textures, audio, etc.
 
 Related SDL documentation:
+* [SDL_GameControllerClose](https://wiki.libsdl.org/SDL_GameControllerClose)
 * [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer)
 * [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow)
 * [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)

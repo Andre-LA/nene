@@ -1,0 +1,60 @@
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+-- nene modules
+
+local Nene = require 'nene'
+local Color = require 'nene.color'
+local Vec2 = require 'nene.math.vec2'
+local Rectf = require 'nene.math.rectf'
+local gamepad = require 'nene.gamepad'
+
+-- let's create an rect that moves with our gamepad left analog thumbstick and
+-- change to an random color with the bottom right-pad button (A button on xbox controller)
+local function game_controller()
+  local function get_random_color(prev_color: Color)
+    math.randomseed()
+    local r: byte, b: byte, g: byte
+
+    local function is_same_color(r: byte, g: byte, b: byte, prev_color: Color): boolean
+      return math.abs(r - prev_color.r) < 50 and math.abs(g - prev_color.g) < 50 and math.abs(b - prev_color.b) < 50
+    end
+
+    repeat
+      r, g, b = math.random(0x00, 0xff), math.random(0x00, 0xff), math.random(0x00, 0xff)
+    until not (is_same_color(r, g, b, Color.Palette.bg) or is_same_color(r, g, b, prev_color))
+
+    return Color{ r, g, b, 0xff }
+  end
+
+  local ok, nene <close> = Nene.init('nene game controller', 800, 600)
+  assert(ok, 'error: nene initialization failed')
+
+  local rect: Rectf = { 400-40, 300-40, 80, 80 }
+  local rect_color = get_random_color()
+
+  repeat
+    -- update game state
+    nene:poll_events()
+
+    -- update rect color by pressing FaceButtonDown button
+    if nene:get_gamepad_button_down(0, gamepad.Button.FaceButtonDown) then
+      rect_color = get_random_color(rect_color)
+    end
+
+    -- update rect position by left thumbstick value
+    local lx, ly = nene:get_gamepad_axis(0, gamepad.Axis.LeftX),  nene:get_gamepad_axis(0, gamepad.Axis.LeftY)
+    rect = rect:with_position(rect:get_position() + Vec2{lx, ly})
+
+    -- draw game state
+    nene:render_clear()
+
+    nene:render_draw_rect(rect, false, rect_color)
+
+    nene:render_present()
+  until nene.quit
+end
+
+game_controller()
