@@ -25,6 +25,7 @@
 * [Nene:set_raw_texture_color_mod](#neneset_raw_texture_color_mod)
 * [Nene:set_render_clip](#neneset_render_clip)
 * [Nene:render_clear](#nenerender_clear)
+* [Nene:render_draw_pixel](#nenerender_draw_pixel)
 * [Nene:render_draw_line](#nenerender_draw_line)
 * [Nene:render_draw_rect](#nenerender_draw_rect)
 * [Nene:render_copy](#nenerender_copy)
@@ -556,7 +557,9 @@ Related SDL documentation:
 function Nene:render_clear(color: facultative(Color)): boolean
 ```
 
-it clears the rendering target with the given `color`.
+It clears the rendering target with the given `color`.
+
+If `color` is not given, then is set to "background color".
 
 Returns an `ok` status with `true` value if successful.
 
@@ -568,13 +571,34 @@ Related SDL documentation:
 * [SDL_Renderer](https://wiki.libsdl.org/SDL_Renderer)
 * [SDL_RenderClear](https://wiki.libsdl.org/SDL_RenderClear)
 
+### Nene:render_draw_pixel
+
+```lua
+function Nene:render_draw_pixel(position: Vec2, color: facultative(Color)): boolean
+```
+
+Renders a pixel on the `position` position with the given `color`.
+
+If `color` is not given, then is set to white color.
+
+Returns `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Math.Vec2](math/vec2.md#vec2)
+* [Color](color.md#color)
+
+Related SDL documentation:
+* [SDL_RenderDrawPoint](https://wiki.libsdl.org/SDL_RenderDrawPoint)
+
 ### Nene:render_draw_line
 
 ```lua
 function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultative(Color)): boolean
 ```
 
-renders a line from `origin` to `destination` with the given `color`.
+Renders a line from `origin` to `destination` with the given `color`.
+
+If `color` is not given, then is set to white color.
 
 Returns an `ok` status with `true` value if successful.
 
@@ -591,7 +615,9 @@ Related SDL documentation:
 function Nene:render_draw_rect(rectangle: overload(Rect, Rectf), use_lines: boolean, color: facultative(Color)): boolean
 ```
 
-renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
+Renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
+
+If `color` is not given, then is set to white color.
 
 Returns an `ok` status with `true` value if successful.
 

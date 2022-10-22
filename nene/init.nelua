@@ -833,7 +833,9 @@ function Nene:set_render_clip(rect: facultative(Rect)): boolean
 end
 
 --[[
-it clears the rendering target with the given `color`.
+It clears the rendering target with the given `color`.
+
+If `color` is not given, then is set to "background color".
 
 Returns an `ok` status with `true` value if successful.
 
@@ -862,7 +864,43 @@ function Nene:render_clear(color: facultative(Color)): boolean
 end
 
 --[[
-renders a line from `origin` to `destination` with the given `color`.
+Renders a pixel on the `position` position with the given `color`.
+
+If `color` is not given, then is set to white color.
+
+Returns `ok` status with `true` value if successful.
+
+Related Nene documentation:
+* [Math.Vec2](math/vec2.md#vec2)
+* [Color](color.md#color)
+
+Related SDL documentation:
+* [SDL_RenderDrawPoint](https://wiki.libsdl.org/SDL_RenderDrawPoint)
+]]
+function Nene:render_draw_pixel(position: Vec2, color: facultative(Color)): boolean
+  check(Nene.initialized, 'Nene is not initialized')
+
+  ## if color.type.is_niltype then
+  local color = Color.Palette.white
+  ## end
+
+  self:set_render_draw_color(color)
+
+  local pos_x: cint, pos_y: cint = math.ifloor(position.x), math.ifloor(position.y)
+
+  if SDL_RenderDrawPoint(self.renderer, pos_x, pos_y) ~= 0 then
+    warn_msg!('Nene.render_draw_pixel', 'coult not draw a pixel')
+    return false
+  end
+
+  return true
+end
+
+
+--[[
+Renders a line from `origin` to `destination` with the given `color`.
+
+If `color` is not given, then is set to white color.
 
 Returns an `ok` status with `true` value if successful.
 
@@ -896,7 +934,9 @@ function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultati
 end
 
 --[[
-renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
+Renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.
+
+If `color` is not given, then is set to white color.
 
 Returns an `ok` status with `true` value if successful.
 
