@@ -11,6 +11,9 @@ The `Rectf` is just a convenient alias for `Rectn(number)`
 local Rectf: type = @Rectn(number)
 ```
 
+Alias of `Rectn(number)`.
 
+Related Nene documentation:
+* [Rectn](rectn.md#rectn)
 
 ---

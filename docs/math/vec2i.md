@@ -11,6 +11,9 @@ The `Vec2i` is just a convenient alias for `Vec2n(integer)`
 local Vec2i: type = @Vec2n(integer)
 ```
 
+Alias of `Vec2n(integer)`.
 
+Related Nene documentation:
+* [Vec2n](vec2n.md#vec2n)
 
 ---

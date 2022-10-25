@@ -6,6 +6,8 @@
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
 
+require 'nene.raw.sdl2'
+
 local Vec2n = require 'nene.math.vec2n'
 
 local Vec2i = require 'nene.math.vec2i'

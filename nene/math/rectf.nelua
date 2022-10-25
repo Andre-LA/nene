@@ -6,5 +6,13 @@
 -- SPDX-License-Identifier: Zlib
 
 local Rectn = require 'nene.math.rectn'
+
+--[[
+Alias of `Rectn(number)`.
+
+Related Nene documentation:
+* [Rectn](rectn.md#rectn)
+]]
 local Rectf: type = @Rectn(number)
+
 return Rectf

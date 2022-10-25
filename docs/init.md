@@ -636,7 +636,7 @@ function Nene:render_copy(
   source: facultative(Rect),
   destination: facultative(Rect),
   angle: facultative(number),
-  center: facultative(Vec2),
+  rotation_center: facultative(Vec2),
   flip_horizontal: facultative(boolean),
   flip_vertical: facultative(boolean)
 ): boolean
@@ -652,6 +652,12 @@ By default the texture will be copied on the whole rendering target unless the `
 in this case it will be copied at this "destination" part of the rendering target.
 
 Returns an `ok` status with `true` value if successful.
+
+There also some extra parameters with more advanced options:
+- `angle`: Rotates the destination rectangle in degrees in clockwise direction.
+- `rotation_center`: Defines the point of rotation of the previous parameter, the values are expected to be between `0` and `1`.
+- `flip_horizontal`: Flips the texture horizontally on painting.
+- `flip_vertically`: Flips the texture vertically on painting.
 
 Related Nene documentation:
 * [Math.Rect](math/rect.md#rect)
@@ -740,14 +746,14 @@ function Nene.init(
 ): (boolean, *Nene)
 ```
 
-try to initialize and return a new initilized core state.
+Try to initialize nene and returns an `ok` status and a new initilized core state.
 
 returns:
-  * a boolean that indicates true on success
-  * a new state, only filled on success
+  * a boolean that with `true` value on success or `false` on failure.
+  * a new state, only initialized on success.
 
 notes:
-  * You always should first check if the initialization
+  * You **always** should first check if the initialization
   succeeded before trying to use the state.
 
 Code example:

@@ -11,6 +11,9 @@ The `Rect` is just a convenient alias for `Rectn(integer)`
 local Rect: type = @Rectn(integer)
 ```
 
+Alias of `Rectn(integer)`.
 
+Related Nene documentation:
+* [Rectn](rectn.md#rectn)
 
 ---
