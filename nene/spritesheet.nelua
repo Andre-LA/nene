@@ -31,7 +31,7 @@ end
 
 -- Get the source get from the spritesheet at the column and row.
 function SpriteSheet:get_source_rect(column: isize, row: isize)
-  return self.grid:gen_rect(column, row)
+  return self.grid:get_rect(column, row)
 end
 
 -- Draw the sprite from the spritesheet

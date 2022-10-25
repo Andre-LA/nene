@@ -1,0 +1,93 @@
+-- The tilemap example
+-- This example shows how to use the tilemap module.
+-- It's recommended see the `tilesets` example first.
+
+-- Copyright (c) 2021-2022 André Luiz Alvares
+-- Nene is licensed under the Zlib license.
+-- Please refer to the LICENSE file for details
+-- SPDX-License-Identifier: Zlib
+
+local Nene = require 'nene'
+local Rect = require 'nene.math.rect'
+local Color = require 'nene.color'
+local Texture = require 'nene.texture'
+local Tilemap = require 'nene.tilemap'
+local Tileset = require 'nene.tileset'
+
+local function game()
+  -- initialize nene
+  local ok, nene <close> = Nene.init('nene tilemap', 550, 260)
+  assert(ok, 'error: nene initialization failed')
+
+  -- load the tileset texture
+  local ok, tileset_tex <close> = Texture.load('resources/img_shapes.png')
+  assert(ok, "error: 'img_shapes.png' could not be loaded")
+
+  -- set the tileset, more details on `tilesets` example
+  local tileset: Tileset = {
+    texture = tileset_tex,
+    width = 2,
+    grid = { cell_size = { 32, 32 } }
+  }
+
+  -- set the tilemap
+  local tilemap: Tilemap= {
+    -- set the tileset
+    =tileset,
+    -- our map have 16 tiles per line
+    width = 16,
+    -- the grid of our map have cells with 32x32 size, without gaps.
+    -- note that this is the size of cells of "tilemap", not tileset,
+    -- this means that you can paint tiles over others inside tilemap,
+    -- and this can be useful on some situations.
+    grid = { cell_size = { 32, 32 } },
+    -- the map, it's a `span` of numbers, for more information read
+    -- the "span" chapter on overview: https://nelua.io/overview/#span
+    map = {
+      --0                   1
+      --0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6   height
+        3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, -- 1
+        2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2, -- 2
+        2,2,3,0,0,0,0,0,0,0,0,0,0,0,2,2, -- 3
+        2,2,2,2,2,2,4,4,4,4,4,2,2,2,2,2, -- 4
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, -- 5
+    }
+  }
+
+  print('height of this tilemap:', tilemap:get_height())
+
+  repeat
+    nene:poll_events()
+
+    -- let's add some interaction:
+
+    -- up and down arrows will increase and decrease the vertical gap
+    if nene:get_scancode_down(Nene.Scancode.Up) then
+      tilemap.grid.gap.y = tilemap.grid.gap.y + 1
+    elseif nene:get_scancode_down(Nene.Scancode.Down) then
+      tilemap.grid.gap.y = tilemap.grid.gap.y - 1
+    end
+
+    -- left and right arrows will increase and decrease the horizontal gap
+    if nene:get_scancode_down(Nene.Scancode.Right) then
+      tilemap.grid.gap.x = tilemap.grid.gap.x + 1
+    elseif nene:get_scancode_down(Nene.Scancode.Left) then
+      tilemap.grid.gap.x = tilemap.grid.gap.x - 1
+    end
+
+    -- clear rendering target
+    nene:render_clear(Color.Palette.bg)
+
+    -- draw the tilemap with origin at 20,20
+    tilemap:draw({20,20})
+
+    -- let's draw a green rectangle of tilemap
+    -- on top tilemap that represents it's size
+    nene:render_draw_rect(Rect.from_vec2({20, 20}, tilemap:get_size()), true, Color.Palette.green)
+
+    -- present painted rendering target
+    nene:render_present()
+  until nene.quit
+end
+
+game()
