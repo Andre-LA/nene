@@ -1,6 +1,5 @@
--- The tileset example
--- This example shows how to use the tileset module.
--- It's recommended see the `sprite_animation` example first and `tilemaps` example later.
+-- The texture atlases example
+-- This example shows how to use the texture atlas module.
 
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
@@ -8,36 +7,29 @@
 -- SPDX-License-Identifier: Zlib
 
 local Nene = require 'nene'
-local Tileset = require 'nene.tileset'
-local Texture = require 'nene.texture'
+local TextureAtlas = require 'nene.texture_atlas'
 local Color = require 'nene.color'
 
-local function tileset_example()
+local function texture_atlas_example()
   -- initialize nene
-  local ok, nene <close> = Nene.init('nene tileset', 240, 160)
+  local ok, nene <close> = Nene.init('nene texture atlas', 240, 160)
   assert(ok, "nene couldn't be initialized")
 
   --[[
   First, let's load the "img_shapes" image from "resources", this image contains
-  four shapes, two per-line, aligned on a 32x32 grid:
+  four shapes with two shapes per-line, aligned on a 32x32 grid:
+
   circle, square,
   right triangle and a isosceles triangle.
-  ]]
-  local ok, tileset_tex <close> = Texture.load('resources/img_shapes.png')
-  assert(ok, "Tileset texture couldn't be loaded")
 
-  --[[
   Since there is two shapes per-line, the `width` should be set to two;
-  The texture will be the texture loaded above;
+
   Although it's a 64x64 texture, each shape it's on a cell of an 32x32 grid, thus the
   cell_size of grid should be set to { 32, 32}, there's no gap between cells, thus the
   `gap` field isn't set.
   ]]
-  local tileset: Tileset = {
-    width = 2,
-    texture = tileset_tex,
-    grid = { cell_size = { 32, 32 } }
-  }
+  local ok, atlas <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32 }})
+  assert(ok, "TextureAtlas texture couldn't be loaded")
 
   -- game loop
   repeat
@@ -48,29 +40,29 @@ local function tileset_example()
     nene:render_clear()
 
     --[[
-    let's first draw the circle tile at middle-top of the screen, the circle
+    let's first draw the circle sub-texture at middle-top of the screen, the circle
     it's on the first column and the first row, since it's 0-based, the values are
     0 and 0.
 
-    As texture in general, tiles are painted from the top-left corner, thus we need
-    to subtract 16px (half of the tile width) in order to get really on the center of
+    As texture in general, sub-textures are painted from the top-left corner, thus we need
+    to subtract 16px (half of the sub-texture width) in order to get really on the center of
     the screen.
     ]]
-    tileset:draw_tile(0, 0, { 120-16, 8 })
+    atlas:draw_sub_texture(0, 0, { 120-16, 8 })
 
     --[[
     Then let's draw some isosceles triangles at the bottom of the screen below.
 
-    Here we used another method: drawing the `n`th tile,
-    since the triangle is the 4th tile and it's 0-based, we use `3` value.
+    Here we used another method: drawing the `n`th sub-texture,
+    since the triangle is the 4th sub-texture and it's 0-based, we use `3` value.
 
-    `draw_tile` and `draw_nth_tile` accepts extended options for drawing just as `Texture.draw`, thus
+    `draw_sub_texture` and `draw_nth_sub_texture` accepts extended options for drawing just as `Texture.draw`, thus
     we can use color tint, angle, rotation center, and finally horizontal and vertical flipping.
 
     Here the triangle it's drawn with maroon tint with 10 degree rotation from left-bottom.
     ]]
     for i = -8, 240+8, 32 do
-      tileset:draw_nth_tile(3, {i, 160-32}, { 134, 0, 0}, 10, { 0.0, 1.0 })
+      atlas:draw_nth_sub_texture(3, {i, 160-32}, { 134, 0, 0}, 10, { 0.0, 1.0 })
     end
 
     -- clear present the painted rendering target
@@ -78,4 +70,4 @@ local function tileset_example()
   until nene.quit
 end
 
-tileset_example()
+texture_atlas_example()

@@ -3,45 +3,49 @@
 -- Please refer to the LICENSE file for details
 -- SPDX-License-Identifier: Zlib
 
--- this demo presents how to use the spritesheet module and using some more advanced texture drawing
+-- This example presents how to use the texture atlas module and using some more advanced texture drawing
 
 local math = require 'math'
 
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
-local SpriteSheet = require 'nene.spritesheet'
+local TextureAtlas = require 'nene.texture_atlas'
 
--- Here all the game code is inside a "game" function because it make address sanitizer more detailed.
--- In your games, you may use a "game frame" function, this makes web port easier.
--- Since a web port is beyond this example, using just a "game" function is enough.
+--[[
+Here all the game code is inside a "game" function because it make address sanitizer more detailed.
+In your games, you may use a "game frame" function, this makes web port easier.
+Since a web port is beyond this example, using just a "game" function is enough.
+]]
 local function game()
   -- initialize nene and test if got succesfully initialized
   local ok, nene <close> = Nene.init('nene sprite animation', (64*4), (64*4))
   assert(ok, 'error: nene initialization failed')
 
-  -- rotation parameter, will be increasing over time
+  -- rotation parameter, it'll be increased over time
   local rotation = 0.0
 
-  -- create a texture with img_shapes.png image on it
-  -- then test initialization and defers it's destruction using to-be-closed variable
-  -- note that img_shapes images contains four shapes, on a 32x32 alignment.
-  local ok, sprites_texture <close> = Texture.load('resources/img_shapes.png')
+  --[[
+  Create a texture atlas with img_shapes.png image on it,
+  then test initialization and defers it's destruction using to-be-closed variable
+  note that img_shapes images contains four shapes, on a 32x32 alignment.
+
+  More details can be read on the texture_atlas example.
+  ]]
+  local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = { 32, 32} })
   assert(ok, "error: 'img_shapes.png' could not be loaded")
 
-  -- set the spritesheet values which will be used with the texture created above
-  local spritesheet: SpriteSheet = {
-    grid = { cell_size = {32, 32} }, -- each sprite dimensions, the Grid module also permits using gaps
-    sprites_per_line = 2,            -- how many sprites exists per line
-  }
-
-  -- let's create a timer, this will store the time just after SDL (nene) initialization.
-  -- this variable will only be modified when the sprite changes.
+  --[[
+  Let's create a timer, this will store the time just after SDL (nene) initialization.
+  this variable will only be modified when the sprite changes.
+  ]]
   local prev_time = nene.current_time
 
-  -- the sprite index which we want to render on the current frame, this
-  -- refers to the cell of the spritesheet, the first one is on top-left,
-  -- the last is on bottom-right, the flow is left-to-right, up-to-down.
+  --[[
+  The sprite index which we want to render on the current frame, this
+  refers to the sub-sprite of the spritesheet, the first one is on top-left,
+  the last is on bottom-right, the flow is left-to-right, up-to-down.
+  ]]
   local sprite_index = 0
 
   -- with everything setup, now we run our game loop until the game will quit
@@ -52,24 +56,24 @@ local function game()
     -- increase rotation over time
     rotation = nene.current_time * 0.01
 
-    -- if the difference between the last time we changed the sprite and now
-    -- is greater than one second, then we updates prev_time and change
-    -- the sprite index used on spritesheet rendering.
+    --[[
+    If the difference between the last time we changed the sprite and now
+    is greater than one second, then we updates prev_time and change
+    the sprite index used on spritesheet rendering.
+    ]]
     if nene.current_time - prev_time > 1000 then
       prev_time = nene.current_time
       sprite_index = (sprite_index + 1) % 4
     end
 
     -- let's draw our game, first we need to clear the backbuffer.
-    nene:render_clear(Color.Palette.bg)
+    nene:render_clear()
 
-    -- then, draw the sprite from the spritesheet at {10, 10} position, using
-    -- the sprite texture, using the sprite index.
-    --
-    -- note that spritesheet doesn't contains the texture it should render on the
-    -- fields, this should be passed as an argument, the reason for this is that
-    -- when a module needs an external resource, it "asks" for it through parameters.
-    spritesheet:draw({x = 10, y = 10}, sprites_texture, sprite_index, Color.Palette.white, rotation)
+    --[[
+    Then, draw the sprite from the spritesheet at {10, 10} position, using
+    the spritesheet texture atlas, using the sprite index.
+    ]]
+    spritesheet:draw_nth_sub_texture(sprite_index, { 10, 10 },  nil, rotation)
 
     -- finally, swap buffers and present our final result
     nene:render_present()

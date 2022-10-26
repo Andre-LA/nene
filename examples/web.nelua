@@ -43,22 +43,14 @@ end
 ]=]
 
 local Nene = require 'nene'
-local SpriteSheet = require 'nene.spritesheet'
-local Texture = require 'nene.texture'
+local TextureAtlas = require 'nene.texture_atlas'
 local Color = require 'nene.color'
 
-local ok, nene = Nene.init('nene web', 128, 128)
+local ok, nene <close> = Nene.init('nene web', 128, 128)
 assert(ok, 'error: nene initialization failed')
-defer nene:terminate() end
 
-local ok, spritesheet_tex = Texture.load('resources/img_shapes.png')
+local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = { 32, 32 } })
 assert(ok, 'could not load img_shapes.png texture')
-defer spritesheet_tex:destroy() end
-
-local spritesheet: SpriteSheet = {
-  grid = {cell_size = { 32, 32 }},
-  sprites_per_line = 2,
-}
 
 local prev_time = nene.current_time
 local sprite_index = 0
@@ -71,8 +63,8 @@ local function run_frame()
       sprite_index = (sprite_index + 1) % 4
     end
 
-    nene:render_clear(Color.Palette.bg)
-    spritesheet:draw({x = 32, y = 32}, spritesheet_tex, sprite_index)
+    nene:render_clear()
+    spritesheet:draw_nth_sub_texture(sprite_index, { 32, 32 })
 
     nene:render_present()
 end

@@ -57,7 +57,7 @@ local gamepad.Button = @enum(cint) {
 Buttons of an gamepad, it copies the values of SDL's buttons enumeration, although it renames some of the
 nomenclature.
 
--- Related SDL documentation:
+- Related SDL documentation:
 * [SDL_GameControllerButton](https://wiki.libsdl.org/SDL_GameControllerButton)
 
 ### gamepad.Axis
@@ -81,7 +81,7 @@ local gamepad.Axis = @enum(cint) {
 Axes of an gamepad, it copies the values of SDL's axes enumeration, although it renames some of the
 nomenclature.
 
--- Related SDL documentation:
+- Related SDL documentation:
 * [SDL_GameControllerAxis](https://wiki.libsdl.org/SDL_GameControllerAxis)
 * [SDL_GameControllerGetAxis](https://wiki.libsdl.org/SDL_GameControllerGetAxis)
 

@@ -1,6 +1,6 @@
 -- The tilemap example
 -- This example shows how to use the tilemap module.
--- It's recommended see the `tilesets` example first.
+-- It's recommended see the `texture_atlases` example first.
 
 -- Copyright (c) 2021-2022 André Luiz Alvares
 -- Nene is licensed under the Zlib license.
@@ -12,23 +12,16 @@ local Rect = require 'nene.math.rect'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local Tilemap = require 'nene.tilemap'
-local Tileset = require 'nene.tileset'
+local TextureAtlas = require 'nene.texture_atlas'
 
 local function game()
   -- initialize nene
   local ok, nene <close> = Nene.init('nene tilemap', 550, 260)
   assert(ok, 'error: nene initialization failed')
 
-  -- load the tileset texture
-  local ok, tileset_tex <close> = Texture.load('resources/img_shapes.png')
+  -- load the tileset texture atlas, more details on `tilesets` example
+  local ok, tileset <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32} })
   assert(ok, "error: 'img_shapes.png' could not be loaded")
-
-  -- set the tileset, more details on `tilesets` example
-  local tileset: Tileset = {
-    texture = tileset_tex,
-    width = 2,
-    grid = { cell_size = { 32, 32 } }
-  }
 
   -- set the tilemap
   local tilemap: Tilemap= {

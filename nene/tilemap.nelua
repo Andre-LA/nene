@@ -12,34 +12,35 @@ local span = require 'span'
 -- nene
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
-local Tileset = require 'nene.tileset'
+local TextureAtlas = require 'nene.texture_atlas'
 
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
 local Grid = require 'nene.math.grid'
 
 --[[
-A tilemap contains a `width` number of tiles per line and a map made of numbers which are the `n+1`th tiles from the tileset.
+A tilemap contains a `width` number of tiles per line and a map made of numbers which are the `n+1`th tiles from
+the tileset (which is a texture atlas).
 
 This is how the `map` field works:
 * `map` is a `span` of `uint16` numbers, the first entry is on the uppper-left corner of the tilemap and it goes from
 left to right, top to bottom direction.
 * each number of `map` is either a `tile+1` tile from the tileset or an empty space.
-* when the number it's `0`, then it's an empty space, othewise it refers to a `tile` from the tileset
+* when the number it's `0`, then it's an empty space, othewise it refers to a `tile` from the tileset.
 
 Remember: tileset's tiles starts from 0, here these tiles are summed with `1` so the `0` can be used as an empty space.
 
 > Note: Some maps from other programs (like Tiled) uses `-1` as an empty space, if you use it, remember to also sum with 1 to
-convert to nene's tilemap numbers (don't worry, nene already subtracts with 1 in order to convert to Tileset numbers).
+convert to nene's tilemap numbers (don't worry, nene already subtracts with 1 in order to convert to TextureAtlas numbers).
 
 Related Nene documentation:
 * [Math.Grid](math/grid.md#grid)
 ]]
 local Tilemap = @record{
-  tileset: Tileset,  -- The tileset of this tilemap
-  width: uint16,     -- Amount of tiles per line
-  grid: Grid,        -- The grid of the tilemap
-  map: span(uint16), -- The map of the tilemap
+  tileset: TextureAtlas, -- The tileset texture atlas of this tilemap
+  width: uint16,         -- Amount of tiles per line
+  grid: Grid,            -- The grid of the tilemap
+  map: span(uint16),     -- The map of the tilemap
 }
 
 --[[
@@ -100,11 +101,11 @@ function Tilemap:draw(position: Vec2, tint: facultative(Color))
   ## end
 
   for tilemap_n = 0, < #self.map do
-    local tileset_n = self.map[tilemap_n]
+    local atlas_n = self.map[tilemap_n]
 
-    if tileset_n > 0 then
+    if atlas_n > 0 then
       local tile_pos = self.grid:get_nth_cell_pos(tilemap_n, self.width)
-      self.tileset:draw_nth_tile(tileset_n - 1, position + tile_pos, tint)
+      self.tileset:draw_nth_sub_texture(atlas_n - 1, position + tile_pos, tint)
     end
   end
 end
