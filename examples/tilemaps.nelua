@@ -14,6 +14,16 @@ local Texture = require 'nene.texture'
 local Tilemap = require 'nene.tilemap'
 local TextureAtlas = require 'nene.texture_atlas'
 
+local map_data: []uint16 = {
+  --0                   1
+  --0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6   height
+    3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, -- 1
+    2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2, -- 2
+    2,2,3,0,0,0,0,0,0,0,0,0,0,0,2,2, -- 3
+    2,2,2,2,2,2,4,4,4,4,4,2,2,2,2,2, -- 4
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, -- 5
+}
+
 local function game()
   -- initialize nene
   local ok, nene <close> = Nene.init('nene tilemap', 550, 260)
@@ -29,22 +39,43 @@ local function game()
     =tileset,
     -- our map have 16 tiles per line
     width = 16,
-    -- the grid of our map have cells with 32x32 size, without gaps.
-    -- note that this is the size of cells of "tilemap", not tileset,
-    -- this means that you can paint tiles over others inside tilemap,
-    -- and this can be useful on some situations.
+    --[[
+    The grid of our map have cells with 32x32 size, without gaps.
+    note that this is the size of cells of "tilemap", not tileset,
+    this means that you can paint tiles over others inside tilemap,
+    and this can be useful on some situations.
+    ]]
     grid = { cell_size = { 32, 32 } },
-    -- the map, it's a `span` of numbers, for more information read
-    -- the "span" chapter on overview: https://nelua.io/overview/#span
-    map = {
-      --0                   1
-      --0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6   height
-        3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, -- 1
-        2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2, -- 2
-        2,2,3,0,0,0,0,0,0,0,0,0,0,0,2,2, -- 3
-        2,2,2,2,2,2,4,4,4,4,4,2,2,2,2,2, -- 4
-        2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, -- 5
-    }
+    --[[
+    The map, it's a `span` of numbers, and thus it's data points to
+    a memory somewhere, thus, it's important to considerate where this
+    data it's actually stored because it isn't inside the tilemap.
+
+    For instance, if the code below would be `map = { ... }`, then the map would be
+    directly assigned to data.
+    This means that the data would be actually stored on the `game` function's stack,
+    this means that once the function returns, the data will not be valid anymore (except in case of
+    undefined behaviour of course).
+
+    Although this would be not a problem here (because the `game` only returns when the app it's closed),
+    it's a better practice to store your data on the top scope as a resource using an data type
+    convertible to span (arrays, vector, sequences, anything that's contiguous).
+
+    And that's why the data of tilemap it's declared as an array on the top scope.
+
+    You can read more about how memory works here:
+    https://en.wikipedia.org/wiki/Data_segment
+    https://en.wikipedia.org/wiki/Call_stack
+
+    You can read more about spans on nelua's overview and it's source code:
+    https://nelua.io/overview/#span
+    https://github.com/edubart/nelua-lang/blob/master/lib/span.nelua
+
+    TL;TR: The `map` field it's a span of numbers, it's better to declare the
+    data at the top scope and then assign `map` to this top scope variable than
+    assigning the data directly, otherwise you may get undefined behaviour.
+    ]]
+    map = map_data
   }
 
   print('height of this tilemap:', tilemap:get_height())
