@@ -36,6 +36,8 @@ end
 local function doc_dir(dirname, docs_dir)
   local ignored_files = {}
 
+  lfs.mkdir('docs/'..docs_dir)
+
   for filename in lfs.dir(dirname) do
     if not ignored_files[filename] then
       doc(filename, dirname, docs_dir)
