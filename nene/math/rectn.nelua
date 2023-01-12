@@ -43,7 +43,7 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
     in Rectn{ =x, =y}
   ## end
 
-  -- convert this
+  -- convert this to `SDL_Rect`
   function Rectn.to_raw_rect(rect: Rectn): SDL_Rect
     ## if not T.is_integral then
       return SDL_Rect{
@@ -56,6 +56,11 @@ local ov_vec2: type = @overload(Vec2i, Vec2f)
         w = rect.w, h = rect.h
       }
     ## end
+  end
+
+  -- compare this rect with another rect
+  function Rectn.__eq(self: Rectn, other: Rectn)
+    return self.x == other.x and self.y == other.y and self.w == other.w and self.h == other.h
   end
 
   -- Get rect position
