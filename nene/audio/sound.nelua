@@ -2,10 +2,12 @@
 --
 -- > Note: For music, you should look for the [`Music` module](music.md).
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 local math = require 'math'
 

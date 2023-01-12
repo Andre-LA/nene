@@ -1,10 +1,12 @@
 -- The `Rectn` module, it implements a rectangle using `n` type for `x`, `y`, `w` and `h` components,
 -- where `n` is an arithmetic type.
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 require 'nene.raw.sdl2'
 

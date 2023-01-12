@@ -1,9 +1,11 @@
 -- The Options module
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 --[=[
 You can customize some compile-time options through this module.

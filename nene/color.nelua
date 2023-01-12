@@ -3,10 +3,12 @@
 --
 -- The colors can also be set using two hexadecimal values, like in HTML colors.
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 require 'nene.raw.sdl2'
 

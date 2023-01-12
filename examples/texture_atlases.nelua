@@ -1,10 +1,12 @@
 -- The texture atlases example
 -- This example shows how to use the texture atlas module.
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 local Nene = require 'nene'
 local TextureAtlas = require 'nene.texture_atlas'

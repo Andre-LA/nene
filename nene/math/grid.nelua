@@ -1,9 +1,11 @@
 -- The grid module, used as a way to use grids mathematically.
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 local Rect = require 'nene.math.rect'
 local Vec2i = require 'nene.math.vec2i'

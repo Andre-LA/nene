@@ -1,10 +1,12 @@
 -- The `Vec2n` module, it implements a 2D Vector using `n` type for `x` and `y` components,
 -- where `n` is an arithmetic type.
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 local math = require 'math'
 

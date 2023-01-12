@@ -1,10 +1,12 @@
 -- The core of Nene, this is the main module, which should be initialized and terminated in the same life-cycle as
 -- your game.
 
--- Copyright (c) 2021-2022 André Luiz Alvares
--- Nene is licensed under the Zlib license.
--- Please refer to the LICENSE file for details
--- SPDX-License-Identifier: Zlib
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
 
 ##if ccinfo.is_emscripten then
   --[[
