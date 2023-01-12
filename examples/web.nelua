@@ -5,27 +5,29 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
--- this example can compile to native with
--- $ nelua examples/web.nelua
---
--- but also to the web, just change your compiler to emcc
--- $ nelua examples/web.nelua --cc emcc
---
--- due to this, you need emscripten installed on your system,
--- as described here:
--- https://emscripten.org/docs/getting_started/downloads.html
---
--- There is some important details that you need to consider when targeting the web, these
--- details are described on the end of this code
---
--- It's also highly recommended to read this section of Emscripten's documentation:
--- https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
---
--- It's also recommended to read this post which can give a overview about the process
--- https://ryanpcmcquen.org/code/2020/11/26/porting-a-c-game-to-webassembly.html
+--[[
+  this example can compile to native with
+  $ nelua examples/web.nelua
 
--- note that web target is something still in research, so the details given here
--- might be not the best configuration possible for nene and your game.
+  but also to the web, just change your compiler to emcc
+  $ nelua examples/web.nelua --cc emcc
+
+  due to this, you need emscripten installed on your system,
+  as described here:
+  https://emscripten.org/docs/getting_started/downloads.html
+
+  There is some important details that you need to consider when targeting the web, these
+  details are described on the end of this code
+
+  It's also highly recommended to read this section of Emscripten's documentation:
+  https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
+
+  It's also recommended to read this post which can give a overview about the process
+  https://ryanpcmcquen.org/code/2020/11/26/porting-a-c-game-to-webassembly.html
+
+  note that web target is something still in research, so the details given here
+  might be not the best configuration possible for nene and your game.
+]]
 
 -----------------------
 
@@ -83,39 +85,41 @@ end
   until nene.quit
 ## end
 
--- Important details:
---
--- To target the web, some flags needs to be passed to emcc, many of them are added automatically
--- by the SDL2 bindings and Nene's core, another very important change is that the `integer`,
--- `uinteger` and `number` types are changed to `int32`, `uint32` and `float32` respectively.
---
--- Also, the emscripten_set_main_loop function is automatically imported by Nene as a global, but only when
--- compiling with emcc.
---
--- Though these flags are added, there is some that you need to add yourself, which can't be just
--- declared by Nene because this is game-dependent, some of them are:
---
--- --preload-file
--- This argument makes a resource directory (with your game assets, like sprites and audios) accessible
--- to your game through packaging, there is also --embed-file, that embeds these resources on Javascript directly.
--- You should read "Packaging Files" documentation to properly understand how this works:
--- https://emscripten.org/docs/porting/files/packaging_files.html
---
--- --shell-file
--- This is optional and not used in this example, but you may like to change the web user interface (or just remove
--- it entirely), this is particularly useful when deploying to websites like itch.io, otherwise the screen of your game
--- will get really messed up on the platform's webpage game frame.
---
--- -s SDL2_IMAGE_FORMATS
--- this specifies which formats the emscripten's SDL2_image port will be able to open, in our example, we specify just PNG support
---
--- -s SDL2_MIXER_FORMATS
--- this specifies which formats the emscripten's SDL2_mixer port will be able to open
---
--- -s ALLOW_MEMORY_GROWTH
--- allows the application to growth the memory used, for better details, see:
--- https://emscripten.org/docs/optimizing/Optimizing-Code.html#memory-growth
---
--- It's impossible to cover all cases here, but these ones were the important flags used to create
--- web games with nene to this day, if anything, feel free to ask for help using Discussions:
--- https://github.com/Andre-LA/nene/discussions
+--[[
+  Important details:
+
+  To target the web, some flags needs to be passed to emcc, many of them are added automatically
+  by the SDL2 bindings and Nene's core, another very important change is that the `integer`,
+  `uinteger` and `number` types are changed to `int32`, `uint32` and `float32` respectively.
+
+  Also, the emscripten_set_main_loop function is automatically imported by Nene as a global, but only when
+  compiling with emcc.
+
+  Though these flags are added, there is some that you need to add yourself, which can't be just
+  declared by Nene because this is game-dependent, some of them are:
+
+  preload-file
+  This argument makes a resource directory (with your game assets, like sprites and audios) accessible
+  to your game through packaging, there is also embed-file, that embeds these resources on Javascript directly.
+  You should read "Packaging Files" documentation to properly understand how this works:
+  https://emscripten.org/docs/porting/files/packaging_files.html
+
+  shell-file
+  This is optional and not used in this example, but you may like to change the web user interface (or just remove
+  it entirely), this is particularly useful when deploying to websites like itch.io, otherwise the screen of your game
+  will get really messed up on the platform's webpage game frame.
+
+  -s SDL2_IMAGE_FORMATS
+  this specifies which formats the emscripten's SDL2_image port will be able to open, in our example, we specify just PNG support
+
+  -s SDL2_MIXER_FORMATS
+  this specifies which formats the emscripten's SDL2_mixer port will be able to open
+
+  -s ALLOW_MEMORY_GROWTH
+  allows the application to growth the memory used, for better details, see:
+  https://emscripten.org/docs/optimizing/Optimizing-Code.html#memory-growth
+
+  It's impossible to cover all cases here, but these ones were the important flags used to create
+  web games with nene to this day, if anything, feel free to ask for help using Discussions:
+  https://github.com/Andre-LA/nene/discussions
+]]

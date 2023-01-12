@@ -1,6 +1,10 @@
 ##[[
+if ccinfo.is_emscripten then
+  cflags '-s USE_SDL_IMAGE=2'
+else
+  linklib 'SDL2_image'
+end
 cinclude '<SDL2/SDL_image.h>'
-linklib 'SDL2_image'
 ]]
 global function IMG_Linked_Version(): *SDL_version <cimport,nodecl> end
 global IMG_InitFlags: type <cimport,nodecl,using> = @enum(cint){
