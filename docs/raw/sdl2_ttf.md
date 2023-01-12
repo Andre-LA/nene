@@ -21,6 +21,8 @@
 * [TTF_SetFontOutline](#ttf_setfontoutline)
 * [TTF_GetFontHinting](#ttf_getfonthinting)
 * [TTF_SetFontHinting](#ttf_setfonthinting)
+* [TTF_GetFontWrappedAlign](#ttf_getfontwrappedalign)
+* [TTF_SetFontWrappedAlign](#ttf_setfontwrappedalign)
 * [TTF_FontHeight](#ttf_fontheight)
 * [TTF_FontAscent](#ttf_fontascent)
 * [TTF_FontDescent](#ttf_fontdescent)
@@ -65,8 +67,14 @@
 * [TTF_RenderUNICODE_Blended_Wrapped](#ttf_renderunicode_blended_wrapped)
 * [TTF_RenderGlyph_Blended](#ttf_renderglyph_blended)
 * [TTF_RenderGlyph32_Blended](#ttf_renderglyph32_blended)
-* [TTF_SetDirection](#ttf_setdirection)
-* [TTF_SetScript](#ttf_setscript)
+* [TTF_RenderText_LCD](#ttf_rendertext_lcd)
+* [TTF_RenderUTF8_LCD](#ttf_renderutf8_lcd)
+* [TTF_RenderUNICODE_LCD](#ttf_renderunicode_lcd)
+* [TTF_RenderText_LCD_Wrapped](#ttf_rendertext_lcd_wrapped)
+* [TTF_RenderUTF8_LCD_Wrapped](#ttf_renderutf8_lcd_wrapped)
+* [TTF_RenderUNICODE_LCD_Wrapped](#ttf_renderunicode_lcd_wrapped)
+* [TTF_RenderGlyph_LCD](#ttf_renderglyph_lcd)
+* [TTF_RenderGlyph32_LCD](#ttf_renderglyph32_lcd)
 * [TTF_CloseFont](#ttf_closefont)
 * [TTF_Quit](#ttf_quit)
 * [TTF_WasInit](#ttf_wasinit)
@@ -75,6 +83,11 @@
 * [TTF_GetFontKerningSizeGlyphs32](#ttf_getfontkerningsizeglyphs32)
 * [TTF_SetFontSDF](#ttf_setfontsdf)
 * [TTF_GetFontSDF](#ttf_getfontsdf)
+* [TTF_Direction](#ttf_direction)
+* [TTF_SetDirection](#ttf_setdirection)
+* [TTF_SetScript](#ttf_setscript)
+* [TTF_SetFontDirection](#ttf_setfontdirection)
+* [TTF_SetFontScriptName](#ttf_setfontscriptname)
 * [SDL_TTF_MAJOR_VERSION](#sdl_ttf_major_version)
 * [SDL_TTF_MINOR_VERSION](#sdl_ttf_minor_version)
 * [SDL_TTF_PATCHLEVEL](#sdl_ttf_patchlevel)
@@ -267,6 +280,22 @@ global function TTF_GetFontHinting(font: *TTF_Font): cint
 
 ```lua
 global function TTF_SetFontHinting(font: *TTF_Font, hinting: cint): void
+```
+
+
+
+### TTF_GetFontWrappedAlign
+
+```lua
+global function TTF_GetFontWrappedAlign(font: *TTF_Font): cint
+```
+
+
+
+### TTF_SetFontWrappedAlign
+
+```lua
+global function TTF_SetFontWrappedAlign(font: *TTF_Font, align: cint): void
 ```
 
 
@@ -623,18 +652,66 @@ global function TTF_RenderGlyph32_Blended(font: *TTF_Font, ch: uint32, fg: SDL_C
 
 
 
-### TTF_SetDirection
+### TTF_RenderText_LCD
 
 ```lua
-global function TTF_SetDirection(direction: cint): cint
+global function TTF_RenderText_LCD(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
 ```
 
 
 
-### TTF_SetScript
+### TTF_RenderUTF8_LCD
 
 ```lua
-global function TTF_SetScript(script: cint): cint
+global function TTF_RenderUTF8_LCD(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
+```
+
+
+
+### TTF_RenderUNICODE_LCD
+
+```lua
+global function TTF_RenderUNICODE_LCD(font: *TTF_Font, text: *uint16, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
+```
+
+
+
+### TTF_RenderText_LCD_Wrapped
+
+```lua
+global function TTF_RenderText_LCD_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderUTF8_LCD_Wrapped
+
+```lua
+global function TTF_RenderUTF8_LCD_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderUNICODE_LCD_Wrapped
+
+```lua
+global function TTF_RenderUNICODE_LCD_Wrapped(font: *TTF_Font, text: *uint16, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface
+```
+
+
+
+### TTF_RenderGlyph_LCD
+
+```lua
+global function TTF_RenderGlyph_LCD(font: *TTF_Font, ch: uint16, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
+```
+
+
+
+### TTF_RenderGlyph32_LCD
+
+```lua
+global function TTF_RenderGlyph32_LCD(font: *TTF_Font, ch: uint32, fg: SDL_Color, bg: SDL_Color): *SDL_Surface
 ```
 
 
@@ -699,6 +776,51 @@ global function TTF_SetFontSDF(font: *TTF_Font, on_off: SDL_bool): cint
 
 ```lua
 global function TTF_GetFontSDF(font: *TTF_Font): SDL_bool
+```
+
+
+
+### TTF_Direction
+
+```lua
+global TTF_Direction: type = @enum(cint){
+  TTF_DIRECTION_LTR = 0,
+  TTF_DIRECTION_RTL = 1,
+  TTF_DIRECTION_TTB = 2,
+  TTF_DIRECTION_BTT = 3
+}
+```
+
+
+
+### TTF_SetDirection
+
+```lua
+global function TTF_SetDirection(direction: cint): cint
+```
+
+
+
+### TTF_SetScript
+
+```lua
+global function TTF_SetScript(script: cint): cint
+```
+
+
+
+### TTF_SetFontDirection
+
+```lua
+global function TTF_SetFontDirection(font: *TTF_Font, direction: TTF_Direction): cint
+```
+
+
+
+### TTF_SetFontScriptName
+
+```lua
+global function TTF_SetFontScriptName(font: *TTF_Font, script: cstring): cint
 ```
 
 

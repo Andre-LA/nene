@@ -9,9 +9,10 @@
 * [Mix_Music](#mix_music)
 * [Mix_OpenAudio](#mix_openaudio)
 * [Mix_OpenAudioDevice](#mix_openaudiodevice)
-* [Mix_AllocateChannels](#mix_allocatechannels)
 * [Mix_QuerySpec](#mix_queryspec)
+* [Mix_AllocateChannels](#mix_allocatechannels)
 * [Mix_LoadWAV_RW](#mix_loadwav_rw)
+* [Mix_LoadWAV](#mix_loadwav)
 * [Mix_LoadMUS](#mix_loadmus)
 * [Mix_LoadMUS_RW](#mix_loadmus_rw)
 * [Mix_LoadMUSType_RW](#mix_loadmustype_rw)
@@ -26,6 +27,11 @@
 * [Mix_GetMusicDecoder](#mix_getmusicdecoder)
 * [Mix_HasMusicDecoder](#mix_hasmusicdecoder)
 * [Mix_GetMusicType](#mix_getmusictype)
+* [Mix_GetMusicTitle](#mix_getmusictitle)
+* [Mix_GetMusicTitleTag](#mix_getmusictitletag)
+* [Mix_GetMusicArtistTag](#mix_getmusicartisttag)
+* [Mix_GetMusicAlbumTag](#mix_getmusicalbumtag)
+* [Mix_GetMusicCopyrightTag](#mix_getmusiccopyrighttag)
 * [Mix_SetPostMix](#mix_setpostmix)
 * [Mix_HookMusic](#mix_hookmusic)
 * [Mix_HookMusicFinished](#mix_hookmusicfinished)
@@ -47,14 +53,18 @@
 * [Mix_GroupCount](#mix_groupcount)
 * [Mix_GroupOldest](#mix_groupoldest)
 * [Mix_GroupNewer](#mix_groupnewer)
+* [Mix_PlayChannel](#mix_playchannel)
 * [Mix_PlayChannelTimed](#mix_playchanneltimed)
 * [Mix_PlayMusic](#mix_playmusic)
 * [Mix_FadeInMusic](#mix_fadeinmusic)
 * [Mix_FadeInMusicPos](#mix_fadeinmusicpos)
+* [Mix_FadeInChannel](#mix_fadeinchannel)
 * [Mix_FadeInChannelTimed](#mix_fadeinchanneltimed)
 * [Mix_Volume](#mix_volume)
 * [Mix_VolumeChunk](#mix_volumechunk)
 * [Mix_VolumeMusic](#mix_volumemusic)
+* [Mix_GetMusicVolume](#mix_getmusicvolume)
+* [Mix_MasterVolume](#mix_mastervolume)
 * [Mix_HaltChannel](#mix_haltchannel)
 * [Mix_HaltGroup](#mix_haltgroup)
 * [Mix_HaltMusic](#mix_haltmusic)
@@ -71,7 +81,13 @@
 * [Mix_ResumeMusic](#mix_resumemusic)
 * [Mix_RewindMusic](#mix_rewindmusic)
 * [Mix_PausedMusic](#mix_pausedmusic)
+* [Mix_ModMusicJumpToOrder](#mix_modmusicjumptoorder)
 * [Mix_SetMusicPosition](#mix_setmusicposition)
+* [Mix_GetMusicPosition](#mix_getmusicposition)
+* [Mix_MusicDuration](#mix_musicduration)
+* [Mix_GetMusicLoopStartTime](#mix_getmusicloopstarttime)
+* [Mix_GetMusicLoopEndTime](#mix_getmusicloopendtime)
+* [Mix_GetMusicLoopLengthTime](#mix_getmusiclooplengthtime)
 * [Mix_Playing](#mix_playing)
 * [Mix_PlayingMusic](#mix_playingmusic)
 * [Mix_SetMusicCMD](#mix_setmusiccmd)
@@ -80,6 +96,8 @@
 * [Mix_SetSoundFonts](#mix_setsoundfonts)
 * [Mix_GetSoundFonts](#mix_getsoundfonts)
 * [Mix_EachSoundFont](#mix_eachsoundfont)
+* [Mix_SetTimidityCfg](#mix_settimiditycfg)
+* [Mix_GetTimidityCfg](#mix_gettimiditycfg)
 * [Mix_GetChunk](#mix_getchunk)
 * [Mix_CloseAudio](#mix_closeaudio)
 * [SDL_MIXER_MAJOR_VERSION](#sdl_mixer_major_version)
@@ -210,14 +228,6 @@ global function Mix_OpenAudioDevice(frequency: cint, format: uint16, channels: c
 
 
 
-### Mix_AllocateChannels
-
-```lua
-global function Mix_AllocateChannels(numchans: cint): cint
-```
-
-
-
 ### Mix_QuerySpec
 
 ```lua
@@ -226,10 +236,26 @@ global function Mix_QuerySpec(frequency: *cint, format: *uint16, channels: *cint
 
 
 
+### Mix_AllocateChannels
+
+```lua
+global function Mix_AllocateChannels(numchans: cint): cint
+```
+
+
+
 ### Mix_LoadWAV_RW
 
 ```lua
 global function Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: cint): *Mix_Chunk
+```
+
+
+
+### Mix_LoadWAV
+
+```lua
+global function Mix_LoadWAV(file: cstring): *Mix_Chunk
 ```
 
 
@@ -342,6 +368,46 @@ global function Mix_HasMusicDecoder(name: cstring): SDL_bool
 
 ```lua
 global function Mix_GetMusicType(music: *Mix_Music): Mix_MusicType
+```
+
+
+
+### Mix_GetMusicTitle
+
+```lua
+global function Mix_GetMusicTitle(music: *Mix_Music): cstring
+```
+
+
+
+### Mix_GetMusicTitleTag
+
+```lua
+global function Mix_GetMusicTitleTag(music: *Mix_Music): cstring
+```
+
+
+
+### Mix_GetMusicArtistTag
+
+```lua
+global function Mix_GetMusicArtistTag(music: *Mix_Music): cstring
+```
+
+
+
+### Mix_GetMusicAlbumTag
+
+```lua
+global function Mix_GetMusicAlbumTag(music: *Mix_Music): cstring
+```
+
+
+
+### Mix_GetMusicCopyrightTag
+
+```lua
+global function Mix_GetMusicCopyrightTag(music: *Mix_Music): cstring
 ```
 
 
@@ -514,6 +580,14 @@ global function Mix_GroupNewer(tag: cint): cint
 
 
 
+### Mix_PlayChannel
+
+```lua
+global function Mix_PlayChannel(channel: cint, chunk: *Mix_Chunk, loops: cint): cint
+```
+
+
+
 ### Mix_PlayChannelTimed
 
 ```lua
@@ -546,6 +620,14 @@ global function Mix_FadeInMusicPos(music: *Mix_Music, loops: cint, ms: cint, pos
 
 
 
+### Mix_FadeInChannel
+
+```lua
+global function Mix_FadeInChannel(channel: cint, chunk: *Mix_Chunk, loops: cint, ms: cint): cint
+```
+
+
+
 ### Mix_FadeInChannelTimed
 
 ```lua
@@ -574,6 +656,22 @@ global function Mix_VolumeChunk(chunk: *Mix_Chunk, volume: cint): cint
 
 ```lua
 global function Mix_VolumeMusic(volume: cint): cint
+```
+
+
+
+### Mix_GetMusicVolume
+
+```lua
+global function Mix_GetMusicVolume(music: *Mix_Music): cint
+```
+
+
+
+### Mix_MasterVolume
+
+```lua
+global function Mix_MasterVolume(volume: cint): cint
 ```
 
 
@@ -706,10 +804,58 @@ global function Mix_PausedMusic(): cint
 
 
 
+### Mix_ModMusicJumpToOrder
+
+```lua
+global function Mix_ModMusicJumpToOrder(order: cint): cint
+```
+
+
+
 ### Mix_SetMusicPosition
 
 ```lua
 global function Mix_SetMusicPosition(position: float64): cint
+```
+
+
+
+### Mix_GetMusicPosition
+
+```lua
+global function Mix_GetMusicPosition(music: *Mix_Music): float64
+```
+
+
+
+### Mix_MusicDuration
+
+```lua
+global function Mix_MusicDuration(music: *Mix_Music): float64
+```
+
+
+
+### Mix_GetMusicLoopStartTime
+
+```lua
+global function Mix_GetMusicLoopStartTime(music: *Mix_Music): float64
+```
+
+
+
+### Mix_GetMusicLoopEndTime
+
+```lua
+global function Mix_GetMusicLoopEndTime(music: *Mix_Music): float64
+```
+
+
+
+### Mix_GetMusicLoopLengthTime
+
+```lua
+global function Mix_GetMusicLoopLengthTime(music: *Mix_Music): float64
 ```
 
 
@@ -774,6 +920,22 @@ global function Mix_GetSoundFonts(): cstring
 
 ```lua
 global function Mix_EachSoundFont(Function: function(cstring, pointer): cint, data: pointer): cint
+```
+
+
+
+### Mix_SetTimidityCfg
+
+```lua
+global function Mix_SetTimidityCfg(path: cstring): cint
+```
+
+
+
+### Mix_GetTimidityCfg
+
+```lua
+global function Mix_GetTimidityCfg(): cstring
 ```
 
 

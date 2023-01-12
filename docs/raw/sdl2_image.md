@@ -9,42 +9,56 @@
 * [IMG_LoadTexture](#img_loadtexture)
 * [IMG_LoadTexture_RW](#img_loadtexture_rw)
 * [IMG_LoadTextureTyped_RW](#img_loadtexturetyped_rw)
+* [IMG_isAVIF](#img_isavif)
 * [IMG_isICO](#img_isico)
 * [IMG_isCUR](#img_iscur)
 * [IMG_isBMP](#img_isbmp)
 * [IMG_isGIF](#img_isgif)
 * [IMG_isJPG](#img_isjpg)
+* [IMG_isJXL](#img_isjxl)
 * [IMG_isLBM](#img_islbm)
 * [IMG_isPCX](#img_ispcx)
 * [IMG_isPNG](#img_ispng)
 * [IMG_isPNM](#img_ispnm)
 * [IMG_isSVG](#img_issvg)
+* [IMG_isQOI](#img_isqoi)
 * [IMG_isTIF](#img_istif)
 * [IMG_isXCF](#img_isxcf)
 * [IMG_isXPM](#img_isxpm)
 * [IMG_isXV](#img_isxv)
 * [IMG_isWEBP](#img_iswebp)
+* [IMG_LoadAVIF_RW](#img_loadavif_rw)
 * [IMG_LoadICO_RW](#img_loadico_rw)
 * [IMG_LoadCUR_RW](#img_loadcur_rw)
 * [IMG_LoadBMP_RW](#img_loadbmp_rw)
 * [IMG_LoadGIF_RW](#img_loadgif_rw)
 * [IMG_LoadJPG_RW](#img_loadjpg_rw)
+* [IMG_LoadJXL_RW](#img_loadjxl_rw)
 * [IMG_LoadLBM_RW](#img_loadlbm_rw)
 * [IMG_LoadPCX_RW](#img_loadpcx_rw)
 * [IMG_LoadPNG_RW](#img_loadpng_rw)
 * [IMG_LoadPNM_RW](#img_loadpnm_rw)
 * [IMG_LoadSVG_RW](#img_loadsvg_rw)
+* [IMG_LoadQOI_RW](#img_loadqoi_rw)
 * [IMG_LoadTGA_RW](#img_loadtga_rw)
 * [IMG_LoadTIF_RW](#img_loadtif_rw)
 * [IMG_LoadXCF_RW](#img_loadxcf_rw)
 * [IMG_LoadXPM_RW](#img_loadxpm_rw)
 * [IMG_LoadXV_RW](#img_loadxv_rw)
 * [IMG_LoadWEBP_RW](#img_loadwebp_rw)
+* [IMG_LoadSizedSVG_RW](#img_loadsizedsvg_rw)
 * [IMG_ReadXPMFromArray](#img_readxpmfromarray)
+* [IMG_ReadXPMFromArrayToRGB888](#img_readxpmfromarraytorgb888)
 * [IMG_SavePNG](#img_savepng)
 * [IMG_SavePNG_RW](#img_savepng_rw)
 * [IMG_SaveJPG](#img_savejpg)
 * [IMG_SaveJPG_RW](#img_savejpg_rw)
+* [IMG_Animation](#img_animation)
+* [IMG_LoadAnimation](#img_loadanimation)
+* [IMG_LoadAnimation_RW](#img_loadanimation_rw)
+* [IMG_LoadAnimationTyped_RW](#img_loadanimationtyped_rw)
+* [IMG_FreeAnimation](#img_freeanimation)
+* [IMG_LoadGIFAnimation_RW](#img_loadgifanimation_rw)
 * [SDL_IMAGE_MAJOR_VERSION](#sdl_image_major_version)
 * [SDL_IMAGE_MINOR_VERSION](#sdl_image_minor_version)
 * [SDL_IMAGE_PATCHLEVEL](#sdl_image_patchlevel)
@@ -69,7 +83,9 @@ global IMG_InitFlags: type = @enum(cint){
   IMG_INIT_JPG = 1,
   IMG_INIT_PNG = 2,
   IMG_INIT_TIF = 4,
-  IMG_INIT_WEBP = 8
+  IMG_INIT_WEBP = 8,
+  IMG_INIT_JXL = 16,
+  IMG_INIT_AVIF = 32
 }
 ```
 
@@ -139,6 +155,14 @@ global function IMG_LoadTextureTyped_RW(renderer: *SDL_Renderer, src: *SDL_RWops
 
 
 
+### IMG_isAVIF
+
+```lua
+global function IMG_isAVIF(src: *SDL_RWops): cint
+```
+
+
+
 ### IMG_isICO
 
 ```lua
@@ -175,6 +199,14 @@ global function IMG_isGIF(src: *SDL_RWops): cint
 
 ```lua
 global function IMG_isJPG(src: *SDL_RWops): cint
+```
+
+
+
+### IMG_isJXL
+
+```lua
+global function IMG_isJXL(src: *SDL_RWops): cint
 ```
 
 
@@ -219,6 +251,14 @@ global function IMG_isSVG(src: *SDL_RWops): cint
 
 
 
+### IMG_isQOI
+
+```lua
+global function IMG_isQOI(src: *SDL_RWops): cint
+```
+
+
+
 ### IMG_isTIF
 
 ```lua
@@ -255,6 +295,14 @@ global function IMG_isXV(src: *SDL_RWops): cint
 
 ```lua
 global function IMG_isWEBP(src: *SDL_RWops): cint
+```
+
+
+
+### IMG_LoadAVIF_RW
+
+```lua
+global function IMG_LoadAVIF_RW(src: *SDL_RWops): *SDL_Surface
 ```
 
 
@@ -299,6 +347,14 @@ global function IMG_LoadJPG_RW(src: *SDL_RWops): *SDL_Surface
 
 
 
+### IMG_LoadJXL_RW
+
+```lua
+global function IMG_LoadJXL_RW(src: *SDL_RWops): *SDL_Surface
+```
+
+
+
 ### IMG_LoadLBM_RW
 
 ```lua
@@ -335,6 +391,14 @@ global function IMG_LoadPNM_RW(src: *SDL_RWops): *SDL_Surface
 
 ```lua
 global function IMG_LoadSVG_RW(src: *SDL_RWops): *SDL_Surface
+```
+
+
+
+### IMG_LoadQOI_RW
+
+```lua
+global function IMG_LoadQOI_RW(src: *SDL_RWops): *SDL_Surface
 ```
 
 
@@ -387,10 +451,26 @@ global function IMG_LoadWEBP_RW(src: *SDL_RWops): *SDL_Surface
 
 
 
+### IMG_LoadSizedSVG_RW
+
+```lua
+global function IMG_LoadSizedSVG_RW(src: *SDL_RWops, width: cint, height: cint): *SDL_Surface
+```
+
+
+
 ### IMG_ReadXPMFromArray
 
 ```lua
 global function IMG_ReadXPMFromArray(xpm: *cstring): *SDL_Surface
+```
+
+
+
+### IMG_ReadXPMFromArrayToRGB888
+
+```lua
+global function IMG_ReadXPMFromArrayToRGB888(xpm: *cstring): *SDL_Surface
 ```
 
 
@@ -423,6 +503,60 @@ global function IMG_SaveJPG(surface: *SDL_Surface, file: cstring, quality: cint)
 
 ```lua
 global function IMG_SaveJPG_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: cint, quality: cint): cint
+```
+
+
+
+### IMG_Animation
+
+```lua
+global IMG_Animation: type = @record{
+  w: cint,
+  h: cint,
+  count: cint,
+  frames: **SDL_Surface,
+  delays: *cint
+}
+```
+
+
+
+### IMG_LoadAnimation
+
+```lua
+global function IMG_LoadAnimation(file: cstring): *IMG_Animation
+```
+
+
+
+### IMG_LoadAnimation_RW
+
+```lua
+global function IMG_LoadAnimation_RW(src: *SDL_RWops, freesrc: cint): *IMG_Animation
+```
+
+
+
+### IMG_LoadAnimationTyped_RW
+
+```lua
+global function IMG_LoadAnimationTyped_RW(src: *SDL_RWops, freesrc: cint, type: cstring): *IMG_Animation
+```
+
+
+
+### IMG_FreeAnimation
+
+```lua
+global function IMG_FreeAnimation(anim: *IMG_Animation): void
+```
+
+
+
+### IMG_LoadGIFAnimation_RW
+
+```lua
+global function IMG_LoadGIFAnimation_RW(src: *SDL_RWops): *IMG_Animation
 ```
 
 

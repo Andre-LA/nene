@@ -10,12 +10,14 @@
 * [SDL_calloc_func](#sdl_calloc_func)
 * [SDL_realloc_func](#sdl_realloc_func)
 * [SDL_free_func](#sdl_free_func)
+* [SDL_GetOriginalMemoryFunctions](#sdl_getoriginalmemoryfunctions)
 * [SDL_GetMemoryFunctions](#sdl_getmemoryfunctions)
 * [SDL_SetMemoryFunctions](#sdl_setmemoryfunctions)
 * [SDL_GetNumAllocations](#sdl_getnumallocations)
 * [SDL_getenv](#sdl_getenv)
 * [SDL_setenv](#sdl_setenv)
 * [SDL_qsort](#sdl_qsort)
+* [SDL_bsearch](#sdl_bsearch)
 * [SDL_abs](#sdl_abs)
 * [SDL_isalpha](#sdl_isalpha)
 * [SDL_isalnum](#sdl_isalnum)
@@ -31,6 +33,7 @@
 * [SDL_isgraph](#sdl_isgraph)
 * [SDL_toupper](#sdl_toupper)
 * [SDL_tolower](#sdl_tolower)
+* [SDL_crc16](#sdl_crc16)
 * [SDL_crc32](#sdl_crc32)
 * [SDL_memset](#sdl_memset)
 * [SDL_memset4](#sdl_memset4)
@@ -57,8 +60,10 @@
 * [SDL_strchr](#sdl_strchr)
 * [SDL_strrchr](#sdl_strrchr)
 * [SDL_strstr](#sdl_strstr)
+* [SDL_strcasestr](#sdl_strcasestr)
 * [SDL_strtokr](#sdl_strtokr)
 * [SDL_utf8strlen](#sdl_utf8strlen)
+* [SDL_utf8strnlen](#sdl_utf8strnlen)
 * [SDL_itoa](#sdl_itoa)
 * [SDL_uitoa](#sdl_uitoa)
 * [SDL_ltoa](#sdl_ltoa)
@@ -131,6 +136,8 @@
 * [SDL_iconv](#sdl_iconv)
 * [SDL_iconv_string](#sdl_iconv_string)
 * [SDL_memcpy4](#sdl_memcpy4)
+* [SDL_size_mul_overflow](#sdl_size_mul_overflow)
+* [SDL_size_add_overflow](#sdl_size_add_overflow)
 * [SDL_main_func](#sdl_main_func)
 * [SDL_main](#sdl_main)
 * [SDL_SetMainReady](#sdl_setmainready)
@@ -242,6 +249,7 @@
 * [SDL_GetNumAudioDevices](#sdl_getnumaudiodevices)
 * [SDL_GetAudioDeviceName](#sdl_getaudiodevicename)
 * [SDL_GetAudioDeviceSpec](#sdl_getaudiodevicespec)
+* [SDL_GetDefaultAudioInfo](#sdl_getdefaultaudioinfo)
 * [SDL_OpenAudioDevice](#sdl_openaudiodevice)
 * [SDL_AudioStatus](#sdl_audiostatus)
 * [SDL_GetAudioStatus](#sdl_getaudiostatus)
@@ -275,6 +283,9 @@
 * [SDL_SetClipboardText](#sdl_setclipboardtext)
 * [SDL_GetClipboardText](#sdl_getclipboardtext)
 * [SDL_HasClipboardText](#sdl_hasclipboardtext)
+* [SDL_SetPrimarySelectionText](#sdl_setprimaryselectiontext)
+* [SDL_GetPrimarySelectionText](#sdl_getprimaryselectiontext)
+* [SDL_HasPrimarySelectionText](#sdl_hasprimaryselectiontext)
 * [SDL_GetCPUCount](#sdl_getcpucount)
 * [SDL_GetCPUCacheLineSize](#sdl_getcpucachelinesize)
 * [SDL_HasRDTSC](#sdl_hasrdtsc)
@@ -291,6 +302,8 @@
 * [SDL_HasAVX512F](#sdl_hasavx512f)
 * [SDL_HasARMSIMD](#sdl_hasarmsimd)
 * [SDL_HasNEON](#sdl_hasneon)
+* [SDL_HasLSX](#sdl_haslsx)
+* [SDL_HasLASX](#sdl_haslasx)
 * [SDL_GetSystemRAM](#sdl_getsystemram)
 * [SDL_SIMDGetAlignment](#sdl_simdgetalignment)
 * [SDL_SIMDAlloc](#sdl_simdalloc)
@@ -331,6 +344,15 @@
 * [SDL_UnionRect](#sdl_unionrect)
 * [SDL_EnclosePoints](#sdl_enclosepoints)
 * [SDL_IntersectRectAndLine](#sdl_intersectrectandline)
+* [SDL_PointInFRect](#sdl_pointinfrect)
+* [SDL_FRectEmpty](#sdl_frectempty)
+* [SDL_FRectEqualsEpsilon](#sdl_frectequalsepsilon)
+* [SDL_FRectEquals](#sdl_frectequals)
+* [SDL_HasIntersectionF](#sdl_hasintersectionf)
+* [SDL_IntersectFRect](#sdl_intersectfrect)
+* [SDL_UnionFRect](#sdl_unionfrect)
+* [SDL_EncloseFPoints](#sdl_enclosefpoints)
+* [SDL_IntersectFRectAndLine](#sdl_intersectfrectandline)
 * [SDL_BlendMode](#sdl_blendmode)
 * [SDL_BlendOperation](#sdl_blendoperation)
 * [SDL_BlendFactor](#sdl_blendfactor)
@@ -407,6 +429,8 @@
 * [SDL_GetDesktopDisplayMode](#sdl_getdesktopdisplaymode)
 * [SDL_GetCurrentDisplayMode](#sdl_getcurrentdisplaymode)
 * [SDL_GetClosestDisplayMode](#sdl_getclosestdisplaymode)
+* [SDL_GetPointDisplayIndex](#sdl_getpointdisplayindex)
+* [SDL_GetRectDisplayIndex](#sdl_getrectdisplayindex)
 * [SDL_GetWindowDisplayIndex](#sdl_getwindowdisplayindex)
 * [SDL_SetWindowDisplayMode](#sdl_setwindowdisplaymode)
 * [SDL_GetWindowDisplayMode](#sdl_getwindowdisplaymode)
@@ -427,6 +451,7 @@
 * [SDL_SetWindowSize](#sdl_setwindowsize)
 * [SDL_GetWindowSize](#sdl_getwindowsize)
 * [SDL_GetWindowBordersSize](#sdl_getwindowborderssize)
+* [SDL_GetWindowSizeInPixels](#sdl_getwindowsizeinpixels)
 * [SDL_SetWindowMinimumSize](#sdl_setwindowminimumsize)
 * [SDL_GetWindowMinimumSize](#sdl_getwindowminimumsize)
 * [SDL_SetWindowMaximumSize](#sdl_setwindowmaximumsize)
@@ -491,6 +516,7 @@
 * [SDL_Keysym](#sdl_keysym)
 * [SDL_GetKeyboardFocus](#sdl_getkeyboardfocus)
 * [SDL_GetKeyboardState](#sdl_getkeyboardstate)
+* [SDL_ResetKeyboard](#sdl_resetkeyboard)
 * [SDL_GetModState](#sdl_getmodstate)
 * [SDL_SetModState](#sdl_setmodstate)
 * [SDL_GetKeyFromScancode](#sdl_getkeyfromscancode)
@@ -502,6 +528,8 @@
 * [SDL_StartTextInput](#sdl_starttextinput)
 * [SDL_IsTextInputActive](#sdl_istextinputactive)
 * [SDL_StopTextInput](#sdl_stoptextinput)
+* [SDL_ClearComposition](#sdl_clearcomposition)
+* [SDL_IsTextInputShown](#sdl_istextinputshown)
 * [SDL_SetTextInputRect](#sdl_settextinputrect)
 * [SDL_HasScreenKeyboardSupport](#sdl_hasscreenkeyboardsupport)
 * [SDL_IsScreenKeyboardShown](#sdl_isscreenkeyboardshown)
@@ -525,6 +553,9 @@
 * [SDL_GetDefaultCursor](#sdl_getdefaultcursor)
 * [SDL_FreeCursor](#sdl_freecursor)
 * [SDL_ShowCursor](#sdl_showcursor)
+* [SDL_GUID](#sdl_guid)
+* [SDL_GUIDToString](#sdl_guidtostring)
+* [SDL_GUIDFromString](#sdl_guidfromstring)
 * [SDL_Joystick](#sdl_joystick)
 * [SDL_JoystickGUID](#sdl_joystickguid)
 * [SDL_JoystickType](#sdl_joysticktype)
@@ -533,6 +564,7 @@
 * [SDL_UnlockJoysticks](#sdl_unlockjoysticks)
 * [SDL_NumJoysticks](#sdl_numjoysticks)
 * [SDL_JoystickNameForIndex](#sdl_joysticknameforindex)
+* [SDL_JoystickPathForIndex](#sdl_joystickpathforindex)
 * [SDL_JoystickGetDevicePlayerIndex](#sdl_joystickgetdeviceplayerindex)
 * [SDL_JoystickGetDeviceGUID](#sdl_joystickgetdeviceguid)
 * [SDL_JoystickGetDeviceVendor](#sdl_joystickgetdevicevendor)
@@ -544,22 +576,27 @@
 * [SDL_JoystickFromInstanceID](#sdl_joystickfrominstanceid)
 * [SDL_JoystickFromPlayerIndex](#sdl_joystickfromplayerindex)
 * [SDL_JoystickAttachVirtual](#sdl_joystickattachvirtual)
+* [SDL_VirtualJoystickDesc](#sdl_virtualjoystickdesc)
+* [SDL_JoystickAttachVirtualEx](#sdl_joystickattachvirtualex)
 * [SDL_JoystickDetachVirtual](#sdl_joystickdetachvirtual)
 * [SDL_JoystickIsVirtual](#sdl_joystickisvirtual)
 * [SDL_JoystickSetVirtualAxis](#sdl_joysticksetvirtualaxis)
 * [SDL_JoystickSetVirtualButton](#sdl_joysticksetvirtualbutton)
 * [SDL_JoystickSetVirtualHat](#sdl_joysticksetvirtualhat)
 * [SDL_JoystickName](#sdl_joystickname)
+* [SDL_JoystickPath](#sdl_joystickpath)
 * [SDL_JoystickGetPlayerIndex](#sdl_joystickgetplayerindex)
 * [SDL_JoystickSetPlayerIndex](#sdl_joysticksetplayerindex)
 * [SDL_JoystickGetGUID](#sdl_joystickgetguid)
 * [SDL_JoystickGetVendor](#sdl_joystickgetvendor)
 * [SDL_JoystickGetProduct](#sdl_joystickgetproduct)
 * [SDL_JoystickGetProductVersion](#sdl_joystickgetproductversion)
+* [SDL_JoystickGetFirmwareVersion](#sdl_joystickgetfirmwareversion)
 * [SDL_JoystickGetSerial](#sdl_joystickgetserial)
 * [SDL_JoystickGetType](#sdl_joystickgettype)
 * [SDL_JoystickGetGUIDString](#sdl_joystickgetguidstring)
 * [SDL_JoystickGetGUIDFromString](#sdl_joystickgetguidfromstring)
+* [SDL_GetJoystickGUIDInfo](#sdl_getjoystickguidinfo)
 * [SDL_JoystickGetAttached](#sdl_joystickgetattached)
 * [SDL_JoystickInstanceID](#sdl_joystickinstanceid)
 * [SDL_JoystickNumAxes](#sdl_joysticknumaxes)
@@ -598,6 +635,7 @@
 * [SDL_SensorGetNonPortableType](#sdl_sensorgetnonportabletype)
 * [SDL_SensorGetInstanceID](#sdl_sensorgetinstanceid)
 * [SDL_SensorGetData](#sdl_sensorgetdata)
+* [SDL_SensorGetDataWithTimestamp](#sdl_sensorgetdatawithtimestamp)
 * [SDL_SensorClose](#sdl_sensorclose)
 * [SDL_SensorUpdate](#sdl_sensorupdate)
 * [SDL_GameController](#sdl_gamecontroller)
@@ -612,18 +650,21 @@
 * [SDL_GameControllerMapping](#sdl_gamecontrollermapping)
 * [SDL_IsGameController](#sdl_isgamecontroller)
 * [SDL_GameControllerNameForIndex](#sdl_gamecontrollernameforindex)
+* [SDL_GameControllerPathForIndex](#sdl_gamecontrollerpathforindex)
 * [SDL_GameControllerTypeForIndex](#sdl_gamecontrollertypeforindex)
 * [SDL_GameControllerMappingForDeviceIndex](#sdl_gamecontrollermappingfordeviceindex)
 * [SDL_GameControllerOpen](#sdl_gamecontrolleropen)
 * [SDL_GameControllerFromInstanceID](#sdl_gamecontrollerfrominstanceid)
 * [SDL_GameControllerFromPlayerIndex](#sdl_gamecontrollerfromplayerindex)
 * [SDL_GameControllerName](#sdl_gamecontrollername)
+* [SDL_GameControllerPath](#sdl_gamecontrollerpath)
 * [SDL_GameControllerGetType](#sdl_gamecontrollergettype)
 * [SDL_GameControllerGetPlayerIndex](#sdl_gamecontrollergetplayerindex)
 * [SDL_GameControllerSetPlayerIndex](#sdl_gamecontrollersetplayerindex)
 * [SDL_GameControllerGetVendor](#sdl_gamecontrollergetvendor)
 * [SDL_GameControllerGetProduct](#sdl_gamecontrollergetproduct)
 * [SDL_GameControllerGetProductVersion](#sdl_gamecontrollergetproductversion)
+* [SDL_GameControllerGetFirmwareVersion](#sdl_gamecontrollergetfirmwareversion)
 * [SDL_GameControllerGetSerial](#sdl_gamecontrollergetserial)
 * [SDL_GameControllerGetAttached](#sdl_gamecontrollergetattached)
 * [SDL_GameControllerGetJoystick](#sdl_gamecontrollergetjoystick)
@@ -649,6 +690,7 @@
 * [SDL_GameControllerIsSensorEnabled](#sdl_gamecontrollerissensorenabled)
 * [SDL_GameControllerGetSensorDataRate](#sdl_gamecontrollergetsensordatarate)
 * [SDL_GameControllerGetSensorData](#sdl_gamecontrollergetsensordata)
+* [SDL_GameControllerGetSensorDataWithTimestamp](#sdl_gamecontrollergetsensordatawithtimestamp)
 * [SDL_GameControllerRumble](#sdl_gamecontrollerrumble)
 * [SDL_GameControllerRumbleTriggers](#sdl_gamecontrollerrumbletriggers)
 * [SDL_GameControllerHasLED](#sdl_gamecontrollerhasled)
@@ -663,6 +705,7 @@
 * [SDL_Finger](#sdl_finger)
 * [SDL_GetNumTouchDevices](#sdl_getnumtouchdevices)
 * [SDL_GetTouchDevice](#sdl_gettouchdevice)
+* [SDL_GetTouchName](#sdl_gettouchname)
 * [SDL_GetTouchDeviceType](#sdl_gettouchdevicetype)
 * [SDL_GetNumTouchFingers](#sdl_getnumtouchfingers)
 * [SDL_GetTouchFinger](#sdl_gettouchfinger)
@@ -676,6 +719,7 @@
 * [SDL_WindowEvent](#sdl_windowevent)
 * [SDL_KeyboardEvent](#sdl_keyboardevent)
 * [SDL_TextEditingEvent](#sdl_texteditingevent)
+* [SDL_TextEditingExtEvent](#sdl_texteditingextevent)
 * [SDL_TextInputEvent](#sdl_textinputevent)
 * [SDL_MouseMotionEvent](#sdl_mousemotionevent)
 * [SDL_MouseButtonEvent](#sdl_mousebuttonevent)
@@ -685,6 +729,7 @@
 * [SDL_JoyHatEvent](#sdl_joyhatevent)
 * [SDL_JoyButtonEvent](#sdl_joybuttonevent)
 * [SDL_JoyDeviceEvent](#sdl_joydeviceevent)
+* [SDL_JoyBatteryEvent](#sdl_joybatteryevent)
 * [SDL_ControllerAxisEvent](#sdl_controlleraxisevent)
 * [SDL_ControllerButtonEvent](#sdl_controllerbuttonevent)
 * [SDL_ControllerDeviceEvent](#sdl_controllerdeviceevent)
@@ -787,6 +832,8 @@
 * [SDL_HintPriority](#sdl_hintpriority)
 * [SDL_SetHintWithPriority](#sdl_sethintwithpriority)
 * [SDL_SetHint](#sdl_sethint)
+* [SDL_ResetHint](#sdl_resethint)
+* [SDL_ResetHints](#sdl_resethints)
 * [SDL_GetHint](#sdl_gethint)
 * [SDL_GetHintBoolean](#sdl_gethintboolean)
 * [SDL_HintCallback](#sdl_hintcallback)
@@ -845,6 +892,7 @@
 * [SDL_CreateRenderer](#sdl_createrenderer)
 * [SDL_CreateSoftwareRenderer](#sdl_createsoftwarerenderer)
 * [SDL_GetRenderer](#sdl_getrenderer)
+* [SDL_RenderGetWindow](#sdl_rendergetwindow)
 * [SDL_GetRendererInfo](#sdl_getrendererinfo)
 * [SDL_GetRendererOutputSize](#sdl_getrendereroutputsize)
 * [SDL_CreateTexture](#sdl_createtexture)
@@ -1070,6 +1118,7 @@
 * [SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT](#sdl_hint_emscripten_keyboard_element)
 * [SDL_HINT_ENABLE_STEAM_CONTROLLERS](#sdl_hint_enable_steam_controllers)
 * [SDL_HINT_EVENT_LOGGING](#sdl_hint_event_logging)
+* [SDL_HINT_FORCE_RAISEWINDOW](#sdl_hint_force_raisewindow)
 * [SDL_HINT_FRAMEBUFFER_ACCELERATION](#sdl_hint_framebuffer_acceleration)
 * [SDL_HINT_GAMECONTROLLERCONFIG](#sdl_hint_gamecontrollerconfig)
 * [SDL_HINT_GAMECONTROLLERCONFIG_FILE](#sdl_hint_gamecontrollerconfig_file)
@@ -1078,15 +1127,23 @@
 * [SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT](#sdl_hint_gamecontroller_ignore_devices_except)
 * [SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS](#sdl_hint_gamecontroller_use_button_labels)
 * [SDL_HINT_GRAB_KEYBOARD](#sdl_hint_grab_keyboard)
+* [SDL_HINT_HIDAPI_IGNORE_DEVICES](#sdl_hint_hidapi_ignore_devices)
 * [SDL_HINT_IDLE_TIMER_DISABLED](#sdl_hint_idle_timer_disabled)
 * [SDL_HINT_IME_INTERNAL_EDITING](#sdl_hint_ime_internal_editing)
 * [SDL_HINT_IME_SHOW_UI](#sdl_hint_ime_show_ui)
+* [SDL_HINT_IME_SUPPORT_EXTENDED_TEXT](#sdl_hint_ime_support_extended_text)
 * [SDL_HINT_IOS_HIDE_HOME_INDICATOR](#sdl_hint_ios_hide_home_indicator)
 * [SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS](#sdl_hint_joystick_allow_background_events)
 * [SDL_HINT_JOYSTICK_HIDAPI](#sdl_hint_joystick_hidapi)
 * [SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE](#sdl_hint_joystick_hidapi_gamecube)
+* [SDL_HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE](#sdl_hint_joystick_gamecube_rumble_brake)
 * [SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS](#sdl_hint_joystick_hidapi_joy_cons)
+* [SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS](#sdl_hint_joystick_hidapi_combine_joy_cons)
+* [SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS](#sdl_hint_joystick_hidapi_vertical_joy_cons)
 * [SDL_HINT_JOYSTICK_HIDAPI_LUNA](#sdl_hint_joystick_hidapi_luna)
+* [SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC](#sdl_hint_joystick_hidapi_nintendo_classic)
+* [SDL_HINT_JOYSTICK_HIDAPI_SHIELD](#sdl_hint_joystick_hidapi_shield)
+* [SDL_HINT_JOYSTICK_HIDAPI_PS3](#sdl_hint_joystick_hidapi_ps3)
 * [SDL_HINT_JOYSTICK_HIDAPI_PS4](#sdl_hint_joystick_hidapi_ps4)
 * [SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE](#sdl_hint_joystick_hidapi_ps4_rumble)
 * [SDL_HINT_JOYSTICK_HIDAPI_PS5](#sdl_hint_joystick_hidapi_ps5)
@@ -1096,24 +1153,41 @@
 * [SDL_HINT_JOYSTICK_HIDAPI_STEAM](#sdl_hint_joystick_hidapi_steam)
 * [SDL_HINT_JOYSTICK_HIDAPI_SWITCH](#sdl_hint_joystick_hidapi_switch)
 * [SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED](#sdl_hint_joystick_hidapi_switch_home_led)
+* [SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED](#sdl_hint_joystick_hidapi_joycon_home_led)
+* [SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED](#sdl_hint_joystick_hidapi_switch_player_led)
+* [SDL_HINT_JOYSTICK_HIDAPI_WII](#sdl_hint_joystick_hidapi_wii)
+* [SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED](#sdl_hint_joystick_hidapi_wii_player_led)
 * [SDL_HINT_JOYSTICK_HIDAPI_XBOX](#sdl_hint_joystick_hidapi_xbox)
+* [SDL_HINT_JOYSTICK_HIDAPI_XBOX_360](#sdl_hint_joystick_hidapi_xbox_360)
+* [SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED](#sdl_hint_joystick_hidapi_xbox_360_player_led)
+* [SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS](#sdl_hint_joystick_hidapi_xbox_360_wireless)
+* [SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE](#sdl_hint_joystick_hidapi_xbox_one)
+* [SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED](#sdl_hint_joystick_hidapi_xbox_one_home_led)
 * [SDL_HINT_JOYSTICK_RAWINPUT](#sdl_hint_joystick_rawinput)
 * [SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT](#sdl_hint_joystick_rawinput_correlate_xinput)
+* [SDL_HINT_JOYSTICK_ROG_CHAKRAM](#sdl_hint_joystick_rog_chakram)
 * [SDL_HINT_JOYSTICK_THREAD](#sdl_hint_joystick_thread)
 * [SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER](#sdl_hint_kmsdrm_require_drm_master)
 * [SDL_HINT_JOYSTICK_DEVICE](#sdl_hint_joystick_device)
+* [SDL_HINT_LINUX_DIGITAL_HATS](#sdl_hint_linux_digital_hats)
+* [SDL_HINT_LINUX_HAT_DEADZONES](#sdl_hint_linux_hat_deadzones)
 * [SDL_HINT_LINUX_JOYSTICK_CLASSIC](#sdl_hint_linux_joystick_classic)
 * [SDL_HINT_LINUX_JOYSTICK_DEADZONES](#sdl_hint_linux_joystick_deadzones)
 * [SDL_HINT_MAC_BACKGROUND_APP](#sdl_hint_mac_background_app)
 * [SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK](#sdl_hint_mac_ctrl_click_emulate_right_click)
+* [SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH](#sdl_hint_mac_opengl_async_dispatch)
 * [SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS](#sdl_hint_mouse_double_click_radius)
 * [SDL_HINT_MOUSE_DOUBLE_CLICK_TIME](#sdl_hint_mouse_double_click_time)
 * [SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH](#sdl_hint_mouse_focus_clickthrough)
 * [SDL_HINT_MOUSE_NORMAL_SPEED_SCALE](#sdl_hint_mouse_normal_speed_scale)
+* [SDL_HINT_MOUSE_RELATIVE_MODE_CENTER](#sdl_hint_mouse_relative_mode_center)
 * [SDL_HINT_MOUSE_RELATIVE_MODE_WARP](#sdl_hint_mouse_relative_mode_warp)
 * [SDL_HINT_MOUSE_RELATIVE_SCALING](#sdl_hint_mouse_relative_scaling)
 * [SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE](#sdl_hint_mouse_relative_speed_scale)
+* [SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE](#sdl_hint_mouse_relative_system_scale)
+* [SDL_HINT_MOUSE_RELATIVE_WARP_MOTION](#sdl_hint_mouse_relative_warp_motion)
 * [SDL_HINT_MOUSE_TOUCH_EVENTS](#sdl_hint_mouse_touch_events)
+* [SDL_HINT_MOUSE_AUTO_CAPTURE](#sdl_hint_mouse_auto_capture)
 * [SDL_HINT_NO_SIGNAL_HANDLERS](#sdl_hint_no_signal_handlers)
 * [SDL_HINT_OPENGL_ES_DRIVER](#sdl_hint_opengl_es_driver)
 * [SDL_HINT_ORIENTATIONS](#sdl_hint_orientations)
@@ -1130,6 +1204,7 @@
 * [SDL_HINT_RENDER_OPENGL_SHADERS](#sdl_hint_render_opengl_shaders)
 * [SDL_HINT_RENDER_SCALE_QUALITY](#sdl_hint_render_scale_quality)
 * [SDL_HINT_RENDER_VSYNC](#sdl_hint_render_vsync)
+* [SDL_HINT_PS2_DYNAMIC_VSYNC](#sdl_hint_ps2_dynamic_vsync)
 * [SDL_HINT_RETURN_KEY_HIDES_IME](#sdl_hint_return_key_hides_ime)
 * [SDL_HINT_RPI_VIDEO_LAYER](#sdl_hint_rpi_video_layer)
 * [SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME](#sdl_hint_screensaver_inhibit_activity_name)
@@ -1138,6 +1213,7 @@
 * [SDL_HINT_THREAD_STACK_SIZE](#sdl_hint_thread_stack_size)
 * [SDL_HINT_TIMER_RESOLUTION](#sdl_hint_timer_resolution)
 * [SDL_HINT_TOUCH_MOUSE_EVENTS](#sdl_hint_touch_mouse_events)
+* [SDL_HINT_VITA_TOUCH_MOUSE_DEVICE](#sdl_hint_vita_touch_mouse_device)
 * [SDL_HINT_TV_REMOTE_AS_JOYSTICK](#sdl_hint_tv_remote_as_joystick)
 * [SDL_HINT_VIDEO_ALLOW_SCREENSAVER](#sdl_hint_video_allow_screensaver)
 * [SDL_HINT_VIDEO_DOUBLE_BUFFER](#sdl_hint_video_double_buffer)
@@ -1147,7 +1223,12 @@
 * [SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES](#sdl_hint_video_mac_fullscreen_spaces)
 * [SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS](#sdl_hint_video_minimize_on_focus_loss)
 * [SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR](#sdl_hint_video_wayland_allow_libdecor)
+* [SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR](#sdl_hint_video_wayland_prefer_libdecor)
+* [SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION](#sdl_hint_video_wayland_mode_emulation)
+* [SDL_HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP](#sdl_hint_video_wayland_emulate_mouse_warp)
 * [SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT](#sdl_hint_video_window_share_pixel_format)
+* [SDL_HINT_VIDEO_FOREIGN_WINDOW_OPENGL](#sdl_hint_video_foreign_window_opengl)
+* [SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN](#sdl_hint_video_foreign_window_vulkan)
 * [SDL_HINT_VIDEO_WIN_D3DCOMPILER](#sdl_hint_video_win_d3dcompiler)
 * [SDL_HINT_VIDEO_X11_FORCE_EGL](#sdl_hint_video_x11_force_egl)
 * [SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR](#sdl_hint_video_x11_net_wm_bypass_compositor)
@@ -1167,6 +1248,8 @@
 * [SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL](#sdl_hint_windows_intresource_icon_small)
 * [SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4](#sdl_hint_windows_no_close_on_alt_f4)
 * [SDL_HINT_WINDOWS_USE_D3D9EX](#sdl_hint_windows_use_d3d9ex)
+* [SDL_HINT_WINDOWS_DPI_AWARENESS](#sdl_hint_windows_dpi_awareness)
+* [SDL_HINT_WINDOWS_DPI_SCALING](#sdl_hint_windows_dpi_scaling)
 * [SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN](#sdl_hint_window_frame_usable_while_cursor_hidden)
 * [SDL_HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN](#sdl_hint_window_no_activation_when_shown)
 * [SDL_HINT_WINRT_HANDLE_BACK_BUTTON](#sdl_hint_winrt_handle_back_button)
@@ -1174,8 +1257,15 @@
 * [SDL_HINT_WINRT_PRIVACY_POLICY_URL](#sdl_hint_winrt_privacy_policy_url)
 * [SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT](#sdl_hint_x11_force_override_redirect)
 * [SDL_HINT_XINPUT_ENABLED](#sdl_hint_xinput_enabled)
+* [SDL_HINT_DIRECTINPUT_ENABLED](#sdl_hint_directinput_enabled)
 * [SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING](#sdl_hint_xinput_use_old_joystick_mapping)
 * [SDL_HINT_AUDIO_INCLUDE_MONITORS](#sdl_hint_audio_include_monitors)
+* [SDL_HINT_X11_WINDOW_TYPE](#sdl_hint_x11_window_type)
+* [SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE](#sdl_hint_quit_on_last_window_close)
+* [SDL_HINT_VIDEODRIVER](#sdl_hint_videodriver)
+* [SDL_HINT_AUDIODRIVER](#sdl_hint_audiodriver)
+* [SDL_HINT_KMSDRM_DEVICE_INDEX](#sdl_hint_kmsdrm_device_index)
+* [SDL_HINT_TRACKPAD_IS_TOUCH_ONLY](#sdl_hint_trackpad_is_touch_only)
 * [SDL_MAX_LOG_MESSAGE](#sdl_max_log_message)
 * [SDL_NONSHAPEABLE_WINDOW](#sdl_nonshapeable_window)
 * [SDL_INVALID_SHAPE_ARGUMENT](#sdl_invalid_shape_argument)
@@ -1336,6 +1426,14 @@ global SDL_free_func: type = @function(pointer): void
 
 
 
+### SDL_GetOriginalMemoryFunctions
+
+```lua
+global function SDL_GetOriginalMemoryFunctions(malloc_func: *SDL_malloc_func, calloc_func: *SDL_calloc_func, realloc_func: *SDL_realloc_func, free_func: *SDL_free_func): void
+```
+
+
+
 ### SDL_GetMemoryFunctions
 
 ```lua
@@ -1380,6 +1478,14 @@ global function SDL_setenv(name: cstring, value: cstring, overwrite: cint): cint
 
 ```lua
 global function SDL_qsort(base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint): void
+```
+
+
+
+### SDL_bsearch
+
+```lua
+global function SDL_bsearch(key: pointer, base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint): pointer
 ```
 
 
@@ -1500,6 +1606,14 @@ global function SDL_toupper(x: cint): cint
 
 ```lua
 global function SDL_tolower(x: cint): cint
+```
+
+
+
+### SDL_crc16
+
+```lua
+global function SDL_crc16(crc: uint16, data: pointer, len: csize): uint16
 ```
 
 
@@ -1712,6 +1826,14 @@ global function SDL_strstr(haystack: cstring, needle: cstring): cstring
 
 
 
+### SDL_strcasestr
+
+```lua
+global function SDL_strcasestr(haystack: cstring, needle: cstring): cstring
+```
+
+
+
 ### SDL_strtokr
 
 ```lua
@@ -1724,6 +1846,14 @@ global function SDL_strtokr(s1: cstring, s2: cstring, saveptr: *cstring): cstrin
 
 ```lua
 global function SDL_utf8strlen(str: cstring): csize
+```
+
+
+
+### SDL_utf8strnlen
+
+```lua
+global function SDL_utf8strnlen(str: cstring, bytes: csize): csize
 ```
 
 
@@ -2300,6 +2430,22 @@ global function SDL_iconv_string(tocode: cstring, fromcode: cstring, inbuf: cstr
 
 ```lua
 global function SDL_memcpy4(dst: pointer, src: pointer, dwords: csize): pointer
+```
+
+
+
+### SDL_size_mul_overflow
+
+```lua
+global function SDL_size_mul_overflow(a: csize, b: csize, ret: *csize): cint
+```
+
+
+
+### SDL_size_add_overflow
+
+```lua
+global function SDL_size_add_overflow(a: csize, b: csize, ret: *csize): cint
 ```
 
 
@@ -3222,6 +3368,14 @@ global function SDL_GetAudioDeviceSpec(index: cint, iscapture: cint, spec: *SDL_
 
 
 
+### SDL_GetDefaultAudioInfo
+
+```lua
+global function SDL_GetDefaultAudioInfo(name: *cstring, spec: *SDL_AudioSpec, iscapture: cint): cint
+```
+
+
+
 ### SDL_OpenAudioDevice
 
 ```lua
@@ -3490,6 +3644,30 @@ global function SDL_HasClipboardText(): SDL_bool
 
 
 
+### SDL_SetPrimarySelectionText
+
+```lua
+global function SDL_SetPrimarySelectionText(text: cstring): cint
+```
+
+
+
+### SDL_GetPrimarySelectionText
+
+```lua
+global function SDL_GetPrimarySelectionText(): cstring
+```
+
+
+
+### SDL_HasPrimarySelectionText
+
+```lua
+global function SDL_HasPrimarySelectionText(): SDL_bool
+```
+
+
+
 ### SDL_GetCPUCount
 
 ```lua
@@ -3614,6 +3792,22 @@ global function SDL_HasARMSIMD(): SDL_bool
 
 ```lua
 global function SDL_HasNEON(): SDL_bool
+```
+
+
+
+### SDL_HasLSX
+
+```lua
+global function SDL_HasLSX(): SDL_bool
+```
+
+
+
+### SDL_HasLASX
+
+```lua
+global function SDL_HasLASX(): SDL_bool
 ```
 
 
@@ -4056,6 +4250,78 @@ global function SDL_EnclosePoints(points: *SDL_Point, count: cint, clip: *SDL_Re
 
 ```lua
 global function SDL_IntersectRectAndLine(rect: *SDL_Rect, X1: *cint, Y1: *cint, X2: *cint, Y2: *cint): SDL_bool
+```
+
+
+
+### SDL_PointInFRect
+
+```lua
+global function SDL_PointInFRect(p: *SDL_FPoint, r: *SDL_FRect): SDL_bool
+```
+
+
+
+### SDL_FRectEmpty
+
+```lua
+global function SDL_FRectEmpty(r: *SDL_FRect): SDL_bool
+```
+
+
+
+### SDL_FRectEqualsEpsilon
+
+```lua
+global function SDL_FRectEqualsEpsilon(a: *SDL_FRect, b: *SDL_FRect, epsilon: float32): SDL_bool
+```
+
+
+
+### SDL_FRectEquals
+
+```lua
+global function SDL_FRectEquals(a: *SDL_FRect, b: *SDL_FRect): SDL_bool
+```
+
+
+
+### SDL_HasIntersectionF
+
+```lua
+global function SDL_HasIntersectionF(A: *SDL_FRect, B: *SDL_FRect): SDL_bool
+```
+
+
+
+### SDL_IntersectFRect
+
+```lua
+global function SDL_IntersectFRect(A: *SDL_FRect, B: *SDL_FRect, result: *SDL_FRect): SDL_bool
+```
+
+
+
+### SDL_UnionFRect
+
+```lua
+global function SDL_UnionFRect(A: *SDL_FRect, B: *SDL_FRect, result: *SDL_FRect): void
+```
+
+
+
+### SDL_EncloseFPoints
+
+```lua
+global function SDL_EncloseFPoints(points: *SDL_FPoint, count: cint, clip: *SDL_FRect, result: *SDL_FRect): SDL_bool
+```
+
+
+
+### SDL_IntersectFRectAndLine
+
+```lua
+global function SDL_IntersectFRectAndLine(rect: *SDL_FRect, X1: *float32, Y1: *float32, X2: *float32, Y2: *float32): SDL_bool
 ```
 
 
@@ -4638,7 +4904,8 @@ global SDL_GLattr: type = @enum(cint){
   SDL_GL_FRAMEBUFFER_SRGB_CAPABLE = 23,
   SDL_GL_CONTEXT_RELEASE_BEHAVIOR = 24,
   SDL_GL_CONTEXT_RESET_NOTIFICATION = 25,
-  SDL_GL_CONTEXT_NO_ERROR = 26
+  SDL_GL_CONTEXT_NO_ERROR = 26,
+  SDL_GL_FLOATBUFFERS = 27
 }
 ```
 
@@ -4819,6 +5086,22 @@ global function SDL_GetClosestDisplayMode(displayIndex: cint, mode: *SDL_Display
 
 
 
+### SDL_GetPointDisplayIndex
+
+```lua
+global function SDL_GetPointDisplayIndex(point: *SDL_Point): cint
+```
+
+
+
+### SDL_GetRectDisplayIndex
+
+```lua
+global function SDL_GetRectDisplayIndex(rect: *SDL_Rect): cint
+```
+
+
+
 ### SDL_GetWindowDisplayIndex
 
 ```lua
@@ -4975,6 +5258,14 @@ global function SDL_GetWindowSize(window: *SDL_Window, w: *cint, h: *cint): void
 
 ```lua
 global function SDL_GetWindowBordersSize(window: *SDL_Window, top: *cint, left: *cint, bottom: *cint, right: *cint): cint
+```
+
+
+
+### SDL_GetWindowSizeInPixels
+
+```lua
+global function SDL_GetWindowSizeInPixels(window: *SDL_Window, w: *cint, h: *cint): void
 ```
 
 
@@ -5701,6 +5992,10 @@ global SDL_Scancode: type = @enum(cint){
   SDL_SCANCODE_APP2 = 284,
   SDL_SCANCODE_AUDIOREWIND = 285,
   SDL_SCANCODE_AUDIOFASTFORWARD = 286,
+  SDL_SCANCODE_SOFTLEFT = 287,
+  SDL_SCANCODE_SOFTRIGHT = 288,
+  SDL_SCANCODE_CALL = 289,
+  SDL_SCANCODE_ENDCALL = 290,
   SDL_NUM_SCANCODES = 512
 }
 ```
@@ -5950,7 +6245,11 @@ global SDL_KeyCode: type = @enum(cint){
   SDLK_APP1 = 1073742107,
   SDLK_APP2 = 1073742108,
   SDLK_AUDIOREWIND = 1073742109,
-  SDLK_AUDIOFASTFORWARD = 1073742110
+  SDLK_AUDIOFASTFORWARD = 1073742110,
+  SDLK_SOFTLEFT = 1073742111,
+  SDLK_SOFTRIGHT = 1073742112,
+  SDLK_CALL = 1073742113,
+  SDLK_ENDCALL = 1073742114
 }
 ```
 
@@ -6008,6 +6307,14 @@ global function SDL_GetKeyboardFocus(): *SDL_Window
 
 ```lua
 global function SDL_GetKeyboardState(numkeys: *cint): *uint8
+```
+
+
+
+### SDL_ResetKeyboard
+
+```lua
+global function SDL_ResetKeyboard(): void
 ```
 
 
@@ -6096,6 +6403,22 @@ global function SDL_IsTextInputActive(): SDL_bool
 
 ```lua
 global function SDL_StopTextInput(): void
+```
+
+
+
+### SDL_ClearComposition
+
+```lua
+global function SDL_ClearComposition(): void
+```
+
+
+
+### SDL_IsTextInputShown
+
+```lua
+global function SDL_IsTextInputShown(): SDL_bool
 ```
 
 
@@ -6301,6 +6624,32 @@ global function SDL_ShowCursor(toggle: cint): cint
 
 
 
+### SDL_GUID
+
+```lua
+global SDL_GUID: type = @record{
+  data: [16]uint8
+}
+```
+
+
+
+### SDL_GUIDToString
+
+```lua
+global function SDL_GUIDToString(guid: SDL_GUID, pszGUID: cstring, cbGUID: cint): void
+```
+
+
+
+### SDL_GUIDFromString
+
+```lua
+global function SDL_GUIDFromString(pchGUID: cstring): SDL_GUID
+```
+
+
+
 ### SDL_Joystick
 
 ```lua
@@ -6312,9 +6661,7 @@ global SDL_Joystick: type = @record{}
 ### SDL_JoystickGUID
 
 ```lua
-global SDL_JoystickGUID: type = @record{
-  data: [16]uint8
-}
+global SDL_JoystickGUID: type = @SDL_GUID
 ```
 
 
@@ -6382,6 +6729,14 @@ global function SDL_NumJoysticks(): cint
 
 ```lua
 global function SDL_JoystickNameForIndex(device_index: cint): cstring
+```
+
+
+
+### SDL_JoystickPathForIndex
+
+```lua
+global function SDL_JoystickPathForIndex(device_index: cint): cstring
 ```
 
 
@@ -6474,6 +6829,41 @@ global function SDL_JoystickAttachVirtual(type: SDL_JoystickType, naxes: cint, n
 
 
 
+### SDL_VirtualJoystickDesc
+
+```lua
+global SDL_VirtualJoystickDesc: type = @record{
+  version: uint16,
+  type: uint16,
+  naxes: uint16,
+  nbuttons: uint16,
+  nhats: uint16,
+  vendor_id: uint16,
+  product_id: uint16,
+  padding: uint16,
+  button_mask: uint32,
+  axis_mask: uint32,
+  name: cstring,
+  userdata: pointer,
+  Update: function(pointer): void,
+  SetPlayerIndex: function(pointer, cint): void,
+  Rumble: function(pointer, uint16, uint16): cint,
+  RumbleTriggers: function(pointer, uint16, uint16): cint,
+  SetLED: function(pointer, uint8, uint8, uint8): cint,
+  SendEffect: function(pointer, pointer, cint): cint
+}
+```
+
+
+
+### SDL_JoystickAttachVirtualEx
+
+```lua
+global function SDL_JoystickAttachVirtualEx(desc: *SDL_VirtualJoystickDesc): cint
+```
+
+
+
 ### SDL_JoystickDetachVirtual
 
 ```lua
@@ -6518,6 +6908,14 @@ global function SDL_JoystickSetVirtualHat(joystick: *SDL_Joystick, hat: cint, va
 
 ```lua
 global function SDL_JoystickName(joystick: *SDL_Joystick): cstring
+```
+
+
+
+### SDL_JoystickPath
+
+```lua
+global function SDL_JoystickPath(joystick: *SDL_Joystick): cstring
 ```
 
 
@@ -6570,6 +6968,14 @@ global function SDL_JoystickGetProductVersion(joystick: *SDL_Joystick): uint16
 
 
 
+### SDL_JoystickGetFirmwareVersion
+
+```lua
+global function SDL_JoystickGetFirmwareVersion(joystick: *SDL_Joystick): uint16
+```
+
+
+
 ### SDL_JoystickGetSerial
 
 ```lua
@@ -6598,6 +7004,14 @@ global function SDL_JoystickGetGUIDString(guid: SDL_JoystickGUID, pszGUID: cstri
 
 ```lua
 global function SDL_JoystickGetGUIDFromString(pchGUID: cstring): SDL_JoystickGUID
+```
+
+
+
+### SDL_GetJoystickGUIDInfo
+
+```lua
+global function SDL_GetJoystickGUIDInfo(guid: SDL_JoystickGUID, vendor: *uint16, product: *uint16, version: *uint16, crc16: *uint16): void
 ```
 
 
@@ -6793,7 +7207,11 @@ global SDL_SensorType: type = @enum(cint){
   SDL_SENSOR_INVALID = -1,
   SDL_SENSOR_UNKNOWN = 0,
   SDL_SENSOR_ACCEL = 1,
-  SDL_SENSOR_GYRO = 2
+  SDL_SENSOR_GYRO = 2,
+  SDL_SENSOR_ACCEL_L = 3,
+  SDL_SENSOR_GYRO_L = 4,
+  SDL_SENSOR_ACCEL_R = 5,
+  SDL_SENSOR_GYRO_R = 6
 }
 ```
 
@@ -6911,6 +7329,14 @@ global function SDL_SensorGetData(sensor: *SDL_Sensor, data: *float32, num_value
 
 
 
+### SDL_SensorGetDataWithTimestamp
+
+```lua
+global function SDL_SensorGetDataWithTimestamp(sensor: *SDL_Sensor, timestamp: *uint64, data: *float32, num_values: cint): cint
+```
+
+
+
 ### SDL_SensorClose
 
 ```lua
@@ -6948,7 +7374,11 @@ global SDL_GameControllerType: type = @enum(cint){
   SDL_CONTROLLER_TYPE_VIRTUAL = 6,
   SDL_CONTROLLER_TYPE_PS5 = 7,
   SDL_CONTROLLER_TYPE_AMAZON_LUNA = 8,
-  SDL_CONTROLLER_TYPE_GOOGLE_STADIA = 9
+  SDL_CONTROLLER_TYPE_GOOGLE_STADIA = 9,
+  SDL_CONTROLLER_TYPE_NVIDIA_SHIELD = 10,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT = 11,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT = 12,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR = 13
 }
 ```
 
@@ -7049,6 +7479,14 @@ global function SDL_GameControllerNameForIndex(joystick_index: cint): cstring
 
 
 
+### SDL_GameControllerPathForIndex
+
+```lua
+global function SDL_GameControllerPathForIndex(joystick_index: cint): cstring
+```
+
+
+
 ### SDL_GameControllerTypeForIndex
 
 ```lua
@@ -7097,6 +7535,14 @@ global function SDL_GameControllerName(gamecontroller: *SDL_GameController): cst
 
 
 
+### SDL_GameControllerPath
+
+```lua
+global function SDL_GameControllerPath(gamecontroller: *SDL_GameController): cstring
+```
+
+
+
 ### SDL_GameControllerGetType
 
 ```lua
@@ -7141,6 +7587,14 @@ global function SDL_GameControllerGetProduct(gamecontroller: *SDL_GameController
 
 ```lua
 global function SDL_GameControllerGetProductVersion(gamecontroller: *SDL_GameController): uint16
+```
+
+
+
+### SDL_GameControllerGetFirmwareVersion
+
+```lua
+global function SDL_GameControllerGetFirmwareVersion(gamecontroller: *SDL_GameController): uint16
 ```
 
 
@@ -7378,6 +7832,14 @@ global function SDL_GameControllerGetSensorData(gamecontroller: *SDL_GameControl
 
 
 
+### SDL_GameControllerGetSensorDataWithTimestamp
+
+```lua
+global function SDL_GameControllerGetSensorDataWithTimestamp(gamecontroller: *SDL_GameController, type: SDL_SensorType, timestamp: *uint64, data: *float32, num_values: cint): cint
+```
+
+
+
 ### SDL_GameControllerRumble
 
 ```lua
@@ -7500,6 +7962,14 @@ global function SDL_GetTouchDevice(index: cint): clong
 
 
 
+### SDL_GetTouchName
+
+```lua
+global function SDL_GetTouchName(index: cint): cstring
+```
+
+
+
 ### SDL_GetTouchDeviceType
 
 ```lua
@@ -7577,6 +8047,7 @@ global SDL_EventType: type = @enum(cint){
   SDL_TEXTEDITING = 770,
   SDL_TEXTINPUT = 771,
   SDL_KEYMAPCHANGED = 772,
+  SDL_TEXTEDITING_EXT = 773,
   SDL_MOUSEMOTION = 1024,
   SDL_MOUSEBUTTONDOWN = 1025,
   SDL_MOUSEBUTTONUP = 1026,
@@ -7588,6 +8059,7 @@ global SDL_EventType: type = @enum(cint){
   SDL_JOYBUTTONUP = 1540,
   SDL_JOYDEVICEADDED = 1541,
   SDL_JOYDEVICEREMOVED = 1542,
+  SDL_JOYBATTERYUPDATED = 1543,
   SDL_CONTROLLERAXISMOTION = 1616,
   SDL_CONTROLLERBUTTONDOWN = 1617,
   SDL_CONTROLLERBUTTONUP = 1618,
@@ -7700,6 +8172,21 @@ global SDL_TextEditingEvent: type = @record{
 
 
 
+### SDL_TextEditingExtEvent
+
+```lua
+global SDL_TextEditingExtEvent: type = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  text: cstring,
+  start: int32,
+  length: int32
+}
+```
+
+
+
 ### SDL_TextInputEvent
 
 ```lua
@@ -7762,7 +8249,9 @@ global SDL_MouseWheelEvent: type = @record{
   y: int32,
   direction: uint32,
   preciseX: float32,
-  preciseY: float32
+  preciseY: float32,
+  mouseX: int32,
+  mouseY: int32
 }
 ```
 
@@ -7848,6 +8337,19 @@ global SDL_JoyDeviceEvent: type = @record{
 
 
 
+### SDL_JoyBatteryEvent
+
+```lua
+global SDL_JoyBatteryEvent: type = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  level: SDL_JoystickPowerLevel
+}
+```
+
+
+
 ### SDL_ControllerAxisEvent
 
 ```lua
@@ -7919,7 +8421,8 @@ global SDL_ControllerSensorEvent: type = @record{
   timestamp: uint32,
   which: cint,
   sensor: int32,
-  data: [3]float32
+  data: [3]float32,
+  timestamp_us: uint64
 }
 ```
 
@@ -8015,7 +8518,8 @@ global SDL_SensorEvent: type = @record{
   type: uint32,
   timestamp: uint32,
   which: int32,
-  data: [6]float32
+  data: [6]float32,
+  timestamp_us: uint64
 }
 ```
 
@@ -8088,6 +8592,7 @@ global SDL_Event: type = @union{
   window: SDL_WindowEvent,
   key: SDL_KeyboardEvent,
   edit: SDL_TextEditingEvent,
+  editExt: SDL_TextEditingExtEvent,
   text: SDL_TextInputEvent,
   motion: SDL_MouseMotionEvent,
   button: SDL_MouseButtonEvent,
@@ -8097,6 +8602,7 @@ global SDL_Event: type = @union{
   jhat: SDL_JoyHatEvent,
   jbutton: SDL_JoyButtonEvent,
   jdevice: SDL_JoyDeviceEvent,
+  jbattery: SDL_JoyBatteryEvent,
   caxis: SDL_ControllerAxisEvent,
   cbutton: SDL_ControllerButtonEvent,
   cdevice: SDL_ControllerDeviceEvent,
@@ -8889,6 +9395,22 @@ global function SDL_SetHint(name: cstring, value: cstring): SDL_bool
 
 
 
+### SDL_ResetHint
+
+```lua
+global function SDL_ResetHint(name: cstring): SDL_bool
+```
+
+
+
+### SDL_ResetHints
+
+```lua
+global function SDL_ResetHints(): void
+```
+
+
+
 ### SDL_GetHint
 
 ```lua
@@ -9450,6 +9972,14 @@ global function SDL_CreateSoftwareRenderer(surface: *SDL_Surface): *SDL_Renderer
 
 ```lua
 global function SDL_GetRenderer(window: *SDL_Window): *SDL_Renderer
+```
+
+
+
+### SDL_RenderGetWindow
+
+```lua
+global function SDL_RenderGetWindow(renderer: *SDL_Renderer): *SDL_Window
 ```
 
 
@@ -11272,6 +11802,14 @@ global SDL_HINT_EVENT_LOGGING: cstring
 
 
 
+### SDL_HINT_FORCE_RAISEWINDOW
+
+```lua
+global SDL_HINT_FORCE_RAISEWINDOW: cstring
+```
+
+
+
 ### SDL_HINT_FRAMEBUFFER_ACCELERATION
 
 ```lua
@@ -11336,6 +11874,14 @@ global SDL_HINT_GRAB_KEYBOARD: cstring
 
 
 
+### SDL_HINT_HIDAPI_IGNORE_DEVICES
+
+```lua
+global SDL_HINT_HIDAPI_IGNORE_DEVICES: cstring
+```
+
+
+
 ### SDL_HINT_IDLE_TIMER_DISABLED
 
 ```lua
@@ -11356,6 +11902,14 @@ global SDL_HINT_IME_INTERNAL_EDITING: cstring
 
 ```lua
 global SDL_HINT_IME_SHOW_UI: cstring
+```
+
+
+
+### SDL_HINT_IME_SUPPORT_EXTENDED_TEXT
+
+```lua
+global SDL_HINT_IME_SUPPORT_EXTENDED_TEXT: cstring
 ```
 
 
@@ -11392,6 +11946,14 @@ global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring
 
 
 
+### SDL_HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE
+
+```lua
+global SDL_HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS
 
 ```lua
@@ -11400,10 +11962,50 @@ global SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS: cstring
 
 
 
+### SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_HIDAPI_LUNA
 
 ```lua
 global SDL_HINT_JOYSTICK_HIDAPI_LUNA: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_SHIELD
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_SHIELD: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_PS3
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_PS3: cstring
 ```
 
 
@@ -11480,10 +12082,82 @@ global SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED: cstring
 
 
 
+### SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_WII
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_WII: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED: cstring
+```
+
+
+
 ### SDL_HINT_JOYSTICK_HIDAPI_XBOX
 
 ```lua
 global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_XBOX_360
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_360: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED
+
+```lua
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED: cstring
 ```
 
 
@@ -11500,6 +12174,14 @@ global SDL_HINT_JOYSTICK_RAWINPUT: cstring
 
 ```lua
 global SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT: cstring
+```
+
+
+
+### SDL_HINT_JOYSTICK_ROG_CHAKRAM
+
+```lua
+global SDL_HINT_JOYSTICK_ROG_CHAKRAM: cstring
 ```
 
 
@@ -11524,6 +12206,22 @@ global SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER: cstring
 
 ```lua
 global SDL_HINT_JOYSTICK_DEVICE: cstring
+```
+
+
+
+### SDL_HINT_LINUX_DIGITAL_HATS
+
+```lua
+global SDL_HINT_LINUX_DIGITAL_HATS: cstring
+```
+
+
+
+### SDL_HINT_LINUX_HAT_DEADZONES
+
+```lua
+global SDL_HINT_LINUX_HAT_DEADZONES: cstring
 ```
 
 
@@ -11560,6 +12258,14 @@ global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring
 
 
 
+### SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH
+
+```lua
+global SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH: cstring
+```
+
+
+
 ### SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
 
 ```lua
@@ -11592,6 +12298,14 @@ global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring
 
 
 
+### SDL_HINT_MOUSE_RELATIVE_MODE_CENTER
+
+```lua
+global SDL_HINT_MOUSE_RELATIVE_MODE_CENTER: cstring
+```
+
+
+
 ### SDL_HINT_MOUSE_RELATIVE_MODE_WARP
 
 ```lua
@@ -11616,10 +12330,34 @@ global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring
 
 
 
+### SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE
+
+```lua
+global SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_RELATIVE_WARP_MOTION
+
+```lua
+global SDL_HINT_MOUSE_RELATIVE_WARP_MOTION: cstring
+```
+
+
+
 ### SDL_HINT_MOUSE_TOUCH_EVENTS
 
 ```lua
 global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring
+```
+
+
+
+### SDL_HINT_MOUSE_AUTO_CAPTURE
+
+```lua
+global SDL_HINT_MOUSE_AUTO_CAPTURE: cstring
 ```
 
 
@@ -11752,6 +12490,14 @@ global SDL_HINT_RENDER_VSYNC: cstring
 
 
 
+### SDL_HINT_PS2_DYNAMIC_VSYNC
+
+```lua
+global SDL_HINT_PS2_DYNAMIC_VSYNC: cstring
+```
+
+
+
 ### SDL_HINT_RETURN_KEY_HIDES_IME
 
 ```lua
@@ -11812,6 +12558,14 @@ global SDL_HINT_TIMER_RESOLUTION: cstring
 
 ```lua
 global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring
+```
+
+
+
+### SDL_HINT_VITA_TOUCH_MOUSE_DEVICE
+
+```lua
+global SDL_HINT_VITA_TOUCH_MOUSE_DEVICE: cstring
 ```
 
 
@@ -11888,10 +12642,50 @@ global SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR: cstring
 
 
 
+### SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR
+
+```lua
+global SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION
+
+```lua
+global SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP
+
+```lua
+global SDL_HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP: cstring
+```
+
+
+
 ### SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT
 
 ```lua
 global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_FOREIGN_WINDOW_OPENGL
+
+```lua
+global SDL_HINT_VIDEO_FOREIGN_WINDOW_OPENGL: cstring
+```
+
+
+
+### SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN
+
+```lua
+global SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN: cstring
 ```
 
 
@@ -12048,6 +12842,22 @@ global SDL_HINT_WINDOWS_USE_D3D9EX: cstring
 
 
 
+### SDL_HINT_WINDOWS_DPI_AWARENESS
+
+```lua
+global SDL_HINT_WINDOWS_DPI_AWARENESS: cstring
+```
+
+
+
+### SDL_HINT_WINDOWS_DPI_SCALING
+
+```lua
+global SDL_HINT_WINDOWS_DPI_SCALING: cstring
+```
+
+
+
 ### SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN
 
 ```lua
@@ -12104,6 +12914,14 @@ global SDL_HINT_XINPUT_ENABLED: cstring
 
 
 
+### SDL_HINT_DIRECTINPUT_ENABLED
+
+```lua
+global SDL_HINT_DIRECTINPUT_ENABLED: cstring
+```
+
+
+
 ### SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING
 
 ```lua
@@ -12116,6 +12934,54 @@ global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring
 
 ```lua
 global SDL_HINT_AUDIO_INCLUDE_MONITORS: cstring
+```
+
+
+
+### SDL_HINT_X11_WINDOW_TYPE
+
+```lua
+global SDL_HINT_X11_WINDOW_TYPE: cstring
+```
+
+
+
+### SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE
+
+```lua
+global SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE: cstring
+```
+
+
+
+### SDL_HINT_VIDEODRIVER
+
+```lua
+global SDL_HINT_VIDEODRIVER: cstring
+```
+
+
+
+### SDL_HINT_AUDIODRIVER
+
+```lua
+global SDL_HINT_AUDIODRIVER: cstring
+```
+
+
+
+### SDL_HINT_KMSDRM_DEVICE_INDEX
+
+```lua
+global SDL_HINT_KMSDRM_DEVICE_INDEX: cstring
+```
+
+
+
+### SDL_HINT_TRACKPAD_IS_TOUCH_ONLY
+
+```lua
+global SDL_HINT_TRACKPAD_IS_TOUCH_ONLY: cstring
 ```
 
 

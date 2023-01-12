@@ -2,6 +2,7 @@
 * [Tilemap](#tilemap)
 * [Tilemap:get_height](#tilemapget_height)
 * [Tilemap:get_size](#tilemapget_size)
+* [Tilemap:traverse_tiles](#tilemaptraverse_tiles)
 * [Tilemap:draw](#tilemapdraw)
 
 ## tilemap
@@ -78,6 +79,15 @@ width →
 ```
 
 Thus the size will be { 48, 32 }
+
+### Tilemap:traverse_tiles
+
+```lua
+function Tilemap:traverse_tiles(tile_callback: function(tile_rect: Rect, map_size: Vec2, tile: uint16))
+```
+
+Traverse all non-zero tiles of the tilemap and calls `tile_callback` for each tile., passing the
+respective tile's rectangle, data (the tile number), and the whole map size.
 
 ### Tilemap:draw
 

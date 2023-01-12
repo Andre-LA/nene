@@ -1,6 +1,7 @@
 ### Summary
 * [Rectn](#rectn)
 * [Rectn.to_raw_rect](#rectnto_raw_rect)
+* [Rectn.__eq](#rectn__eq)
 * [Rectn:get_position](#rectnget_position)
 * [Rectn:get_size](#rectnget_size)
 * [Rectn:with_position](#rectnwith_position)
@@ -34,7 +35,15 @@ local Rectn: type = @record{
 function Rectn.to_raw_rect(rect: Rectn): SDL_Rect
 ```
 
-convert this
+convert this to `SDL_Rect`
+
+### Rectn.__eq
+
+```lua
+function Rectn.__eq(self: Rectn, other: Rectn)
+```
+
+compare this rect with another rect
 
 ### Rectn:get_position
 
