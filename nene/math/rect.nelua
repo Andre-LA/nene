@@ -88,7 +88,7 @@ function Rect.from_vec2(pos: overload(Vec2i, Vec2), size: overload(Vec2i, Vec2))
 end
 
 -- Test if another rect or point it's intersecting the rect
-function Rect.is_intersecting(self: Rect, other: overload(Rect, overload(Vec2i, Vec2))): boolean
+function Rect.is_intersecting(self: Rect, other: overload(Rect, Vec2i, Vec2)): boolean
   ## if other.type.is_vec2 then -- other is Vec2
     return (
       other.x >= self.x and

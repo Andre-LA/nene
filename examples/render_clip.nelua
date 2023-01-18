@@ -24,7 +24,7 @@ local function rects()
     -- copy mouse position to rect_clip position
     rect_clip = rect_clip:with_position(nene.mouse_pos)
 
-    nene:render_clear(Color.Palette.bg)
+    nene:render_clear()
 
     -- draw grid
     for i = 0, 16 do
@@ -34,8 +34,6 @@ local function rects()
 
     -- set render clipping
     nene:set_render_clip(rect_clip)
-
-    -- draw both rects with white lines
     nene:render_draw_rect(rect_clip, true, Color.Palette.red)
 
     nene:render_present()

@@ -817,10 +817,7 @@ function Nene:set_render_clip(rect: facultative(Rect)): boolean
   check(Nene.initialized, 'Nene is not initialized')
 
   ## if not rect.type.is_niltype then
-  rect.x = rect.x + self.render_offset.x
-  rect.y = rect.y + self.render_offset.y
-
-  local sdl_rect: SDL_Rect = rect:to_raw_rect()
+  local sdl_rect: SDL_Rect = rect:add_position(self.render_offset):to_raw_rect()
   ## else
   local sdl_rect: *SDL_Rect = nilptr
   ## end
