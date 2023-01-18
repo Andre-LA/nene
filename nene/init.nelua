@@ -37,7 +37,6 @@ require 'nene.raw.sdl2_mixer'
 local Color = require 'nene.color'
 local Vec2  = require 'nene.math.vec2'
 local Rect  = require 'nene.math.rect'
-local Rectf = require 'nene.math.rectf'
 
 local gamepad = require 'nene.gamepad'
 
@@ -949,14 +948,14 @@ Related SDL documentation:
 * [SDL_RenderDrawRect](https://wiki.libsdl.org/SDL_RenderDrawRect)
 * [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
 ]]
-function Nene:render_draw_rect(rectangle: overload(Rect, Rectf), use_lines: boolean, color: facultative(Color)): boolean
+function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color)): boolean
   ## if color.type.is_niltype then
   local color = Color.Palette.white
   ## end
 
   check(Nene.initialized, 'Nene is not initialized')
 
-  local rectangle = rectangle:with_position(rectangle:get_position() + self.render_offset)
+  rectangle = rectangle:add_position(self.render_offset)
   local sdl_rect: SDL_Rect = rectangle:to_raw_rect()
 
   self:set_render_draw_color(color)
@@ -1021,7 +1020,7 @@ function Nene:render_copy(
   ## end
 
   ## if not destination.type.is_niltype then
-  local destination = destination:with_position(destination:get_position() + self.render_offset)
+  local destination = destination:add_position(self.render_offset)
   local dest_rect: SDL_Rect = destination:to_raw_rect()
   dest = &dest_rect
   ## end

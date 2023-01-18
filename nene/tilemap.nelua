@@ -17,6 +17,7 @@ local Texture = require 'nene.texture'
 local TextureAtlas = require 'nene.texture_atlas'
 
 local Vec2 = require 'nene.math.vec2'
+local Vec2i = require 'nene.math.vec2i'
 local Rect = require 'nene.math.rect'
 local Grid = require 'nene.math.grid'
 
@@ -124,7 +125,7 @@ function Tilemap:draw(position: Vec2, tint: facultative(Color))
     local atlas_n = self.map[tilemap_n]
 
     if atlas_n > 0 then
-      local tile_pos = self.grid:get_nth_cell_pos(tilemap_n, self.width)
+      local tile_pos = self.grid:get_nth_cell_pos(tilemap_n, self.width):to_vec2()
       self.tileset:draw_nth_sub_texture(atlas_n - 1, position + tile_pos, tint)
     end
   end

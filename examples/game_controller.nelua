@@ -10,7 +10,7 @@ SPDX-License-Identifier: Zlib
 local Nene = require 'nene'
 local Color = require 'nene.color'
 local Vec2 = require 'nene.math.vec2'
-local Rectf = require 'nene.math.rectf'
+local Rect = require 'nene.math.rect'
 local gamepad = require 'nene.gamepad'
 
 -- let's create an rect that moves with our gamepad left analog thumbstick and
@@ -34,7 +34,7 @@ local function game_controller()
   local ok, nene <close> = Nene.init('nene game controller', 800, 600)
   assert(ok, 'error: nene initialization failed')
 
-  local rect: Rectf = { 400-40, 300-40, 80, 80 }
+  local rect: Rect = { 400-40, 300-40, 80, 80 }
   local rect_color = get_random_color()
 
   repeat
@@ -48,7 +48,7 @@ local function game_controller()
 
     -- update rect position by left thumbstick value
     local lx, ly = nene:get_gamepad_axis(0, gamepad.Axis.LeftX),  nene:get_gamepad_axis(0, gamepad.Axis.LeftY)
-    rect = rect:with_position(rect:get_position() + Vec2{lx, ly})
+    rect = rect:add_position(Vec2{lx, ly})
 
     -- draw game state
     nene:render_clear()

@@ -1,4 +1,10 @@
--- The `Vec2i` is just a convenient alias for `Vec2n(integer)`
+--[[
+The `Vec2i` module, it implements a 2D vector with `integer` components.
+> If you need `number` components, see the `Vec2` module.
+
+> Some functions returns `Vec2` instead of `Vec2i`, since it'll inevitably
+results on non-integral values.
+]]
 
 --[[
 Copyright (c) 2021-present André Luiz Alvares
@@ -7,14 +13,93 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Vec2n = require 'nene.math.vec2n'
+local math = require 'math'
+local Vec2 = require 'nene.math.vec2'
 
---[[
-Alias of `Vec2n(integer)`.
+local Vec2i = @record{
+  x: integer,
+  y: integer
+}
 
-Related Nene documentation:
-* [Vec2n](vec2n.md#vec2n)
-]]
-local Vec2i: type = @Vec2n(integer)
+## Vec2i.value.is_vec = true
+## Vec2i.value.is_vec2 = true
+
+function Vec2i.zero(): Vec2i
+  return Vec2i{ x = 0, y = 0 }
+end
+
+function Vec2i.one(): Vec2i
+  return Vec2i{ x = 1, y = 1 }
+end
+
+function Vec2i.to_vec2(v: Vec2i): Vec2
+  return Vec2{ x = v.x, y = v.y }
+end
+
+function Vec2i.from_vec2(v: Vec2): Vec2i
+  return Vec2i{ x = math.iround(v.x), y = math.iround(v.y) }
+end
+
+function Vec2i.__eq(a: Vec2i, b: Vec2i): boolean
+  return a.x == b.x and a.y == b.y
+end
+
+function Vec2i.__add(a: Vec2i, b: Vec2i): Vec2i
+  return Vec2i{ x = a.x + b.x, y = a.y + b.y }
+end
+
+function Vec2i.__sub(a: Vec2i, b: Vec2i): Vec2i
+  return Vec2i{ x = a.x - b.x, y = a.y - b.y }
+end
+
+function Vec2i.__mul(a: overload(integer, Vec2i), b: overload(integer, Vec2i)): Vec2i
+  ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
+
+  ## if a.type.is_vec2 and b.type.is_vec2 then -- both are vectors
+    return Vec2i{ x = a.x * b.x, y = a.y * b.y }
+  ## elseif a.type.is_arithmetic then -- b is a vector
+    return Vec2i{ x = b.x * a, y = b.y * a }
+  ## else
+    return Vec2i{ x = a.x * b, y = a.y * b }
+  ## end
+end
+
+function Vec2i.__unm(v: Vec2i): Vec2i
+  return Vec2i{ x = -v.x, y = -v.y }
+end
+
+function Vec2i.lerp(a: Vec2i, b: Vec2i, t: number): Vec2
+  local a: Vec2, b: Vec2 = a:to_vec2(), b:to_vec2()
+  return (1.0 - t) * a + t * b
+end
+
+function Vec2i.len_sqr(v: Vec2i): integer
+  return v.x * v.x + v.y * v.y
+end
+
+function Vec2i.__len(v: Vec2i): number
+  return math.sqrt(Vec2i.len_sqr(v))
+end
+
+function Vec2i.dot(a: Vec2i, b: Vec2i): integer
+  return a.x * b.x + a.y * b.y
+end
+
+function Vec2i.cross(a: Vec2i, b: Vec2i): integer
+  -- note: since this is a 2D vector (or z=0), the cross product returns
+  -- the magnitude of the cross product vector instead of the vector itself.
+  return a.x * b.y - a.y * b.x
+end
+
+function Vec2i.normalized(v: Vec2i): Vec2
+  local result: Vec2;
+  local v_len = #v
+
+  if v_len ~= 0.0 then
+    result = { x = v.x / v_len, y = v.y / v_len }
+  end
+
+  return result
+end
 
 return Vec2i

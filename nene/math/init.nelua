@@ -14,7 +14,6 @@ local Vec2i = require 'nene.math.vec2i'
 local Vec2 = require 'nene.math.vec2'
 
 local Rect = require 'nene.math.rect'
-local Rectf = require 'nene.math.rectf'
 
 local Grid = require 'nene.math.grid'
 
@@ -24,7 +23,6 @@ local Math.Vec2i = Vec2i
 local Math.Vec2 = Vec2
 
 local Math.Rect = Rect
-local Math.Rectf = Rectf
 
 local Math.Grid = Grid
 
