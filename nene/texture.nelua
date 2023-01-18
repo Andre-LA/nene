@@ -259,17 +259,12 @@ function Texture:draw(
   ## end
 
   ## if destination.type.is_vec2 then -- shadow the vec2 destination with a rect destination
-  local destination: Rect = {
-    x = math.ifloor(destination.x),
-    y = math.ifloor(destination.y),
-  }
+  local destination = Rect.with_position({}, destination)
 
   ## if source.type.is_niltype then
-    destination.w = self.width
-    destination.h = self.height
+    destination:with_size({ x = self.width, y = self.height })
   ## else
-    destination.w = source.w
-    destination.h = source.h
+    destination:with_size(source:get_size())
   ## end
 
   ## end
