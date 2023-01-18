@@ -612,7 +612,7 @@ Related SDL documentation:
 ### Nene:render_draw_rect
 
 ```lua
-function Nene:render_draw_rect(rectangle: overload(Rect, Rectf), use_lines: boolean, color: facultative(Color)): boolean
+function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color)): boolean
 ```
 
 Renders the given `rectangle` with the given `color`; it will be filled if `use_lines` is `false`.

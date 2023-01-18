@@ -3,7 +3,6 @@
 * [Math.Vec2i](#mathvec2i)
 * [Math.Vec2](#mathvec2)
 * [Math.Rect](#mathrect)
-* [Math.Rectf](#mathrectf)
 * [Math.Grid](#mathgrid)
 
 ## init
@@ -39,14 +38,6 @@ local Math.Vec2
 
 ```lua
 local Math.Rect
-```
-
-
-
-### Math.Rectf
-
-```lua
-local Math.Rectf
 ```
 
 
