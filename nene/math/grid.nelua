@@ -16,6 +16,11 @@ local Grid = @record{
   gap: Vec2i -- gap between rectagles
 }
 
+-- Returns if both grid are equal
+function Grid.__eq(self: Grid, other: Grid): boolean
+  return self.cell_size == other.cell_size and self.gap == other.gap
+end
+
 --[[
 Generates the rectangle of a cell from the grid mathematically.
 

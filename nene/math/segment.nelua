@@ -26,7 +26,7 @@ end
 function Segment.segments_from_rect(rect: Rect): [4]Segment
   -- rp and rs stands for rect position and rect size.
   local rp = rect:get_position():to_vec2()
-  local rs = rect:get_size() - Vec2i{ x = -1, y = -1 }
+  local rs = rect:get_size()
   
   local segments: [4]Segment = {
     { origin = {          }, ending = { x = rs.x } }, -- top side
