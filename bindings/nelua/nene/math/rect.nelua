@@ -1,0 +1,48 @@
+## linklib 'nene'
+## cinclude '"nene/math/rect.h"'
+## cinclude '<SDL2/SDL.h>'
+
+local Vec2i = require 'nene.math.vec2i'
+require 'nene.raw.sdl2'
+
+local Rect <cimport 'nene_Rect', nodecl> = @record{
+  pos: Vec2i,
+  size: Vec2i,
+}
+
+local RectIntersection <cimport 'nene_Rect_intersection_result', nodecl> = @record{
+  intersected: boolean,
+  intersection: Rect,
+}
+
+local RectCollision <cimport 'nene_Rect_collision_result', nodecl> = @record{
+  collided: boolean,
+  rectangle_resolved: Rect,
+  intersection: Rect,
+}
+
+function Rect.zero(): Rect <cimport 'nene_Rect_zero', nodecl> end
+
+function Rect.to_raw(rect: Rect): SDL_Rect <cimport 'nene_Rect_to_raw', nodecl> end
+
+function Rect.__eq(a: Rect, b: Rect): boolean <cimport 'nene_Rect_equals', nodecl> end
+
+function Rect.with_pos(rect: Rect, pos: Vec2i): Rect <cimport 'nene_Rect_with_pos', nodecl> end
+
+function Rect.add_pos(rect: Rect, pos: Vec2i): Rect <cimport 'nene_Rect_add_pos', nodecl> end
+
+function Rect.with_size(rect: Rect, size: Vec2i): Rect <cimport 'nene_Rect_with_size', nodecl> end
+
+function Rect.add_size(rect: Rect, size: Vec2i): Rect <cimport 'nene_Rect_add_size', nodecl> end
+
+function Rect.is_rect_intersecting(a: Rect, b: Rect): boolean <cimport 'nene_Rect_is_rect_intersecting', nodecl> end
+
+function Rect.is_point_intersecting(rect: Rect, point: Vec2i): boolean <cimport 'nene_Rect_is_point_intersecting', nodecl> end
+
+function Rect.get_intersection(a: Rect, b: Rect): RectIntersection <cimport 'nene_Rect_get_intersection', nodecl> end
+
+function Rect.get_center(rect: Rect): Vec2i <cimport 'nene_Rect_get_center', nodecl> end
+
+function Rect.simple_collision(rect: Rect, intersected_rect: Rect): RectCollision <cimport 'nene_Rect_simple_collision', nodecl> end
+
+return Rect

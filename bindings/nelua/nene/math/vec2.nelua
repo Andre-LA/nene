@@ -1,0 +1,54 @@
+## linklib 'nene'
+## cinclude '"nene/math/vec2.h"'
+
+local Vec2i = require 'nene.math.vec2i'
+
+local Vec2 <cimport 'nene_Vec2', nodecl> = @record{
+  x: float32,
+  y: float32,
+}
+
+function Vec2.from_Vec2i(v: Vec2i): Vec2 <cimport 'nene_Vec2_from_Vec2i', nodecl> end
+
+function Vec2.to_Vec2i(v: Vec2): Vec2i <cimport 'nene_Vec2_to_Vec2i', nodecl> end
+
+function Vec2.zero(): Vec2 <cimport 'nene_Vec2_zero', nodecl> end
+
+function Vec2.one(): Vec2 <cimport 'nene_Vec2_one', nodecl> end
+
+function Vec2.__eq(a: Vec2, b: Vec2): boolean <cimport 'nene_Vec2_equals', nodecl> end
+
+function Vec2.__add(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_add', nodecl> end
+
+function Vec2.__sub(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_sub', nodecl> end
+
+local function Vec2_mul(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_mul', nodecl> end
+
+local function Vec2_scale(a: Vec2, s: float32): Vec2 <cimport 'nene_Vec2_scale', nodecl> end
+
+function Vec2.__unm(v: Vec2): Vec2 <cimport 'nene_Vec2_negate', nodecl> end
+
+function Vec2.len_sqr(v: Vec2): float32 <cimport 'nene_Vec2_len_sqr', nodecl> end
+
+function Vec2.len(v: Vec2): float32 <cimport 'nene_Vec2_len', nodecl> end
+
+function Vec2.lerp(a: Vec2, b: Vec2, t: float32): Vec2 <cimport 'nene_Vec2_lerp', nodecl> end
+
+function Vec2.normalize(v: Vec2): Vec2 <cimport 'nene_Vec2_normalize', nodecl> end
+
+function Vec2.dot(a: Vec2, b: Vec2): float32 <cimport 'nene_Vec2_dot', nodecl> end
+
+function Vec2.cross(a: Vec2, b: Vec2): float32 <cimport 'nene_Vec2_cross', nodecl> end
+
+function Vec2.__mul(a: overload(float32, Vec2), b: overload(float32, Vec2)): Vec2
+  ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2 multiply needs at least one Vec2 value')
+  ## if a.type == Vec2.value and b.type == Vec2.value then -- both are vectors
+    return Vec2_mul(a, b)
+  ## elseif a.type.is_scalar then -- b is a vector
+    return Vec2_scale(b, a)
+  ## else
+    return Vec2_scale(a, b)
+  ## end
+end
+
+return Vec2
