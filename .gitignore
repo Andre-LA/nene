@@ -1,2 +1,2 @@
 nelua_cache
-*.c
+build/
