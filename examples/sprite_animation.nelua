@@ -13,6 +13,7 @@ local Nene = require 'nene'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local TextureAtlas = require 'nene.texture_atlas'
+local AnimationRange = require 'nene.animation'
 
 --[[
 Here all the game code is inside a "game" function because it make address sanitizer more detailed.
@@ -26,6 +27,11 @@ local function game()
 
   -- rotation parameter, it'll be increased over time
   local rotation = 0.0
+
+  local anim: AnimationRange = { interval = 500 }
+  local anim2: AnimationRange = { interval = 500 }
+  
+  print('eq:', anim == anim2)
 
   --[[
   Create a texture atlas with img_shapes.png image on it,

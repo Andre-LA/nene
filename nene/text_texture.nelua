@@ -123,10 +123,14 @@ function TextTexture:draw(position: Vec2, color: facultative(Color))
   ## end
 
   local dest: Rect = {
-    x = math.ifloor(position.x),
-    y = math.ifloor(position.y),
-    w = self.texture.width,
-    h = self.texture.height
+    pos = {
+      x = math.ifloor(position.x),
+      y = math.ifloor(position.y),
+    },
+    size = {
+      x = self.texture.width,
+      y = self.texture.height
+    }
   }
 
   self.texture:draw(color, nil, dest)

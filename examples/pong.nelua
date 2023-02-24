@@ -16,6 +16,7 @@ local Nene = require 'nene'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
+local Vec2i = require 'nene.math.vec2i'
 
 local Font = require 'nene.font'
 local Texture = require 'nene.texture'
@@ -23,10 +24,10 @@ local TextTexture = require 'nene.text_texture'
 
 -- general game settings
 local SETTINGS: record{
-  screen_size: record{ x: integer, y: integer },
-  win_size: record{ x: integer, y: integer },
+  screen_size: Vec2i,
+  win_size: Vec2i,
   racket: record{
-    size: Vec2,
+    size: Vec2i,
     velocity: integer,
   },
   ball: record{
@@ -56,10 +57,13 @@ local Racket = @record{
 
 -- return the rect of the racket
 function Racket:get_rect(is_player_one: boolean): Rect
-  return Rect.from_vec2(
-    {(is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20), self.pos_y},
-    SETTINGS.racket.size
-  )
+  return Rect{
+    pos = { 
+      x = (is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20), 
+      y = self.pos_y,
+    },
+    size = SETTINGS.racket.size,
+  }
 end
 
 -- racket's gameplay code
@@ -101,7 +105,10 @@ local Ball = @record{
 
 -- return the ball's rect
 function Ball:get_rect(): Rect
-  return Rect.from_vec2(self.pos, {SETTINGS.ball.size, SETTINGS.ball.size})
+  return Rect{
+    pos = Vec2.to_Vec2i(self.pos), 
+    size = Vec2i.one() * SETTINGS.ball.size,
+  }
 end
 
 -- ball's gameplay code
@@ -131,12 +138,13 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   -- invert horizontal direction when intersecting rackets
   local ball_rect = self:get_rect()
   local r1_rect, r2_rect = racket_1:get_rect(true), racket_2:get_rect(false)
-  local is_r1_intersecting, is_r2_intersecting = ball_rect:is_intersecting(r1_rect),
-                                                 ball_rect:is_intersecting(r2_rect)
 
-  if is_r1_intersecting or is_r2_intersecting then
+  local r1_intersected, r2_intersected = ball_rect:is_rect_intersecting(r1_rect),
+                                           ball_rect:is_rect_intersecting(r2_rect)
+
+  if r1_intersected or r2_intersected then
     self.direction.x = -self.direction.x
-    self.pos.x = is_r1_intersecting and r1_rect.x + r1_rect.w or r2_rect.x - SETTINGS.ball.size
+    self.pos.x = r1_intersected and r1_rect.pos.x + r1_rect.size.x or r2_rect.pos.x - SETTINGS.ball.size
   end
 end
 

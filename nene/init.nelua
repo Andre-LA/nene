@@ -817,7 +817,7 @@ function Nene:set_render_clip(rect: facultative(Rect)): boolean
   check(Nene.initialized, 'Nene is not initialized')
 
   ## if not rect.type.is_niltype then
-  local sdl_rect: SDL_Rect = rect:add_position(self.render_offset):to_raw_rect()
+  local sdl_rect: SDL_Rect = rect:add_pos(self.render_offset):to_raw()
   ## else
   local sdl_rect: *SDL_Rect = nilptr
   ## end
@@ -952,8 +952,8 @@ function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facul
 
   check(Nene.initialized, 'Nene is not initialized')
 
-  rectangle = rectangle:add_position(self.render_offset)
-  local sdl_rect: SDL_Rect = rectangle:to_raw_rect()
+  rectangle = rectangle:add_pos(self.render_offset:to_Vec2i())
+  local sdl_rect: SDL_Rect = rectangle:to_raw()
 
   self:set_render_draw_color(color)
 
@@ -1017,8 +1017,8 @@ function Nene:render_copy(
   ## end
 
   ## if not destination.type.is_niltype then
-  local destination = destination:add_position(self.render_offset)
-  local dest_rect: SDL_Rect = destination:to_raw_rect()
+  local destination = destination:add_pos(self.render_offset:to_Vec2i())
+  local dest_rect: SDL_Rect = destination:to_raw()
   dest = &dest_rect
   ## end
 

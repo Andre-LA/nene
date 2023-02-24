@@ -7,17 +7,18 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
+## linklib 'nene'
+## cinclude '"nene/animation.h"'
+
 -- Animation range type, used on Spritesheets
-local AnimationRange = @record{
-  fps: number,   -- frames per second of this animation
-  from: usize,   -- first frame
-  to: usize,     -- last frame
-  loop: boolean, -- should animation loop?
+local AnimationRange <cimport'nene_AnimationRange', nodecl> = @record{
+  interval: uint16, -- frames per second of this animation
+  from: uint16,     -- first frame
+  to: uint16,       -- last frame
+  loop: boolean,    -- should animation loop?
 }
 
 -- checks equality between animation ranges
-function AnimationRange.__eq(l: AnimationRange, r: AnimationRange): boolean
-  return l.from == r.from and l.to == r.to and l.fps == r.fps
-end
+function AnimationRange.__eq(l: AnimationRange, r: AnimationRange): boolean <cimport'nene_AnimationRange_equals', nodecl> end
 
 return AnimationRange
