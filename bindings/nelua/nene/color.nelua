@@ -1,0 +1,37 @@
+## linklib 'nene'
+## cinclude '"nene/color.h"'
+
+require 'nene.raw.sdl2'
+
+
+-- Alias to SDL_Color
+local Color = @SDL_Color
+
+
+local Color.black: Color <cimport 'nene_Color_black', nodecl>;
+
+
+local Color.white: Color <cimport 'nene_Color_white', nodecl>;
+
+
+local Color.red: Color <cimport 'nene_Color_red', nodecl>;
+
+
+local Color.green: Color <cimport 'nene_Color_green', nodecl>;
+
+
+local Color.blue: Color <cimport 'nene_Color_blue', nodecl>;
+
+
+local Color.yellow: Color <cimport 'nene_Color_yellow', nodecl>;
+
+
+local Color.cyan: Color <cimport 'nene_Color_cyan', nodecl>;
+
+
+local Color.bg: Color <cimport 'nene_Color_bg', nodecl>;
+
+
+function Color.__eq(a: Color, b: Color): boolean <cimport 'nene_Color_equals', nodecl> end
+
+return Color

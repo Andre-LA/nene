@@ -5,23 +5,24 @@ local struct, field, fn = template.decls.struct,
                           template.decls.fn
 local ast_reader = require 'bindgen.ast-reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/math/rect.txt', 'nene_Rect')
+local symbols = utils.table.no_repeat(
+  utils.table.imerge(
+    ast_reader.read_file('build/ast_dumps/intersections.txt', 'nene_Intersections_rect_intersection'),
+    ast_reader.read_file('build/ast_dumps/intersections.txt', 'nene_Intersections_rect_collision')
+  ),
+  function(v) return v.name end
+)
 
 local structs = ast_reader.get_structs(symbols, 'nene')
-
-local funcs = ast_reader.get_functions(symbols, 'nene_Rect')
-
-template.appliers.operator_overloading(funcs, {
-  ['equals'] = '==',
-})
+local funcs = ast_reader.get_functions(symbols, 'nene_Intersections')
 
 return template.file(
   -- modname
-  'Rect',
-  -- links
+  'Intersections',
+  -- links,
   { template.build.link 'nene' },
   -- headers
-  { template.build.header 'nene/math/rect.h', template.build.header '<SDL2/SDL.h>' },
+  { template.build.header 'nene/intersections.h' },
   -- enums
   {},
   -- structs

@@ -1,0 +1,35 @@
+## linklib 'nene'
+## cinclude '"nene/intersections.h"'
+
+local Vec2i = require 'nene.math.vec2i'
+local Rect = require 'nene.math.rect'
+
+local Intersections = @record{}
+
+
+
+local RectIntersection <cimport 'nene_Intersections_rect_intersection', nodecl> = @record{
+  intersected: boolean,
+  intersection: Rect,
+}
+
+
+local RectCollision <cimport 'nene_Intersections_rect_collision', nodecl> = @record{
+  collided: boolean,
+  rectangle_resolved: Rect,
+  intersection: Rect,
+}
+
+
+function Intersections.is_intersecting_rect_with_rect(a: Rect, b: Rect): boolean <cimport 'nene_Intersections_is_intersecting_rect_with_rect', nodecl> end
+
+
+function Intersections.is_intersecting_rect_with_point(rect: Rect, point: Vec2i): boolean <cimport 'nene_Intersections_is_intersecting_rect_with_point', nodecl> end
+
+
+function Intersections.get_intersection_rect_with_rect(a: Rect, b: Rect): RectIntersection <cimport 'nene_Intersections_get_intersection_rect_with_rect', nodecl> end
+
+
+function Intersections.get_collision_rect_with_rect(rect: Rect, intersected_rect: Rect): RectCollision <cimport 'nene_Intersections_get_collision_rect_with_rect', nodecl> end
+
+return Intersections

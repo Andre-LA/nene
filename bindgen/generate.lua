@@ -2,11 +2,15 @@
 local nelua = require 'bindgen.generators.nelua'
 
 local neluagen = nelua.gen.new({
+  ['nene_Color'] = 'Color',
   ['nene_Vec2i'] = 'Vec2i',
   ['nene_Vec2']  = 'Vec2',
   ['nene_Rect'] = 'Rect',
-  ['nene_Rect_intersection_result'] = 'RectIntersection',
-  ['nene_Rect_collision_result'] = 'RectCollision',
+  ['nene_Animation'] = 'Animation',
+  ['nene_Animation_Property'] = 'AnimationProperty',
+  ['nene_Intersections'] = 'Intersections',
+  ['nene_Intersections_rect_intersection'] = 'RectIntersection',
+  ['nene_Intersections_rect_collision'] = 'RectCollision',
 })
 
 local function bind_file(src, extracontext)
@@ -80,4 +84,25 @@ bind_file('math/rect', {
     { modname = 'Vec2i', path = 'nene.math.vec2i' },
     { path = 'nene.raw.sdl2' }
   },
+})
+
+-- Intersections
+bind_file('intersections', {
+  dependencies = {
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+    { modname = 'Rect', path = 'nene.math.rect' },
+  },
+  prepend = [[
+local Intersections = @record{}
+]]
+})
+
+-- Animation
+bind_file('animation', {})
+
+-- Color
+bind_file('color', {
+  dependencies = {
+    { path = "nene.raw.sdl2" },
+  }
 })

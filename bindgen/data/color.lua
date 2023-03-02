@@ -1,15 +1,14 @@
-local utils = require 'bindgen.utils'
 local template = require 'bindgen.template'
 local struct, field, fn = template.decls.struct,
                           template.decls.field,
                           template.decls.fn
 local ast_reader = require 'bindgen.ast-reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/math/rect.txt', 'nene_Rect')
+local symbols = ast_reader.read_file('build/ast_dumps/color.txt', 'nene_Color')
 
-local structs = ast_reader.get_structs(symbols, 'nene')
-
-local funcs = ast_reader.get_functions(symbols, 'nene_Rect')
+local funcs = ast_reader.get_functions(symbols, 'nene_Color')
+local aliases = ast_reader.get_type_aliases(symbols, 'nene_Color')
+local global_vars = ast_reader.get_global_vars(symbols, 'nene_Color')
 
 template.appliers.operator_overloading(funcs, {
   ['equals'] = '==',
@@ -17,19 +16,19 @@ template.appliers.operator_overloading(funcs, {
 
 return template.file(
   -- modname
-  'Rect',
-  -- links
+  'Color',
+  -- links,
   { template.build.link 'nene' },
   -- headers
-  { template.build.header 'nene/math/rect.h', template.build.header '<SDL2/SDL.h>' },
+  { template.build.header 'nene/color.h' },
   -- enums
   {},
   -- structs
-  structs,
+  {},
   -- funcs
   funcs,
   -- aliases
-  {},
+  aliases,
   -- global_vars
-  {}
+  global_vars
 )

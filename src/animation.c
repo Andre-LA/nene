@@ -8,7 +8,7 @@ SPDX-License-Identifier: Zlib
 #include "nene/animation.h"
 
 /// Tests if a and b animation ranges are equal.
-bool nene_AnimationRange_equals(nene_AnimationRange a, nene_AnimationRange b) {
-  return a.from == b.from && a.to == b.to && a.properties == b.properties &&
+bool nene_Animation_equals(nene_Animation a, nene_Animation b) {
+  return a.from == b.from && a.to == b.to && a.loop == b.loop &&
          a.interval == b.interval;
 }

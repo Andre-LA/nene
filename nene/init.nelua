@@ -26,6 +26,7 @@ SPDX-License-Identifier: Zlib
 ##end
 
 local span = require 'span'
+local math = require 'math'
 
 require 'nene.raw.sdl2'
 require 'nene.raw.sdl2_ttf'
@@ -849,7 +850,7 @@ function Nene:render_clear(color: facultative(Color)): boolean
   check(Nene.initialized, 'Nene is not initialized')
 
   ## if color.type.is_niltype then
-  local color = Color.Palette.bg
+  local color = Color.bg
   ## end
 
   self:set_render_draw_color(color)
@@ -879,7 +880,7 @@ function Nene:render_draw_pixel(position: Vec2, color: facultative(Color)): bool
   check(Nene.initialized, 'Nene is not initialized')
 
   ## if color.type.is_niltype then
-  local color = Color.Palette.white
+  local color = Color.white
   ## end
 
   self:set_render_draw_color(color)
@@ -911,7 +912,7 @@ Related SDL documentation:
 ]]
 function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultative(Color)): boolean
   ## if color.type.is_niltype then
-  local color = Color.Palette.white
+  local color = Color.white
   ## end
 
   check(Nene.initialized, 'Nene is not initialized')
@@ -947,7 +948,7 @@ Related SDL documentation:
 ]]
 function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facultative(Color)): boolean
   ## if color.type.is_niltype then
-  local color = Color.Palette.white
+  local color = Color.white
   ## end
 
   check(Nene.initialized, 'Nene is not initialized')
@@ -1275,7 +1276,7 @@ function Nene.init(
     =renderer,
   }
 
-  instance:set_render_draw_color(Color.Palette.white)
+  instance:set_render_draw_color(Color.white)
   instance:set_render_draw_blend_mode(SDL_BLENDMODE_BLEND)
 
   return true, &instance

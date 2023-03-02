@@ -1,0 +1,55 @@
+--[[
+The `Vec2i` module, it implements a 2D vector with `int32` components.
+> If you need `float` components, see the `Vec2` module.
+
+> Some functions returns `Vec2` instead of `Vec2i`, since it'll inevitably
+results on non-integral values.
+]]
+
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
+
+## linklib 'nene'
+## cinclude '"nene/math/vec2i.h"'
+
+local Vec2i <cimport'nene_Vec2i', nodecl> = @record{
+  x: int32,
+  y: int32
+}
+
+## Vec2i.value.is_vec = true
+## Vec2i.value.is_vec2i = true
+
+local function Vec2i_mul(a: Vec2i, b: Vec2i): Vec2i <cimport'nene_Vec2i_mul', nodecl> end
+local function Vec2i_scale(v: Vec2i, s: float32): Vec2i <cimport'nene_Vec2i_scale', nodecl> end
+
+function Vec2i.zero(): Vec2i <cimport'nene_Vec2i_zero', nodecl> end
+function Vec2i.one(): Vec2i <cimport'nene_Vec2i_one', nodecl> end
+function Vec2i.__eq(a: Vec2i, b: Vec2i): boolean <cimport'nene_Vec2i_equals', nodecl> end
+function Vec2i.__add(a: Vec2i, b: Vec2i): Vec2i <cimport'nene_Vec2i_add', nodecl> end
+function Vec2i.__sub(a: Vec2i, b: Vec2i): Vec2i <cimport'nene_Vec2i_sub', nodecl> end
+function Vec2i.__unm(v: Vec2i): Vec2i <cimport'nene_Vec2i_negate', nodecl> end
+function Vec2i.lerp(a: Vec2i, b: Vec2i, t: float32): Vec2i <cimport'nene_Vec2i_lerp', nodecl> end
+function Vec2i.len_sqr(v: Vec2i): float32 <cimport'nene_Vec2i_len_sqr', nodecl> end
+function Vec2i.__len(v: Vec2i): float32 <cimport'nene_Vec2i_len', nodecl> end
+function Vec2i.dot(a: Vec2i, b: Vec2i): float32 <cimport'nene_Vec2i_dot', nodecl> end
+function Vec2i.cross(a: Vec2i, b: Vec2i): float32 <cimport'nene_Vec2i_cross', nodecl> end
+function Vec2i.normalize(v: Vec2i): Vec2i <cimport'nene_Vec2i_normalize', nodecl> end
+
+function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): Vec2i
+  ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
+
+  ## if a.type.is_vec2 and b.type.is_vec2 then -- both are vectors
+    return Vec2i_mul(a, b)
+  ## elseif a.type.is_arithmetic then -- b is a vector
+    return Vec2i_scale(b, a)
+  ## else
+    return Vec2i_scale(a, b)
+  ## end
+end
+
+return Vec2i

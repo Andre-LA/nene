@@ -11,21 +11,21 @@ SPDX-License-Identifier: Zlib
 #include <stdint.h>
 #include <stdbool.h>
 
-/// Animation property enumeration
-typedef enum nene_AnimationProperty {
-  NENE_ANIMATION_PROPERTY_LOOP   = 1,
-  NENE_ANIMATION_PROPERTY_REWIND = 2,
-} nene_AnimationProperty;
-
 /// Animation range type, used on Spritesheets
-typedef struct nene_AnimationRange {
-  uint16_t interval;    /// animation speed
-  uint16_t from;        /// starting frame of the animation (inclusive)
-  uint16_t to;          /// ending frame of the animation (inclusive)
-  uint16_t properties;  /// animation properties
-} nene_AnimationRange;
+/// 
+/// The fields are:
+/// - interval: animation speed
+/// - from: starting frame of the animation (inclusive)
+/// - to: ending frame of the animation (inclusive)
+/// - properties: animation properties
+typedef struct nene_Animation {
+  uint16_t interval;
+  uint16_t from;
+  uint16_t to;
+  bool loop;
+} nene_Animation;
 
 /// Tests if a and b animation ranges are equal.
-bool nene_AnimationRange_equals(nene_AnimationRange a, nene_AnimationRange b);
+bool nene_Animation_equals(nene_Animation a, nene_Animation b);
 
 #endif // NENE_ANIMATION_H
