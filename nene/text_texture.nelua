@@ -74,7 +74,7 @@ function TextTexture:update_text(text: string, font: Font, color: facultative(Co
   local nene = Nene.instance()
 
   ## if color.type.is_niltype then
-  local color = Color.Palette.white
+  local color = Color.white
   ## end
 
   ##[[
@@ -119,7 +119,7 @@ function TextTexture:draw(position: Vec2, color: facultative(Color))
   local nene = Nene.instance()
 
   ## if color.type.is_niltype then
-  local color = Color.Palette.white
+  local color = Color.white
   ## end
 
   local dest: Rect = {

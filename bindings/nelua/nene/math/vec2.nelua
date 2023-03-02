@@ -32,10 +32,10 @@ function Vec2.__add(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_add', nodecl> en
 function Vec2.__sub(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_sub', nodecl> end
 
 -- returns the product between two vectors.
-function Vec2.mul(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_mul', nodecl> end
+local function Vec2_mul(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_mul', nodecl> end
 
 -- returns a vector that's the vector `a` scaled by `s` scalar.
-function Vec2.scale(a: Vec2, s: float32): Vec2 <cimport 'nene_Vec2_scale', nodecl> end
+local function Vec2_scale(a: Vec2, s: float32): Vec2 <cimport 'nene_Vec2_scale', nodecl> end
 
 -- returns the negation of the `v` vector.
 function Vec2.__unm(v: Vec2): Vec2 <cimport 'nene_Vec2_negate', nodecl> end

@@ -25,10 +25,10 @@ function Vec2i.__add(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_add', nodec
 function Vec2i.__sub(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_sub', nodecl> end
 
 
-function Vec2i.mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mul', nodecl> end
+local function Vec2i_mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mul', nodecl> end
 
 
-function Vec2i.scale(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
+local function Vec2i_scale(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
 
 
 function Vec2i.__unm(v: Vec2i): Vec2i <cimport 'nene_Vec2i_negate', nodecl> end

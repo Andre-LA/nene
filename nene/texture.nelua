@@ -255,7 +255,7 @@ function Texture:draw(
   local nene: *Nene = Nene.instance()
 
   ## if color.type.is_niltype then
-  local color = Color.Palette.white
+  local color = Color.white
   ## end
 
   ## if destination.type.is_vec2 then -- shadow the vec2 destination with a rect destination

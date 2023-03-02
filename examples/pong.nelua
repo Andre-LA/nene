@@ -17,6 +17,7 @@ local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
 local Vec2i = require 'nene.math.vec2i'
+local Intersections = require 'nene.intersections'
 
 local Font = require 'nene.font'
 local Texture = require 'nene.texture'
@@ -94,7 +95,7 @@ end
 -- draw a racket
 function Racket:draw(is_player_one: boolean)
   local nene = Nene.instance()
-  nene:render_draw_rect(self:get_rect(is_player_one), false, Color.Palette.yellow)
+  nene:render_draw_rect(self:get_rect(is_player_one), false, Color.yellow)
 end
 
 -- ball record
@@ -139,8 +140,8 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   local ball_rect = self:get_rect()
   local r1_rect, r2_rect = racket_1:get_rect(true), racket_2:get_rect(false)
 
-  local r1_intersected, r2_intersected = ball_rect:is_rect_intersecting(r1_rect),
-                                           ball_rect:is_rect_intersecting(r2_rect)
+  local r1_intersected, r2_intersected = Intersections.is_intersecting_rect_with_rect(ball_rect, r1_rect),
+                                         Intersections.is_intersecting_rect_with_rect(ball_rect, r2_rect)
 
   if r1_intersected or r2_intersected then
     self.direction.x = -self.direction.x
@@ -225,7 +226,7 @@ local function game()
 
       -- clear screen, otherwise the game would draw frame on top of previous frames,
       -- which gives weird results.
-      nene:render_clear(Color.Palette.bg)
+      nene:render_clear(Color.bg)
 
       -- rendering on the screen
       do

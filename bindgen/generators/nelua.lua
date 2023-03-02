@@ -20,7 +20,7 @@ local function _is_private(gen, node, privatize_table, name_id)
   end
   
   local privatize = gen.extracontext.privatize  
-  if privatize and privatize[privatize_table] and privatize[privatize_table][node.name_id] then
+  if privatize and privatize[privatize_table] and privatize[privatize_table][node[name_id]] then
     return true
   end
 
