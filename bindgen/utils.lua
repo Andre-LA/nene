@@ -1,10 +1,12 @@
 local utils = {}
 utils.table = {}
 
-function utils.table.imerge(a, b)
+function utils.table.imerge(...)
   local result = {}
-  for i = 0, #a do table.insert(result, a[i]) end
-  for i = 0, #b do table.insert(result, b[i]) end
+  for i = 1, select('#', ...) do
+    local t = select(i, ...)
+    for j = 0, #t do table.insert(result, t[j]) end
+  end
   return result
 end
 
