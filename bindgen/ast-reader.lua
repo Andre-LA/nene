@@ -274,7 +274,7 @@ function ast_reader.get_functions(symbols, prefix)
   local functions = {}
   
   for _, symbol in ipairs(symbols) do
-    if symbol.type == 'Function' then
+    if symbol.name:match(prefix) and symbol.type == 'Function' then
       table.insert(functions, ast_reader.get_symbol_func(symbol, prefix))
     end
   end
