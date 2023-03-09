@@ -86,7 +86,10 @@ end
 
 function nelua.gen:ctype_to_type(ctype)
   assert(type_of(ctype, 'string'), "'ctype' should be string")
-  return self.typemap[ctype] or ctype
+
+  local ctype, array = ctype:match('([%w_]+)([%[%d%]]*)')
+
+  return array..(self.typemap[ctype] or ctype)
 end
 
 function nelua.gen:global_var(global_var)

@@ -124,7 +124,7 @@ function ast_reader.read_file(filepath, modname, first_expected_symbol)
   end
 
   function readers.FieldDecl(line)
-    local field_name, field_type = line:match("FieldDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_]+)'")
+    local field_name, field_type = line:match("FieldDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_%d%[%]]+)")
     push_sym_field(field_name, field_type)
   end
 
@@ -222,7 +222,7 @@ function ast_reader.get_symbol_fields(symbol)
 end
 
 function ast_reader.get_symbol_func(symbol, prefix)
- return template.decls.fn(
+  return template.decls.fn(
     symbol.name:gsub(prefix..'_', ''), 
     {},
     symbol.name,
