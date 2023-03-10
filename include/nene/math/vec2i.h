@@ -31,5 +31,6 @@ float nene_Vec2i_dot(nene_Vec2i a, nene_Vec2i b);
 /// note: since this is a 2D vector (or z=0), the cross product returns
 /// the magnitude of the cross product vector instead of the vector itself.
 float nene_Vec2i_cross(nene_Vec2i a, nene_Vec2i b);
+nene_Vec2i nene_Vec2i_perpendicular(nene_Vec2i v);
 
 #endif // NENE_VEC2I_H

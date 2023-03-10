@@ -58,6 +58,7 @@ nene_Rect nene_Rect_add_size(nene_Rect rect, nene_Vec2i size) {
 
 
 nene_Vec2i nene_Rect_get_center(nene_Rect rect) {
+  rect.size.y = -rect.size.y; // math it's done at "world space"
   return nene_Vec2i_add(rect.pos, nene_Vec2i_scale(rect.size, 0.5f));
 }
 

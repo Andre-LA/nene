@@ -8,41 +8,51 @@ SPDX-License-Identifier: Zlib
 -- nene modules
 local Nene = require 'nene'
 local Color = require 'nene.color'
+local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
 local Intersections = require 'nene.intersections'
+local Collision = require 'nene.collision'
 
 -- example
 local function rects()
   local ok, nene <close> = Nene.init('nene rects', 256, 256)
   assert(ok, 'error: nene initialization failed')
 
-  -- create two rects
-  local rect_a: Rect, rect_b: Rect = { pos = { 0,  0}, size = { 32, 32} }, 
-                                     { pos = {64, 64}, size = {128, 64} }
+  -- declare position and two rects
+  local pos: Vec2 = { -32, -48 }
+  local rect_a: Rect, rect_b: Rect = { size = { 32, 32} }, 
+                                     { pos = {-64, 32}, size = {128, 64} }
 
   repeat
     nene:poll_events()
 
-    -- copy mouse position to rect_a position
-    rect_a = rect_a:with_pos(nene.mouse_pos:to_Vec2i())
+    local delta_pos: Vec2
+    if nene:get_scancode(Nene.Scancode.W) then
+      delta_pos.y = 1
+    end
+    if nene:get_scancode(Nene.Scancode.S) then
+      delta_pos.y = -1
+    end
+    if nene:get_scancode(Nene.Scancode.A) then
+      delta_pos.x = -1
+    end
+    if nene:get_scancode(Nene.Scancode.D) then
+      delta_pos.x = 1
+    end
+    pos = pos + delta_pos
 
-    -- create a third rect, which is a resolved collision between the
-    -- two above, note that is a very simple collision algorhythm
-    local collision = Intersections.get_collision_rect_with_rect(rect_a, rect_b)
+    local collision = Collision.rect_with_rect(rect_a, rect_b, delta_pos:to_vec2i())
 
     nene:render_clear(Color.bg)
 
-    -- draw both rects with white lines
     nene:render_draw_rect(rect_a, true, Color.white)
-    nene:render_draw_rect(rect_b, true) -- when a color is not passed, then `Color.white` will be used
-
+    nene:render_draw_rect(rect_b, true, Color.yellow)
+    
     if collision.collided then
-      -- draw cyan filled rect with the collision resolved
-      nene:render_draw_rect(collision.rectangle_resolved, false, Color.cyan)
-
-      -- draw intersection with yellow filled rect
-      nene:render_draw_rect(collision.intersection, false, Color.yellow)
+      pos = pos + collision.delta
     end
+    
+    rect_a.pos = pos:to_vec2i()
 
     nene:render_present()
   until nene.quit

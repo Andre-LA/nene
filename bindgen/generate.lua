@@ -6,20 +6,27 @@ local neluagen = nelua.gen.new({
   ['nene_Vec2i'] = 'Vec2i',
   ['nene_Vec2']  = 'Vec2',
   ['nene_Rect'] = 'Rect',
+  ['nene_Segment'] = 'Segment',
+  ['nene_Shape'] = 'Shape',
+  ['nene_ShapeQuadrilateral'] = 'ShapeQuadrilateral',
   ['nene_Animation'] = 'Animation',
   ['nene_Animation_Property'] = 'AnimationProperty',
   ['nene_Intersections'] = 'Intersections',
-  ['nene_Intersections_rect_intersection'] = 'RectIntersection',
-  ['nene_Intersections_rect_collision'] = 'RectCollision',
+  ['nene_IntersectionRectWithRect'] = 'RectWithRect',
+  ['nene_IntersectionSegmentWithRect'] = 'SegmentWithRect',
+  ['nene_IntersectionSegmentWithSegment'] = 'SegmentWithSegment',
+  ['nene_Collision'] = 'Collision',
 })
 
 local function bind_file(src, extracontext)
   local lib = require ('bindgen/data/' .. src)
   local binding = neluagen:file(lib, extracontext)
 
-  local outfile = io.open('bindings/nelua/nene/' .. src .. '.nelua', 'w')
+  local outpath = 'bindings/nelua/nene/' .. src .. '.nelua'
+  local outfile = io.open(outpath, 'w')
 
   if outfile then
+    print('writing binding: ' .. outpath)
     outfile:write(binding)
     outfile:close()
   end
@@ -86,15 +93,55 @@ bind_file('math/rect', {
   },
 })
 
--- Intersections
-bind_file('intersections', {
+-- Segment
+bind_file('math/segment', {
   dependencies = {
-    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+  }
+})
+
+-- Shape
+bind_file('math/shape', {
+  dependencies = {
+    { modname = 'Segment', path = 'nene.math.segment' },
     { modname = 'Rect', path = 'nene.math.rect' },
   },
   prepend = [[
-local Intersections = @record{}
+local Shape = @record{}
+]],
+  append = [[
+local Shape.Quadrilateral = ShapeQuadrilateral
 ]]
+})
+
+-- Intersections
+bind_file('intersections', {
+  dependencies = {
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+    { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Segment', path = 'nene.math.segment' },
+    { modname = 'Shape', path = 'nene.math.shape' },
+  },
+  prepend = [[
+local Intersections = @record{}
+]],
+  append = [[
+
+local Intersections.RectWithRect = RectWithRect
+local Intersections.SegmentWithRect = SegmentWithRect
+local Intersections.SegmentWithSegment = SegmentWithSegment
+]]
+})
+
+-- Collision
+bind_file('collision', {
+  dependencies = {
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+    { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Segment', path = 'nene.math.segment' },
+  },
 })
 
 -- Animation

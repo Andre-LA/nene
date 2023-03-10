@@ -13,6 +13,7 @@ local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
 local Segment = require 'nene.math.segment'
+local Intersections = require 'nene.intersections'
 
 -- example
 local function example()
@@ -21,12 +22,12 @@ local function example()
 
   -- create the points of intersection ab and cd
   local ab: Segment = {
-    origin = {  16,  16 },
-    ending = { 240, 240 },
+    origin = { -120,  120 },
+    ending = {  120, -120 },
   }
   local cd: Segment = {
-    origin = { 240,  16 },
-    ending = {  16, 240 },
+    origin = {  120,  120 },
+    ending = { -120, -120 },
   }
 
   local controlling_d: boolean
@@ -38,24 +39,27 @@ local function example()
       controlling_d = not controlling_d
     end
 
+    local mouse_world_pos = nene:screen_pos_to_world_pos(nene.mouse_pos:to_vec2i())
+
     if controlling_d then
-      cd.ending = nene.mouse_pos
+      cd.ending = mouse_world_pos
     else
-      ab.ending = nene.mouse_pos
+      ab.ending = mouse_world_pos
     end
 
-    local intersects, parallel, intersection = ab:get_segment_intersection(cd)
+    local intersection = Intersections.SegmentWithSegment.get_intersection(ab, cd)
 
-    nene:render_clear(Color.Palette.black)
+    nene:render_clear(Color.black)
 
     -- draw ab segment
-    nene:render_draw_line(ab.origin, ab.ending, Color.Palette.blue)
+    nene:render_draw_line(ab.origin, ab.ending, Color.blue)
     -- draw cd segment
-    nene:render_draw_line(cd.origin, cd.ending, Color.Palette.green)
+    nene:render_draw_line(cd.origin, cd.ending, Color.green)
 
     -- draw intersection point if an intersection exists
-    if intersects then
-      nene:render_draw_rect(Rect.from_vec2(intersection - Vec2{1,1}, {3, 3}), false, Color.Palette.red)
+    if intersection.intersected then
+      local rect: Rect = { pos = intersection.point:to_vec2i(), size = {3, 3} }
+      nene:render_draw_rect(rect, false, Color.red)
     end
 
     nene:render_present()

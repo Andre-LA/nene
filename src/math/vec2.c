@@ -10,11 +10,11 @@ SPDX-License-Identifier: Zlib
 
 #include "nene/math/vec2i.h"
 
-nene_Vec2 nene_Vec2_from_Vec2i(nene_Vec2i v) {
+nene_Vec2 nene_Vec2_from_vec2i(nene_Vec2i v) {
   return (nene_Vec2){ .x = v.x, .y = v.y };
 }
 
-nene_Vec2i nene_Vec2_to_Vec2i(nene_Vec2 v) {
+nene_Vec2i nene_Vec2_to_vec2i(nene_Vec2 v) {
   float x = roundf(v.x);
   float y = roundf(v.y);
   return (nene_Vec2i){ .x = (int32_t)x, .y = (int32_t)y };
@@ -69,7 +69,7 @@ nene_Vec2 nene_Vec2_lerp(nene_Vec2 a, nene_Vec2 b, float t) {
 
 nene_Vec2 nene_Vec2_normalize(nene_Vec2 v) {
   nene_Vec2 result = nene_Vec2_zero();
-  float len = nene_Vec2_len_sqr(v);
+  float len = nene_Vec2_len(v);
 
   if (len > 0.0f) {
     return (nene_Vec2){ .x = v.x / len, .y = v.y / len };
@@ -86,4 +86,6 @@ float nene_Vec2_cross(nene_Vec2 a, nene_Vec2 b) {
   return a.x * b.y - a.y * b.x;
 }
 
-
+nene_Vec2 nene_Vec2_perpendicular(nene_Vec2 v) {
+  return (nene_Vec2){ .x = -v.y, .y = v.x };
+}

@@ -37,6 +37,7 @@ require 'nene.raw.sdl2_mixer'
 
 local Color = require 'nene.color'
 local Vec2  = require 'nene.math.vec2'
+local Vec2i  = require 'nene.math.vec2i'
 local Rect  = require 'nene.math.rect'
 
 local gamepad = require 'nene.gamepad'
@@ -862,6 +863,32 @@ function Nene:render_clear(color: facultative(Color)): boolean
   return true
 end
 
+function Nene:get_screen_center(): Vec2i
+  check(Nene.initialized, 'Nene is not initialized')
+  local ww, wh = self:get_window_size()
+  return Vec2.to_vec2i(Vec2{ ww, wh } * 0.5)
+end
+
+function Nene:screen_pos_to_world_pos(pos: Vec2i): Vec2
+  check(Nene.initialized, 'Nene is not initialized')
+  local diff = pos - self:get_screen_center()
+  diff.y = -diff.y
+  return Vec2.from_vec2i(diff)
+end
+
+function Nene:world_ipos_to_screen_pos(pos: Vec2i): Vec2i
+  check(Nene.initialized, 'Nene is not initialized')
+  pos.y = -pos.y
+  return self:get_screen_center() + pos
+end
+
+function Nene:world_pos_to_screen_pos(pos: Vec2): Vec2i
+  check(Nene.initialized, 'Nene is not initialized')
+  local ipos = pos:to_vec2i()
+  return self:world_ipos_to_screen_pos(ipos)
+end
+
+
 --[[
 Renders a pixel on the `position` position with the given `color`.
 
@@ -917,14 +944,12 @@ function Nene:render_draw_line(origin: Vec2, destination: Vec2, color: facultati
 
   check(Nene.initialized, 'Nene is not initialized')
 
+  local screen_origin = self:world_pos_to_screen_pos(origin)
+  local screen_destination = self:world_pos_to_screen_pos(destination)
+
   self:set_render_draw_color(color)
 
-  local origin_px: cint, origin_py: cint, dest_px: cint, dest_py: cint = math.ifloor(origin.x + self.render_offset.x),
-                                                                         math.ifloor(origin.y + self.render_offset.y),
-                                                                         math.ifloor(destination.x + self.render_offset.x),
-                                                                         math.ifloor(destination.y + self.render_offset.y)
-
-  if SDL_RenderDrawLine(self.renderer, origin_px, origin_py, dest_px, dest_py) ~= 0 then
+  if SDL_RenderDrawLine(self.renderer, screen_origin.x, screen_origin.y, screen_destination.x, screen_destination.y) ~= 0 then
     warn_msg!('Nene.render_draw_line', 'could not draw a line')
     return false
   end
@@ -953,7 +978,9 @@ function Nene:render_draw_rect(rectangle: Rect, use_lines: boolean, color: facul
 
   check(Nene.initialized, 'Nene is not initialized')
 
-  rectangle = rectangle:add_pos(self.render_offset:to_Vec2i())
+  rectangle.pos = self:world_ipos_to_screen_pos(rectangle.pos)
+  rectangle = rectangle:add_pos(self.render_offset:to_vec2i())
+  
   local sdl_rect: SDL_Rect = rectangle:to_raw()
 
   self:set_render_draw_color(color)
@@ -1018,7 +1045,7 @@ function Nene:render_copy(
   ## end
 
   ## if not destination.type.is_niltype then
-  local destination = destination:add_pos(self.render_offset:to_Vec2i())
+  local destination = destination:add_pos(self.render_offset:to_vec2i())
   local dest_rect: SDL_Rect = destination:to_raw()
   dest = &dest_rect
   ## end

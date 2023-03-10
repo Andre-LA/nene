@@ -65,3 +65,6 @@ float nene_Vec2i_cross(nene_Vec2i a, nene_Vec2i b) {
   return a.x * b.y - a.y * b.x;
 }
 
+nene_Vec2i nene_Vec2i_perpendicular(nene_Vec2i v) {
+  return (nene_Vec2i){ .x = -v.y, .y = v.x };
+}

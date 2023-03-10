@@ -49,6 +49,9 @@ function Vec2i.dot(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_dot', nodec
 -- the magnitude of the cross product vector instead of the vector itself.
 function Vec2i.cross(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_cross', nodecl> end
 
+
+function Vec2i.perpendicular(v: Vec2i): Vec2i <cimport 'nene_Vec2i_perpendicular', nodecl> end
+
 function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): Vec2i
   ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
   ## if a.type == Vec2i.value and b.type == Vec2i.value then -- both are vectors

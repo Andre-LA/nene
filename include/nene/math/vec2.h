@@ -18,10 +18,10 @@ typedef struct nene_Vec2 {
 } nene_Vec2;
 
 /// converts a `nene_Vec2i` value to `nene_Vec2`.
-nene_Vec2 nene_Vec2_from_Vec2i(nene_Vec2i v);
+nene_Vec2 nene_Vec2_from_vec2i(nene_Vec2i v);
 
 /// converts a `nene_Vec2` value to `nene_Vec2i`.
-nene_Vec2i nene_Vec2_to_Vec2i(nene_Vec2 v);
+nene_Vec2i nene_Vec2_to_vec2i(nene_Vec2 v);
 
 /// returns a vector with `0` value on `x` and `y` components.
 nene_Vec2 nene_Vec2_zero(void);
@@ -66,5 +66,9 @@ float nene_Vec2_dot(nene_Vec2 a, nene_Vec2 b);
 /// > note: since this is a 2D vector (no `z` component), the cross product returns
 /// > the magnitude of the cross product vector instead of the vector itself.
 float nene_Vec2_cross(nene_Vec2 a, nene_Vec2 b);
+
+/// returns the perpendicular vector of the vector v, with the same magnitude (length)
+/// > note: The "rotation" it's counterclockwise.
+nene_Vec2 nene_Vec2_perpendicular(nene_Vec2 v);
 
 #endif // NENE_VEC2_H

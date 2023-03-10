@@ -11,10 +11,10 @@ local Vec2 <cimport 'nene_Vec2', nodecl> = @record{
 }
 
 -- converts a `nene_Vec2i` value to `nene_Vec2`.
-function Vec2.from_Vec2i(v: Vec2i): Vec2 <cimport 'nene_Vec2_from_Vec2i', nodecl> end
+function Vec2.from_vec2i(v: Vec2i): Vec2 <cimport 'nene_Vec2_from_vec2i', nodecl> end
 
 -- converts a `nene_Vec2` value to `nene_Vec2i`.
-function Vec2.to_Vec2i(v: Vec2): Vec2i <cimport 'nene_Vec2_to_Vec2i', nodecl> end
+function Vec2.to_vec2i(v: Vec2): Vec2i <cimport 'nene_Vec2_to_vec2i', nodecl> end
 
 -- returns a vector with `0` value on `x` and `y` components.
 function Vec2.zero(): Vec2 <cimport 'nene_Vec2_zero', nodecl> end
@@ -59,6 +59,10 @@ function Vec2.dot(a: Vec2, b: Vec2): float32 <cimport 'nene_Vec2_dot', nodecl> e
 -- > note: since this is a 2D vector (no `z` component), the cross product returns
 -- > the magnitude of the cross product vector instead of the vector itself.
 function Vec2.cross(a: Vec2, b: Vec2): float32 <cimport 'nene_Vec2_cross', nodecl> end
+
+-- returns the perpendicular vector of the vector v, with the same magnitude (length)
+-- > note: The "rotation" it's counterclockwise.
+function Vec2.perpendicular(v: Vec2): Vec2 <cimport 'nene_Vec2_perpendicular', nodecl> end
 
 function Vec2.__mul(a: overload(float32, Vec2), b: overload(float32, Vec2)): Vec2
   ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2 multiply needs at least one Vec2 value')
