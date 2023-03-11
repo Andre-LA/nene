@@ -2,6 +2,8 @@
 local nelua = require 'bindgen.generators.nelua'
 
 local neluagen = nelua.gen.new({
+  ['nene_Core'] = 'Core',
+  ['nene_GamepadState'] = 'GamepadState',
   ['nene_Color'] = 'Color',
   ['nene_Vec2i'] = 'Vec2i',
   ['nene_Vec2']  = 'Vec2',
@@ -31,6 +33,16 @@ local function bind_file(src, extracontext)
     outfile:close()
   end
 end
+
+-- Core
+bind_file('core', {
+  dependencies = {
+    { modname = 'Color', path = 'nene.color' },
+    { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+  }
+})
 
 -- Vec2i
 bind_file('math/vec2i', {

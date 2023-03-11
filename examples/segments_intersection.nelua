@@ -8,7 +8,11 @@ SPDX-License-Identifier: Zlib
 -- This example shows how intersection between two segments works
 
 -- nene modules
-local Nene = require 'nene'
+require 'nene.raw.sdl2'
+require 'nene.raw.sdl2_mixer'
+require 'nene.raw.sdl2_image'
+require 'nene.raw.sdl2_ttf'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
@@ -17,7 +21,7 @@ local Intersections = require 'nene.intersections'
 
 -- example
 local function example()
-  local ok, nene <close> = Nene.init('nene segments intersection', 256, 256)
+  local ok = Nene.init('nene segments intersection', 256, 256)
   assert(ok, 'error: nene initialization failed')
 
   -- create the points of intersection ab and cd
@@ -33,13 +37,13 @@ local function example()
   local controlling_d: boolean
 
   repeat
-    nene:poll_events()
+    Nene.update()
 
-    if nene:get_mouse_button_down(0) then
+    if Nene.is_mouse_button_just_pressed(1) then
       controlling_d = not controlling_d
     end
 
-    local mouse_world_pos = nene:screen_pos_to_world_pos(nene.mouse_pos:to_vec2i())
+    local mouse_world_pos = Nene.screen_point_to_world_pos(($Nene.instance()).mouse_pos)
 
     if controlling_d then
       cd.ending = mouse_world_pos
@@ -49,21 +53,23 @@ local function example()
 
     local intersection = Intersections.SegmentWithSegment.get_intersection(ab, cd)
 
-    nene:render_clear(Color.black)
+    Nene.render_clear(Color.black)
 
     -- draw ab segment
-    nene:render_draw_line(ab.origin, ab.ending, Color.blue)
+    Nene.render_draw_line(ab.origin, ab.ending, Color.blue)
     -- draw cd segment
-    nene:render_draw_line(cd.origin, cd.ending, Color.green)
+    Nene.render_draw_line(cd.origin, cd.ending, Color.green)
 
     -- draw intersection point if an intersection exists
     if intersection.intersected then
       local rect: Rect = { pos = intersection.point:to_vec2i(), size = {3, 3} }
-      nene:render_draw_rect(rect, false, Color.red)
+      Nene.render_draw_rect(rect, false, Color.red)
     end
 
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 example()

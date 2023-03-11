@@ -5,8 +5,6 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
-// NOTE: Intersections will be refactored and likely rewritten.
-
 #ifndef NENE_INTERSECTIONS_H
 #define NENE_INTERSECTIONS_H
 

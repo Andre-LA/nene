@@ -1,9 +1,3 @@
---[[
-Copyright (c) 2021-present André Luiz Alvares
-Nene is licensed under the Zlib license.
-Please refer to the LICENSE file for details
-SPDX-License-Identifier: Zlib
-]]
 
 local template = require 'bindgen.template'
 local struct, field, fn = template.decls.struct,
@@ -11,18 +5,19 @@ local struct, field, fn = template.decls.struct,
                           template.decls.fn
 local ast_reader = require 'bindgen.ast-reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/math/segment.txt', 'nene_Segment')
+local symbols = ast_reader.read_file('build/ast_dumps/core.txt', 'nene_GamepadState')
 
 local structs = ast_reader.get_structs(symbols, 'nene')
-local funcs = ast_reader.get_functions(symbols, 'nene_Segment')
+local funcs = ast_reader.get_functions(symbols, 'nene_Core')
+local aliases = ast_reader.get_type_aliases(symbols, 'nene_MilliTime')
 
 return template.file(
-  -- modname,
-  'Segment',
-  -- links
+  -- modname
+  'Core',
+  -- links,
   { template.build.link 'nene' },
   -- headers
-  { template.build.header 'nene/math/segment.h' },
+  { template.build.header 'nene/core.h' },
   -- enums
   {},
   -- structs
@@ -30,7 +25,7 @@ return template.file(
   -- funcs
   funcs,
   -- aliases
-  {},
+  aliases,
   -- global_vars
   {}
 )

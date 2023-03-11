@@ -22,13 +22,7 @@ function Rect.to_raw(rect: Rect): SDL_Rect <cimport 'nene_Rect_to_raw', nodecl> 
 function Rect.__eq(a: Rect, b: Rect): boolean <cimport 'nene_Rect_equals', nodecl> end
 
 
-function Rect.with_pos(rect: Rect, pos: Vec2i): Rect <cimport 'nene_Rect_with_pos', nodecl> end
-
-
 function Rect.add_pos(rect: Rect, pos: Vec2i): Rect <cimport 'nene_Rect_add_pos', nodecl> end
-
-
-function Rect.with_size(rect: Rect, size: Vec2i): Rect <cimport 'nene_Rect_with_size', nodecl> end
 
 
 function Rect.add_size(rect: Rect, size: Vec2i): Rect <cimport 'nene_Rect_add_size', nodecl> end

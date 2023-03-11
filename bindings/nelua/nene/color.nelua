@@ -4,7 +4,7 @@
 require 'nene.raw.sdl2'
 
 
--- Alias to SDL_Color
+-- Alias to SDL_color
 local Color = @SDL_Color
 
 

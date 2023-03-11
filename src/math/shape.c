@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2023-present André Luiz Alvares
+Copyright (c) 2021-present André Luiz Alvares
 Nene is licensed under the Zlib license.
 Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib

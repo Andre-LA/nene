@@ -11,7 +11,7 @@ SPDX-License-Identifier: Zlib
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-/// Alias to SDL_Color
+/// Alias to SDL_color
 typedef SDL_Color nene_Color;
 
 extern const nene_Color nene_Color_black;

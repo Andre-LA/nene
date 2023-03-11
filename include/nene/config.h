@@ -5,8 +5,10 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
-#include "nene/math/segment.h"
+#ifndef NENE_CONFIG_H
+#define NENE_CONFIG_H
 
-nene_Vec2 nene_Segment_as_vec2(nene_Segment segment) {
-  return nene_Vec2_sub(segment.ending, segment.origin);
-}
+#define NENE_CFG_GAMEPAD_COUNT 4
+
+#endif // NENE_CONFIG_H
+

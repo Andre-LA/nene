@@ -34,32 +34,17 @@ bool nene_Rect_equals(nene_Rect a, nene_Rect b) {
   return nene_Vec2i_equals(a.pos, b.pos) && nene_Vec2i_equals(a.size, b.size);
 }
 
-nene_Rect nene_Rect_with_pos(nene_Rect rect, nene_Vec2i pos) {
-  return (nene_Rect){
-    .pos = pos,
-    .size = rect.size,
-  };
-}
-
 nene_Rect nene_Rect_add_pos(nene_Rect rect, nene_Vec2i pos) {
-  return nene_Rect_with_pos(rect, nene_Vec2i_add(rect.pos, pos));
-}
-
-nene_Rect nene_Rect_with_size(nene_Rect rect, nene_Vec2i size) {
-  return (nene_Rect){
-    .pos = rect.pos,
-    .size = size,
-  };
+  rect.pos = nene_Vec2i_add(rect.pos, pos);
+  return rect;
 }
 
 nene_Rect nene_Rect_add_size(nene_Rect rect, nene_Vec2i size) {
-  return nene_Rect_with_size(rect, nene_Vec2i_add(rect.size, size));
+  rect.size = nene_Vec2i_add(rect.size, size);
+  return rect;
 }
-
 
 nene_Vec2i nene_Rect_get_center(nene_Rect rect) {
   rect.size.y = -rect.size.y; // math it's done at "world space"
   return nene_Vec2i_add(rect.pos, nene_Vec2i_scale(rect.size, 0.5f));
 }
-
-

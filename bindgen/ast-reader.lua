@@ -117,26 +117,26 @@ function ast_reader.read_file(filepath, modname, first_expected_symbol)
   end
 
   function readers.VarDecl(line)
-    local var_name, var_type = line:match("VarDecl %w+ <.-> col:%d+ ([%w_]+) 'const ([%w_]+)'")
+    local var_name, var_type = line:match("VarDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_ ]+)'")
     push_symbol(var_name)
     symbol_set_type('GlobalVar')
     symbol_set_symtype(var_type)
   end
 
   function readers.FieldDecl(line)
-    local field_name, field_type = line:match("FieldDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_%d%[%]]+)")
+    local field_name, field_type = line:match("FieldDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_ %*%d%[%]]+)")
     push_sym_field(field_name, field_type)
   end
 
   function readers.FunctionDecl(line)
-    local symbol_name, sym_type = line:match("FunctionDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_]+) ")
+    local symbol_name, sym_type = line:match("FunctionDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_ %*]+)")
     push_symbol(symbol_name)
     symbol_set_type('Function')
     symbol_set_symtype(sym_type)
   end
 
   function readers.ParmVarDecl(line)
-    local param_name, param_type = line:match("ParmVarDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_]+)'")
+    local param_name, param_type = line:match("ParmVarDecl %w+ <.-> col:%d+ ([%w_]+) '([%w_ %*%d%[%]]+)'")
     push_sym_field(param_name, param_type)
   end
 

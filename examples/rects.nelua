@@ -6,7 +6,11 @@ SPDX-License-Identifier: Zlib
 ]]
 
 -- nene modules
-local Nene = require 'nene'
+require 'nene.raw.sdl2'
+require 'nene.raw.sdl2_mixer'
+require 'nene.raw.sdl2_image'
+require 'nene.raw.sdl2_ttf'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
@@ -15,7 +19,7 @@ local Collision = require 'nene.collision'
 
 -- example
 local function rects()
-  local ok, nene <close> = Nene.init('nene rects', 256, 256)
+  local ok = Nene.init('nene rects', 256, 256)
   assert(ok, 'error: nene initialization failed')
 
   -- declare position and two rects
@@ -24,29 +28,29 @@ local function rects()
                                      { pos = {-64, 32}, size = {128, 64} }
 
   repeat
-    nene:poll_events()
+    Nene.update()
 
     local delta_pos: Vec2
-    if nene:get_scancode(Nene.Scancode.W) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_W) then
       delta_pos.y = 1
     end
-    if nene:get_scancode(Nene.Scancode.S) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_S) then
       delta_pos.y = -1
     end
-    if nene:get_scancode(Nene.Scancode.A) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_A) then
       delta_pos.x = -1
     end
-    if nene:get_scancode(Nene.Scancode.D) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_D) then
       delta_pos.x = 1
     end
     pos = pos + delta_pos
 
     local collision = Collision.rect_with_rect(rect_a, rect_b, delta_pos:to_vec2i())
 
-    nene:render_clear(Color.bg)
+    Nene.render_clear(Color.bg)
 
-    nene:render_draw_rect(rect_a, true, Color.white)
-    nene:render_draw_rect(rect_b, true, Color.yellow)
+    Nene.render_draw_rect(rect_a, true, Color.white)
+    Nene.render_draw_rect(rect_b, true, Color.yellow)
     
     if collision.collided then
       pos = pos + collision.delta
@@ -54,8 +58,10 @@ local function rects()
     
     rect_a.pos = pos:to_vec2i()
 
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 rects()

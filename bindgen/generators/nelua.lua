@@ -44,6 +44,7 @@ end
 
 function nelua.gen.new(typemap)
   local c_typemap = {
+    ['int'     ] = 'cint',
     ['float'   ] = 'float32',
     ['double'  ] = 'float64',
     ['int8_t'  ] = 'int8',
@@ -87,9 +88,24 @@ end
 function nelua.gen:ctype_to_type(ctype)
   assert(type_of(ctype, 'string'), "'ctype' should be string")
 
-  local ctype, array = ctype:match('([%w_]+)([%[%d%]]*)')
+  -- TODO: improve const detection
+  local is_const = ctype:match('const ')
+  if is_const then
+    ctype = ctype:gsub('const ', '')
+    is_const = true
+  end
+  
+  local ctype, array, pointers = ctype:match('([%w_]+)([%[%d%]]*) ?(%**)')
 
-  return array..(self.typemap[ctype] or ctype)
+  local prefix = #array > 0 and array or pointers
+
+  local type = prefix..(self.typemap[ctype] or ctype)
+
+  if type == '*char' then
+    type = 'cstring'
+  end
+
+  return type
 end
 
 function nelua.gen:global_var(global_var)
@@ -120,7 +136,7 @@ function nelua.gen:type_alias(type_alias)
   table.insert(result, fmt(
     "local %s = @%s", 
     self:ctype_to_type(type_alias.type_name), 
-    type_alias.type_alias
+    self:ctype_to_type(type_alias.type_alias)
   ))
 
   return table.concat(result, '\n')

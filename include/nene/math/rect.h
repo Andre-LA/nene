@@ -22,9 +22,7 @@ typedef struct nene_Rect {
 nene_Rect nene_Rect_zero(void);
 SDL_Rect nene_Rect_to_raw(nene_Rect rect);
 bool nene_Rect_equals(nene_Rect a, nene_Rect b);
-nene_Rect nene_Rect_with_pos(nene_Rect rect, nene_Vec2i pos);
 nene_Rect nene_Rect_add_pos(nene_Rect rect, nene_Vec2i pos);
-nene_Rect nene_Rect_with_size(nene_Rect rect, nene_Vec2i size);
 nene_Rect nene_Rect_add_size(nene_Rect rect, nene_Vec2i size);
 nene_Vec2i nene_Rect_get_center(nene_Rect rect);
 
