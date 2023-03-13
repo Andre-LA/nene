@@ -183,4 +183,7 @@ nene_Collision nene_Collision_rect_with_segment(nene_Rect rect, nene_Segment seg
       }
     }
   }
+
+  // actually unreachable
+  return nene_Collision_no_collision();
 }
