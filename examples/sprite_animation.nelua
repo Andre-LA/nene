@@ -9,11 +9,11 @@ SPDX-License-Identifier: Zlib
 
 local math = require 'math'
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local TextureAtlas = require 'nene.texture_atlas'
-local AnimationRange = require 'nene.animation'
+local Animation = require 'nene.animation'
 
 --[[
 Here all the game code is inside a "game" function because it make address sanitizer more detailed.
@@ -22,14 +22,16 @@ Since a web port is beyond this example, using just a "game" function is enough.
 ]]
 local function game()
   -- initialize nene and test if got succesfully initialized
-  local ok, nene <close> = Nene.init('nene sprite animation', (64*4), (64*4))
+  local ok = Nene.init('nene sprite animation', (64*4), (64*4))
   assert(ok, 'error: nene initialization failed')
+  
+  local nene = Nene.instance()
 
   -- rotation parameter, it'll be increased over time
   local rotation = 0.0
 
-  local anim: AnimationRange = { interval = 500 }
-  local anim2: AnimationRange = { interval = 500 }
+  local anim: Animation = { interval = 500 }
+  local anim2: Animation = { interval = 500 }
   
   print('eq:', anim == anim2)
 
@@ -40,8 +42,12 @@ local function game()
 
   More details can be read on the texture_atlas example.
   ]]
-  local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = { 32, 32} })
-  assert(ok, "error: 'img_shapes.png' could not be loaded")
+  local spritesheet = (do 
+    local spritesheet_creation = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = { 32, 32} })
+    assert(spritesheet_creation.created, "error: 'img_shapes.png' could not be loaded")
+    in spritesheet_creation.texture_atlas
+  end)
+
 
   --[[
   Let's create a timer, this will store the time just after SDL (nene) initialization.
@@ -59,7 +65,8 @@ local function game()
   -- with everything setup, now we run our game loop until the game will quit
   repeat
     -- updates the nene internal state
-    nene:poll_events()
+    Nene.update()
+
 
     -- increase rotation over time
     rotation = nene.current_time * 0.01
@@ -75,17 +82,19 @@ local function game()
     end
 
     -- let's draw our game, first we need to clear the backbuffer.
-    nene:render_clear()
+    Nene.render_clear(Color.bg)
 
     --[[
     Then, draw the sprite from the spritesheet at {10, 10} position, using
     the spritesheet texture atlas, using the sprite index.
     ]]
-    spritesheet:draw_nth_sub_texture(sprite_index, { 10, 10 },  nil, rotation)
+    spritesheet:draw_nth_sub_texture_ex(sprite_index, { 10, 10 }, rotation, spritesheet:get_sub_texture_center())
 
     -- finally, swap buffers and present our final result
-    nene:render_present()
+    Nene.render_present()
   until nene.quit
+
+  Nene.terminate()
 end
 
 -- run the game
