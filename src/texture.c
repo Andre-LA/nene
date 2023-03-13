@@ -30,7 +30,7 @@ static bool nene_impl_Texture_render_copy(nene_Texture texture, nene_Rect source
   return SDL_RenderCopy(instance->renderer, raw_texture, ptr_src_rect, &dest_rect) != 0;
 }
 
-static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect source, nene_Rect destination, double angle, nene_Vec2i center, bool flip_x, bool flip_y) {
+static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect source, nene_Rect destination, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
   SDL_Rect src_rect = { .x = 0 };
   SDL_Rect *ptr_src_rect = NULL;
 
@@ -45,7 +45,10 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
   if (flip_x) { flip |= SDL_FLIP_HORIZONTAL; }
   if (flip_y) { flip |= SDL_FLIP_VERTICAL;   }
 
-  SDL_Point center_point = { .x = center.x, .y = center.y, };
+  SDL_Point rotation_center_point = {
+    .x = (int)rotation_center.x, 
+    .y = (int)rotation_center.y, 
+  };
 
   nene_Core *const instance = nene_Core_instance();
   SDL_Texture *raw_texture = nene_Texture_get_raw(texture);
@@ -56,9 +59,20 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
     ptr_src_rect, 
     &dest_rect, 
     angle, 
-    &center_point, 
+    &rotation_center_point, 
     flip
   ) != 0;
+}
+
+void nene_Texture_destroy(nene_Texture *texture) {
+  SDL_assert(texture != NULL);
+  
+  if (texture == NULL || texture->raw != NULL) {
+    return;
+  }
+  
+  SDL_DestroyTexture(texture->raw);
+  *texture = (nene_Texture){ .raw = NULL };
 }
 
 SDL_Texture *nene_Texture_get_raw(nene_Texture texture) {
@@ -69,6 +83,10 @@ SDL_Texture *nene_Texture_get_raw(nene_Texture texture) {
 bool nene_Texture_apply_raw(nene_Texture *texture, SDL_Texture *raw_texture) {
   SDL_assert(texture != NULL);
   SDL_assert(raw_texture != NULL);
+
+  if (texture == NULL || raw_texture == NULL) {
+    return false;
+  }
 
   uint32_t fmt;
   int access;
@@ -125,6 +143,14 @@ nene_TextureCreation nene_Texture_create(uint16_t width, uint16_t height) {
 }
 
 nene_TextureCreation nene_Texture_load(const char *filepath) {
+  SDL_assert(filepath != NULL);
+  
+  if (filepath == NULL) {
+    return (nene_TextureCreation) {
+      .created = false,
+    };
+  }
+  
   nene_Core *const instance = nene_Core_instance();
   SDL_Texture *raw_texture = IMG_LoadTexture(instance->renderer, filepath);
 
@@ -153,9 +179,9 @@ nene_TextureCreation nene_Texture_load(const char *filepath) {
   };
 }
 
-bool nene_Texture_draw_to_point(nene_Texture texture, nene_Rect source, nene_Vec2i point) {
+bool nene_Texture_draw_to_point(nene_Texture texture, nene_Rect source, nene_Vec2 point) {
   nene_Rect destination = {
-    .pos = point,
+    .pos = nene_Vec2_to_vec2i(point),
     .size = (nene_Vec2i){ .x = texture.width, .y = texture.height },
   };
 
@@ -176,13 +202,13 @@ bool nene_Texture_draw_to_rect(nene_Texture texture, nene_Rect source, nene_Rect
   return true;
 }
 
-bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_Vec2i point, double angle, nene_Vec2i center, bool flip_x, bool flip_y) {
+bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_Vec2 point, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
   nene_Rect destination = {
-    .pos = point,
+    .pos = nene_Vec2_to_vec2i(point),
     .size = (nene_Vec2i){ .x = texture.width, .y = texture.height },
   };
 
-  if (nene_impl_Texture_render_copy_ex(texture, source, destination, angle, center, flip_x, flip_y)) {
+  if (nene_impl_Texture_render_copy_ex(texture, source, destination, angle, rotation_center, flip_x, flip_y)) {
     nene_Core_warn("Nene.Texture.draw_to_point_ex", "could not (extended) draw a texture on a point position");
     return false;
   }
@@ -190,8 +216,8 @@ bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_
   return true;
 }
 
-bool nene_Texture_draw_to_rect_ex(nene_Texture texture, nene_Rect source, nene_Rect destination, double angle, nene_Vec2i center, bool flip_x, bool flip_y) {
-  if (nene_impl_Texture_render_copy_ex(texture, source, destination, angle, center, flip_x, flip_y)) {
+bool nene_Texture_draw_to_rect_ex(nene_Texture texture, nene_Rect source, nene_Rect destination, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
+  if (nene_impl_Texture_render_copy_ex(texture, source, destination, angle, rotation_center, flip_x, flip_y)) {
     nene_Core_warn("Nene.Texture.draw_to_rect_ex", "could not (extended) draw a texture on a rectangle");
     return false;
   }

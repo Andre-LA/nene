@@ -18,6 +18,8 @@ local neluagen = nelua.gen.new({
   ['nene_IntersectionSegmentWithRect'] = 'SegmentWithRect',
   ['nene_IntersectionSegmentWithSegment'] = 'SegmentWithSegment',
   ['nene_Collision'] = 'Collision',
+  ['nene_Texture'] = 'Texture',
+  ['nene_TextureCreation'] = 'TextureCreation',
 })
 
 local function bind_file(src, extracontext)
@@ -51,7 +53,13 @@ bind_file('core', {
 -- Texture
 bind_file('texture', {
   dependencies = {
+    { modname = 'Vec2', path = 'nene.math.vec2' },
     { modname = 'Rect', path = 'nene.math.rect' },
+  },
+  append = [[
+local Texture.Creation = @TextureCreation
+]]
+})
     { modname = 'Vec2i', path = 'nene.math.vec2i' },
   }
 })
