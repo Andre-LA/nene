@@ -13,7 +13,7 @@ SPDX-License-Identifier: Zlib
 
 -- You can modify this field in order to add a basic camera control.
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
@@ -38,8 +38,8 @@ local function draw_parallax_grid()
 
   -- draw the grid
   for i = -64, 64 do
-    nene:render_draw_line({16 * i, -2048}, {16 * i, 2048}, Color.Palette.black)
-    nene:render_draw_line({-2048, 16 * i}, {2048, 16 * i}, Color.Palette.black)
+    Nene.render_draw_line({16 * i, -2048}, {16 * i, 2048}, Color.black)
+    Nene.render_draw_line({-2048, 16 * i}, {2048, 16 * i}, Color.black)
   end
 
   -- at the end of the function, we set the render_offset to the original value
@@ -58,7 +58,7 @@ local function draw_parallax_shadow()
   -- see more here: https://nelua.io/overview/#defer
   defer nene.render_offset = original_offset end
 
-  nene:render_draw_rect({120, 120, 16, 16}, false, {0, 0, 0, 100})
+  Nene.render_draw_rect({ {-8, 8}, {16, 16} }, false, {0, 0, 0, 100})
 end
 
 -- all the life-cycle of this example is contained in this function
@@ -68,46 +68,49 @@ local function camera()
   -- When nene is initialized, you get an ok status which should be asserted
   -- and a nene instance, when the nene instance is initialized, the ok status is
   -- `true`, otherwise, it's `false` and the nene instance contains only zeroed data.
-  local ok, nene <close> = Nene.init('nene basic camera', 256, 256)
+  local ok = Nene.init('nene basic camera', 256, 256)
   assert(ok, 'error: nene initialization failed')
+    
+  local nene = Nene.instance()
 
   -- create a rect
-  local rect_on_center: Rect = {112, 112, 32, 32}
+  local rect_on_center: Rect = { pos = { -16, 16 }, size = { 32, 32 } }
 
   repeat
     -- update logic --
 
     -- update nene state
-    nene:poll_events()
+    Nene.update()
+
 
     -- modify `render_offset` field in order to get a basic camera control --
-    if nene:get_scancode(Nene.Scancode.Right) then
-      nene.render_offset.x = nene.render_offset.x - 1
-    elseif nene:get_scancode(Nene.Scancode.Left) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_RIGHT) then
       nene.render_offset.x = nene.render_offset.x + 1
+    elseif Nene.is_scancode_pressed(SDL_SCANCODE_LEFT) then
+      nene.render_offset.x = nene.render_offset.x - 1
     end
 
-    if nene:get_scancode(Nene.Scancode.Up) then
-      nene.render_offset.y = nene.render_offset.y + 1
-    elseif nene:get_scancode(Nene.Scancode.Down) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_UP) then
       nene.render_offset.y = nene.render_offset.y - 1
+    elseif Nene.is_scancode_pressed(SDL_SCANCODE_DOWN) then
+      nene.render_offset.y = nene.render_offset.y + 1
     end
 
     -- rendering logic --
 
-    nene:render_clear(Color.Palette.bg)
+    Nene.render_clear(Color.bg)
     do
       draw_parallax_grid()
       draw_parallax_shadow()
 
       -- draw the rect, note that rect_on_center is never modified
-      nene:render_draw_rect(rect_on_center, false)
+      Nene.render_draw_rect(rect_on_center, false, Color.white)
     end
 
-    nene:render_present()
+    Nene.render_present()
   until nene.quit
 
-  -- since `nene` it's a to-be-closed variable, it will terminated here in the end scope --
+  Nene.terminate()
 end
 
 -- run example

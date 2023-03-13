@@ -7,37 +7,40 @@ SPDX-License-Identifier: Zlib
 
 -- This example shows how to using render clipping using a rectangle.
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
 local function rects()
-  local ok, nene <close> = Nene.init('nene render rect clip', 256, 256)
+  local ok = Nene.init('nene render rect clip', 256, 256)
   assert(ok, 'error: nene initialization failed')
 
   -- create two rects
-  local rect_clip: Rect = {0, 0, 48, 48}
+  local rect_clip: Rect = { size = { 48, 48 } }
 
   repeat
-    nene:poll_events()
+    Nene.update()
 
     -- copy mouse position to rect_clip position
-    rect_clip = rect_clip:with_position(nene.mouse_pos)
+    local nene = Nene.instance()
+    rect_clip.pos = Nene.screen_point_to_world_pos(nene.mouse_pos):to_vec2i()
 
-    nene:render_clear()
+    Nene.render_clear(Color.bg)
 
     -- draw grid
-    for i = 0, 16 do
-      nene:render_draw_line({16 * i, 0}, {16 * i, 256}, Color.Palette.black)
-      nene:render_draw_line({0, 16 * i}, {256, 16 * i}, Color.Palette.black)
+    for i = -16, 16 do
+      Nene.render_draw_line({ 16 * i,   -256 }, { 16 * i,    256 }, Color.black)
+      Nene.render_draw_line({   -256, 16 * i }, {    256, 16 * i }, Color.black)
     end
 
     -- set render clipping
-    nene:set_render_clip(rect_clip)
-    nene:render_draw_rect(rect_clip, true, Color.Palette.red)
+    Nene.set_render_clip(rect_clip, false)
+    Nene.render_draw_rect(rect_clip, true, Color.red)
 
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 rects()

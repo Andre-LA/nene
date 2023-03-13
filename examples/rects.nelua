@@ -6,10 +6,6 @@ SPDX-License-Identifier: Zlib
 ]]
 
 -- nene modules
-require 'nene.raw.sdl2'
-require 'nene.raw.sdl2_mixer'
-require 'nene.raw.sdl2_image'
-require 'nene.raw.sdl2_ttf'
 local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Vec2 = require 'nene.math.vec2'

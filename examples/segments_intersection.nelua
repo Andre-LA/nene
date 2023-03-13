@@ -8,10 +8,6 @@ SPDX-License-Identifier: Zlib
 -- This example shows how intersection between two segments works
 
 -- nene modules
-require 'nene.raw.sdl2'
-require 'nene.raw.sdl2_mixer'
-require 'nene.raw.sdl2_image'
-require 'nene.raw.sdl2_ttf'
 local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
