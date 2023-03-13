@@ -1,6 +1,10 @@
 ## linklib 'nene'
 ## cinclude '"nene/core.h"'
 
+require 'nene.raw.sdl2'
+require 'nene.raw.sdl2_ttf'
+require 'nene.raw.sdl2_image'
+require 'nene.raw.sdl2_mixer'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
@@ -63,6 +67,9 @@ local Core <cimport 'nene_Core', nodecl> = @record{
   prev_mouse_buttons: uint32,
 }
 
+-- outputs an warning message to stderr stream.
+function Core.warn(fn: cstring, msg: cstring): void <cimport 'nene_Core_warn', nodecl> end
+
 -- Returns the active nene instance, if nene isn't initialized, this will trigger an error.
 function Core.instance(): *Core <cimport 'nene_Core_instance', nodecl> end
 
@@ -104,6 +111,9 @@ function Core.set_render_draw_color(color: Color): boolean <cimport 'nene_Core_s
 
 
 function Core.set_render_blend_mode(blend_mode: SDL_BlendMode): boolean <cimport 'nene_Core_set_render_blend_mode', nodecl> end
+
+
+function Core.set_render_clip(clip_rect: Rect, clip_is_screenspace: boolean): boolean <cimport 'nene_Core_set_render_clip', nodecl> end
 
 
 function Core.render_clear(color: Color): boolean <cimport 'nene_Core_render_clear', nodecl> end

@@ -66,6 +66,9 @@ extern nene_Core _nene_instance;
 // Flag to check if nene it's properly initialized, also don't modify this externally, nor bind it.
 extern bool _nene_initialized;
 
+/// outputs an warning message to stderr stream.
+void nene_Core_warn(const char fn[], const char msg[]);
+
 /// Returns the active nene instance, if nene isn't initialized, this will trigger an error.
 nene_Core* nene_Core_instance(void);
 
@@ -95,6 +98,8 @@ nene_Vec2 nene_Core_world_pos_to_screen_point(nene_Vec2 pos);
 bool nene_Core_set_render_draw_color(nene_Color color);
 
 bool nene_Core_set_render_blend_mode(SDL_BlendMode blend_mode);
+
+bool nene_Core_set_render_clip(nene_Rect clip_rect, bool clip_is_screenspace);
 
 bool nene_Core_render_clear(nene_Color color);
 

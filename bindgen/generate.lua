@@ -37,6 +37,10 @@ end
 -- Core
 bind_file('core', {
   dependencies = {
+    { path = 'nene.raw.sdl2' },
+    { path = 'nene.raw.sdl2_ttf' },
+    { path = 'nene.raw.sdl2_image' },
+    { path = 'nene.raw.sdl2_mixer' },
     { modname = 'Color', path = 'nene.color' },
     { modname = 'Rect', path = 'nene.math.rect' },
     { modname = 'Vec2', path = 'nene.math.vec2' },

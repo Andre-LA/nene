@@ -10,9 +10,11 @@ SPDX-License-Identifier: Zlib
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include "nene/core.h"
+#include <stdio.h>
 
-static void nene_impl_Core_warn(const char fn[], const char msg[]) {
-  
+void nene_Core_warn(const char fn[], const char msg[]) {
+  // TODO: evaluate if fprintf it's the most approriate warning function
+  fprintf(stderr, "nene warning: %s: %s\n", fn, msg);
 }
 
 // define and empty-initialize global variables
@@ -67,7 +69,7 @@ void nene_Core_update(void) {
         break;
       }
       // TODO: Handle game controllers.
-      case SDL_KEYDOWN: // fall-through.
+      case SDL_KEYDOWN: // [[fallthrough]];
       case SDL_KEYUP: {
         nene_impl_Core_update_keyboard_state(instance, &event.key);
         break;
@@ -76,7 +78,7 @@ void nene_Core_update(void) {
         nene_impl_Core_update_mouse_motion_state(instance, &event.motion);
         break;
       }
-      case SDL_MOUSEBUTTONDOWN: // fall-through
+      case SDL_MOUSEBUTTONDOWN: // [[fallthrough]];
       case SDL_MOUSEBUTTONUP: {
         nene_impl_Core_update_mouse_buttons_state(instance, &event.button);
         break;
@@ -171,13 +173,39 @@ nene_Vec2 nene_Core_world_pos_to_screen_point(nene_Vec2 pos) {
   return nene_Vec2_add(nene_Core_get_screen_center(), pos);
 }
 
+bool nene_Core_set_render_clip(nene_Rect clip_rect, bool clip_is_screenspace){
+  SDL_assert(_nene_initialized);
+
+  nene_Core *const instance = nene_Core_instance();
+
+  SDL_Rect raw_rect = {.x = 0 };
+  SDL_Rect *ptr_raw_clip_rect = NULL;
+
+  if (!nene_Rect_equals(clip_rect, nene_Rect_zero())) {
+    if (!clip_is_screenspace) {
+      clip_rect.pos = nene_Vec2_to_vec2i(
+        nene_Core_world_pos_to_screen_point( nene_Vec2_from_vec2i(clip_rect.pos) )
+      );
+    }
+    raw_rect = nene_Rect_to_raw(clip_rect);
+    ptr_raw_clip_rect = &raw_rect;
+  }
+
+  if (SDL_RenderSetClipRect(instance->renderer, ptr_raw_clip_rect) != 0) {
+    nene_Core_warn("Nene.set_render_clip", "could not set the rendering clip rectangle");
+    return false;
+  }
+
+  return true;
+}
+
 bool nene_Core_set_render_blend_mode(SDL_BlendMode blend_mode) {
   SDL_assert(_nene_initialized);
 
   nene_Core *const instance = nene_Core_instance();
 
   if (SDL_SetRenderDrawBlendMode(instance->renderer, blend_mode) != 0) {
-    nene_impl_Core_warn("Nene.Core.set_render_blend_mode", "could not set the  rendering blend mode");
+    nene_Core_warn("Nene.Core.set_render_blend_mode", "could not set the  rendering blend mode");
     return false;
   }
 
@@ -190,7 +218,7 @@ bool nene_Core_set_render_draw_color(nene_Color color) {
   nene_Core *const instance = nene_Core_instance();
 
   if (SDL_SetRenderDrawColor(instance->renderer, color.r, color.g, color.b, color.a) != 0) {
-    nene_impl_Core_warn("Nene.Core.set_render_draw_color", "could not set rendering color");
+    nene_Core_warn("Nene.Core.set_render_draw_color", "could not set rendering color");
     return false;
   }
 
@@ -205,7 +233,7 @@ bool nene_Core_render_clear(nene_Color color) {
   nene_Core_set_render_draw_color(color);
 
   if (SDL_RenderClear(instance->renderer) != 0) {
-    nene_impl_Core_warn("Nene.Core.render_clear", "could not clear the rendering target");
+    nene_Core_warn("Nene.Core.render_clear", "could not clear the rendering target");
     return false;
   }
 
@@ -217,13 +245,16 @@ bool nene_Core_render_draw_line(nene_Vec2 origin, nene_Vec2 ending, nene_Color c
 
   nene_Core *const instance = nene_Core_instance();
 
-  const nene_Vec2i screen_origin = nene_Vec2_to_vec2i(nene_Core_world_pos_to_screen_point(origin));
-  const nene_Vec2i screen_destination = nene_Vec2_to_vec2i(nene_Core_world_pos_to_screen_point(ending));
+  origin = nene_Vec2_add(nene_Core_world_pos_to_screen_point(origin), instance->render_offset);
+  ending = nene_Vec2_add(nene_Core_world_pos_to_screen_point(ending), instance->render_offset);
+
+  const nene_Vec2i screen_origin = nene_Vec2_to_vec2i(origin);
+  const nene_Vec2i screen_destination = nene_Vec2_to_vec2i(ending);
 
   nene_Core_set_render_draw_color(color);
 
   if (SDL_RenderDrawLine(instance->renderer, screen_origin.x, screen_origin.y, screen_destination.x, screen_destination.y) != 0) {
-    nene_impl_Core_warn("Nene.Core.render_draw_line", "could not draw a line");
+    nene_Core_warn("Nene.Core.render_draw_line", "could not draw a line");
     return false;
   }
 
@@ -247,13 +278,13 @@ bool nene_Core_render_draw_rect(nene_Rect rect, bool only_lines, nene_Color colo
 
   if (only_lines) {
     if (SDL_RenderDrawRect(instance->renderer, &sdl_rect) != 0) {
-      nene_impl_Core_warn("Nene.Core.render_draw_rect", "could not draw a rectangle");
+      nene_Core_warn("Nene.Core.render_draw_rect", "could not draw a rectangle");
       return false;
     }
   }
   else {
     if (SDL_RenderFillRect(instance->renderer, &sdl_rect) != 0) {
-      nene_impl_Core_warn("Nene.Core.render_draw_rect", "could not draw a filled rectangle");
+      nene_Core_warn("Nene.Core.render_draw_rect", "could not draw a filled rectangle");
       return false;
     }
   }
@@ -274,44 +305,44 @@ bool nene_Core_init(const char title[], uint16_t width, uint16_t height, SDL_Win
   SDL_assert(height > 0);
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) {
-    nene_impl_Core_warn("Nene.Core.init", "could not initialize SDL");
+    nene_Core_warn("Nene.Core.init", "could not initialize SDL");
     return false;
   }
 
   const int img_flags = IMG_INIT_PNG;
 
   if ((IMG_Init(img_flags) & img_flags) != img_flags) {
-    nene_impl_Core_warn("Nene.Core.init", "could not initialize SDL Image library");
+    nene_Core_warn("Nene.Core.init", "could not initialize SDL Image library");
     return false;
   }
 
   if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) != 0) {
-    nene_impl_Core_warn("Nene.Core.init", "could not initialize SDL mixer library");
+    nene_Core_warn("Nene.Core.init", "could not initialize SDL mixer library");
     return false;
   }
 
   const int mix_flags = MIX_INIT_OGG;
 
   if ((Mix_Init(mix_flags) & mix_flags) != mix_flags) {
-    nene_impl_Core_warn("Nene.Core.init", "could not initialize SDL mixer library");
+    nene_Core_warn("Nene.Core.init", "could not initialize SDL mixer library");
     return false;
   }
 
   if (TTF_Init() != 0) {
-    nene_impl_Core_warn("Nene.Core.init", "could not initialize SDL ttf library");
+    nene_Core_warn("Nene.Core.init", "could not initialize SDL ttf library");
     return false;
   }
 
   SDL_Window *window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
   if (!window) {
-    nene_impl_Core_warn("Nene.Core.init", "could not create the window");
+    nene_Core_warn("Nene.Core.init", "could not create the window");
     return false;
   }
 
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if (!renderer) {
-    nene_impl_Core_warn("Nene.Core.init", "could not create the 2D renderer");
+    nene_Core_warn("Nene.Core.init", "could not create the 2D renderer");
     return false;
   }
 
