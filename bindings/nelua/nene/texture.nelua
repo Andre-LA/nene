@@ -1,0 +1,58 @@
+## linklib 'nene'
+## cinclude '"nene/texture.h"'
+
+local Rect = require 'nene.math.rect'
+local Vec2i = require 'nene.math.vec2i'
+
+
+
+local nene_Texture <cimport 'nene_Texture', nodecl> = @record{
+  raw: *SDL_Texture,
+  width: uint16,
+  height: uint16,
+  access: SDL_TextureAccess,
+}
+
+
+local nene_TextureCreation <cimport 'nene_TextureCreation', nodecl> = @record{
+  created: boolean,
+  texture: nene_Texture,
+}
+
+
+function nene_Texture.destroy(texture: *nene_Texture): void <cimport 'nene_Texture_destroy', nodecl> end
+
+
+function nene_Texture.get_raw(texture: nene_Texture): *SDL_Texture <cimport 'nene_Texture_get_raw', nodecl> end
+
+
+function nene_Texture.apply_raw(texture: *nene_Texture, raw_texture: *SDL_Texture): boolean <cimport 'nene_Texture_apply_raw', nodecl> end
+
+
+function nene_Texture.set_blend_mode(texture: nene_Texture, blend_mode: SDL_BlendMode): boolean <cimport 'nene_Texture_set_blend_mode', nodecl> end
+
+
+function nene_Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): nene_TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
+
+
+function nene_Texture.create(width: uint16, height: uint16): nene_TextureCreation <cimport 'nene_Texture_create', nodecl> end
+
+
+function nene_Texture.load(filepath: cstring): nene_TextureCreation <cimport 'nene_Texture_load', nodecl> end
+
+
+function nene_Texture.get_full_source_rect(texture: nene_Texture): Rect <cimport 'nene_Texture_get_full_source_rect', nodecl> end
+
+
+function nene_Texture.draw_to_point(texture: nene_Texture, source: Rect, point: Vec2i): boolean <cimport 'nene_Texture_draw_to_point', nodecl> end
+
+
+function nene_Texture.draw_to_rect(texture: nene_Texture, source: Rect, destination: Rect): boolean <cimport 'nene_Texture_draw_to_rect', nodecl> end
+
+
+function nene_Texture.draw_to_point_ex(texture: nene_Texture, source: Rect, point: Vec2i, angle: float64, center: Vec2i, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_point_ex', nodecl> end
+
+
+function nene_Texture.draw_to_rect_ex(texture: nene_Texture, source: Rect, destination: Rect, angle: float64, center: Vec2i, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_rect_ex', nodecl> end
+
+return Texture

@@ -48,6 +48,14 @@ bind_file('core', {
   }
 })
 
+-- Texture
+bind_file('texture', {
+  dependencies = {
+    { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+  }
+})
+
 -- Vec2i
 bind_file('math/vec2i', {
   ignore_overloading = {
