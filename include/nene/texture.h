@@ -14,6 +14,7 @@ SPDX-License-Identifier: Zlib
 
 #include "nene/math/vec2.h"
 #include "nene/math/rect.h"
+#include "nene/color.h"
 
 typedef struct nene_Texture {
   SDL_Texture *raw;
@@ -31,6 +32,7 @@ void nene_Texture_destroy(nene_Texture *texture);
 SDL_Texture *nene_Texture_get_raw(nene_Texture texture);
 bool nene_Texture_apply_raw(nene_Texture *texture, SDL_Texture *raw_texture);
 bool nene_Texture_set_blend_mode(nene_Texture texture, SDL_BlendMode blend_mode);
+bool nene_Texture_set_color_mod(nene_Texture texture, nene_Color color);
 nene_TextureCreation nene_Texture_create_with_access(uint16_t width, uint16_t height, SDL_TextureAccess access);
 nene_TextureCreation nene_Texture_create(uint16_t width, uint16_t height);
 nene_TextureCreation nene_Texture_load(const char *filepath);

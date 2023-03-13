@@ -3,6 +3,7 @@
 
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
+local Color = require 'nene.color'
 
 
 
@@ -30,6 +31,9 @@ function Texture.apply_raw(texture: *Texture, raw_texture: *SDL_Texture): boolea
 
 
 function Texture.set_blend_mode(texture: Texture, blend_mode: SDL_BlendMode): boolean <cimport 'nene_Texture_set_blend_mode', nodecl> end
+
+
+function Texture.set_color_mod(texture: Texture, color: Color): boolean <cimport 'nene_Texture_set_color_mod', nodecl> end
 
 
 function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end

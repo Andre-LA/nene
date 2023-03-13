@@ -117,6 +117,22 @@ bool nene_Texture_set_blend_mode(nene_Texture texture, SDL_BlendMode blend_mode)
   return true;
 }
 
+bool nene_Texture_set_color_mod(nene_Texture texture, nene_Color color) {
+  SDL_assert(texture.raw != NULL);
+
+  if (texture.raw == NULL) {
+    nene_Core_warn("Nene.Texture.set_color_mod", "could not set texture's color modulation: raw texture not set");
+    return false;
+  }
+
+  if (SDL_SetTextureColorMod(texture.raw, color.r, color.g, color.b) != 0) {
+    nene_Core_warn("Nene.Texture.set_color_mod", "could not set texture's color modulation");
+    return false;
+  }
+
+  return true;
+}
+
 nene_TextureCreation nene_Texture_create_with_access(uint16_t width, uint16_t height, SDL_TextureAccess access) {
   SDL_assert(width > 0);
   SDL_assert(height > 0);

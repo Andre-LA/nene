@@ -58,6 +58,7 @@ bind_file('texture', {
   dependencies = {
     { modname = 'Vec2', path = 'nene.math.vec2' },
     { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Color', path = 'nene.color' },
   },
   append = [[
 local Texture.Creation = @TextureCreation

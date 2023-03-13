@@ -8,13 +8,13 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local TextureAtlas = require 'nene.texture_atlas'
 local Color = require 'nene.color'
 
 local function texture_atlas_example()
   -- initialize nene
-  local ok, nene <close> = Nene.init('nene texture atlas', 240, 160)
+  local ok = Nene.init('nene texture atlas', 240, 160)
   assert(ok, "nene couldn't be initialized")
 
   --[[
@@ -30,16 +30,19 @@ local function texture_atlas_example()
   cell_size of grid should be set to { 32, 32}, there's no gap between cells, thus the
   `gap` field isn't set.
   ]]
-  local ok, atlas <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32 }})
-  assert(ok, "TextureAtlas texture couldn't be loaded")
+  local atlas = (do
+    local atlas_creation = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32 }})
+    assert(atlas_creation.created, "TextureAtlas texture couldn't be loaded")
+    in atlas_creation.texture_atlas
+  end)
 
   -- game loop
   repeat
     -- update nene state
-    nene:poll_events()
+    Nene.update()
 
     -- clear the rendering target
-    nene:render_clear()
+    Nene.render_clear(Color.bg)
 
     --[[
     let's first draw the circle sub-texture at middle-top of the screen, the circle
@@ -50,7 +53,8 @@ local function texture_atlas_example()
     to subtract 16px (half of the sub-texture width) in order to get really on the center of
     the screen.
     ]]
-    atlas:draw_sub_texture(0, 0, { 120-16, 8 })
+    atlas.texture:set_color_mod(Color.white)
+    atlas:draw_sub_texture({0, 0}, { 120-16, 8 })
 
     --[[
     Then let's draw some isosceles triangles at the bottom of the screen below.
@@ -63,13 +67,17 @@ local function texture_atlas_example()
 
     Here the triangle it's drawn with maroon tint with 10 degree rotation from left-bottom.
     ]]
+    atlas.texture:set_color_mod({ 134, 0, 0})
     for i = -8, 240+8, 32 do
-      atlas:draw_nth_sub_texture(3, {i, 160-32}, { 134, 0, 0}, 10, { 0.0, 1.0 })
+      -- n position tint angle rotation_center
+      atlas:draw_nth_sub_texture_ex(3, {i, 160-32}, 10, { 0.0, 1.0 })
     end
 
     -- clear present the painted rendering target
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 texture_atlas_example()
