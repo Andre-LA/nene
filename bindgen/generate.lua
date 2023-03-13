@@ -8,6 +8,7 @@ local neluagen = nelua.gen.new({
   ['nene_Vec2i'] = 'Vec2i',
   ['nene_Vec2']  = 'Vec2',
   ['nene_Rect'] = 'Rect',
+  ['nene_Grid'] = 'Grid',
   ['nene_Segment'] = 'Segment',
   ['nene_Shape'] = 'Shape',
   ['nene_ShapeQuadrilateral'] = 'ShapeQuadrilateral',
@@ -20,6 +21,8 @@ local neluagen = nelua.gen.new({
   ['nene_Collision'] = 'Collision',
   ['nene_Texture'] = 'Texture',
   ['nene_TextureCreation'] = 'TextureCreation',
+  ['nene_TextureAtlas'] = 'TextureAtlas',
+  ['nene_TextureAtlasCreation'] = 'TextureAtlasCreation',
 })
 
 local function bind_file(src, extracontext)
@@ -60,8 +63,18 @@ bind_file('texture', {
 local Texture.Creation = @TextureCreation
 ]]
 })
+
+-- Texture Atlas
+bind_file('texture_atlas', {
+  dependencies = {
+    { modname = 'Grid', path = 'nene.math.grid' },
+    { modname = 'Texture', path = 'nene.texture' },
     { modname = 'Vec2i', path = 'nene.math.vec2i' },
-  }
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+  },
+  append = [[
+local TextureAtlas.Creation = @TextureAtlasCreation
+]]
 })
 
 -- Vec2i
@@ -122,6 +135,14 @@ bind_file('math/rect', {
   dependencies = {
     { modname = 'Vec2i', path = 'nene.math.vec2i' },
     { path = 'nene.raw.sdl2' }
+  },
+})
+
+-- Grid
+bind_file('math/grid', {
+  dependencies = {
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+    { modname = 'Rect', path = 'nene.math.rect' },
   },
 })
 
