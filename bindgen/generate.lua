@@ -23,6 +23,10 @@ local neluagen = nelua.gen.new({
   ['nene_TextureCreation'] = 'TextureCreation',
   ['nene_TextureAtlas'] = 'TextureAtlas',
   ['nene_TextureAtlasCreation'] = 'TextureAtlasCreation',
+  ['nene_Music'] = 'Music',
+  ['nene_MusicCreation'] = 'MusicCreation',
+  ['nene_Sound'] = 'Sound',
+  ['nene_SoundCreation'] = 'SoundCreation',
 })
 
 local function bind_file(src, extracontext)
@@ -62,6 +66,26 @@ bind_file('texture', {
   },
   append = [[
 local Texture.Creation = @TextureCreation
+]]
+})
+
+-- Music
+bind_file('audio/music', {
+  dependencies = {
+    { path = 'nene.raw.sdl2_mixer' },
+  },
+  append = [[
+local Music.Creation = @MusicCreation
+]]
+})
+
+-- Sound
+bind_file('audio/sound', {
+  dependencies = {
+    { path = 'nene.raw.sdl2_mixer' },
+  },
+  append = [[
+local Sound.Creation = @SoundCreation
 ]]
 })
 

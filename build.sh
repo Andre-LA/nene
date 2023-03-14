@@ -5,11 +5,12 @@ rm -rf build/
 mkdir build/
 mkdir build/ast_dumps
 mkdir build/ast_dumps/math
+mkdir build/ast_dumps/audio
 
 # compile sources
 echo "creating object files"
 
-clang -c -Wall -Wextra -Wpedantic -std=c99 -I ./include/ src/*.c src/math/*.c
+clang -c -Wall -Wextra -Wpedantic -std=c99 -I ./include/ src/*.c src/math/*.c src/audio/*.c
 mv *.o build/
 
 # archive objects for static linking
@@ -25,6 +26,8 @@ dump_ast() {
 dump_ast "core" "nene" "core"
 dump_ast "texture" "nene_Texture" "texture"
 dump_ast "texture_atlas" "nene_TextureAtlas" "texture_atlas"
+dump_ast "audio/music" "nene_Music" "audio/music"
+dump_ast "audio/sound" "nene_Sound" "audio/sound"
 dump_ast "math/vec2i" "nene_Vec2i" "math/vec2i"
 dump_ast "math/vec2" "nene_Vec2" "math/vec2"
 dump_ast "math/rect" "nene_Rect" "math/rect"

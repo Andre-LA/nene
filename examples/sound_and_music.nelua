@@ -7,53 +7,66 @@ SPDX-License-Identifier: Zlib
 
 local math = require 'math'
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Sound = require 'nene.audio.sound'
 local Music = require 'nene.audio.music'
 
 local function audio_and_music()
   -- nene initialization and deferred de-initialization with to-be-closed variable
-  local ok, nene <close> = Nene.init('nene audio and music', 128, 128)
+  local ok = Nene.init('nene audio and music', 128, 128)
   assert(ok, 'error: nene initialization failed')
 
   -- sound and music loading and deferred destroyment
-  local ok, click <close> = Sound.load('resources/pixelclick.wav')
-  assert(ok, 'could not load pixelclick sound')
-  local ok, bossa <close> = Music.load('resources/8bit Bossa.ogg')
-  assert(ok, 'could not load 8bit Bossa music')
+  local click = (do 
+    local sound_creation = Sound.load('resources/pixelclick.wav') 
+    assert(sound_creation.created, 'could not load pixelclick sound')
+    in sound_creation.sound
+  end)
+  local bossa = (do 
+    local music_creation = Music.load('resources/8bit Bossa.ogg') 
+    assert(music_creation.created, 'could not load 8bit Bossa music')
+    in music_creation.music
+  end)
+
+  defer
+    click:destroy()
+    bossa:destroy()
+  end
 
   local mus_volume, click_volume = 1.0, 1.0
 
   bossa:play()
 
   repeat
-    nene:poll_events()
+    Nene.update()
 
-    if nene:get_scancode_down(Nene.Scancode.P) then
+    if Nene.is_scancode_just_pressed(SDL_SCANCODE_P) then
       mus_volume = math.clamp(mus_volume + 0.1, 0.0, 1.0)
       Music.set_volume(mus_volume)
-    elseif nene:get_scancode_down(Nene.Scancode.O) then
+    elseif Nene.is_scancode_just_pressed(SDL_SCANCODE_O) then
       mus_volume = math.clamp(mus_volume - 0.1, 0.0, 1.0)
       Music.set_volume(mus_volume)
     end
 
-    if nene:get_scancode_down(Nene.Scancode.M) then
+    if Nene.is_scancode_just_pressed(SDL_SCANCODE_M) then
       click_volume = math.clamp(click_volume + 0.1, 0.0, 1.0)
       click:set_volume(click_volume)
-    elseif nene:get_scancode_down(Nene.Scancode.N) then
+    elseif Nene.is_scancode_just_pressed(SDL_SCANCODE_N) then
       click_volume = math.clamp(click_volume - 0.1, 0.0, 1.0)
       click:set_volume(click_volume)
     end
 
-    if nene:get_scancode_down(Nene.Scancode.Space) or nene:get_mouse_button_down(0) then
+    if Nene.is_scancode_just_pressed(SDL_SCANCODE_SPACE) or Nene.is_mouse_button_just_pressed(1) then
       click:play()
     end
 
-    nene:render_clear(Color.Palette.bg)
+    Nene.render_clear(Color.bg)
 
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 audio_and_music()
