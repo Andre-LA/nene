@@ -97,7 +97,7 @@ function nelua.gen:ctype_to_type(ctype)
   
   local ctype, array, pointers = ctype:match('([%w_]+)([%[%d%]]*) ?(%**)')
 
-  local prefix = #array > 0 and array or pointers
+  local prefix = #array > 0 and array:gsub('%[%]', '*[0]') or pointers
 
   local type = prefix..(self.typemap[ctype] or ctype)
 

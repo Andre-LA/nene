@@ -25,4 +25,13 @@ function utils.table.no_repeat(values, predicate)
   return result
 end
 
+function utils.table.ifindk(tbl, value, searcher)
+  for _, v in ipairs(tbl) do
+    if searcher(v) == value then
+      return v
+    end
+  end
+  return nil
+end
+
 return utils

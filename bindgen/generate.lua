@@ -23,6 +23,7 @@ local neluagen = nelua.gen.new({
   ['nene_TextureCreation'] = 'TextureCreation',
   ['nene_TextureAtlas'] = 'TextureAtlas',
   ['nene_TextureAtlasCreation'] = 'TextureAtlasCreation',
+  ['nene_Tilemap'] = 'Tilemap',
   ['nene_Music'] = 'Music',
   ['nene_MusicCreation'] = 'MusicCreation',
   ['nene_Sound'] = 'Sound',
@@ -228,6 +229,17 @@ bind_file('animation', {})
 -- Color
 bind_file('color', {
   dependencies = {
+    { path = "nene.raw.sdl2" },
+  }
+})
+
+-- Tilemap
+bind_file('tilemap', {
+  dependencies = {
+    { modname = 'TextureAtlas', path = 'nene.texture_atlas' },
+    { modname = 'Vec2i', path = 'nene.math.vec2i' },
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+    { modname = 'Grid', path = 'nene.math.grid' },
     { path = "nene.raw.sdl2" },
   }
 })

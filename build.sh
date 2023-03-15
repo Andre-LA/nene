@@ -37,6 +37,7 @@ dump_ast "math/shape" "nene_Shape" "math/shape"
 dump_ast "intersections" "nene_Intersection" "intersections"
 dump_ast "collision" "nene_Collision" "collision"
 dump_ast "animation" "nene_Animation" "animation"
+dump_ast "tilemap" "nene_Tilemap" "tilemap"
 dump_ast "color" "nene_Color" "color"
 
 # generate bindings
