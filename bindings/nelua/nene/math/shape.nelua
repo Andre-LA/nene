@@ -1,0 +1,20 @@
+## linklib 'nene'
+## cinclude '"nene/math/shape.h"'
+
+local Segment = require 'nene.math.segment'
+local Rect = require 'nene.math.rect'
+
+local Shape = @record{}
+
+
+-- Quadrilateral shape data strucuture, it holds four segments.
+local ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral', nodecl> = @record{
+  sides: [4]Segment,
+}
+
+-- Returns a quadrilateral shape made from a rectanle.
+function Shape.get_rect_shape(rect: Rect): ShapeQuadrilateral <cimport 'nene_Shape_get_rect_shape', nodecl> end
+
+local Shape.Quadrilateral = ShapeQuadrilateral
+
+return Shape

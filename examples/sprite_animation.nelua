@@ -9,36 +9,42 @@ SPDX-License-Identifier: Zlib
 
 local math = require 'math'
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local TextureAtlas = require 'nene.texture_atlas'
+local Animation = require 'nene.animation'
 
---[[
-Here all the game code is inside a "game" function because it make address sanitizer more detailed.
-In your games, you may use a "game frame" function, this makes web port easier.
-Since a web port is beyond this example, using just a "game" function is enough.
-]]
 local function game()
   -- initialize nene and test if got succesfully initialized
-  local ok, nene <close> = Nene.init('nene sprite animation', (64*4), (64*4))
+  local ok = Nene.init('nene sprite animation', (64*4), (64*4))
   assert(ok, 'error: nene initialization failed')
+  
+  local nene = Nene.instance()
 
   -- rotation parameter, it'll be increased over time
   local rotation = 0.0
 
+  local anim: Animation = { interval = 500 }
+  local anim2: Animation = { interval = 500 }
+  
+  print('eq test:', anim == anim2)
+
   --[[
   Create a texture atlas with img_shapes.png image on it,
-  then test initialization and defers it's destruction using to-be-closed variable
-  note that img_shapes images contains four shapes, on a 32x32 alignment.
+  then test initialization and defers it's destruction to the end of scope
+  using a to-be-closed variable.
+
+  note that img_shapes images contains four shapes, on a grid with 32x32 size per cell.
 
   More details can be read on the texture_atlas example.
   ]]
-  local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = { 32, 32} })
+  local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32} })
   assert(ok, "error: 'img_shapes.png' could not be loaded")
 
+
   --[[
-  Let's create a timer, this will store the time just after SDL (nene) initialization.
+  Let's create a timer, this will store the time just after nene initialization.
   this variable will only be modified when the sprite changes.
   ]]
   local prev_time = nene.current_time
@@ -53,14 +59,14 @@ local function game()
   -- with everything setup, now we run our game loop until the game will quit
   repeat
     -- updates the nene internal state
-    nene:poll_events()
+    Nene.update()
 
     -- increase rotation over time
     rotation = nene.current_time * 0.01
 
     --[[
     If the difference between the last time we changed the sprite and now
-    is greater than one second, then we updates prev_time and change
+    is greater than one second, then we update prev_time and change
     the sprite index used on spritesheet rendering.
     ]]
     if nene.current_time - prev_time > 1000 then
@@ -69,17 +75,19 @@ local function game()
     end
 
     -- let's draw our game, first we need to clear the backbuffer.
-    nene:render_clear()
+    Nene.render_clear(Color.bg)
 
     --[[
     Then, draw the sprite from the spritesheet at {10, 10} position, using
     the spritesheet texture atlas, using the sprite index.
     ]]
-    spritesheet:draw_nth_sub_texture(sprite_index, { 10, 10 },  nil, rotation)
+    spritesheet:draw_nth_sub_texture_ex(sprite_index, { 10, 10 }, rotation, spritesheet:get_sub_texture_center())
 
     -- finally, swap buffers and present our final result
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 -- run the game

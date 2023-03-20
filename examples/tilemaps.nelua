@@ -9,16 +9,18 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Rect = require 'nene.math.rect'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local Tilemap = require 'nene.tilemap'
+local Grid = require 'nene.math.grid'
+local Vec2 = require 'nene.math.vec2'
 local TextureAtlas = require 'nene.texture_atlas'
 
 local map_data: []uint16 = {
   --0                   1
-  --0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6   height
+  --0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
     3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, -- 1
     2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2, -- 2
     2,2,3,0,0,0,0,0,0,0,0,0,0,0,2,2, -- 3
@@ -28,7 +30,7 @@ local map_data: []uint16 = {
 
 local function game()
   -- initialize nene
-  local ok, nene <close> = Nene.init('nene tilemap', 550, 260)
+  local ok = Nene.init('nene tilemap', 550, 260)
   assert(ok, 'error: nene initialization failed')
 
   -- load the tileset texture atlas, more details on `tilesets` example
@@ -77,43 +79,58 @@ local function game()
     data at the top scope and then assign `map` to this top scope variable than
     assigning the data directly, otherwise you may get undefined behaviour.
     ]]
-    map = map_data
+    tile_count = #map_data,
   }
 
-  print('height of this tilemap:', tilemap:get_height())
+  local tilemap_pos: Vec2 = { 4, 4 } 
+
+  do
+    local tilemap_size_tiles = tilemap:get_size_in_tiles()
+    print('size in tiles of this tilemap:', tilemap_size_tiles.x, tilemap_size_tiles.y)
+  end
 
   repeat
-    nene:poll_events()
+    Nene.update()
 
     -- let's add some interaction:
 
     -- up and down arrows will increase and decrease the vertical gap
-    if nene:get_scancode_down(Nene.Scancode.Up) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_UP) then
       tilemap.grid.gap.y = tilemap.grid.gap.y + 1
-    elseif nene:get_scancode_down(Nene.Scancode.Down) then
+    elseif Nene.is_scancode_pressed(SDL_SCANCODE_DOWN) then
       tilemap.grid.gap.y = tilemap.grid.gap.y - 1
     end
 
     -- left and right arrows will increase and decrease the horizontal gap
-    if nene:get_scancode_down(Nene.Scancode.Right) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_RIGHT) then
       tilemap.grid.gap.x = tilemap.grid.gap.x + 1
-    elseif nene:get_scancode_down(Nene.Scancode.Left) then
+    elseif Nene.is_scancode_pressed(SDL_SCANCODE_LEFT) then
       tilemap.grid.gap.x = tilemap.grid.gap.x - 1
     end
 
     -- clear rendering target
-    nene:render_clear(Color.Palette.bg)
+    Nene.render_clear(Color.bg)
 
-    -- draw the tilemap with origin at 20,20
-    tilemap:draw({20,20})
+    -- draw the tilemap
+    tilemap:draw(tilemap_pos, map_data, #map_data)
 
     -- let's draw a green rectangle of tilemap
     -- on top tilemap that represents it's size
-    nene:render_draw_rect(Rect.from_vec2({20, 20}, tilemap:get_size()), true, Color.Palette.green)
+
+    Nene.render_draw_rect(
+      {
+        pos = Nene.screen_point_to_world_pos(tilemap_pos):to_vec2i(), 
+        size = tilemap:get_size()
+      },
+      true,
+      Color.green
+    )
 
     -- present painted rendering target
-    nene:render_present()
-  until nene.quit
+    Nene.render_present()
+  until Nene.should_quit()
+
+  Nene.terminate()
 end
 
 game()

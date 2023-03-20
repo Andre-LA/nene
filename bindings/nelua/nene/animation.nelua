@@ -1,0 +1,23 @@
+## linklib 'nene'
+## cinclude '"nene/animation.h"'
+
+
+
+-- Animation range type, used on Spritesheets
+-- 
+-- The fields are:
+-- - interval: animation speed
+-- - from: starting frame of the animation (inclusive)
+-- - to: ending frame of the animation (inclusive)
+-- - properties: animation properties
+local Animation <cimport 'nene_Animation', nodecl> = @record{
+  interval: uint16,
+  from: uint16,
+  to: uint16,
+  loop: boolean,
+}
+
+-- Tests if a and b animation ranges are equal.
+function Animation.__eq(a: Animation, b: Animation): boolean <cimport 'nene_Animation_equals', nodecl> end
+
+return Animation
