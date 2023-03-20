@@ -9,6 +9,7 @@ SPDX-License-Identifier: Zlib
 #define NENE_CONFIG_H
 
 #define NENE_CFG_GAMEPAD_COUNT 4
+#define NENE_CFG_GAMEPAD_DEADZONE 0.025f
 
 #endif // NENE_CONFIG_H
 

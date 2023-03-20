@@ -5,14 +5,14 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
--- basic pong example! --
+-- basic pong example!
 
 -- require basic libraries
 local math = require 'math'
 local string = require 'string'
 
 -- require nene librarise and modules
-local Nene = require 'nene'
+local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
@@ -21,7 +21,6 @@ local Intersections = require 'nene.intersections'
 
 local Font = require 'nene.font'
 local Texture = require 'nene.texture'
-local TextTexture = require 'nene.text_texture'
 
 -- general game settings
 local SETTINGS: record{
@@ -56,14 +55,23 @@ local Racket = @record{
   points: integer,
 }
 
+function Racket.init(): Racket
+  return Racket{
+    pos_y = SETTINGS.racket.size.y / 2,
+  }
+end
+
 -- return the rect of the racket
 function Racket:get_rect(is_player_one: boolean): Rect
+  local anchor_x = SETTINGS.screen_size.x / 2
+  local size = SETTINGS.racket.size
+
   return Rect{
     pos = { 
-      x = (is_player_one and 20 or SETTINGS.screen_size.x - SETTINGS.racket.size.x - 20), 
+      x = is_player_one and -anchor_x + 2 or anchor_x - size.x - 2, 
       y = self.pos_y,
     },
-    size = SETTINGS.racket.size,
+    =size,
   }
 end
 
@@ -72,30 +80,32 @@ function Racket:update(is_player_one: boolean <comptime>)
   local nene = Nene.instance()
 
   -- input
-  local is_up, is_down = false, false
-
   ## if is_player_one.value then
-    is_up, is_down = nene:get_scancode(Nene.Scancode.W), nene:get_scancode(Nene.Scancode.S)
+  local up_scancode, down_scancode = SDL_SCANCODE_W, SDL_SCANCODE_S
   ## else
-    is_up, is_down = nene:get_scancode(Nene.Scancode.I), nene:get_scancode(Nene.Scancode.K)
+  local up_scancode, down_scancode = SDL_SCANCODE_UP, SDL_SCANCODE_DOWN
   ## end
 
   -- movement
-  local ylimit <const> = SETTINGS.screen_size.y - SETTINGS.racket.size.y
+  local limit_y <const> = SETTINGS.screen_size.y * 0.5
+  local velocity = SETTINGS.racket.velocity * nene.delta_time
+  
+  local neg_limit_y = -limit_y + SETTINGS.racket.size.y + 2
+  local pos_limit_y =  limit_y - 2
 
-  if is_up then
-    self.pos_y = math.clamp(self.pos_y - SETTINGS.racket.velocity * nene.delta_time, 0, ylimit)
+  if Nene.is_scancode_held(up_scancode) then
+    self.pos_y = math.clamp(self.pos_y + velocity, neg_limit_y, pos_limit_y)
   end
 
-  if is_down then
-    self.pos_y = math.clamp(self.pos_y + SETTINGS.racket.velocity * nene.delta_time, 0, ylimit)
+  if Nene.is_scancode_held(down_scancode) then
+    self.pos_y = math.clamp(self.pos_y - velocity, neg_limit_y, pos_limit_y)
   end
 end
 
 -- draw a racket
 function Racket:draw(is_player_one: boolean)
   local nene = Nene.instance()
-  nene:render_draw_rect(self:get_rect(is_player_one), false, Color.yellow)
+  Nene.render_draw_rect(self:get_rect(is_player_one), false, Color.yellow)
 end
 
 -- ball record
@@ -107,7 +117,7 @@ local Ball = @record{
 -- return the ball's rect
 function Ball:get_rect(): Rect
   return Rect{
-    pos = Vec2.to_Vec2i(self.pos), 
+    pos = self.pos:to_vec2i(), 
     size = Vec2i.one() * SETTINGS.ball.size,
   }
 end
@@ -115,12 +125,14 @@ end
 -- ball's gameplay code
 function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   self.pos = self.pos + self.direction * SETTINGS.ball.velocity * delta_time
-
+  
   -- does intersected limits?
-  local on_left_side  <const> = self.pos.x < 0
-  local on_right_side <const> = self.pos.x + SETTINGS.ball.size > SETTINGS.screen_size.x
-  local on_up_side    <const> = self.pos.y < 0
-  local on_down_side  <const> = self.pos.y + SETTINGS.ball.size > SETTINGS.screen_size.y
+  local limit_x <const> = SETTINGS.screen_size.x * 0.5
+  local limit_y <const> = SETTINGS.screen_size.y * 0.5
+  local on_left_side  <const> = self.pos.x < -limit_x
+  local on_right_side <const> = self.pos.x + SETTINGS.ball.size > limit_x
+  local on_up_side    <const> = self.pos.y > limit_y
+  local on_down_side  <const> = self.pos.y - SETTINGS.ball.size < -limit_y
 
   -- invert horizontal direction when intersecting left or right side and add points to the winner player
   -- also resets ball position to center
@@ -128,11 +140,11 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
     self.direction.x = -self.direction.x
     local winner_racket = on_left_side and racket_2 or racket_1
     winner_racket.points = winner_racket.points + 1
-    self.pos = { SETTINGS.screen_size.x // 2, SETTINGS.screen_size.y // 2 }
+    self.pos = {}
   end
 
   -- invert vertical direction when intersecting up or down side
-  if on_down_side and self.direction.y > 0 or on_up_side and self.direction.y < 0 then
+  if on_down_side and self.direction.y < 0 or on_up_side and self.direction.y > 0 then
     self.direction.y = -self.direction.y
   end
 
@@ -149,42 +161,42 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   end
 end
 
-function Ball:draw(nene: Nene)
-  nene:render_draw_rect(self:get_rect(), false)
+function Ball:draw()
+  Nene.render_draw_rect(self:get_rect(), false, Color.white)
 end
 
-local function update_points(pts_text: *TextTexture, points: integer, font: Font)
+local function update_points(pts_text: *Texture, points: integer, font: Font)
   local pts_str <close> = tostring(points)
-  pts_text:update_text(pts_str, font)
+  font:update_text(pts_text, pts_str, Font.TextQuality.Solid, Color.white)
 end
 
 local function game()
-  -- nene setup --
+  -- nene setup
 
-  -- nene initialization and to-be-closed termination
-  --
-  -- when nene is marked with the <close> annotation, then the nene variable becomes
-  -- a "to-be-closed" variable, this means that the `__close` method will be called at the end scope,
-  -- `_cllose` calls the `terminate` method, which de-initializes nene and free the internal resources
-  local ok, nene <close> = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
+  -- nene initialization
+  local ok = Nene.init('nene pong', SETTINGS.win_size.x, SETTINGS.win_size.y)
   assert(ok, 'nene initialization failed')
 
   -- game setup --
 
-  -- this creates a new "Nene Texture" which will be used as low resolution
-  -- screen through using render target (sometimes called as Render Texture on some engines),
-  -- due to this, it will use "target" texture access.
-  --
-  -- note that the value comes from SDL directly, while Nene abstracts SDL many
-  -- times, it doesn't try to hide it, so you will interact with SDL sometimes,
-  -- especially to go beyond Nene capabilities if needed.
-  local ok, screen <close> = Texture.create_texture(SETTINGS.screen_size.x, SETTINGS.screen_size.y, nil, Texture.Access.Target)
+  --[[
+  This creates a new "Nene Texture" which will be used as low resolution
+  screen through using render target (sometimes called as Render Texture on some engines),
+  thus it will use "target" texture access.
+
+  Note that the value comes from SDL directly, while Nene abstracts SDL many
+  times, it doesn't try to hide it, so you will interact with SDL sometimes,
+  especially to go beyond Nene capabilities if needed.
+  ]]
+  local ok, screen <close> = Texture.create_with_access(SETTINGS.screen_size.x, SETTINGS.screen_size.y, SDL_TEXTUREACCESS_TARGET)
   assert(ok, 'could not create the screen texture target')
 
   -- creates players rackets and the ball
-  local pl_1: Racket, pl_2: Racket;
+  local pl_1: Racket = Racket.init()
+  local pl_2: Racket = Racket.init()
+  
   local ball: Ball = {
-    pos = { SETTINGS.screen_size.x // 2, SETTINGS.screen_size.y // 2 },
+    pos = {},
     direction = { 1, 1 },
   }
 
@@ -193,15 +205,21 @@ local function game()
   assert(ok, 'could not load monogram_extended font')
 
   -- creates both players texts and then defer it's destroy calls
-  local r1_text <close>, r2_text <close> = TextTexture.init('0', font), TextTexture.init('0', font)
+  local ok, r1_text <close> = font:render('0', Font.TextQuality.Solid, Color.white)
+  assert(ok, "could not render first text")
+  
+  local ok, r2_text <close> = font:render('0', Font.TextQuality.Solid, Color.white)
+  assert(ok, "could not render second text")
+
+  local nene = Nene.instance()
 
   -- finally, the game loop
   -- In Nene, you just `repeat` the loop until Nene gets a "quit" state
   -- this happens when the game is just to be closed.
   repeat
-    -- this updates the internal state, it also polls all the SDL events,
-    -- you can pass many callbacks to react to these events.
-    nene:poll_events()
+    -- this updates the internal state, it also polls all the SDL events, you
+    -- must call update before using anything from Nene on a the game loop tick.
+    Nene.update()
 
     -- update step
     do
@@ -222,37 +240,36 @@ local function game()
     -- draw step
     do
       -- set a low-resolution screen as the render target, this is very useful to make pixel-art games.
-      nene:set_render_target(screen:get_raw())
+      Nene.set_render_target(screen:get_raw())
 
       -- clear screen, otherwise the game would draw frame on top of previous frames,
       -- which gives weird results.
-      nene:render_clear(Color.bg)
+      Nene.render_clear(Color.bg)
 
       -- rendering on the screen
       do
         -- draw rackets and ball
         pl_1:draw(true)
         pl_2:draw(false)
-        ball:draw(nene)
+        ball:draw()
 
         -- draw points texts
-        r1_text:draw({10, 0})
-        r2_text:draw({SETTINGS.screen_size.x - r1_text.texture.width - 10, 0})
+        r1_text:draw_to_point({}, { x = 10 })
+        r2_text:draw_to_point({}, { x = SETTINGS.screen_size.x - r1_text.width - 10 })
       end
 
       -- reset render target to window screen, this is the default when no render target is used.
-      nene:set_render_target(nilptr)
+      Nene.set_render_target(nilptr)
 
       -- draw the whole screen on the whole window screen.
-      screen:draw()
+      screen:draw_to_rect()
 
       -- present the "drawing result".
-      -- In SDL (and consequently Nene) applies all draw operations on a backbuffer, this is very
-      -- common in many game libraries.
+      -- In SDL (and consequently Nene) applies all draw operations on a backbuffer, and
       -- render_present presents the composed backbuffer on the screen.
-      nene:render_present()
+      Nene.render_present()
     end
-  until nene.quit -- this loop will be repeated until Nene assign `true` to `Nene.quit` variable.
+  until Nene.should_quit() -- this loop will be repeated until Nene assign `true` to `Nene.quit` variable.
 
   -- all the memory  will be released due the defer blocks above.
 end

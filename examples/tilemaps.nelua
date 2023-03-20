@@ -34,11 +34,8 @@ local function game()
   assert(ok, 'error: nene initialization failed')
 
   -- load the tileset texture atlas, more details on `tilesets` example
-  local tileset = (do
-    local tileset_creation = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32} })
-    assert(tileset_creation.created, "error: 'img_shapes.png' could not be loaded")
-    in tileset_creation.texture_atlas
-  end)
+  local ok, tileset <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32} })
+  assert(ok, "error: 'img_shapes.png' could not be loaded")
 
   -- set the tilemap
   local tilemap: Tilemap= {
@@ -85,7 +82,7 @@ local function game()
     tile_count = #map_data,
   }
 
-  local tilemap_pos: Vec2 = { 20, 20 } 
+  local tilemap_pos: Vec2 = { 4, 4 } 
 
   do
     local tilemap_size_tiles = tilemap:get_size_in_tiles()
@@ -98,23 +95,23 @@ local function game()
     -- let's add some interaction:
 
     -- up and down arrows will increase and decrease the vertical gap
-    if Nene.is_scancode_just_pressed(SDL_SCANCODE_UP) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_UP) then
       tilemap.grid.gap.y = tilemap.grid.gap.y + 1
-    elseif Nene.is_scancode_just_pressed(SDL_SCANCODE_DOWN) then
+    elseif Nene.is_scancode_pressed(SDL_SCANCODE_DOWN) then
       tilemap.grid.gap.y = tilemap.grid.gap.y - 1
     end
 
     -- left and right arrows will increase and decrease the horizontal gap
-    if Nene.is_scancode_just_pressed(SDL_SCANCODE_RIGHT) then
+    if Nene.is_scancode_pressed(SDL_SCANCODE_RIGHT) then
       tilemap.grid.gap.x = tilemap.grid.gap.x + 1
-    elseif Nene.is_scancode_just_pressed(SDL_SCANCODE_LEFT) then
+    elseif Nene.is_scancode_pressed(SDL_SCANCODE_LEFT) then
       tilemap.grid.gap.x = tilemap.grid.gap.x - 1
     end
 
     -- clear rendering target
     Nene.render_clear(Color.bg)
 
-    -- draw the tilemap with origin at 20,20
+    -- draw the tilemap
     tilemap:draw(tilemap_pos, map_data, #map_data)
 
     -- let's draw a green rectangle of tilemap
@@ -122,7 +119,7 @@ local function game()
 
     Nene.render_draw_rect(
       {
-        pos = Nene.screen_point_to_world_pos({20, 20}):to_vec2i(), 
+        pos = Nene.screen_point_to_world_pos(tilemap_pos):to_vec2i(), 
         size = tilemap:get_size()
       },
       true,

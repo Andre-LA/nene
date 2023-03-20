@@ -36,13 +36,13 @@ function Texture.set_blend_mode(texture: Texture, blend_mode: SDL_BlendMode): bo
 function Texture.set_color_mod(texture: Texture, color: Color): boolean <cimport 'nene_Texture_set_color_mod', nodecl> end
 
 
-function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
+local function Texture_create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
 
 
-function Texture.create(width: uint16, height: uint16): TextureCreation <cimport 'nene_Texture_create', nodecl> end
+local function Texture_create(width: uint16, height: uint16): TextureCreation <cimport 'nene_Texture_create', nodecl> end
 
 
-function Texture.load(filepath: cstring): TextureCreation <cimport 'nene_Texture_load', nodecl> end
+local function Texture_load(filepath: cstring): TextureCreation <cimport 'nene_Texture_load', nodecl> end
 
 
 function Texture.get_full_source_rect(texture: Texture): Rect <cimport 'nene_Texture_get_full_source_rect', nodecl> end
@@ -60,5 +60,24 @@ function Texture.draw_to_point_ex(texture: Texture, source: Rect, point: Vec2, a
 function Texture.draw_to_rect_ex(texture: Texture, source: Rect, destination: Rect, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_rect_ex', nodecl> end
 
 local Texture.Creation = @TextureCreation
+
+function Texture.load(filepath: cstring): (boolean, Texture)
+  local texture_creation: TextureCreation = Texture_load(filepath)
+  return texture_creation.created, texture_creation.texture
+end
+
+function Texture.create(width: uint16, height: uint16): (boolean, Texture)
+  local texture_creation: TextureCreation = Texture_create(width, height)
+  return texture_creation.created, texture_creation.texture
+end
+
+function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): (boolean, Texture)
+  local texture_creation: TextureCreation = Texture_create_with_access(width, height, access)
+  return texture_creation.created, texture_creation.texture
+end
+
+function Texture:__close()
+  self:destroy()
+end
 
 return Texture

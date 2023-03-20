@@ -27,32 +27,32 @@ local function rects()
     Nene.update()
 
     local delta_pos: Vec2
-    if Nene.is_scancode_pressed(SDL_SCANCODE_W) then
+    if Nene.is_scancode_held(SDL_SCANCODE_W) then
       delta_pos.y = 1
     end
-    if Nene.is_scancode_pressed(SDL_SCANCODE_S) then
+    if Nene.is_scancode_held(SDL_SCANCODE_S) then
       delta_pos.y = -1
     end
-    if Nene.is_scancode_pressed(SDL_SCANCODE_A) then
+    if Nene.is_scancode_held(SDL_SCANCODE_A) then
       delta_pos.x = -1
     end
-    if Nene.is_scancode_pressed(SDL_SCANCODE_D) then
+    if Nene.is_scancode_held(SDL_SCANCODE_D) then
       delta_pos.x = 1
     end
     pos = pos + delta_pos
 
     local collision = Collision.rect_with_rect(rect_a, rect_b, delta_pos:to_vec2i())
 
-    Nene.render_clear(Color.bg)
-
-    Nene.render_draw_rect(rect_a, true, Color.white)
-    Nene.render_draw_rect(rect_b, true, Color.yellow)
-    
     if collision.collided then
       pos = pos + collision.delta
     end
     
     rect_a.pos = pos:to_vec2i()
+
+    Nene.render_clear(Color.bg)
+
+    Nene.render_draw_rect(rect_a, true, Color.white)
+    Nene.render_draw_rect(rect_b, true, Color.yellow)
 
     Nene.render_present()
   until Nene.should_quit()

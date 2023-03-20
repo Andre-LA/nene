@@ -5,27 +5,31 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
--- In this demo, is presented a basic camera control
---
--- Actually, there is no "camera" on Nene, instead, there is a
--- `Vec2` offset done in all rendering calls, this offset is the
--- `render_offset` field.
+--[[
+In this demo, is presented a basic camera control
 
--- You can modify this field in order to add a basic camera control.
+Actually, there is no "camera" on Nene, instead, there is a
+`Vec2` offset done in all rendering calls, this offset is the
+`render_offset` field.
+
+You can modify this field in order to add a basic camera control.
+]]
 
 local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
 
--- In this example it also be showcased how to split your game logic into multiple functions.
---
--- It's pretty simple, you can use `Nene.instance()` to get the Nene instance on the
--- function body, this is called "singleton".
---
--- For better safety, it's always checked if Nene is initialized when calling this
--- function on non-release builds (unless you set the `nochecks` pragma)
+--[[
+In this example it's showcased how to split your game logic into multiple functions.
+
+It's pretty simple, since Nene it's a singleton*, you can get the instance of nene
+just by calling `Nene.instance()`, note however that Nene must be initialized before
+using this function.
+
+*Singleton pattern: https://en.wikipedia.org/wiki/Singleton_pattern
+]]
 local function draw_parallax_grid()
-  -- let's draw a grid with parallax effect! --
+  -- let's draw a grid with parallax effect!
 
   -- get the running nene instance
   local nene = Nene.instance()
@@ -33,7 +37,9 @@ local function draw_parallax_grid()
   -- save our original render_offset value
   local original_offset = nene.render_offset
 
-  -- multiply render_offset by half, this is what makes the parallax effect
+  -- multiply render_offset by half, this is what makes the parallax effect here.
+  -- you can read more about parallax on Pedro's tutorial:
+  -- https://www.patreon.com/posts/parallax-and-7863658
   nene.render_offset = nene.render_offset * 0.5
 
   -- draw the grid
@@ -47,8 +53,7 @@ local function draw_parallax_grid()
 end
 
 local function draw_parallax_shadow()
-  -- same logic as draw_parallax_grid --
-
+  -- same logic as draw_parallax_grid
   local nene = Nene.instance()
 
   local original_offset = nene.render_offset
@@ -58,46 +63,51 @@ local function draw_parallax_shadow()
   -- see more here: https://nelua.io/overview/#defer
   defer nene.render_offset = original_offset end
 
+  -- draw shadow
   Nene.render_draw_rect({ {-8, 8}, {16, 16} }, false, {0, 0, 0, 100})
 end
 
 -- all the life-cycle of this example is contained in this function
 local function camera()
-  -- initialize and test nene initialization and defer it's termination using a to-be-closed variable.
-  --
-  -- When nene is initialized, you get an ok status which should be asserted
-  -- and a nene instance, when the nene instance is initialized, the ok status is
-  -- `true`, otherwise, it's `false` and the nene instance contains only zeroed data.
+  --[[
+  Initialize and test nene initialization and defer it's termination (https://nelua.io/overview/#defer).
+
+  When nene is initialized, you get an ok status which should be asserted;
+  the ok status is `true` on initialization success.
+  ]]
   local ok = Nene.init('nene basic camera', 256, 256)
   assert(ok, 'error: nene initialization failed')
-    
+
+  defer Nene.terminate() end
+
+  --[[
+  As already descibried, If you need access to the instance, you can get it using `Nene.instance`,
+  the instance it's never reallocated, thus you don't need to worry about getting an invalidated
+  pointer.
+  ]]
   local nene = Nene.instance()
 
-  -- create a rect
+  -- let's define a rect
   local rect_on_center: Rect = { pos = { -16, 16 }, size = { 32, 32 } }
 
   repeat
-    -- update logic --
-
-    -- update nene state
+    -- update nene state, always do this on the beg
     Nene.update()
 
-
-    -- modify `render_offset` field in order to get a basic camera control --
-    if Nene.is_scancode_pressed(SDL_SCANCODE_RIGHT) then
+    -- modify `render_offset` field in order to get a basic camera control
+    if Nene.is_scancode_held(SDL_SCANCODE_RIGHT) then
       nene.render_offset.x = nene.render_offset.x + 1
-    elseif Nene.is_scancode_pressed(SDL_SCANCODE_LEFT) then
+    elseif Nene.is_scancode_held(SDL_SCANCODE_LEFT) then
       nene.render_offset.x = nene.render_offset.x - 1
     end
 
-    if Nene.is_scancode_pressed(SDL_SCANCODE_UP) then
+    if Nene.is_scancode_held(SDL_SCANCODE_UP) then
       nene.render_offset.y = nene.render_offset.y - 1
-    elseif Nene.is_scancode_pressed(SDL_SCANCODE_DOWN) then
+    elseif Nene.is_scancode_held(SDL_SCANCODE_DOWN) then
       nene.render_offset.y = nene.render_offset.y + 1
     end
 
     -- rendering logic --
-
     Nene.render_clear(Color.bg)
     do
       draw_parallax_grid()
@@ -108,9 +118,7 @@ local function camera()
     end
 
     Nene.render_present()
-  until nene.quit
-
-  Nene.terminate()
+  until Nene.should_quit()
 end
 
 -- run example

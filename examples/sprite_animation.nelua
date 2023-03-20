@@ -15,11 +15,6 @@ local Texture = require 'nene.texture'
 local TextureAtlas = require 'nene.texture_atlas'
 local Animation = require 'nene.animation'
 
---[[
-Here all the game code is inside a "game" function because it make address sanitizer more detailed.
-In your games, you may use a "game frame" function, this makes web port easier.
-Since a web port is beyond this example, using just a "game" function is enough.
-]]
 local function game()
   -- initialize nene and test if got succesfully initialized
   local ok = Nene.init('nene sprite animation', (64*4), (64*4))
@@ -33,24 +28,23 @@ local function game()
   local anim: Animation = { interval = 500 }
   local anim2: Animation = { interval = 500 }
   
-  print('eq:', anim == anim2)
+  print('eq test:', anim == anim2)
 
   --[[
   Create a texture atlas with img_shapes.png image on it,
-  then test initialization and defers it's destruction using to-be-closed variable
-  note that img_shapes images contains four shapes, on a 32x32 alignment.
+  then test initialization and defers it's destruction to the end of scope
+  using a to-be-closed variable.
+
+  note that img_shapes images contains four shapes, on a grid with 32x32 size per cell.
 
   More details can be read on the texture_atlas example.
   ]]
-  local spritesheet = (do 
-    local spritesheet_creation = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = { 32, 32} })
-    assert(spritesheet_creation.created, "error: 'img_shapes.png' could not be loaded")
-    in spritesheet_creation.texture_atlas
-  end)
+  local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32} })
+  assert(ok, "error: 'img_shapes.png' could not be loaded")
 
 
   --[[
-  Let's create a timer, this will store the time just after SDL (nene) initialization.
+  Let's create a timer, this will store the time just after nene initialization.
   this variable will only be modified when the sprite changes.
   ]]
   local prev_time = nene.current_time
@@ -67,13 +61,12 @@ local function game()
     -- updates the nene internal state
     Nene.update()
 
-
     -- increase rotation over time
     rotation = nene.current_time * 0.01
 
     --[[
     If the difference between the last time we changed the sprite and now
-    is greater than one second, then we updates prev_time and change
+    is greater than one second, then we update prev_time and change
     the sprite index used on spritesheet rendering.
     ]]
     if nene.current_time - prev_time > 1000 then
@@ -92,7 +85,7 @@ local function game()
 
     -- finally, swap buffers and present our final result
     Nene.render_present()
-  until nene.quit
+  until Nene.should_quit()
 
   Nene.terminate()
 end

@@ -1,3 +1,45 @@
+# Copyright (c) 2021-present André Luiz Alvares
+# Nene is licensed under the Zlib license.
+# Please refer to the LICENSE file for details
+# SPDX-License-Identifier: Zlib
+
+# usage: just use the command "$ sh build.sh"
+# you can also change the C compiler, Lua interpreter or object archiver by
+# passing parameters, like: "$ sh build.sh emcc nelua-lua emar"
+# note however for the time being only the defaults were tested.
+
+# variables
+CC=clang
+LUA=lua
+AR=llvm-ar
+
+if [ $# -gt 0 ] # C compiler passed
+then
+CC=$1
+fi
+
+if [ $# -gt 1 ] # Object archiver passed
+then
+AR=$2
+fi
+
+if [ $# -gt 2 ] # Lua interpreter passed
+then
+LUA=$3
+fi
+
+echo "config:"
+echo "C compiler: $CC"
+echo "Object achiver: $AR"
+echo "Lua interpreter: $LUA"
+
+WFLAGS="-Wall -Wextra -Wpedantic"
+CSTD="-std=c99"
+
+IFLAGS="-I./include/"
+
+SOURCES="src/*.c src/math/*.c src/audio/*.c"
+
 # clear previous build
 echo "clear previous build"
 
@@ -10,12 +52,12 @@ mkdir build/ast_dumps/audio
 # compile sources
 echo "creating object files"
 
-clang -c -Wall -Wextra -Wpedantic -std=c99 -I ./include/ src/*.c src/math/*.c src/audio/*.c
+$CC -c $WFLAGS $CSTD $IFLAGS $SOURCES
 mv *.o build/
 
 # archive objects for static linking
 echo "archiving object files"
-llvm-ar -rcs build/libnene.a build/*.o
+$AR -rcs build/libnene.a build/*.o
 
 # dump AST
 echo "dumping ASTs"
@@ -25,6 +67,7 @@ dump_ast() {
 
 dump_ast "core" "nene" "core"
 dump_ast "texture" "nene_Texture" "texture"
+dump_ast "font" "nene" "font"
 dump_ast "texture_atlas" "nene_TextureAtlas" "texture_atlas"
 dump_ast "audio/music" "nene_Music" "audio/music"
 dump_ast "audio/sound" "nene_Sound" "audio/sound"
@@ -42,6 +85,6 @@ dump_ast "color" "nene_Color" "color"
 
 # generate bindings
 echo "generating bindings"
-lua bindgen/generate.lua
+$LUA bindgen/generate.lua
 
 echo "done"

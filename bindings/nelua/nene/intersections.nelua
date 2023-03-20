@@ -57,7 +57,6 @@ function SegmentWithRect.get_intersection(segment: Segment, rect: Rect): Segment
 -- Returns the intersection data between two segments.
 function SegmentWithSegment.get_intersection(a: Segment, b: Segment): SegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment_get_intersection', nodecl> end
 
-
 local Intersections.RectWithRect = RectWithRect
 local Intersections.SegmentWithRect = SegmentWithRect
 local Intersections.SegmentWithSegment = SegmentWithSegment

@@ -32,14 +32,16 @@ local function example()
 
   local controlling_d: boolean
 
+  local nene = Nene.instance()
+
   repeat
     Nene.update()
 
-    if Nene.is_mouse_button_just_pressed(1) then
+    if Nene.is_mouse_button_pressed(1) then
       controlling_d = not controlling_d
     end
-
-    local mouse_world_pos = Nene.screen_point_to_world_pos(($Nene.instance()).mouse_pos)
+    
+    local mouse_world_pos = Nene.screen_point_to_world_pos(nene.mouse_pos)
 
     if controlling_d then
       cd.ending = mouse_world_pos

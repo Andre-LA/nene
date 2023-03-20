@@ -70,8 +70,7 @@ float nene_Music_set_volume(float volume) {
 }
 
 void nene_Music_destroy(nene_Music *music) {
-  SDL_assert(music != NULL);
-  SDL_assert(music->raw != NULL);
+  SDL_assert_release(music != NULL);
 
   if (music == NULL || music->raw == NULL) {
     return;

@@ -1,3 +1,10 @@
+/*
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+*/
+
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_render.h>
 #include "nene/texture.h"
@@ -16,30 +23,40 @@ static nene_Texture nene_impl_Texture_init(SDL_Texture *raw, uint16_t width, uin
 static bool nene_impl_Texture_render_copy(nene_Texture texture, nene_Rect source, nene_Rect destination) {
   SDL_Rect src_rect = { .x = 0 };
   SDL_Rect *ptr_src_rect = NULL;
+  SDL_Rect dest_rect = { .x = 0 };
+  SDL_Rect *ptr_dest_rect = NULL;
 
-  if (source.size.y > 0 || source.size.y > 0) {
+  if (source.size.y > 0 && source.size.y > 0) {
     src_rect = nene_Rect_to_raw(source);
     ptr_src_rect = &src_rect;
   }
 
-  SDL_Rect dest_rect = nene_Rect_to_raw(destination);
+  if (destination.size.y > 0 && destination.size.y > 0) {
+    dest_rect = nene_Rect_to_raw(destination);
+    ptr_dest_rect = &dest_rect;
+  }
 
   nene_Core *const instance = nene_Core_instance();
   SDL_Texture *raw_texture = nene_Texture_get_raw(texture);
 
-  return SDL_RenderCopy(instance->renderer, raw_texture, ptr_src_rect, &dest_rect) != 0;
+  return SDL_RenderCopy(instance->renderer, raw_texture, ptr_src_rect, ptr_dest_rect) != 0;
 }
 
 static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect source, nene_Rect destination, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
   SDL_Rect src_rect = { .x = 0 };
   SDL_Rect *ptr_src_rect = NULL;
+  SDL_Rect dest_rect = { .x = 0 };
+  SDL_Rect *ptr_dest_rect = NULL;
 
-  if (source.size.y > 0 || source.size.y > 0) {
+  if (source.size.y > 0 && source.size.y > 0) {
     src_rect = nene_Rect_to_raw(source);
     ptr_src_rect = &src_rect;
   }
 
-  SDL_Rect dest_rect = nene_Rect_to_raw(destination);  
+  if (destination.size.y > 0 && destination.size.y > 0) {
+    dest_rect = nene_Rect_to_raw(destination);
+    ptr_dest_rect = &dest_rect;
+  }
 
   SDL_RendererFlip flip = SDL_FLIP_NONE;
   if (flip_x) { flip |= SDL_FLIP_HORIZONTAL; }
@@ -57,7 +74,7 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
     instance->renderer, 
     raw_texture, 
     ptr_src_rect, 
-    &dest_rect, 
+    ptr_dest_rect, 
     angle, 
     &rotation_center_point, 
     flip
@@ -65,13 +82,13 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
 }
 
 void nene_Texture_destroy(nene_Texture *texture) {
-  SDL_assert(texture != NULL);
+  SDL_assert_release(texture != NULL);
   
-  if (texture == NULL || texture->raw != NULL) {
+  if (texture == NULL || texture->raw == NULL) {
     return;
   }
-  
-  SDL_DestroyTexture(texture->raw);
+
+  SDL_DestroyTexture(nene_Texture_get_raw(*texture));
   *texture = (nene_Texture){ .raw = NULL };
 }
 

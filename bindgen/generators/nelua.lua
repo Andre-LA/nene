@@ -154,7 +154,7 @@ function nelua.gen:enum(enum)
     fmt(
       "local %s %s = @enum(%s){",
       self:ctype_to_type(enum.enum_name),
-      cimport(enum.enum_name, global_var.options),
+      cimport(enum.enum_name, enum.options),
       self:ctype_to_type(enum.constants[1].ctype)
     )
   )
@@ -162,7 +162,7 @@ function nelua.gen:enum(enum)
   for _, constant in ipairs(enum.constants) do
     table.insert(
       result,
-      fmt("  %s = %d,", constant.field_name, constant.constant)
+      fmt("  %s = %d,", self:ctype_to_type(constant.field_name), constant.constant)
     )
   end
 

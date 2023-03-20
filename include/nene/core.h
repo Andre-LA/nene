@@ -69,23 +69,38 @@ extern bool _nene_initialized;
 /// outputs an warning message to stderr stream.
 void nene_Core_warn(const char fn[], const char msg[]);
 
+/// Returns if nene is initialized.
+bool nene_Core_is_initialized(void);
+
 /// Returns the active nene instance, if nene isn't initialized, this will trigger an error.
 nene_Core* nene_Core_instance(void);
 
 /// Update's nene's state
 void nene_Core_update(void);
 
+bool nene_Core_is_scancode_held(SDL_Scancode scancode);
+
 bool nene_Core_is_scancode_pressed(SDL_Scancode scancode);
 
-bool nene_Core_is_scancode_just_pressed(SDL_Scancode scancode);
+bool nene_Core_is_scancode_released(SDL_Scancode scancode);
 
-bool nene_Core_is_scancode_just_released(SDL_Scancode scancode);
+bool nene_Core_is_mouse_button_held(uint32_t mouse_button);
 
 bool nene_Core_is_mouse_button_pressed(uint32_t mouse_button);
 
-bool nene_Core_is_mouse_button_just_pressed(uint32_t mouse_button);
+bool nene_Core_is_mouse_button_released(uint32_t mouse_button);
 
-bool nene_Core_is_mouse_button_just_released(uint32_t mouse_button);
+bool nene_Core_is_gamepad_button_held(uint8_t gamepad_index, SDL_GameControllerButton gamepad_button);
+
+bool nene_Core_is_gamepad_button_pressed(uint8_t gamepad_index, SDL_GameControllerButton gamepad_button);
+
+bool nene_Core_is_gamepad_button_released(uint8_t gamepad_index, SDL_GameControllerButton gamepad_button);
+
+float nene_Core_get_gamepad_axis(uint8_t gamepad_index, SDL_GameControllerAxis gamepad_axis, float deadzone);
+
+bool nene_Core_get_cursor_visibility(void);
+
+bool nene_Core_set_cursor_visibility(bool visible);
 
 nene_Vec2i nene_Core_get_window_size(void);
 
@@ -100,6 +115,8 @@ bool nene_Core_set_render_draw_color(nene_Color color);
 bool nene_Core_set_render_blend_mode(SDL_BlendMode blend_mode);
 
 bool nene_Core_set_render_clip(nene_Rect clip_rect, bool clip_is_screenspace);
+
+bool nene_Core_set_render_target(SDL_Texture *raw_target);
 
 bool nene_Core_render_clear(nene_Color color);
 

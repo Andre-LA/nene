@@ -89,8 +89,7 @@ float nene_Sound_set_volume(nene_Sound sound, float volume) {
 }
 
 void nene_Sound_destroy(nene_Sound *sound) {
-  SDL_assert(sound != NULL);
-  SDL_assert(sound->raw != NULL);
+  SDL_assert_release(sound != NULL);
 
   if (sound == NULL || sound->raw == NULL) {
     return;
