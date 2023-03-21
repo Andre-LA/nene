@@ -541,13 +541,18 @@ bool nene_Core_render_clear(nene_Color color) {
   return true;
 }
 
-bool nene_Core_render_draw_line(nene_Vec2 origin, nene_Vec2 ending, nene_Color color) {
+bool nene_Core_render_draw_line(nene_Vec2 origin, nene_Vec2 ending, nene_Color color, bool is_world_pos) {
   SDL_assert_release(_nene_initialized);
 
   nene_Core *const instance = nene_Core_instance();
 
-  origin = nene_Vec2_add(nene_Core_world_pos_to_screen_point(origin), instance->render_offset);
-  ending = nene_Vec2_add(nene_Core_world_pos_to_screen_point(ending), instance->render_offset);
+  if (is_world_pos) {
+    origin = nene_Core_world_pos_to_screen_point(origin);
+    ending = nene_Core_world_pos_to_screen_point(ending);
+  }
+
+  origin = nene_Vec2_add(origin, instance->render_offset);
+  ending = nene_Vec2_add(ending, instance->render_offset);
 
   const nene_Vec2i screen_origin = nene_Vec2_to_vec2i(origin);
   const nene_Vec2i screen_destination = nene_Vec2_to_vec2i(ending);
@@ -562,14 +567,16 @@ bool nene_Core_render_draw_line(nene_Vec2 origin, nene_Vec2 ending, nene_Color c
   return true;
 }
 
-bool nene_Core_render_draw_rect(nene_Rect rect, bool only_lines, nene_Color color) {
+bool nene_Core_render_draw_rect(nene_Rect rect, bool only_lines, nene_Color color, bool is_world_pos) {
   SDL_assert_release(_nene_initialized);
 
   nene_Core *const instance = nene_Core_instance();
-
-  rect.pos = nene_Vec2_to_vec2i(
-    nene_Core_world_pos_to_screen_point(nene_Vec2_from_vec2i(rect.pos))
-  );
+  
+  if (is_world_pos) {
+    rect.pos = nene_Vec2_to_vec2i(
+      nene_Core_world_pos_to_screen_point(nene_Vec2_from_vec2i(rect.pos))
+    );
+  }
 
   rect = nene_Rect_add_pos(rect, nene_Vec2_to_vec2i(instance->render_offset));
 

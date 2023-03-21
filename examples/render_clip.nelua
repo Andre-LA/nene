@@ -29,13 +29,13 @@ local function rects()
 
     -- draw grid
     for i = -16, 16 do
-      Nene.render_draw_line({ 16 * i,   -256 }, { 16 * i,    256 }, Color.black)
-      Nene.render_draw_line({   -256, 16 * i }, {    256, 16 * i }, Color.black)
+      Nene.render_draw_line({ 16 * i,   -256 }, { 16 * i,    256 }, Color.black, true)
+      Nene.render_draw_line({   -256, 16 * i }, {    256, 16 * i }, Color.black, true)
     end
 
     -- set render clipping
     Nene.set_render_clip(rect_clip, false)
-    Nene.render_draw_rect(rect_clip, true, Color.red)
+    Nene.render_draw_rect(rect_clip, true, Color.red, true)
 
     Nene.render_present()
   until Nene.should_quit()

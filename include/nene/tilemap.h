@@ -25,7 +25,7 @@ nene_Vec2i nene_Tilemap_get_size_in_tiles(nene_Tilemap tilemap);
 
 nene_Vec2i nene_Tilemap_get_size(nene_Tilemap tilemap);
 
-bool nene_Tilemap_draw(nene_Tilemap tilemap, nene_Vec2 position, uint16_t tiles[], uint32_t count);
+bool nene_Tilemap_draw(nene_Tilemap tilemap, nene_Vec2 position, bool is_world_pos, uint16_t tiles[], uint32_t count);
 
 void nene_Tilemap_destroy(nene_Tilemap *tilemap);
 

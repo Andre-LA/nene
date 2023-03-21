@@ -143,10 +143,10 @@ function Core.set_render_target(raw_target: *SDL_Texture): boolean <cimport 'nen
 function Core.render_clear(color: Color): boolean <cimport 'nene_Core_render_clear', nodecl> end
 
 
-function Core.render_draw_line(origin: Vec2, ending: Vec2, color: Color): boolean <cimport 'nene_Core_render_draw_line', nodecl> end
+function Core.render_draw_line(origin: Vec2, ending: Vec2, color: Color, is_world_pos: boolean): boolean <cimport 'nene_Core_render_draw_line', nodecl> end
 
 
-function Core.render_draw_rect(rect: Rect, only_lines: boolean, color: Color): boolean <cimport 'nene_Core_render_draw_rect', nodecl> end
+function Core.render_draw_rect(rect: Rect, only_lines: boolean, color: Color, is_world_pos: boolean): boolean <cimport 'nene_Core_render_draw_rect', nodecl> end
 
 
 function Core.render_present(): void <cimport 'nene_Core_render_present', nodecl> end

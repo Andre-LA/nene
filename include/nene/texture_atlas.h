@@ -31,13 +31,13 @@ void nene_TextureAtlas_destroy(nene_TextureAtlas *texture_atlas);
 
 nene_TextureAtlasCreation nene_TextureAtlas_load(const char *filepath, uint16_t width, nene_Grid grid);
 
-bool nene_TextureAtlas_draw_sub_texture(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position);
+bool nene_TextureAtlas_draw_sub_texture(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position, bool is_world_pos);
 
-bool nene_TextureAtlas_draw_sub_texture_ex(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
+bool nene_TextureAtlas_draw_sub_texture_ex(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position, bool is_world_pos, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
 
-bool nene_TextureAtlas_draw_nth_sub_texture(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position);
+bool nene_TextureAtlas_draw_nth_sub_texture(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position, bool is_world_pos);
 
-bool nene_TextureAtlas_draw_nth_sub_texture_ex(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
+bool nene_TextureAtlas_draw_nth_sub_texture_ex(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position, bool is_world_pos, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
 
 nene_Vec2 nene_TextureAtlas_get_sub_texture_center(nene_TextureAtlas texture_atlas);
 

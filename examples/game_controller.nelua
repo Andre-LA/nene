@@ -63,7 +63,7 @@ local function game_controller()
     -- draw game state
     Nene.render_clear(Color.bg)
 
-    Nene.render_draw_rect(rect, false, rect_color)
+    Nene.render_draw_rect(rect, false, rect_color, true)
 
     Nene.render_present()
   until Nene.should_quit()

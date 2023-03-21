@@ -5,6 +5,7 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
+#include "nene/core.h"
 #include "nene/tilemap.h"
 #include "nene/math/vec2.h"
 
@@ -28,7 +29,7 @@ nene_Vec2i nene_Tilemap_get_size(nene_Tilemap tilemap) {
   );
 }
 
-bool nene_Tilemap_draw(nene_Tilemap tilemap, nene_Vec2 position, uint16_t tiles[], uint32_t count) {
+bool nene_Tilemap_draw(nene_Tilemap tilemap, nene_Vec2 position, bool is_world_pos, uint16_t tiles[], uint32_t count) {
   SDL_assert(tiles != NULL);
   SDL_assert(count > 0);
   SDL_assert(count <= tilemap.tile_count);
@@ -36,6 +37,10 @@ bool nene_Tilemap_draw(nene_Tilemap tilemap, nene_Vec2 position, uint16_t tiles[
 
   if (count <= 0 || count > tilemap.tile_count || tilemap.width <= 0) {
     return false;
+  }
+
+  if (is_world_pos) {
+    position = nene_Core_world_pos_to_screen_point(position);
   }
 
   bool fail = false;
@@ -51,7 +56,7 @@ bool nene_Tilemap_draw(nene_Tilemap tilemap, nene_Vec2 position, uint16_t tiles[
         nene_Grid_get_nth_cell_position(tilemap.grid, tile_i, tilemap.width)
       );
       // NOTE: tileset_n - 1 it's safe because it's on a tileset_n > 0 condition.
-      fail = fail || !nene_TextureAtlas_draw_nth_sub_texture(tilemap.tileset, tileset_n - 1, nene_Vec2_add(position, tile_position));
+      fail = fail || !nene_TextureAtlas_draw_nth_sub_texture(tilemap.tileset, tileset_n - 1, nene_Vec2_add(position, tile_position), false);
     }
   }
 

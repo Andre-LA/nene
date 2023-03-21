@@ -112,18 +112,19 @@ local function game()
     Nene.render_clear(Color.bg)
 
     -- draw the tilemap
-    tilemap:draw(tilemap_pos, map_data, #map_data)
+    tilemap:draw(tilemap_pos, false, map_data, #map_data)
 
     -- let's draw a green rectangle of tilemap
     -- on top tilemap that represents it's size
 
     Nene.render_draw_rect(
       {
-        pos = Nene.screen_point_to_world_pos(tilemap_pos):to_vec2i(), 
+        pos = tilemap_pos:to_vec2i(),
         size = tilemap:get_size()
       },
       true,
-      Color.green
+      Color.green,
+      false
     )
 
     -- present painted rendering target

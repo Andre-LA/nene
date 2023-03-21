@@ -37,9 +37,9 @@ nene_TextureCreation nene_Texture_create_with_access(uint16_t width, uint16_t he
 nene_TextureCreation nene_Texture_create(uint16_t width, uint16_t height);
 nene_TextureCreation nene_Texture_load(const char *filepath);
 nene_Rect nene_Texture_get_full_source_rect(nene_Texture texture);
-bool nene_Texture_draw_to_point(nene_Texture texture, nene_Rect source, nene_Vec2 point);
+bool nene_Texture_draw_to_point(nene_Texture texture, nene_Rect source, nene_Vec2 point, bool is_world_position);
 bool nene_Texture_draw_to_rect(nene_Texture texture, nene_Rect source, nene_Rect destination);
-bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_Vec2 point, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
+bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_Vec2 point, bool is_world_position, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
 bool nene_Texture_draw_to_rect_ex(nene_Texture texture, nene_Rect source, nene_Rect destination, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y);
 
 #endif // NENE_TEXTURE_H

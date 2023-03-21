@@ -78,10 +78,10 @@ local function game()
     Nene.render_clear(Color.bg)
 
     --[[
-    Then, draw the sprite from the spritesheet at {10, 10} position, using
-    the spritesheet texture atlas, using the sprite index.
+    Then, draw the sprite from the spritesheet at {10, 10} position, at screen space,
+    using the spritesheet texture atlas, using the sprite index.
     ]]
-    spritesheet:draw_nth_sub_texture_ex(sprite_index, { 10, 10 }, rotation, spritesheet:get_sub_texture_center())
+    spritesheet:draw_nth_sub_texture_ex(sprite_index, { 10, 10 }, false, rotation, spritesheet:get_sub_texture_center())
 
     -- finally, swap buffers and present our final result
     Nene.render_present()

@@ -212,7 +212,11 @@ nene_TextureCreation nene_Texture_load(const char *filepath) {
   };
 }
 
-bool nene_Texture_draw_to_point(nene_Texture texture, nene_Rect source, nene_Vec2 point) {
+bool nene_Texture_draw_to_point(nene_Texture texture, nene_Rect source, nene_Vec2 point, bool is_world_pos) {  
+  if (is_world_pos) {
+    point = nene_Core_world_pos_to_screen_point(point);
+  }
+
   nene_Rect destination = {
     .pos = nene_Vec2_to_vec2i(point),
     .size = (nene_Vec2i){ .x = texture.width, .y = texture.height },
@@ -235,7 +239,11 @@ bool nene_Texture_draw_to_rect(nene_Texture texture, nene_Rect source, nene_Rect
   return true;
 }
 
-bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_Vec2 point, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
+bool nene_Texture_draw_to_point_ex(nene_Texture texture, nene_Rect source, nene_Vec2 point, bool is_world_pos, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
+  if (is_world_pos) {
+    point = nene_Core_world_pos_to_screen_point(point);
+  }
+
   nene_Rect destination = {
     .pos = nene_Vec2_to_vec2i(point),
     .size = (nene_Vec2i){ .x = texture.width, .y = texture.height },

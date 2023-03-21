@@ -6,6 +6,7 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/texture_atlas.h"
+#include "nene/core.h"
 
 void nene_TextureAtlas_destroy(nene_TextureAtlas *texture_atlas) {
   SDL_assert_release(texture_atlas != NULL);
@@ -40,7 +41,10 @@ nene_TextureAtlasCreation nene_TextureAtlas_load(const char *filepath, uint16_t 
   };
 }
 
-bool nene_TextureAtlas_draw_sub_texture(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position) {
+bool nene_TextureAtlas_draw_sub_texture(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position, bool is_world_pos) {
+  if (is_world_pos) {
+    position = nene_Core_world_pos_to_screen_point(position);
+  }
   nene_Rect source_rect = nene_Grid_get_rect(texture_atlas.grid, subtexture_coord);
   nene_Rect destination_rect = {
     .pos = nene_Vec2_to_vec2i(position),
@@ -50,7 +54,10 @@ bool nene_TextureAtlas_draw_sub_texture(nene_TextureAtlas texture_atlas, nene_Ve
   return nene_Texture_draw_to_rect(texture_atlas.texture, source_rect, destination_rect);
 }
 
-bool nene_TextureAtlas_draw_sub_texture_ex(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
+bool nene_TextureAtlas_draw_sub_texture_ex(nene_TextureAtlas texture_atlas, nene_Vec2i subtexture_coord, nene_Vec2 position, bool is_world_pos, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
+  if (is_world_pos) {
+    position = nene_Core_world_pos_to_screen_point(position);
+  }
   nene_Rect source_rect = nene_Grid_get_rect(texture_atlas.grid, subtexture_coord);
   nene_Rect destination_rect = {
     .pos = nene_Vec2_to_vec2i(position),
@@ -60,14 +67,14 @@ bool nene_TextureAtlas_draw_sub_texture_ex(nene_TextureAtlas texture_atlas, nene
   return nene_Texture_draw_to_rect_ex(texture_atlas.texture, source_rect, destination_rect, angle, rotation_center, flip_x, flip_y);
 }
 
-bool nene_TextureAtlas_draw_nth_sub_texture(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position) {
+bool nene_TextureAtlas_draw_nth_sub_texture(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position, bool is_world_pos) {
   nene_Vec2i texture_coord = nene_Grid_get_nth_cell_coord(nth, texture_atlas.width);
-  return nene_TextureAtlas_draw_sub_texture(texture_atlas, texture_coord, position);
+  return nene_TextureAtlas_draw_sub_texture(texture_atlas, texture_coord, position, is_world_pos);
 }
 
-bool nene_TextureAtlas_draw_nth_sub_texture_ex(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
+bool nene_TextureAtlas_draw_nth_sub_texture_ex(nene_TextureAtlas texture_atlas, uint32_t nth, nene_Vec2 position, bool is_world_pos, double angle, nene_Vec2 rotation_center, bool flip_x, bool flip_y) {
   nene_Vec2i texture_coord = nene_Grid_get_nth_cell_coord(nth, texture_atlas.width);
-  return nene_TextureAtlas_draw_sub_texture_ex(texture_atlas, texture_coord, position, angle, rotation_center, flip_x, flip_y);
+  return nene_TextureAtlas_draw_sub_texture_ex(texture_atlas, texture_coord, position, is_world_pos, angle, rotation_center, flip_x, flip_y);
 }
 
 nene_Vec2 nene_TextureAtlas_get_sub_texture_center(nene_TextureAtlas texture_atlas) {

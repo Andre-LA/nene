@@ -51,8 +51,8 @@ local function rects()
 
     Nene.render_clear(Color.bg)
 
-    Nene.render_draw_rect(rect_a, true, Color.white)
-    Nene.render_draw_rect(rect_b, true, Color.yellow)
+    Nene.render_draw_rect(rect_a, true, Color.white, true)
+    Nene.render_draw_rect(rect_b, true, Color.yellow, true)
 
     Nene.render_present()
   until Nene.should_quit()

@@ -44,8 +44,8 @@ local function draw_parallax_grid()
 
   -- draw the grid
   for i = -64, 64 do
-    Nene.render_draw_line({16 * i, -2048}, {16 * i, 2048}, Color.black)
-    Nene.render_draw_line({-2048, 16 * i}, {2048, 16 * i}, Color.black)
+    Nene.render_draw_line({16 * i, -2048}, {16 * i, 2048}, Color.black, true)
+    Nene.render_draw_line({-2048, 16 * i}, {2048, 16 * i}, Color.black, true)
   end
 
   -- at the end of the function, we set the render_offset to the original value
@@ -64,7 +64,7 @@ local function draw_parallax_shadow()
   defer nene.render_offset = original_offset end
 
   -- draw shadow
-  Nene.render_draw_rect({ {-8, 8}, {16, 16} }, false, {0, 0, 0, 100})
+  Nene.render_draw_rect({ {-8, 8}, {16, 16} }, false, {0, 0, 0, 100}, true)
 end
 
 -- all the life-cycle of this example is contained in this function
@@ -114,7 +114,7 @@ local function camera()
       draw_parallax_shadow()
 
       -- draw the rect, note that rect_on_center is never modified
-      Nene.render_draw_rect(rect_on_center, false, Color.white)
+      Nene.render_draw_rect(rect_on_center, false, Color.white, true)
     end
 
     Nene.render_present()

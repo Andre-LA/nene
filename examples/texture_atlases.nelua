@@ -51,7 +51,7 @@ local function texture_atlas_example()
     the screen.
     ]]
     atlas.texture:set_color_mod(Color.white)
-    atlas:draw_sub_texture({0, 0}, { 120-16, 8 })
+    atlas:draw_sub_texture({0, 0}, { 120-16, 8 }, false)
 
     --[[
     Then let's draw some isosceles triangles at the bottom of the screen below.
@@ -67,7 +67,7 @@ local function texture_atlas_example()
     atlas.texture:set_color_mod({ 134, 0, 0})
     for i = -8, 240+8, 32 do
       -- n position tint angle rotation_center
-      atlas:draw_nth_sub_texture_ex(3, {i, 160-32}, 10, { 0.0, 1.0 })
+      atlas:draw_nth_sub_texture_ex(3, {i, 160-32}, false, 10, { 0.0, 1.0 })
     end
 
     -- clear present the painted rendering target

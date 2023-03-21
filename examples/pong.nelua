@@ -105,7 +105,7 @@ end
 -- draw a racket
 function Racket:draw(is_player_one: boolean)
   local nene = Nene.instance()
-  Nene.render_draw_rect(self:get_rect(is_player_one), false, Color.yellow)
+  Nene.render_draw_rect(self:get_rect(is_player_one), false, Color.yellow, true)
 end
 
 -- ball record
@@ -162,7 +162,7 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
 end
 
 function Ball:draw()
-  Nene.render_draw_rect(self:get_rect(), false, Color.white)
+  Nene.render_draw_rect(self:get_rect(), false, Color.white, true)
 end
 
 local function update_points(pts_text: *Texture, points: integer, font: Font)

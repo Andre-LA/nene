@@ -54,14 +54,14 @@ local function example()
     Nene.render_clear(Color.black)
 
     -- draw ab segment
-    Nene.render_draw_line(ab.origin, ab.ending, Color.blue)
+    Nene.render_draw_line(ab.origin, ab.ending, Color.blue, true)
     -- draw cd segment
-    Nene.render_draw_line(cd.origin, cd.ending, Color.green)
+    Nene.render_draw_line(cd.origin, cd.ending, Color.green, true)
 
     -- draw intersection point if an intersection exists
     if intersection.intersected then
       local rect: Rect = { pos = intersection.point:to_vec2i(), size = {3, 3} }
-      Nene.render_draw_rect(rect, false, Color.red)
+      Nene.render_draw_rect(rect, false, Color.red, true)
     end
 
     Nene.render_present()

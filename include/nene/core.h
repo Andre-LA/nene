@@ -120,9 +120,9 @@ bool nene_Core_set_render_target(SDL_Texture *raw_target);
 
 bool nene_Core_render_clear(nene_Color color);
 
-bool nene_Core_render_draw_line(nene_Vec2 origin, nene_Vec2 ending, nene_Color color);
+bool nene_Core_render_draw_line(nene_Vec2 origin, nene_Vec2 ending, nene_Color color, bool is_world_pos);
 
-bool nene_Core_render_draw_rect(nene_Rect rect, bool only_lines, nene_Color color);
+bool nene_Core_render_draw_rect(nene_Rect rect, bool only_lines, nene_Color color, bool is_world_pos);
 
 void nene_Core_render_present(void);
 

@@ -48,13 +48,13 @@ local function Texture_load(filepath: cstring): TextureCreation <cimport 'nene_T
 function Texture.get_full_source_rect(texture: Texture): Rect <cimport 'nene_Texture_get_full_source_rect', nodecl> end
 
 
-function Texture.draw_to_point(texture: Texture, source: Rect, point: Vec2): boolean <cimport 'nene_Texture_draw_to_point', nodecl> end
+function Texture.draw_to_point(texture: Texture, source: Rect, point: Vec2, is_world_position: boolean): boolean <cimport 'nene_Texture_draw_to_point', nodecl> end
 
 
 function Texture.draw_to_rect(texture: Texture, source: Rect, destination: Rect): boolean <cimport 'nene_Texture_draw_to_rect', nodecl> end
 
 
-function Texture.draw_to_point_ex(texture: Texture, source: Rect, point: Vec2, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_point_ex', nodecl> end
+function Texture.draw_to_point_ex(texture: Texture, source: Rect, point: Vec2, is_world_position: boolean, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_point_ex', nodecl> end
 
 
 function Texture.draw_to_rect_ex(texture: Texture, source: Rect, destination: Rect, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_rect_ex', nodecl> end

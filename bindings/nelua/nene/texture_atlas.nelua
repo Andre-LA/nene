@@ -27,16 +27,16 @@ function TextureAtlas.destroy(texture_atlas: *TextureAtlas): void <cimport 'nene
 local function TextureAtlas_load(filepath: cstring, width: uint16, grid: Grid): TextureAtlasCreation <cimport 'nene_TextureAtlas_load', nodecl> end
 
 
-function TextureAtlas.draw_sub_texture(texture_atlas: TextureAtlas, subtexture_coord: Vec2i, position: Vec2): boolean <cimport 'nene_TextureAtlas_draw_sub_texture', nodecl> end
+function TextureAtlas.draw_sub_texture(texture_atlas: TextureAtlas, subtexture_coord: Vec2i, position: Vec2, is_world_pos: boolean): boolean <cimport 'nene_TextureAtlas_draw_sub_texture', nodecl> end
 
 
-function TextureAtlas.draw_sub_texture_ex(texture_atlas: TextureAtlas, subtexture_coord: Vec2i, position: Vec2, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_TextureAtlas_draw_sub_texture_ex', nodecl> end
+function TextureAtlas.draw_sub_texture_ex(texture_atlas: TextureAtlas, subtexture_coord: Vec2i, position: Vec2, is_world_pos: boolean, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_TextureAtlas_draw_sub_texture_ex', nodecl> end
 
 
-function TextureAtlas.draw_nth_sub_texture(texture_atlas: TextureAtlas, nth: uint32, position: Vec2): boolean <cimport 'nene_TextureAtlas_draw_nth_sub_texture', nodecl> end
+function TextureAtlas.draw_nth_sub_texture(texture_atlas: TextureAtlas, nth: uint32, position: Vec2, is_world_pos: boolean): boolean <cimport 'nene_TextureAtlas_draw_nth_sub_texture', nodecl> end
 
 
-function TextureAtlas.draw_nth_sub_texture_ex(texture_atlas: TextureAtlas, nth: uint32, position: Vec2, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_TextureAtlas_draw_nth_sub_texture_ex', nodecl> end
+function TextureAtlas.draw_nth_sub_texture_ex(texture_atlas: TextureAtlas, nth: uint32, position: Vec2, is_world_pos: boolean, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_TextureAtlas_draw_nth_sub_texture_ex', nodecl> end
 
 
 function TextureAtlas.get_sub_texture_center(texture_atlas: TextureAtlas): Vec2 <cimport 'nene_TextureAtlas_get_sub_texture_center', nodecl> end
