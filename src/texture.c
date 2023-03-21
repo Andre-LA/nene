@@ -21,6 +21,8 @@ static nene_Texture nene_impl_Texture_init(SDL_Texture *raw, uint16_t width, uin
 }
 
 static bool nene_impl_Texture_render_copy(nene_Texture texture, nene_Rect source, nene_Rect destination) {
+  nene_Core *const instance = nene_Core_instance();
+
   SDL_Rect src_rect = { .x = 0 };
   SDL_Rect *ptr_src_rect = NULL;
   SDL_Rect dest_rect = { .x = 0 };
@@ -32,11 +34,11 @@ static bool nene_impl_Texture_render_copy(nene_Texture texture, nene_Rect source
   }
 
   if (destination.size.y > 0 && destination.size.y > 0) {
+    destination.pos = nene_Vec2i_add(destination.pos, nene_Vec2_to_vec2i(instance->render_offset));
     dest_rect = nene_Rect_to_raw(destination);
     ptr_dest_rect = &dest_rect;
   }
 
-  nene_Core *const instance = nene_Core_instance();
   SDL_Texture *raw_texture = nene_Texture_get_raw(texture);
 
   return SDL_RenderCopy(instance->renderer, raw_texture, ptr_src_rect, ptr_dest_rect) != 0;
