@@ -17,7 +17,7 @@ local Collision <cimport 'nene_Collision', nodecl> = @record{
 function Collision.no_collision(): Collision <cimport 'nene_Collision_no_collision', nodecl> end
 
 -- Returns the collision response between two rects.
-function Collision.rect_with_rect(a: Rect, b: Rect, delta_pos: Vec2i): Collision <cimport 'nene_Collision_rect_with_rect', nodecl> end
+function Collision.rect_with_rect(a: Rect, b: Rect, delta_pos: Vec2): Collision <cimport 'nene_Collision_rect_with_rect', nodecl> end
 
 -- Returns the collision response between a rectangle and a segment.
 function Collision.rect_with_segment(rect: Rect, segment: Segment, delta_pos: Vec2): Collision <cimport 'nene_Collision_rect_with_segment', nodecl> end

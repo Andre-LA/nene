@@ -24,7 +24,7 @@ typedef struct nene_Collision {
 nene_Collision nene_Collision_no_collision(void);
 
 /// Returns the collision response between two rects.
-nene_Collision nene_Collision_rect_with_rect(nene_Rect a, nene_Rect b, nene_Vec2i delta_pos);
+nene_Collision nene_Collision_rect_with_rect(nene_Rect a, nene_Rect b, nene_Vec2 delta_pos);
 
 /// Returns the collision response between a rectangle and a segment.
 nene_Collision nene_Collision_rect_with_segment(nene_Rect rect, nene_Segment segment, nene_Vec2 delta_pos);

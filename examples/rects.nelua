@@ -41,7 +41,7 @@ local function rects()
     end
     pos = pos + delta_pos
 
-    local collision = Collision.rect_with_rect(rect_a, rect_b, delta_pos:to_vec2i())
+    local collision = Collision.rect_with_rect(rect_a, rect_b, delta_pos)
 
     if collision.collided then
       pos = pos + collision.delta

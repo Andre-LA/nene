@@ -44,7 +44,7 @@ nene_Collision nene_Collision_no_collision(void) {
   };
 }
 
-nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersected_rect, nene_Vec2i delta_pos) {
+nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersected_rect, nene_Vec2 delta_pos) {
   // first, get the intersection between rectangles
   const nene_IntersectionRectWithRect intersection = nene_IntersectionRectWithRect_get_intersection(rect, intersected_rect);
 
@@ -58,10 +58,10 @@ nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersect
   const nene_Vec2i intersected_rect_center = nene_Rect_get_center(intersected_rect);
 
   // get the difference between centers, this results on a delta position between two rectangles;
-  const nene_Vec2i diff = nene_Vec2i_sub(intersected_rect_center, rect_center);
+  const nene_Vec2 diff = nene_Vec2_from_vec2i(nene_Vec2i_sub(intersected_rect_center, rect_center));
 
   // multiply this difference and the delta_pos vector
-  const nene_Vec2i directions = nene_Vec2i_mul(diff, delta_pos);
+  const nene_Vec2 directions = nene_Vec2_mul(diff, delta_pos);
 
   // First, in order to slide on rectangle with another, we need to compare the size of each axis
   // on the intersection;
@@ -79,11 +79,11 @@ nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersect
   // multiplied by the opposite sign of delta_pos.
   nene_Vec2i delta = nene_Vec2i_zero();
 
-  if (!slides_horizontally && directions.x > 0) {
-    delta.x = delta_pos.x > 0 ? -intersection.intersection.size.x : intersection.intersection.size.x;
+  if (!slides_horizontally && directions.x > 0.0f) {
+    delta.x = delta_pos.x > 0.0f ? -intersection.intersection.size.x : intersection.intersection.size.x;
   }
-  if (!slides_vertically && directions.y > 0) {
-    delta.y = delta_pos.y > 0 ? -intersection.intersection.size.y : intersection.intersection.size.y;
+  if (!slides_vertically && directions.y > 0.0f) {
+    delta.y = delta_pos.y > 0.0f ? -intersection.intersection.size.y : intersection.intersection.size.y;
   }
 
   return (nene_Collision){
