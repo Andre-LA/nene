@@ -1,3 +1,10 @@
+--[[
+Copyright (c) 2021-present André Luiz Alvares
+Nene is licensed under the Zlib license.
+Please refer to the LICENSE file for details
+SPDX-License-Identifier: Zlib
+]]
+
 local utils = require 'bindgen.utils'
 local template = require 'bindgen.template'
 local struct, field, fn = template.decls.struct,
