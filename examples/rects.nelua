@@ -9,7 +9,7 @@ SPDX-License-Identifier: Zlib
 local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Vec2 = require 'nene.math.vec2'
-local Rect = require 'nene.math.rect'
+local Rectf = require 'nene.math.rectf'
 local Intersections = require 'nene.intersections'
 local Collision = require 'nene.collision'
 
@@ -19,9 +19,8 @@ local function rects()
   assert(ok, 'error: nene initialization failed')
 
   -- declare position and two rects
-  local pos: Vec2 = { -32, -48 }
-  local rect_a: Rect, rect_b: Rect = { size = { 32, 32} }, 
-                                     { pos = {-64, 32}, size = {128, 64} }
+  local rect_a: Rectf, rect_b: Rectf = { pos = {-32, -48}, size = { 32, 32} }, 
+                                       { pos = {-64,  32}, size = {128, 64} }
 
   repeat
     Nene.update()
@@ -39,20 +38,18 @@ local function rects()
     if Nene.is_scancode_held(SDL_SCANCODE_D) then
       delta_pos.x = 1
     end
-    pos = pos + delta_pos
+    rect_a.pos = rect_a.pos + delta_pos
 
-    local collision = Collision.rect_with_rect(rect_a, rect_b, delta_pos)
+    local collision = Collision.rectf_with_rectf(rect_a, rect_b, delta_pos)
 
     if collision.collided then
-      pos = pos + collision.delta
+      rect_a.pos = rect_a.pos + collision.delta
     end
     
-    rect_a.pos = pos:to_vec2i()
-
     Nene.render_clear(Color.bg)
 
-    Nene.render_draw_rect(rect_a, true, Color.white, true)
-    Nene.render_draw_rect(rect_b, true, Color.yellow, true)
+    Nene.render_draw_rect(rect_a:to_rect(), true, Color.white, true)
+    Nene.render_draw_rect(rect_b:to_rect(), true, Color.yellow, true)
 
     Nene.render_present()
   until Nene.should_quit()

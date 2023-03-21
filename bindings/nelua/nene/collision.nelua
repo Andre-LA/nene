@@ -4,6 +4,7 @@
 local Vec2 = require 'nene.math.vec2'
 local Vec2i = require 'nene.math.vec2i'
 local Rect = require 'nene.math.rect'
+local Rectf = require 'nene.math.rectf'
 local Segment = require 'nene.math.segment'
 
 
@@ -17,7 +18,7 @@ local Collision <cimport 'nene_Collision', nodecl> = @record{
 function Collision.no_collision(): Collision <cimport 'nene_Collision_no_collision', nodecl> end
 
 -- Returns the collision response between two rects.
-function Collision.rect_with_rect(a: Rect, b: Rect, delta_pos: Vec2): Collision <cimport 'nene_Collision_rect_with_rect', nodecl> end
+function Collision.rectf_with_rectf(a: Rectf, b: Rectf, delta_pos: Vec2): Collision <cimport 'nene_Collision_rectf_with_rectf', nodecl> end
 
 -- Returns the collision response between a rectangle and a segment.
 function Collision.rect_with_segment(rect: Rect, segment: Segment, delta_pos: Vec2): Collision <cimport 'nene_Collision_rect_with_segment', nodecl> end

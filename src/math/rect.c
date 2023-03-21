@@ -6,7 +6,6 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/math/rect.h"
-#include <math.h>
 
 /*
 TODO: This code contains some code expressions to get a specific side of the 

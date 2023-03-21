@@ -15,6 +15,7 @@ local neluagen = nelua.gen.new({
   ['nene_Vec2i'] = 'Vec2i',
   ['nene_Vec2']  = 'Vec2',
   ['nene_Rect'] = 'Rect',
+  ['nene_Rectf'] = 'Rectf',
   ['nene_Grid'] = 'Grid',
   ['nene_Segment'] = 'Segment',
   ['nene_Shape'] = 'Shape',
@@ -23,6 +24,7 @@ local neluagen = nelua.gen.new({
   ['nene_Animation_Property'] = 'AnimationProperty',
   ['nene_Intersections'] = 'Intersections',
   ['nene_IntersectionRectWithRect'] = 'RectWithRect',
+  ['nene_IntersectionRectfWithRectf'] = 'RectfWithRectf',
   ['nene_IntersectionSegmentWithRect'] = 'SegmentWithRect',
   ['nene_IntersectionSegmentWithSegment'] = 'SegmentWithSegment',
   ['nene_Collision'] = 'Collision',
@@ -288,6 +290,15 @@ bind_file('math/rect', {
   },
 })
 
+-- Rectf
+bind_file('math/rectf', {
+  dependencies = {
+    { modname = 'Vec2', path = 'nene.math.vec2' },
+    { modname = 'Rect', path = 'nene.math.rect' },
+    { path = 'nene.raw.sdl2' }
+  },
+})
+
 -- Grid
 bind_file('math/grid', {
   dependencies = {
@@ -323,6 +334,7 @@ bind_file('intersections', {
     { modname = 'Vec2', path = 'nene.math.vec2' },
     { modname = 'Vec2i', path = 'nene.math.vec2i' },
     { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Rectf', path = 'nene.math.rectf' },
     { modname = 'Segment', path = 'nene.math.segment' },
     { modname = 'Shape', path = 'nene.math.shape' },
   },
@@ -330,7 +342,7 @@ bind_file('intersections', {
 local Intersections = @record{}
 ]],
   append = [[
-local Intersections.RectWithRect = RectWithRect
+local Intersections.RectfWithRectf = RectfWithRectf
 local Intersections.SegmentWithRect = SegmentWithRect
 local Intersections.SegmentWithSegment = SegmentWithSegment
 ]]
@@ -342,6 +354,7 @@ bind_file('collision', {
     { modname = 'Vec2', path = 'nene.math.vec2' },
     { modname = 'Vec2i', path = 'nene.math.vec2i' },
     { modname = 'Rect', path = 'nene.math.rect' },
+    { modname = 'Rectf', path = 'nene.math.rectf' },
     { modname = 'Segment', path = 'nene.math.segment' },
   },
 })

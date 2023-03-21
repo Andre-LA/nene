@@ -11,13 +11,14 @@ SPDX-License-Identifier: Zlib
 #include <stdbool.h>
 #include "nene/math/vec2.h"
 #include "nene/math/rect.h"
+#include "nene/math/rectf.h"
 #include "nene/math/segment.h"
 
 /// Rectangle with rectangle intersection.
-typedef struct nene_IntersectionRectWithRect {
+typedef struct nene_IntersectionRectfWithRectf {
   bool intersected;
-  nene_Rect intersection;
-} nene_IntersectionRectWithRect;
+  nene_Rectf intersection;
+} nene_IntersectionRectfWithRectf;
 
 /// Segment with rectangle intersection.
 typedef struct nene_IntersectionSegmentWithRect {
@@ -39,19 +40,19 @@ typedef struct nene_IntersectionSegmentWithSegment {
 } nene_IntersectionSegmentWithSegment;
 
 /// Returns if a rect is intersecting with another rect.
-bool nene_Intersections_is_intersecting_rect_with_rect(nene_Rect a, nene_Rect b);
+bool nene_Intersections_is_intersecting_rectf_with_rectf(nene_Rectf a, nene_Rectf b);
 
 /// Returns if a rectangle is intersecting with a point.
 bool nene_Intersections_is_intersecting_rect_with_point(nene_Rect rect, nene_Vec2i point);
 
 /// Returns "no rect with rect intersection" value.
-nene_IntersectionRectWithRect nene_IntersectionRectWithRect_no_intersection(void);
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void);
 
 /// Returns "no segment with rect intersection" value.
 nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_no_intersection(void);
 
 /// Returns the intersection rectangle between two rectangles.
-nene_IntersectionRectWithRect nene_IntersectionRectWithRect_get_intersection(nene_Rect a, nene_Rect b);
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection(nene_Rectf a, nene_Rectf b);
 
 /// Returns the intersection data between a segment and a rectangle.
 nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_get_intersection(nene_Segment segment, nene_Rect rect);

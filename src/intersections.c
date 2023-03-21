@@ -8,8 +8,9 @@ SPDX-License-Identifier: Zlib
 #include "nene/intersections.h"
 #include "nene/math/shape.h"
 #include <stdio.h>
+#include <math.h>
 
-bool nene_Intersections_is_intersecting_rect_with_rect(nene_Rect a, nene_Rect b) {
+bool nene_Intersections_is_intersecting_rectf_with_rectf(nene_Rectf a, nene_Rectf b) {
   return !( // if any of the following predicates it's true, then there's no intersection.
     (a.pos.x + a.size.x) < b.pos.x || // is `a` on the left of `b`?
     (b.pos.x + b.size.x) < a.pos.x || // is `b` on the left of `a`?
@@ -23,8 +24,8 @@ bool nene_Intersections_is_intersecting_rect_with_point(nene_Rect rect, nene_Vec
          point.y <= rect.pos.y && point.y >= rect.pos.y - rect.size.y;
 }
 
-nene_IntersectionRectWithRect nene_IntersectionRectWithRect_no_intersection(void) {
-  return (nene_IntersectionRectWithRect){ 
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void) {
+  return (nene_IntersectionRectfWithRectf){ 
     .intersected = false,
   };
 }
@@ -35,31 +36,31 @@ nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_no_intersectio
   };
 }
 
-nene_IntersectionRectWithRect nene_IntersectionRectWithRect_get_intersection(nene_Rect a, nene_Rect b) {
-  if (!nene_Intersections_is_intersecting_rect_with_rect(a, b)) {
-    return nene_IntersectionRectWithRect_no_intersection();
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection(nene_Rectf a, nene_Rectf b) {
+  if (!nene_Intersections_is_intersecting_rectf_with_rectf(a, b)) {
+    return nene_IntersectionRectfWithRectf_no_intersection();
   }
 
-  const int32_t ax = a.pos.x;
-  const int32_t ay = a.pos.y;
-  const int32_t asx = a.pos.x + a.size.x;
-  const int32_t asy = a.pos.y - a.size.y;
+  const float ax = a.pos.x;
+  const float ay = a.pos.y;
+  const float asx = a.pos.x + a.size.x;
+  const float asy = a.pos.y - a.size.y;
 
-  const int32_t bx = b.pos.x;
-  const int32_t by = b.pos.y;
-  const int32_t bsx = b.pos.x + b.size.x;
-  const int32_t bsy = b.pos.y - b.size.y;
+  const float bx = b.pos.x;
+  const float by = b.pos.y;
+  const float bsx = b.pos.x + b.size.x;
+  const float bsy = b.pos.y - b.size.y;
 
-  const int32_t max_x = (ax > bx) ? ax : bx;
-  const int32_t min_y = (ay < by) ? ay : by;
-  const int32_t min_sx = (asx < bsx) ? asx : bsx;
-  const int32_t max_sy = (asy > bsy) ? asy : bsy;
+  const float max_x = (ax > bx) ? ax : bx;
+  const float min_y = (ay < by) ? ay : by;
+  const float min_sx = (asx < bsx) ? asx : bsx;
+  const float max_sy = (asy > bsy) ? asy : bsy;
 
-  return (nene_IntersectionRectWithRect){
+  return (nene_IntersectionRectfWithRectf){
     .intersected = true,
-    .intersection = (nene_Rect){ 
+    .intersection = (nene_Rectf){ 
       .pos  = { .x = max_x, .y = min_y },
-      .size = { .x = abs(min_sx - max_x), .y = abs(max_sy - min_y) },
+      .size = { .x = fabsf(min_sx - max_x), .y = fabsf(max_sy - min_y) },
     },
   };
 }

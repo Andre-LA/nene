@@ -44,9 +44,9 @@ nene_Collision nene_Collision_no_collision(void) {
   };
 }
 
-nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersected_rect, nene_Vec2 delta_pos) {
+  nene_Collision nene_Collision_rectf_with_rectf(nene_Rectf rect, nene_Rectf intersected_rect, nene_Vec2 delta_pos) {
   // first, get the intersection between rectangles
-  const nene_IntersectionRectWithRect intersection = nene_IntersectionRectWithRect_get_intersection(rect, intersected_rect);
+  const nene_IntersectionRectfWithRectf intersection = nene_IntersectionRectfWithRectf_get_intersection(rect, intersected_rect);
 
   // if there's no intersection, then there's no collision
   if (!intersection.intersected) {
@@ -54,11 +54,11 @@ nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersect
   }
 
   // get the center of each rectangle.
-  const nene_Vec2i rect_center = nene_Rect_get_center(rect);
-  const nene_Vec2i intersected_rect_center = nene_Rect_get_center(intersected_rect);
+  const nene_Vec2 rect_center = nene_Rectf_get_center(rect);
+  const nene_Vec2 intersected_rect_center = nene_Rectf_get_center(intersected_rect);
 
   // get the difference between centers, this results on a delta position between two rectangles;
-  const nene_Vec2 diff = nene_Vec2_from_vec2i(nene_Vec2i_sub(intersected_rect_center, rect_center));
+  const nene_Vec2 diff = nene_Vec2_sub(intersected_rect_center, rect_center);
 
   // multiply this difference and the delta_pos vector
   const nene_Vec2 directions = nene_Vec2_mul(diff, delta_pos);
@@ -77,7 +77,7 @@ nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersect
   // rect it's going against intersected_rect on that axis.
   // In this case, the response will be the size of respective axis of the intersection,
   // multiplied by the opposite sign of delta_pos.
-  nene_Vec2i delta = nene_Vec2i_zero();
+  nene_Vec2 delta = nene_Vec2_zero();
 
   if (!slides_horizontally && directions.x > 0.0f) {
     delta.x = delta_pos.x > 0.0f ? -intersection.intersection.size.x : intersection.intersection.size.x;
@@ -88,7 +88,7 @@ nene_Collision nene_Collision_rect_with_rect(nene_Rect rect, nene_Rect intersect
 
   return (nene_Collision){
     .collided = true,
-    .delta = nene_Vec2_from_vec2i(delta),
+    .delta = delta,
   };
 }
 
