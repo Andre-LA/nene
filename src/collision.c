@@ -11,12 +11,12 @@ SPDX-License-Identifier: Zlib
 #include "nene/math/vec2.h"
 #include "nene/math/vec2i.h"
 
-static nene_Vec2 nene_impl_Collision_rect_with_segment_get_colliding_corner(nene_Rect rect, nene_Vec2 intersection_midpoint) {
-  const nene_Vec2i corners[4] = {
-    nene_Vec2i_add(rect.pos, (nene_Vec2i){ .x = rect.size.x }),                    // top-right
-    rect.pos,                                                                      // top-left
-    nene_Vec2i_add(rect.pos, (nene_Vec2i){ .y = -rect.size.y }),                   // bottom-left
-    nene_Vec2i_add(rect.pos, (nene_Vec2i){ .x = rect.size.x, .y = -rect.size.y }), // bottom-right
+static nene_Vec2 nene_impl_Collision_rect_with_segment_get_colliding_corner(nene_Rectf rect, nene_Vec2 intersection_midpoint) {
+  const nene_Vec2 corners[4] = {
+    nene_Vec2_add(rect.pos, (nene_Vec2){ .x = rect.size.x }),                    // top-right
+    rect.pos,                                                                    // top-left
+    nene_Vec2_add(rect.pos, (nene_Vec2){ .y = -rect.size.y }),                   // bottom-left
+    nene_Vec2_add(rect.pos, (nene_Vec2){ .x = rect.size.x, .y = -rect.size.y }), // bottom-right
   };
 
   nene_Vec2 near_rect_corner = nene_Vec2_zero();
@@ -24,7 +24,7 @@ static nene_Vec2 nene_impl_Collision_rect_with_segment_get_colliding_corner(nene
 
   // There are four corners, thus we iterate four times.
   for (int i = 0; i < 4; ++i) {
-    const nene_Vec2 corner = nene_Vec2_from_vec2i(corners[i]);
+    const nene_Vec2 corner = corners[i];
     const float len = nene_Vec2_len_sqr(nene_Vec2_sub(intersection_midpoint, corner));
 
     if (len < shortest_len) {
@@ -92,8 +92,8 @@ nene_Collision nene_Collision_no_collision(void) {
   };
 }
 
-nene_Collision nene_Collision_rect_with_segment(nene_Rect rect, nene_Segment segment, nene_Vec2 delta_pos) {
-  nene_IntersectionSegmentWithRect intersection = nene_IntersectionSegmentWithRect_get_intersection(segment, rect);
+nene_Collision nene_Collision_rectf_with_segment(nene_Rectf rect, nene_Segment segment, nene_Vec2 delta_pos) {
+  nene_IntersectionSegmentWithRectf intersection = nene_IntersectionSegmentWithRectf_get_intersection(segment, rect);
 
   if (intersection.count == 0) {
     return nene_Collision_no_collision();

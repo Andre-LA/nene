@@ -12,7 +12,7 @@ local structs = ast_reader.get_structs(symbols, 'nene')
 local funcs = utils.table.imerge(
   ast_reader.get_functions(symbols, 'nene_Intersections'),
   ast_reader.get_functions(symbols, 'nene_IntersectionRectfWithRectf'),
-  ast_reader.get_functions(symbols, 'nene_IntersectionSegmentWithRect'),
+  ast_reader.get_functions(symbols, 'nene_IntersectionSegmentWithRectf'),
   ast_reader.get_functions(symbols, 'nene_IntersectionSegmentWithSegment')
 )
 

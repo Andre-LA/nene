@@ -12,6 +12,9 @@ local ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral', nodecl> = @record{
   sides: [4]Segment,
 }
 
+-- Returns a quadrilateral shape made from a rectanle with floating values.
+function Shape.get_rectf_shape(rect: Rectf): ShapeQuadrilateral <cimport 'nene_Shape_get_rectf_shape', nodecl> end
+
 -- Returns a quadrilateral shape made from a rectanle.
 function Shape.get_rect_shape(rect: Rect): ShapeQuadrilateral <cimport 'nene_Shape_get_rect_shape', nodecl> end
 

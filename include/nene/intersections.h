@@ -10,7 +10,6 @@ SPDX-License-Identifier: Zlib
 
 #include <stdbool.h>
 #include "nene/math/vec2.h"
-#include "nene/math/rect.h"
 #include "nene/math/rectf.h"
 #include "nene/math/segment.h"
 
@@ -21,14 +20,14 @@ typedef struct nene_IntersectionRectfWithRectf {
 } nene_IntersectionRectfWithRectf;
 
 /// Segment with rectangle intersection.
-typedef struct nene_IntersectionSegmentWithRect {
+typedef struct nene_IntersectionSegmentWithRectf {
   uint8_t count;
   nene_Segment intersection;
   /// The intersected "sides" of the rectangle, the first element
   /// it's the one that intersects `intersection.origin`, while the
   /// second element it's the one that intersects `intersection.ending`.
   nene_Segment intersected_rect_sides[2];
-} nene_IntersectionSegmentWithRect;
+} nene_IntersectionSegmentWithRectf;
 
 /// Segment with segment intersection.
 typedef struct nene_IntersectionSegmentWithSegment {
@@ -43,19 +42,19 @@ typedef struct nene_IntersectionSegmentWithSegment {
 bool nene_Intersections_is_intersecting_rectf_with_rectf(nene_Rectf a, nene_Rectf b);
 
 /// Returns if a rectangle is intersecting with a point.
-bool nene_Intersections_is_intersecting_rect_with_point(nene_Rect rect, nene_Vec2i point);
+bool nene_Intersections_is_intersecting_rectf_with_point(nene_Rectf rect, nene_Vec2 point);
 
 /// Returns "no rect with rect intersection" value.
 nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void);
 
 /// Returns "no segment with rect intersection" value.
-nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_no_intersection(void);
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_no_intersection(void);
 
 /// Returns the intersection rectangle between two rectangles.
 nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection(nene_Rectf a, nene_Rectf b);
 
 /// Returns the intersection data between a segment and a rectangle.
-nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_get_intersection(nene_Segment segment, nene_Rect rect);
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_get_intersection(nene_Segment segment, nene_Rectf rect);
 
 /// Returns the intersection data between two segments.
 nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_get_intersection(nene_Segment a, nene_Segment b);

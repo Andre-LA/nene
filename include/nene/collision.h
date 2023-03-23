@@ -10,8 +10,6 @@ SPDX-License-Identifier: Zlib
 
 #include <stdbool.h>
 #include "nene/math/vec2.h"
-#include "nene/math/vec2i.h"
-#include "nene/math/rect.h"
 #include "nene/math/rectf.h"
 #include "nene/math/segment.h"
 
@@ -28,6 +26,6 @@ nene_Collision nene_Collision_no_collision(void);
 nene_Collision nene_Collision_rectf_with_rectf(nene_Rectf a, nene_Rectf b, nene_Vec2 delta_pos);
 
 /// Returns the collision response between a rectangle and a segment.
-nene_Collision nene_Collision_rect_with_segment(nene_Rect rect, nene_Segment segment, nene_Vec2 delta_pos);
+nene_Collision nene_Collision_rectf_with_segment(nene_Rectf rect, nene_Segment segment, nene_Vec2 delta_pos);
 
 #endif // NENE_COLLISIONS_H

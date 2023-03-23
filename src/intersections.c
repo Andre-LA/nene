@@ -19,7 +19,7 @@ bool nene_Intersections_is_intersecting_rectf_with_rectf(nene_Rectf a, nene_Rect
   );
 }
 
-bool nene_Intersections_is_intersecting_rect_with_point(nene_Rect rect, nene_Vec2i point) {
+bool nene_Intersections_is_intersecting_rectf_with_point(nene_Rectf rect, nene_Vec2 point) {
   return point.x >= rect.pos.x && point.x <= rect.pos.x + rect.size.x &&
          point.y <= rect.pos.y && point.y >= rect.pos.y - rect.size.y;
 }
@@ -30,8 +30,8 @@ nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(
   };
 }
 
-nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_no_intersection(void) {
-  return (nene_IntersectionSegmentWithRect){
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_no_intersection(void) {
+  return (nene_IntersectionSegmentWithRectf){
     .count = 0,
   };
 }
@@ -65,9 +65,9 @@ nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection
   };
 }
 
-nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_get_intersection(nene_Segment segment, nene_Rect rect) {
-  nene_IntersectionSegmentWithRect result = nene_IntersectionSegmentWithRect_no_intersection();
-  nene_ShapeQuadrilateral quad_shape = nene_Shape_get_rect_shape(rect);
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_get_intersection(nene_Segment segment, nene_Rectf rect) {
+  nene_IntersectionSegmentWithRectf result = nene_IntersectionSegmentWithRectf_no_intersection();
+  nene_ShapeQuadrilateral quad_shape = nene_Shape_get_rectf_shape(rect);
 
   nene_Vec2 points[2] = { nene_Vec2_zero(), nene_Vec2_zero() };
 
@@ -90,7 +90,7 @@ nene_IntersectionSegmentWithRect nene_IntersectionSegmentWithRect_get_intersecti
   // if there's only one intersection point, then we assign to the second point to the
   // intersecting "tip" (either origin or ending) of the segment.
   if (result.count == 1) {
-    if (nene_Intersections_is_intersecting_rect_with_point(rect, nene_Vec2_to_vec2i(segment.origin))) {
+    if (nene_Intersections_is_intersecting_rectf_with_point(rect, segment.origin)) {
       points[1] = segment.origin;
     }
     else {

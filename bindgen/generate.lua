@@ -23,9 +23,8 @@ local neluagen = nelua.gen.new({
   ['nene_Animation'] = 'Animation',
   ['nene_Animation_Property'] = 'AnimationProperty',
   ['nene_Intersections'] = 'Intersections',
-  ['nene_IntersectionRectWithRect'] = 'RectWithRect',
   ['nene_IntersectionRectfWithRectf'] = 'RectfWithRectf',
-  ['nene_IntersectionSegmentWithRect'] = 'SegmentWithRect',
+  ['nene_IntersectionSegmentWithRectf'] = 'SegmentWithRectf',
   ['nene_IntersectionSegmentWithSegment'] = 'SegmentWithSegment',
   ['nene_Collision'] = 'Collision',
   ['nene_Texture'] = 'Texture',
@@ -332,18 +331,15 @@ local Shape.Quadrilateral = ShapeQuadrilateral
 bind_file('intersections', {
   dependencies = {
     { modname = 'Vec2', path = 'nene.math.vec2' },
-    { modname = 'Vec2i', path = 'nene.math.vec2i' },
-    { modname = 'Rect', path = 'nene.math.rect' },
     { modname = 'Rectf', path = 'nene.math.rectf' },
     { modname = 'Segment', path = 'nene.math.segment' },
-    { modname = 'Shape', path = 'nene.math.shape' },
   },
   prepend = [[
 local Intersections = @record{}
 ]],
   append = [[
 local Intersections.RectfWithRectf = RectfWithRectf
-local Intersections.SegmentWithRect = SegmentWithRect
+local Intersections.SegmentWithRectf = SegmentWithRectf
 local Intersections.SegmentWithSegment = SegmentWithSegment
 ]]
 })
@@ -352,8 +348,6 @@ local Intersections.SegmentWithSegment = SegmentWithSegment
 bind_file('collision', {
   dependencies = {
     { modname = 'Vec2', path = 'nene.math.vec2' },
-    { modname = 'Vec2i', path = 'nene.math.vec2i' },
-    { modname = 'Rect', path = 'nene.math.rect' },
     { modname = 'Rectf', path = 'nene.math.rectf' },
     { modname = 'Segment', path = 'nene.math.segment' },
   },

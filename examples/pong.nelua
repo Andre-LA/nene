@@ -15,6 +15,7 @@ local string = require 'string'
 local Nene = require 'nene.core'
 local Color = require 'nene.color'
 local Rect = require 'nene.math.rect'
+local Rectf = require 'nene.math.rectf'
 local Vec2 = require 'nene.math.vec2'
 local Vec2i = require 'nene.math.vec2i'
 local Intersections = require 'nene.intersections'
@@ -62,16 +63,16 @@ function Racket.init(): Racket
 end
 
 -- return the rect of the racket
-function Racket:get_rect(is_player_one: boolean): Rect
+function Racket:get_rectf(is_player_one: boolean): Rectf
   local anchor_x = SETTINGS.screen_size.x / 2
   local size = SETTINGS.racket.size
 
-  return Rect{
+  return Rectf{
     pos = { 
       x = is_player_one and -anchor_x + 2 or anchor_x - size.x - 2, 
       y = self.pos_y,
     },
-    =size,
+    size = Vec2.from_vec2i(size),
   }
 end
 
@@ -105,7 +106,7 @@ end
 -- draw a racket
 function Racket:draw(is_player_one: boolean)
   local nene = Nene.instance()
-  Nene.render_draw_rect(self:get_rect(is_player_one), false, Color.yellow, true)
+  Nene.render_draw_rect(self:get_rectf(is_player_one):to_rect(), false, Color.yellow, true)
 end
 
 -- ball record
@@ -115,10 +116,10 @@ local Ball = @record{
 }
 
 -- return the ball's rect
-function Ball:get_rect(): Rect
-  return Rect{
-    pos = self.pos:to_vec2i(), 
-    size = Vec2i.one() * SETTINGS.ball.size,
+function Ball:get_rectf(): Rectf
+  return Rectf{
+    pos = self.pos,
+    size = Vec2.one() * SETTINGS.ball.size,
   }
 end
 
@@ -149,11 +150,11 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
   end
 
   -- invert horizontal direction when intersecting rackets
-  local ball_rect = self:get_rect()
-  local r1_rect, r2_rect = racket_1:get_rect(true), racket_2:get_rect(false)
+  local ball_rect = self:get_rectf()
+  local r1_rect, r2_rect = racket_1:get_rectf(true), racket_2:get_rectf(false)
 
-  local r1_intersected, r2_intersected = Intersections.is_intersecting_rect_with_rect(ball_rect, r1_rect),
-                                         Intersections.is_intersecting_rect_with_rect(ball_rect, r2_rect)
+  local r1_intersected, r2_intersected = Intersections.is_intersecting_rectf_with_rectf(ball_rect, r1_rect),
+                                         Intersections.is_intersecting_rectf_with_rectf(ball_rect, r2_rect)
 
   if r1_intersected or r2_intersected then
     self.direction.x = -self.direction.x
@@ -162,7 +163,7 @@ function Ball:update(racket_1: *Racket, racket_2: *Racket, delta_time: number)
 end
 
 function Ball:draw()
-  Nene.render_draw_rect(self:get_rect(), false, Color.white, true)
+  Nene.render_draw_rect(self:get_rectf():to_rect(), false, Color.white, true)
 end
 
 local function update_points(pts_text: *Texture, points: integer, font: Font)

@@ -2,11 +2,8 @@
 ## cinclude '"nene/intersections.h"'
 
 local Vec2 = require 'nene.math.vec2'
-local Vec2i = require 'nene.math.vec2i'
-local Rect = require 'nene.math.rect'
 local Rectf = require 'nene.math.rectf'
 local Segment = require 'nene.math.segment'
-local Shape = require 'nene.math.shape'
 
 local Intersections = @record{}
 
@@ -22,7 +19,7 @@ local RectfWithRectf <cimport 'nene_IntersectionRectfWithRectf', nodecl> = @reco
 -- The intersected "sides" of the rectangle, the first element
 -- it's the one that intersects `intersection.origin`, while the
 -- second element it's the one that intersects `intersection.ending`.
-local SegmentWithRect <cimport 'nene_IntersectionSegmentWithRect', nodecl> = @record{
+local SegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf', nodecl> = @record{
   count: uint8,
   intersection: Segment,
   intersected_rect_sides: [2]Segment,
@@ -41,7 +38,7 @@ local SegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment', nodecl>
 function Intersections.is_intersecting_rectf_with_rectf(a: Rectf, b: Rectf): boolean <cimport 'nene_Intersections_is_intersecting_rectf_with_rectf', nodecl> end
 
 -- Returns if a rectangle is intersecting with a point.
-function Intersections.is_intersecting_rect_with_point(rect: Rect, point: Vec2i): boolean <cimport 'nene_Intersections_is_intersecting_rect_with_point', nodecl> end
+function Intersections.is_intersecting_rectf_with_point(rect: Rectf, point: Vec2): boolean <cimport 'nene_Intersections_is_intersecting_rectf_with_point', nodecl> end
 
 -- Returns "no rect with rect intersection" value.
 function RectfWithRectf.no_intersection(): RectfWithRectf <cimport 'nene_IntersectionRectfWithRectf_no_intersection', nodecl> end
@@ -50,16 +47,16 @@ function RectfWithRectf.no_intersection(): RectfWithRectf <cimport 'nene_Interse
 function RectfWithRectf.get_intersection(a: Rectf, b: Rectf): RectfWithRectf <cimport 'nene_IntersectionRectfWithRectf_get_intersection', nodecl> end
 
 -- Returns "no segment with rect intersection" value.
-function SegmentWithRect.no_intersection(): SegmentWithRect <cimport 'nene_IntersectionSegmentWithRect_no_intersection', nodecl> end
+function SegmentWithRectf.no_intersection(): SegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf_no_intersection', nodecl> end
 
 -- Returns the intersection data between a segment and a rectangle.
-function SegmentWithRect.get_intersection(segment: Segment, rect: Rect): SegmentWithRect <cimport 'nene_IntersectionSegmentWithRect_get_intersection', nodecl> end
+function SegmentWithRectf.get_intersection(segment: Segment, rect: Rectf): SegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf_get_intersection', nodecl> end
 
 -- Returns the intersection data between two segments.
 function SegmentWithSegment.get_intersection(a: Segment, b: Segment): SegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment_get_intersection', nodecl> end
 
 local Intersections.RectfWithRectf = RectfWithRectf
-local Intersections.SegmentWithRect = SegmentWithRect
+local Intersections.SegmentWithRectf = SegmentWithRectf
 local Intersections.SegmentWithSegment = SegmentWithSegment
 
 return Intersections
