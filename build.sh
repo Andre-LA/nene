@@ -28,16 +28,24 @@ then
 LUA=$3
 fi
 
+# echo configuration
 echo "config:"
 echo "C compiler: $CC"
 echo "Object achiver: $AR"
 echo "Lua interpreter: $LUA"
 
+# setup flags
+
+## warning flags
 WFLAGS="-Wall -Wextra -Wpedantic"
+
+# C standard flag
 CSTD="-std=c99"
 
+# include flags
 IFLAGS="-I./include/"
 
+# source files
 SOURCES="src/*.c src/math/*.c src/audio/*.c"
 
 # clear previous build

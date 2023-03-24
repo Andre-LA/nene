@@ -39,7 +39,7 @@ local function game()
 
   More details can be read on the texture_atlas example.
   ]]
-  local ok, spritesheet <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32} })
+  local ok, spritesheet <close> = TextureAtlas.load('../../resources/img_shapes.png', 2, { cell_size = {32, 32} })
   assert(ok, "error: 'img_shapes.png' could not be loaded")
 
 

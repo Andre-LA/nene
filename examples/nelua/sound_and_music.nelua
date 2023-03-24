@@ -20,10 +20,10 @@ local function audio_and_music()
   defer Nene.terminate() end
 
   -- sound and music loading and deferred destroyment
-  local ok, click <close> = Sound.load('resources/pixelclick.wav')
+  local ok, click <close> = Sound.load('../../resources/pixelclick.wav')
   assert(ok , 'could not load pixelclick sound')
   
-  local ok, bossa <close> = Music.load('resources/8bit Bossa.ogg') 
+  local ok, bossa <close> = Music.load('../../resources/8bit Bossa.ogg') 
   assert(ok, 'could not load 8bit Bossa music')
 
   local mus_volume, click_volume = 1.0, 1.0

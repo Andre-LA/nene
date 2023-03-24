@@ -202,7 +202,7 @@ local function game()
   }
 
   -- "monogram_extended" font is available with nene, but it's not loaded automatically.
-  local ok, font <close> = Font.load('resources/monogram_extended.ttf', 72)
+  local ok, font <close> = Font.load('../../resources/monogram_extended.ttf', 72)
   assert(ok, 'could not load monogram_extended font')
 
   -- creates both players texts and then defer it's destroy calls

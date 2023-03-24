@@ -18,7 +18,7 @@ local function texture_atlas_example()
   assert(ok, "nene couldn't be initialized")
 
   --[[
-  First, let's load the "img_shapes" image from "resources", this image contains
+  First, let's load the "img_shapes" image from "../../resources", this image contains
   four shapes with two shapes per-line, aligned on a 32x32 grid:
 
   circle, square,
@@ -30,7 +30,7 @@ local function texture_atlas_example()
   cell_size of grid should be set to { 32, 32}, there's no gap between cells, thus the
   `gap` field isn't set.
   ]]
-  local ok, atlas <close> = TextureAtlas.load('resources/img_shapes.png', 2, { cell_size = {32, 32 }})
+  local ok, atlas <close> = TextureAtlas.load('../../resources/img_shapes.png', 2, { cell_size = {32, 32 }})
   assert(ok, "TextureAtlas texture couldn't be loaded")
 
   -- game loop
