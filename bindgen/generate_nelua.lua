@@ -8,7 +8,7 @@ SPDX-License-Identifier: Zlib
 --[[ nelua ]]--
 local nelua = require 'bindgen.generators.nelua'
 
-local neluagen = nelua.gen.new({
+local typemap = {
   ['nene_Core'] = 'Core',
   ['nene_GamepadState'] = 'GamepadState',
   ['nene_Color'] = 'Color',
@@ -44,7 +44,9 @@ local neluagen = nelua.gen.new({
   ['nene_MusicCreation'] = 'MusicCreation',
   ['nene_Sound'] = 'Sound',
   ['nene_SoundCreation'] = 'SoundCreation',
-})
+}
+
+local neluagen = nelua.gen.new(typemap)
 
 local function bind_file(src, extracontext)
   local lib = require ('bindgen/data/' .. src)

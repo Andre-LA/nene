@@ -94,6 +94,7 @@ dump_ast "color" "nene_Color" "color"
 
 # generate bindings
 echo "generating bindings"
-$LUA bindgen/generate.lua
+echo "generating nelua bindings"
+$LUA bindgen/generate_nelua.lua
 
 echo "done"
