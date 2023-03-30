@@ -10,3 +10,7 @@ SPDX-License-Identifier: Zlib
 nene_Vec2 nene_Segment_as_vec2(nene_Segment segment) {
   return nene_Vec2_sub(segment.ending, segment.origin);
 }
+
+nene_Vec2 nene_Segment_get_center(nene_Segment segment) {
+  return nene_Vec2_lerp(segment.origin, segment.ending, 0.5f);
+}

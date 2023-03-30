@@ -10,32 +10,149 @@ SPDX-License-Identifier: Zlib
 #include "nene/intersections.h"
 #include "nene/math/vec2.h"
 #include "nene/math/vec2i.h"
+#include "nene/core.h"
 
-static nene_Vec2 nene_impl_Collision_rect_with_segment_get_colliding_corner(nene_Rectf rect, nene_Vec2 intersection_midpoint) {
+typedef struct nene_impl_CollidingData {
+  nene_Vec2 corner;
+  nene_Vec2 intersection_perpendicular;
+} nene_impl_CollidingData;
+
+static nene_impl_CollidingData nene_impl_Collision_rect_with_segment_get_colliding_data(nene_Rectf rect, nene_IntersectionSegmentWithRectf intersection) {
+  const int TOP_RIGHT = 0;
+  const int TOP_LEFT = 1;
+  const int BOTTOM_LEFT = 2;
+  const int BOTTOM_RIGHT = 3;
+    
   const nene_Vec2 corners[4] = {
     nene_Vec2_add(rect.pos, (nene_Vec2){ .x = rect.size.x }),                    // top-right
     rect.pos,                                                                    // top-left
     nene_Vec2_add(rect.pos, (nene_Vec2){ .y = -rect.size.y }),                   // bottom-left
     nene_Vec2_add(rect.pos, (nene_Vec2){ .x = rect.size.x, .y = -rect.size.y }), // bottom-right
   };
+  const nene_Vec2 corner_normals[4] = {
+    (nene_Vec2){ .x =  1.0f, .y =  1.0f },// top-right
+    (nene_Vec2){ .x = -1.0f, .y =  1.0f },// top-left
+    (nene_Vec2){ .x = -1.0f, .y = -1.0f },// bottom-left
+    (nene_Vec2){ .x =  1.0f, .y = -1.0f },// bottom-right
+  };
+  const nene_Vec2 rect_center = nene_Rectf_get_center(rect);
+  const nene_Vec2 side0_center = nene_Vec2_sub(nene_Segment_get_center(intersection.intersected_rect_sides[0]), rect_center);
+  const nene_Vec2 side1_center = nene_Vec2_sub(nene_Segment_get_center(intersection.intersected_rect_sides[1]), rect_center);
+  const nene_Vec2 corner_dir = nene_Vec2_add(side0_center, side1_center);
+  nene_Vec2 intersection_perp = nene_Vec2_perpendicular(nene_Segment_as_vec2(intersection.intersection));
+  
+  const bool is_sides_adjacent = nene_Vec2_len_sqr(corner_dir) >= 1.0f;
 
-  nene_Vec2 near_rect_corner = nene_Vec2_zero();
-  float shortest_len = HUGE_VALF;
+  if (is_sides_adjacent) {
+    // if the delta movement direction and the perpendicular points towards similar direction,
+    // then that means that the perpendicular should be negated.
+    if (nene_Vec2_dot(intersection_perp, corner_dir) > 0) {
+      intersection_perp = nene_Vec2_negate(intersection_perp);
+    }
 
-  // There are four corners, thus we iterate four times.
-  for (int i = 0; i < 4; ++i) {
-    const nene_Vec2 corner = corners[i];
-    const float len = nene_Vec2_len_sqr(nene_Vec2_sub(intersection_midpoint, corner));
+    // check top-right
+    if (corner_dir.x > 0.0f && corner_dir.y > 0.0f) {
+      return (nene_impl_CollidingData){
+        .corner = corners[TOP_RIGHT],
+        .intersection_perpendicular = intersection_perp,
+      };
+    }
+    // check top-left
+    else if (corner_dir.x < 0.0f && corner_dir.y > 0.0f) {
+      return (nene_impl_CollidingData){
+        .corner = corners[TOP_LEFT],
+        .intersection_perpendicular = intersection_perp,
+      };
+    }
+    // check bottom-left
+    else if (corner_dir.x < 0.0f && corner_dir.y < 0.0f) {
+      return (nene_impl_CollidingData){
+        .corner = corners[BOTTOM_LEFT],
+        .intersection_perpendicular = intersection_perp,
+      };
+    }
+    // check bottom-right
+    else if (corner_dir.x > 0.0f && corner_dir.y < 0.0f) {
+      return (nene_impl_CollidingData){
+        .corner = corners[BOTTOM_RIGHT],
+        .intersection_perpendicular = intersection_perp,
+      };
+    }
+  }
+  else {
+    int first_corner_idx  = -1;
+    int second_corner_idx = -1;
+    // find the corners to be considered and assign them to first/second_corner_idx variables.
+    {
+      const nene_Vec2 intersection_center = nene_Segment_get_center(intersection.intersection);
+      const nene_Vec2 rc_to_ic = nene_Vec2_sub(intersection_center, rect_center);
+      const nene_Vec2 diff = nene_Vec2_sub(side0_center, side1_center);
+      // if (dx > dy), then the segment intersects the left and the right sides.
+      if (diff.x > diff.y) {
+        if (rc_to_ic.y > 0.0f) {
+          first_corner_idx = TOP_LEFT;
+          second_corner_idx = TOP_RIGHT;
+          // negate the perpendicular if it points away from the corners.
+          if (intersection_perp.y < 0.0f) {
+            intersection_perp= nene_Vec2_negate(intersection_perp);
+          }
+        }
+        else {
+          first_corner_idx = BOTTOM_LEFT;
+          second_corner_idx = BOTTOM_RIGHT;
+          // negate the perpendicular if it points away from the corners.
+          if (intersection_perp.y > 0.0f) {
+            intersection_perp= nene_Vec2_negate(intersection_perp);
+          }
+        }
+      }
+      else {
+        if (rc_to_ic.x > 0.0f) {
+          first_corner_idx = TOP_RIGHT;
+          second_corner_idx = BOTTOM_RIGHT;
+          // negate the perpendicular if it points away from the corners.
+          if (intersection_perp.x < 0.0f) {
+            intersection_perp= nene_Vec2_negate(intersection_perp);
+          }
+        }
+        else {
+          first_corner_idx = TOP_LEFT;
+          second_corner_idx = BOTTOM_LEFT;
+          // negate the perpendicular if it points away from the corners.
+          if (intersection_perp.x > 0.0f) {
+            intersection_perp= nene_Vec2_negate(intersection_perp);
+          }
+        }
+      }
+    }
 
-    if (len < shortest_len) {
-      shortest_len = len;
-      near_rect_corner = corner;
+    // array access with an array of 4 elements, this protects against out-of-bounds problems
+    bool in_bounds = first_corner_idx >= 0 && second_corner_idx >= 0 && first_corner_idx < 4 && second_corner_idx < 4;
+    SDL_assert(in_bounds);
+    if (in_bounds) {
+      const nene_Vec2 first_corner_norm = corner_normals[first_corner_idx];
+      const nene_Vec2 second_corner_norm = corner_normals[second_corner_idx];
+
+      const nene_Vec2 perp_n = nene_Vec2_normalize(intersection_perp);
+      
+      const float dot_first = nene_Vec2_dot(perp_n, first_corner_norm);
+      const float dot_second = nene_Vec2_dot(perp_n, second_corner_norm);
+      
+      int corner_idx = dot_first > dot_second ? first_corner_idx : second_corner_idx;
+      nene_Vec2 corner = corners[corner_idx];
+
+      return (nene_impl_CollidingData){
+        .intersection_perpendicular = intersection_perp,
+        .corner = corner
+      };
     }
   }
 
-  return near_rect_corner;
+  // TODO: mark this line as unreachable, because it shouldn't never return Vec2(0)
+  return (nene_impl_CollidingData) {
+    .corner = nene_Vec2_zero(),
+  };  
 }
-
 
 nene_Collision nene_Collision_no_collision(void) {
   return (nene_Collision){
@@ -44,7 +161,7 @@ nene_Collision nene_Collision_no_collision(void) {
   };
 }
 
-  nene_Collision nene_Collision_rectf_with_rectf(nene_Rectf rect, nene_Rectf intersected_rect, nene_Vec2 delta_pos) {
+nene_Collision nene_Collision_rectf_with_rectf(nene_Rectf rect, nene_Rectf intersected_rect, nene_Vec2 delta_pos) {
   // first, get the intersection between rectangles
   const nene_IntersectionRectfWithRectf intersection = nene_IntersectionRectfWithRectf_get_intersection(rect, intersected_rect);
 
@@ -150,35 +267,21 @@ nene_Collision nene_Collision_rectf_with_segment(nene_Rectf rect, nene_Segment s
         };        
       }
       case 2: {
-        const nene_Vec2 intersection_midpoint = nene_Vec2_lerp(
-          intersection.intersection.origin,
-          intersection.intersection.ending,
-          0.5f
-        );
-        const nene_Vec2 segment_perpendicular = nene_Vec2_perpendicular(
-          nene_Segment_as_vec2(segment)
-        );
-        const nene_Vec2 rect_corner = 
-          nene_impl_Collision_rect_with_segment_get_colliding_corner(rect, intersection_midpoint);
-        const float perpendicular_scalar = (
-          // dot(segment_perpendicular, intersection_midpoint - rect_corner) > 0 ? 1.0 : -1.0
-          nene_Vec2_dot(
-            segment_perpendicular, nene_Vec2_sub(intersection_midpoint, rect_corner)
-          ) > 0 ? 1.0f : -1.0f
-        );
+        const nene_impl_CollidingData colliding_data =
+          nene_impl_Collision_rect_with_segment_get_colliding_data(rect, intersection);
+
         const nene_Segment response_segment = (nene_Segment){
-          .origin = rect_corner,
-          .ending = nene_Vec2_add(
-            rect_corner, 
-            nene_Vec2_scale(segment_perpendicular, perpendicular_scalar)
-          ),
+          .origin = colliding_data.corner,
+          .ending = nene_Vec2_add(colliding_data.corner, colliding_data.intersection_perpendicular),
         };
-        const nene_IntersectionSegmentWithSegment response_intersection = 
+        const nene_IntersectionSegmentWithSegment response_intersection =
           nene_IntersectionSegmentWithSegment_get_intersection(response_segment, segment);
+
+        nene_Vec2 delta = nene_Vec2_sub(response_intersection.point, colliding_data.corner);
 
         return (nene_Collision){
           .collided = true,
-          .delta = nene_Vec2_sub(response_intersection.point, rect_corner)
+          .delta = delta,
         };
       }
     }

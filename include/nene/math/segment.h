@@ -16,5 +16,6 @@ typedef struct nene_Segment {
 } nene_Segment;
 
 nene_Vec2 nene_Segment_as_vec2(nene_Segment segment);
+nene_Vec2 nene_Segment_get_center(nene_Segment segment);
 
 #endif // NENE_SEGMENT_H

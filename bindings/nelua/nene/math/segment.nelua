@@ -13,4 +13,7 @@ local Segment <cimport 'nene_Segment', nodecl> = @record{
 
 function Segment.as_vec2(segment: Segment): Vec2 <cimport 'nene_Segment_as_vec2', nodecl> end
 
+
+function Segment.get_center(segment: Segment): Vec2 <cimport 'nene_Segment_get_center', nodecl> end
+
 return Segment
