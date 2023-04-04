@@ -15,7 +15,16 @@ typedef struct nene_Segment {
   nene_Vec2 ending;
 } nene_Segment;
 
+/// Returns the segment as 2D vector.
 nene_Vec2 nene_Segment_as_vec2(nene_Segment segment);
-nene_Vec2 nene_Segment_get_center(nene_Segment segment);
+
+/// Get the midpoint (or middle point) of the segment.
+nene_Vec2 nene_Segment_get_midpoint(nene_Segment segment);
+
+/// Get the squared length of the segment.
+float nene_Segment_len_sqr(nene_Segment segment);
+
+/// Get the length of the segment.
+float nene_Segment_len(nene_Segment segment);
 
 #endif // NENE_SEGMENT_H
