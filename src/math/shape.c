@@ -30,3 +30,19 @@ nene_ShapeQuadrilateral nene_Shape_get_rectf_shape(nene_Rectf rect) {
 nene_ShapeQuadrilateral nene_Shape_get_rect_shape(nene_Rect rect) {
   return nene_Shape_get_rectf_shape(nene_Rectf_from_rect(rect));
 }
+
+nene_Segment nene_Shape_get_rectf_diagonal(nene_Rectf rect, bool up_to_down) {
+  nene_Vec2 first_corner = {
+    .x = rect.pos.x,
+    .y = up_to_down ? rect.pos.y : rect.pos.y - rect.size.y,
+  };
+  nene_Vec2 second_corner = {
+    .x = rect.pos.x + rect.size.x,
+    .y = up_to_down ? rect.pos.y - rect.size.y : rect.pos.y,
+  };
+  
+  return (nene_Segment){
+    .origin = first_corner,
+    .ending = second_corner,
+  };
+}

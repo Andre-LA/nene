@@ -18,6 +18,11 @@ function Shape.get_rectf_shape(rect: Rectf): ShapeQuadrilateral <cimport 'nene_S
 -- Returns a quadrilateral shape made from a rectanle.
 function Shape.get_rect_shape(rect: Rect): ShapeQuadrilateral <cimport 'nene_Shape_get_rect_shape', nodecl> end
 
+-- Returns the diagonal of a rectangle as a segment,
+-- with direction that's horizontally left-to-right, while the vertical direction it's given
+-- on the `up_to_down` boolean parameter.
+function Shape.get_rectf_diagonal(rect: Rectf, up_to_down: boolean): Segment <cimport 'nene_Shape_get_rectf_diagonal', nodecl> end
+
 local Shape.Quadrilateral = ShapeQuadrilateral
 
 return Shape
