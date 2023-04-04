@@ -8,6 +8,8 @@ SPDX-License-Identifier: Zlib
 #include <math.h>
 #include "nene/collision.h"
 #include "nene/intersections.h"
+#include "nene/math/segment.h"
+#include "nene/math/shape.h"
 #include "nene/math/vec2.h"
 #include "nene/math/vec2i.h"
 #include "nene/core.h"
@@ -17,35 +19,39 @@ typedef struct nene_impl_CollidingData {
   nene_Vec2 intersection_perpendicular;
 } nene_impl_CollidingData;
 
+// This function receives the intersected rectangle and the intersection.
+// It returns which corner of the rectangle should be used to produce the response,
+// alongside with the perpendicular of the intersection that'll intersects the intersection segment (in order to produce the response delta).
 static nene_impl_CollidingData nene_impl_Collision_rect_with_segment_get_colliding_data(nene_Rectf rect, nene_IntersectionSegmentWithRectf intersection) {
+  // indexes of each corner
   const int TOP_RIGHT = 0;
   const int TOP_LEFT = 1;
   const int BOTTOM_LEFT = 2;
   const int BOTTOM_RIGHT = 3;
-    
+
+  // position of each corner
   const nene_Vec2 corners[4] = {
     nene_Vec2_add(rect.pos, (nene_Vec2){ .x = rect.size.x }),                    // top-right
     rect.pos,                                                                    // top-left
     nene_Vec2_add(rect.pos, (nene_Vec2){ .y = -rect.size.y }),                   // bottom-left
     nene_Vec2_add(rect.pos, (nene_Vec2){ .x = rect.size.x, .y = -rect.size.y }), // bottom-right
   };
+  // These normals points outside the rectangle.
   const nene_Vec2 corner_normals[4] = {
-    (nene_Vec2){ .x =  1.0f, .y =  1.0f },// top-right
-    (nene_Vec2){ .x = -1.0f, .y =  1.0f },// top-left
-    (nene_Vec2){ .x = -1.0f, .y = -1.0f },// bottom-left
-    (nene_Vec2){ .x =  1.0f, .y = -1.0f },// bottom-right
+    (nene_Vec2){ .x =  1.0f, .y =  1.0f }, // top-right
+    (nene_Vec2){ .x = -1.0f, .y =  1.0f }, // top-left
+    (nene_Vec2){ .x = -1.0f, .y = -1.0f }, // bottom-left
+    (nene_Vec2){ .x =  1.0f, .y = -1.0f }, // bottom-right
   };
   const nene_Vec2 rect_center = nene_Rectf_get_center(rect);
-  const nene_Vec2 side0_center = nene_Vec2_sub(nene_Segment_get_center(intersection.intersected_rect_sides[0]), rect_center);
-  const nene_Vec2 side1_center = nene_Vec2_sub(nene_Segment_get_center(intersection.intersected_rect_sides[1]), rect_center);
+  const nene_Vec2 side0_center = nene_Vec2_sub(nene_Segment_get_midpoint(intersection.intersected_rect_sides[0]), rect_center);
+  const nene_Vec2 side1_center = nene_Vec2_sub(nene_Segment_get_midpoint(intersection.intersected_rect_sides[1]), rect_center);
   const nene_Vec2 corner_dir = nene_Vec2_add(side0_center, side1_center);
   nene_Vec2 intersection_perp = nene_Vec2_perpendicular(nene_Segment_as_vec2(intersection.intersection));
   
   const bool is_sides_adjacent = nene_Vec2_len_sqr(corner_dir) >= 1.0f;
 
   if (is_sides_adjacent) {
-    // if the delta movement direction and the perpendicular points towards similar direction,
-    // then that means that the perpendicular should be negated.
     if (nene_Vec2_dot(intersection_perp, corner_dir) > 0) {
       intersection_perp = nene_Vec2_negate(intersection_perp);
     }
@@ -84,7 +90,7 @@ static nene_impl_CollidingData nene_impl_Collision_rect_with_segment_get_collidi
     int second_corner_idx = -1;
     // find the corners to be considered and assign them to first/second_corner_idx variables.
     {
-      const nene_Vec2 intersection_center = nene_Segment_get_center(intersection.intersection);
+      const nene_Vec2 intersection_center = nene_Segment_get_midpoint(intersection.intersection);
       const nene_Vec2 rc_to_ic = nene_Vec2_sub(intersection_center, rect_center);
       const nene_Vec2 diff = nene_Vec2_sub(side0_center, side1_center);
       // if (dx > dy), then the segment intersects the left and the right sides.
@@ -142,13 +148,13 @@ static nene_impl_CollidingData nene_impl_Collision_rect_with_segment_get_collidi
       nene_Vec2 corner = corners[corner_idx];
 
       return (nene_impl_CollidingData){
-        .intersection_perpendicular = intersection_perp,
+        .intersection_perpendicular = nene_Vec2_negate(intersection_perp),
         .corner = corner
       };
     }
   }
 
-  // TODO: mark this line as unreachable, because it shouldn't never return Vec2(0)
+  // NOTE: This line should be unreachable
   return (nene_impl_CollidingData) {
     .corner = nene_Vec2_zero(),
   };  
@@ -212,7 +218,7 @@ nene_Collision nene_Collision_rectf_with_rectf(nene_Rectf rect, nene_Rectf inter
 nene_Collision nene_Collision_rectf_with_segment(nene_Rectf rect, nene_Segment segment, nene_Vec2 delta_pos) {
   nene_IntersectionSegmentWithRectf intersection = nene_IntersectionSegmentWithRectf_get_intersection(segment, rect);
 
-  if (intersection.count == 0) {
+  if (intersection.count == 0 || nene_Segment_len_sqr(intersection.intersection) == 0.0f) {
     return nene_Collision_no_collision();
   } 
   else {
@@ -272,10 +278,24 @@ nene_Collision nene_Collision_rectf_with_segment(nene_Rectf rect, nene_Segment s
 
         const nene_Segment response_segment = (nene_Segment){
           .origin = colliding_data.corner,
-          .ending = nene_Vec2_add(colliding_data.corner, colliding_data.intersection_perpendicular),
+          .ending = nene_Vec2_add(
+            colliding_data.corner,
+            nene_Vec2_scale(
+             nene_Vec2_normalize(colliding_data.intersection_perpendicular),
+             nene_Vec2_len(nene_Segment_as_vec2(nene_Shape_get_rectf_diagonal(rect, false))) + 1.0f
+            )
+          )
         };
         const nene_IntersectionSegmentWithSegment response_intersection =
           nene_IntersectionSegmentWithSegment_get_intersection(response_segment, segment);
+
+        // NOTE: This intersection it's expected to happen, when it doesn't, a "very wrong" delta it's returned.
+        // As a counter-measurement no collision is returned.
+        if (!response_intersection.intersected) {
+          // FIXME: unfortunately there are some corner cases where the algorithm doesn't works and no intersection
+          // it's done, see issue #30: https://github.com/Andre-LA/nene/issues/30
+          return nene_Collision_no_collision();
+        }
 
         nene_Vec2 delta = nene_Vec2_sub(response_intersection.point, colliding_data.corner);
 
