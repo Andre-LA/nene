@@ -95,6 +95,8 @@ local record Node
   end
 end
 
+-- TODO: remove these aliases and use function fields on record's declarations
+
 -- Header
 local Header = Node.Header
 local Header_mt: metatable<Header> = { __index = Header }
