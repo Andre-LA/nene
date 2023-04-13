@@ -7,6 +7,11 @@ SPDX-License-Identifier: Zlib
 
 #include "nene/math/segment.h"
 
+bool nene_Segment_equals(nene_Segment a, nene_Segment b) {
+  return nene_Vec2_equals(a.origin, b.origin) 
+      && nene_Vec2_equals(a.ending, b.ending);
+}
+
 nene_Vec2 nene_Segment_as_vec2(nene_Segment segment) {
   return nene_Vec2_sub(segment.ending, segment.origin);
 }

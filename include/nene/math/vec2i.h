@@ -11,6 +11,7 @@ SPDX-License-Identifier: Zlib
 #include <stdint.h>
 #include <stdbool.h>
 
+/// 2D mathematical vector with `x` and `y` components (using 32-bit integer type, a.k.a. `int32_t`).
 typedef struct nene_Vec2i {
   int32_t x;
   int32_t y;

@@ -1,37 +1,39 @@
-## linklib 'nene'
 ## cinclude '"nene/color.h"'
+
+## cinclude '<SDL2/SDL.h>'
+
 
 require 'nene.raw.sdl2'
 
 
--- Alias to SDL_color
-local Color = @SDL_Color
-
-
-local Color.black: Color <cimport 'nene_Color_black', nodecl>;
-
-
-local Color.white: Color <cimport 'nene_Color_white', nodecl>;
-
-
-local Color.red: Color <cimport 'nene_Color_red', nodecl>;
-
-
-local Color.green: Color <cimport 'nene_Color_green', nodecl>;
-
-
-local Color.blue: Color <cimport 'nene_Color_blue', nodecl>;
-
-
-local Color.yellow: Color <cimport 'nene_Color_yellow', nodecl>;
-
-
-local Color.cyan: Color <cimport 'nene_Color_cyan', nodecl>;
-
-
-local Color.bg: Color <cimport 'nene_Color_bg', nodecl>;
+local Color: type = @SDL_Color
 
 
 function Color.__eq(a: Color, b: Color): boolean <cimport 'nene_Color_equals', nodecl> end
+
+-- The "black" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)
+local Color.black: Color <cimport 'nene_Color_black', nodecl>;
+
+-- The "white" color of nene's palette (`{ .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff }`)
+local Color.white: Color <cimport 'nene_Color_white', nodecl>;
+
+-- The "red" color of nene's palette (`{ .r = 0xff, .g = 0x00, .b = 0x00, .a = 0xff }`)
+local Color.red: Color <cimport 'nene_Color_red', nodecl>;
+
+-- The "green" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0x00, .a = 0xff }`)
+local Color.green: Color <cimport 'nene_Color_green', nodecl>;
+
+-- The "blue" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0xff, .a = 0xff }`)
+local Color.blue: Color <cimport 'nene_Color_blue', nodecl>;
+
+-- The "yellow" color of nene's palette (`{ .r = 0xfc, .g = 0xea, .b = 0x20, .a = 0xff }`)
+local Color.yellow: Color <cimport 'nene_Color_yellow', nodecl>;
+
+-- The "cyan" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0xff, .a = 0xff }`)
+local Color.cyan: Color <cimport 'nene_Color_cyan', nodecl>;
+
+-- The "bg" color of nene's palette (`{ .r = 0x69, .g = 0x46, .b = 0x6b, .a = 0xff }`)
+local Color.bg: Color <cimport 'nene_Color_bg', nodecl>;
+
 
 return Color

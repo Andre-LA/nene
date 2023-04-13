@@ -12,7 +12,6 @@ SPDX-License-Identifier: Zlib
 #include <SDL2/SDL.h>
 
 #include "nene/math/vec2i.h"
-#include "nene/math/vec2.h"
 
 typedef struct nene_Rect {
   nene_Vec2i pos;

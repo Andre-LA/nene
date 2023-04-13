@@ -1,28 +1,31 @@
-## linklib 'nene'
-## cinclude '"nene/math/shape.h"'
+## cinclude '"nene/math/segment.h"'
 
 local Segment = require 'nene.math.segment'
 local Rect = require 'nene.math.rect'
+local Rectf = require 'nene.math.rectf'
+
 
 local Shape = @record{}
 
 
 -- Quadrilateral shape data strucuture, it holds four segments.
 local ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral', nodecl> = @record{
+  
   sides: [4]Segment,
 }
 
 -- Returns a quadrilateral shape made from a rectanle with floating values.
 function Shape.get_rectf_shape(rect: Rectf): ShapeQuadrilateral <cimport 'nene_Shape_get_rectf_shape', nodecl> end
-
 -- Returns a quadrilateral shape made from a rectanle.
 function Shape.get_rect_shape(rect: Rect): ShapeQuadrilateral <cimport 'nene_Shape_get_rect_shape', nodecl> end
-
 -- Returns the diagonal of a rectangle as a segment,
 -- with direction that's horizontally left-to-right, while the vertical direction it's given
 -- on the `up_to_down` boolean parameter.
 function Shape.get_rectf_diagonal(rect: Rectf, up_to_down: boolean): Segment <cimport 'nene_Shape_get_rectf_diagonal', nodecl> end
 
-local Shape.Quadrilateral = ShapeQuadrilateral
 
-return Shape
+local Shape.Quadrilateral: type = @ShapeQuadrilateral
+
+
+
+return Segment

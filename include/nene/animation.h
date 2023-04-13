@@ -12,16 +12,14 @@ SPDX-License-Identifier: Zlib
 #include <stdbool.h>
 
 /// Animation range type, used on Spritesheets
-/// 
-/// The fields are:
-/// - interval: animation speed
-/// - from: starting frame of the animation (inclusive)
-/// - to: ending frame of the animation (inclusive)
-/// - properties: animation properties
 typedef struct nene_Animation {
+  /// animation speed
   uint16_t interval;
+  /// starting frame of the animation (inclusive)
   uint16_t from;
+  /// ending frame of the animation (inclusive)
   uint16_t to;
+  /// animation properties
   bool loop;
 } nene_Animation;
 

@@ -1,62 +1,67 @@
-## linklib 'nene'
 ## cinclude '"nene/intersections.h"'
 
+local Segment = require 'nene.math.segment'
 local Vec2 = require 'nene.math.vec2'
 local Rectf = require 'nene.math.rectf'
-local Segment = require 'nene.math.segment'
+
 
 local Intersections = @record{}
 
 
 -- Rectangle with rectangle intersection.
-local RectfWithRectf <cimport 'nene_IntersectionRectfWithRectf', nodecl> = @record{
+local IntersectionRectfWithRectf <cimport 'nene_IntersectionRectfWithRectf', nodecl> = @record{
+  
   intersected: boolean,
+  
   intersection: Rectf,
 }
 
 -- Segment with rectangle intersection.
--- 
--- The intersected "sides" of the rectangle, the first element
+local IntersectionSegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf', nodecl> = @record{
+  
+  count: uint8,
+  
+  intersection: Segment,
+  -- The intersected "sides" of the rectangle, the first element
 -- it's the one that intersects `intersection.origin`, while the
 -- second element it's the one that intersects `intersection.ending`.
-local SegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf', nodecl> = @record{
-  count: uint8,
-  intersection: Segment,
   intersected_rect_sides: [2]Segment,
 }
 
 -- Segment with segment intersection.
-local SegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment', nodecl> = @record{
+local IntersectionSegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment', nodecl> = @record{
+  
   intersected: boolean,
+  
   is_parallel: boolean,
+  
   point: Vec2,
+  
   a_intersecting_scalar: float32,
+  
   b_intersecting_scalar: float32,
 }
 
 -- Returns if a rect is intersecting with another rect.
 function Intersections.is_intersecting_rectf_with_rectf(a: Rectf, b: Rectf): boolean <cimport 'nene_Intersections_is_intersecting_rectf_with_rectf', nodecl> end
-
 -- Returns if a rectangle is intersecting with a point.
 function Intersections.is_intersecting_rectf_with_point(rect: Rectf, point: Vec2): boolean <cimport 'nene_Intersections_is_intersecting_rectf_with_point', nodecl> end
-
 -- Returns "no rect with rect intersection" value.
-function RectfWithRectf.no_intersection(): RectfWithRectf <cimport 'nene_IntersectionRectfWithRectf_no_intersection', nodecl> end
-
+function IntersectionRectfWithRectf.no_intersection(): IntersectionRectfWithRectf <cimport 'nene_IntersectionRectfWithRectf_no_intersection', nodecl> end
 -- Returns the intersection rectangle between two rectangles.
-function RectfWithRectf.get_intersection(a: Rectf, b: Rectf): RectfWithRectf <cimport 'nene_IntersectionRectfWithRectf_get_intersection', nodecl> end
-
+function IntersectionRectfWithRectf.get_intersection(a: Rectf, b: Rectf): IntersectionRectfWithRectf <cimport 'nene_IntersectionRectfWithRectf_get_intersection', nodecl> end
 -- Returns "no segment with rect intersection" value.
-function SegmentWithRectf.no_intersection(): SegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf_no_intersection', nodecl> end
-
+function IntersectionSegmentWithRectf.no_intersection(): IntersectionSegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf_no_intersection', nodecl> end
 -- Returns the intersection data between a segment and a rectangle.
-function SegmentWithRectf.get_intersection(segment: Segment, rect: Rectf): SegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf_get_intersection', nodecl> end
-
+function IntersectionSegmentWithRectf.get_intersection(segment: Segment, rect: Rectf): IntersectionSegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf_get_intersection', nodecl> end
 -- Returns the intersection data between two segments.
-function SegmentWithSegment.get_intersection(a: Segment, b: Segment): SegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment_get_intersection', nodecl> end
+function IntersectionSegmentWithSegment.get_intersection(a: Segment, b: Segment): IntersectionSegmentWithSegment <cimport 'nene_IntersectionSegmentWithSegment_get_intersection', nodecl> end
 
-local Intersections.RectfWithRectf = RectfWithRectf
-local Intersections.SegmentWithRectf = SegmentWithRectf
-local Intersections.SegmentWithSegment = SegmentWithSegment
+
+local Intersections.RectfWithRectf: type = @IntersectionRectfWithRectf
+local Intersections.SegmentWithRectf: type = @IntersectionSegmentWithRectf
+local Intersections.SegmentWithSegment: type = @IntersectionSegmentWithSegment
+
+
 
 return Intersections

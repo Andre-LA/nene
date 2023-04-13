@@ -1,66 +1,56 @@
-## linklib 'nene'
 ## cinclude '"nene/math/vec2i.h"'
 
 
-
-
+-- 2D mathematical vector with `x` and `y` components (using 32-bit integer type, a.k.a. `int32_t`).
 local Vec2i <cimport 'nene_Vec2i', nodecl> = @record{
+  
   x: int32,
+  
   y: int32,
 }
 
 
 function Vec2i.zero(): Vec2i <cimport 'nene_Vec2i_zero', nodecl> end
 
-
 function Vec2i.one(): Vec2i <cimport 'nene_Vec2i_one', nodecl> end
-
 
 function Vec2i.__eq(a: Vec2i, b: Vec2i): boolean <cimport 'nene_Vec2i_equals', nodecl> end
 
-
 function Vec2i.__add(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_add', nodecl> end
-
 
 function Vec2i.__sub(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_sub', nodecl> end
 
+local function nene_Vec2i_mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mul', nodecl> end
 
-local function Vec2i_mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mul', nodecl> end
-
-
-local function Vec2i_scale(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
-
+local function nene_Vec2i_scale(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
 
 function Vec2i.__unm(v: Vec2i): Vec2i <cimport 'nene_Vec2i_negate', nodecl> end
 
-
 function Vec2i.len_sqr(v: Vec2i): float32 <cimport 'nene_Vec2i_len_sqr', nodecl> end
-
 
 function Vec2i.len(v: Vec2i): float32 <cimport 'nene_Vec2i_len', nodecl> end
 
-
 function Vec2i.lerp(a: Vec2i, b: Vec2i, t: float32): Vec2i <cimport 'nene_Vec2i_lerp', nodecl> end
 
-
 function Vec2i.dot(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_dot', nodecl> end
-
 -- note: since this is a 2D vector (or z=0), the cross product returns
 -- the magnitude of the cross product vector instead of the vector itself.
 function Vec2i.cross(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_cross', nodecl> end
 
-
 function Vec2i.perpendicular(v: Vec2i): Vec2i <cimport 'nene_Vec2i_perpendicular', nodecl> end
+
 
 function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): Vec2i
   ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
   ## if a.type == Vec2i.value and b.type == Vec2i.value then -- both are vectors
-    return Vec2i_mul(a, b)
+    return nene_Vec2i_mul(a, b)
   ## elseif a.type.is_scalar then -- b is a vector
-    return Vec2i_scale(b, a)
+    return nene_Vec2i_scale(b, a)
   ## else
-    return Vec2i_scale(a, b)
+    return nene_Vec2i_scale(a, b)
   ## end
 end
+
+
 
 return Vec2i

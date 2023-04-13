@@ -15,6 +15,9 @@ typedef struct nene_Segment {
   nene_Vec2 ending;
 } nene_Segment;
 
+/// tests the equality between two segments
+bool nene_Segment_equals(nene_Segment a, nene_Segment b);
+
 /// Returns the segment as 2D vector.
 nene_Vec2 nene_Segment_as_vec2(nene_Segment segment);
 

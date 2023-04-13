@@ -1,55 +1,55 @@
-## linklib 'nene'
 ## cinclude '"nene/texture_atlas.h"'
 
 local Grid = require 'nene.math.grid'
+local Vec2 = require 'nene.math.vec2'
 local Texture = require 'nene.texture'
 local Vec2i = require 'nene.math.vec2i'
-local Vec2 = require 'nene.math.vec2'
-
 
 
 local TextureAtlas <cimport 'nene_TextureAtlas', nodecl> = @record{
+  
   width: uint16,
+  
   grid: Grid,
+  
   texture: Texture,
 }
 
 
 local TextureAtlasCreation <cimport 'nene_TextureAtlasCreation', nodecl> = @record{
+  
   created: boolean,
+  
   texture_atlas: TextureAtlas,
 }
 
 
 function TextureAtlas.destroy(texture_atlas: *TextureAtlas): void <cimport 'nene_TextureAtlas_destroy', nodecl> end
 
-
-local function TextureAtlas_load(filepath: cstring, width: uint16, grid: Grid): TextureAtlasCreation <cimport 'nene_TextureAtlas_load', nodecl> end
-
+local function nene_TextureAtlas_load(filepath: cstring, width: uint16, grid: Grid): TextureAtlasCreation <cimport 'nene_TextureAtlas_load', nodecl> end
 
 function TextureAtlas.draw_sub_texture(texture_atlas: TextureAtlas, subtexture_coord: Vec2i, position: Vec2, is_world_pos: boolean): boolean <cimport 'nene_TextureAtlas_draw_sub_texture', nodecl> end
 
-
 function TextureAtlas.draw_sub_texture_ex(texture_atlas: TextureAtlas, subtexture_coord: Vec2i, position: Vec2, is_world_pos: boolean, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_TextureAtlas_draw_sub_texture_ex', nodecl> end
-
 
 function TextureAtlas.draw_nth_sub_texture(texture_atlas: TextureAtlas, nth: uint32, position: Vec2, is_world_pos: boolean): boolean <cimport 'nene_TextureAtlas_draw_nth_sub_texture', nodecl> end
 
-
 function TextureAtlas.draw_nth_sub_texture_ex(texture_atlas: TextureAtlas, nth: uint32, position: Vec2, is_world_pos: boolean, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_TextureAtlas_draw_nth_sub_texture_ex', nodecl> end
-
 
 function TextureAtlas.get_sub_texture_center(texture_atlas: TextureAtlas): Vec2 <cimport 'nene_TextureAtlas_get_sub_texture_center', nodecl> end
 
-local TextureAtlas.Creation = @TextureAtlasCreation
+
+local TextureAtlas.Creation: type = @TextureAtlasCreation
 
 function TextureAtlas.load(filepath: cstring, width: uint16, grid: Grid): (boolean, TextureAtlas)
-  local texture_atlas_creation: TextureAtlasCreation = TextureAtlas_load(filepath, width, grid)
+  local texture_atlas_creation: TextureAtlasCreation = nene_TextureAtlas_load(filepath, width, grid)
   return texture_atlas_creation.created, texture_atlas_creation.texture_atlas
 end
 
 function TextureAtlas:__close()
   self:destroy()
 end
+
+
 
 return TextureAtlas

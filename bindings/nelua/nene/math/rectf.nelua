@@ -1,40 +1,37 @@
-## linklib 'nene'
 ## cinclude '"nene/math/rectf.h"'
-## cinclude '<SDL2/SDL.h>'
 
-local Vec2 = require 'nene.math.vec2'
+## cinclude '<SDL2/SDL.h>'
 local Rect = require 'nene.math.rect'
+local Vec2 = require 'nene.math.vec2'
+
+
 require 'nene.raw.sdl2'
 
 
 
 local Rectf <cimport 'nene_Rectf', nodecl> = @record{
+  
   pos: Vec2,
+  
   size: Vec2,
 }
 
 
 function Rectf.zero(): Rectf <cimport 'nene_Rectf_zero', nodecl> end
 
-
 function Rectf.to_raw(rect: Rectf): SDL_FRect <cimport 'nene_Rectf_to_raw', nodecl> end
-
 
 function Rectf.__eq(a: Rectf, b: Rectf): boolean <cimport 'nene_Rectf_equals', nodecl> end
 
-
 function Rectf.add_pos(rect: Rectf, pos: Vec2): Rectf <cimport 'nene_Rectf_add_pos', nodecl> end
-
 
 function Rectf.add_size(rect: Rectf, size: Vec2): Rectf <cimport 'nene_Rectf_add_size', nodecl> end
 
-
 function Rectf.get_center(rect: Rectf): Vec2 <cimport 'nene_Rectf_get_center', nodecl> end
-
 
 function Rectf.to_rect(rect: Rectf): Rect <cimport 'nene_Rectf_to_rect', nodecl> end
 
-
 function Rectf.from_rect(rect: Rect): Rectf <cimport 'nene_Rectf_from_rect', nodecl> end
+
 
 return Rectf
