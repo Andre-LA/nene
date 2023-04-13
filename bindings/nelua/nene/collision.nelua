@@ -1,8 +1,8 @@
 ## cinclude '"nene/collision.h"'
 
+local Rectf = require 'nene.math.rectf'
 local Segment = require 'nene.math.segment'
 local Vec2 = require 'nene.math.vec2'
-local Rectf = require 'nene.math.rectf'
 
 -- Collision data structure.
 local Collision <cimport 'nene_Collision', nodecl> = @record{

@@ -1,8 +1,8 @@
 ## cinclude '"nene/intersections.h"'
 
+local Rectf = require 'nene.math.rectf'
 local Segment = require 'nene.math.segment'
 local Vec2 = require 'nene.math.vec2'
-local Rectf = require 'nene.math.rectf'
 
 
 local Intersections = @record{}

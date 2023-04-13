@@ -1,8 +1,8 @@
 ## cinclude '"nene/texture.h"'
 
-local Rect = require 'nene.math.rect'
 ## cinclude '<SDL2/SDL.h>'
 local Color = require 'nene.color'
+local Rect = require 'nene.math.rect'
 local Vec2 = require 'nene.math.vec2'
 
 

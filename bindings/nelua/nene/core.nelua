@@ -1,9 +1,9 @@
 ## cinclude '"nene/core.h"'
 
 ## cinclude '<SDL2/SDL.h>'
-local Vec2 = require 'nene.math.vec2'
-local Rect = require 'nene.math.rect'
 local Color = require 'nene.color'
+local Rect = require 'nene.math.rect'
+local Vec2 = require 'nene.math.vec2'
 local Vec2i = require 'nene.math.vec2i'
 
 

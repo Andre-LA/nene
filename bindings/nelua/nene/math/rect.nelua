@@ -1,7 +1,7 @@
 ## cinclude '"nene/math/rect.h"'
 
-local Vec2i = require 'nene.math.vec2i'
 ## cinclude '<SDL2/SDL.h>'
+local Vec2i = require 'nene.math.vec2i'
 
 
 require 'nene.raw.sdl2'

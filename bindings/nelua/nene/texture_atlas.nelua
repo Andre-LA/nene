@@ -1,8 +1,8 @@
 ## cinclude '"nene/texture_atlas.h"'
 
 local Grid = require 'nene.math.grid'
-local Vec2 = require 'nene.math.vec2'
 local Texture = require 'nene.texture'
+local Vec2 = require 'nene.math.vec2'
 local Vec2i = require 'nene.math.vec2i'
 
 

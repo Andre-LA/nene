@@ -1,8 +1,8 @@
 ## cinclude '"nene/math/segment.h"'
 
-local Segment = require 'nene.math.segment'
 local Rect = require 'nene.math.rect'
 local Rectf = require 'nene.math.rectf'
+local Segment = require 'nene.math.segment'
 
 
 local Shape = @record{}

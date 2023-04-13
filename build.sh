@@ -13,7 +13,7 @@
 # you can also change the C compiler or object archiver by
 # passing arguments, like: "$ sh build.sh emcc emar"
 #
-# note: currently only clang with llvm-ar, and emcc with emar are tested.
+# Note: currently only clang with llvm-ar, and emcc with emar are tested.
 
 # utils
 build_log() {
@@ -43,13 +43,13 @@ build_log "Object achiver: $AR"
 ## warning flags
 WFLAGS="-Wall -Wextra -Wpedantic"
 
-# C standard flag
+## C standard flag
 CSTD="-std=c99"
 
-# include flags
+## include flags
 IFLAGS="-I./include/"
 
-# source files
+## source files
 SOURCES="src/*.c src/math/*.c src/audio/*.c"
 
 # clear previous build

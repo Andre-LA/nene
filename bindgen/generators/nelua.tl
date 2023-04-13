@@ -5,6 +5,7 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
+local utils = require 'bindgen.utils'
 local Node = require 'bindgen.node'
 local Generator = require 'bindgen.generator'
 local Dependencies = require 'bindgen.dependencies'
@@ -114,8 +115,22 @@ function NeluaGenerator:dependencies(dependencies: Dependencies, wrap_options: G
    end
 
    -- generate required modules or headers
-   for dep_name, dep in pairs(dependencies.dependencies) do
-      table.insert(result, self:dependency(dep_name, dep, wrap_options))
+   local dep_names, _ = utils.kpairs_to_alphabetic_ipairs(dependencies.dependencies)
+   
+   -- generate required headers
+   for _, dep_name in ipairs(dep_names) do
+      local dep = dependencies.dependencies[dep_name]
+      if dep.is_header then
+         table.insert(result, self:dependency(dep_name, dep, wrap_options))
+      end
+   end
+
+   -- generate required modules
+   for _, dep_name in ipairs(dep_names) do
+      local dep = dependencies.dependencies[dep_name]
+      if not dep.is_header then
+         table.insert(result, self:dependency(dep_name, dep, wrap_options))
+      end
    end
 
    return table.concat(result, '\n') .. '\n'
