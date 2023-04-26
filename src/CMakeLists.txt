@@ -35,4 +35,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/external
 
 # add linking to the external dependencies (SDL libraries) to the target
 target_link_libraries(${PROJECT_NAME} PUBLIC external_libs)
-target_link_libraries(${PROJECT_NAME} PUBLIC m)
+
+# add linking to libm if necessary
+# context: https://cliutils.gitlab.io/modern-cmake/chapters/features/small.html#little-libraries
+
+find_library(LIB_MATH, m)
+if (${LIB_MATH})
+  target_link_libraries(${PROJECT_NAME} PUBLIC m)
+endif()
