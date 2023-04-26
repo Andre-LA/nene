@@ -38,8 +38,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC external_libs)
 
 # add linking to libm if necessary
 # context: https://cliutils.gitlab.io/modern-cmake/chapters/features/small.html#little-libraries
-
-find_library(LIB_MATH, m)
-if (${LIB_MATH})
-  target_link_libraries(${PROJECT_NAME} PUBLIC m)
+find_library(LIB_MATH m)
+if (LIB_MATH)
+  target_link_libraries(${PROJECT_NAME} PUBLIC ${LIB_MATH})
 endif()
