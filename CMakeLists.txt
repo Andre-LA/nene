@@ -14,13 +14,12 @@ project(
   LANGUAGES C
 )
 
-# set the C standard, be sure to review compile_flags.txt file too.
+# set the C standard, be sure to follow what's written on compile_flags.txt file.
+# NOTE: if you change this, be sure to update the same setting examples/c/CMakeLists.txt
 set(CMAKE_C_STANDARD_REQUIRED 99)
 
-add_library(${PROJECT_NAME} STATIC)
+add_library(libnene STATIC)
 
 # add the src and external directories on the building procedure
 add_subdirectory(external)
 add_subdirectory(src)
-add_subdirectory(examples/c)
-
