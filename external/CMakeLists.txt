@@ -28,11 +28,11 @@ add_library(external_libs INTERFACE)
 # adding linking to the SDL libraries to the project build.
 # context: https://wiki.libsdl.org/SDL2/README/cmake
 if(TARGET SDL2::SDL2main)
-  target_link_libraries(libnene INTERFACE SDL2::SDL2main)
+  target_link_libraries(nene INTERFACE SDL2::SDL2main)
 endif()
 
-target_link_libraries(libnene INTERFACE SDL2::SDL2)
-target_link_libraries(libnene INTERFACE SDL2_image::SDL2_image)
-target_link_libraries(libnene INTERFACE SDL2_mixer::SDL2_mixer)
-target_link_libraries(libnene INTERFACE SDL2_ttf::SDL2_ttf)
+target_link_libraries(nene INTERFACE SDL2::SDL2)
+target_link_libraries(nene INTERFACE SDL2_image::SDL2_image)
+target_link_libraries(nene INTERFACE SDL2_mixer::SDL2_mixer)
+target_link_libraries(nene INTERFACE SDL2_ttf::SDL2_ttf)
 

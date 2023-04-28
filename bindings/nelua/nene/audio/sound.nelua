@@ -1,6 +1,6 @@
 ## cinclude '"nene/audio/sound.h"'
 
-## cinclude '<SDL2/SDL_mixer.h>'
+## cinclude '<SDL_mixer.h>'
 
 
 require 'nene.raw.sdl2_mixer'

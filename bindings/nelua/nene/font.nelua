@@ -1,6 +1,6 @@
 ## cinclude '"nene/font.h"'
 
-## cinclude '<SDL2/SDL_ttf.h>'
+## cinclude '<SDL_ttf.h>'
 local Color = require 'nene.color'
 local Texture = require 'nene.texture'
 local Vec2i = require 'nene.math.vec2i'

@@ -18,8 +18,11 @@ project(
 # NOTE: if you change this, be sure to update the same setting examples/c/CMakeLists.txt
 set(CMAKE_C_STANDARD_REQUIRED 99)
 
-add_library(libnene STATIC)
+add_library(nene STATIC)
 
 # add the src and external directories on the building procedure
 add_subdirectory(external)
 add_subdirectory(src)
+
+# also add examples directory
+add_subdirectory(examples/c)
