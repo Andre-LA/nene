@@ -8,7 +8,7 @@ SPDX-License-Identifier: Zlib
 local Node = require 'bindgen.node'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/math/vec2i.txt', 'nene_Vec2i')
+local symbols = ast_reader.read_file('math/vec2i', 'nene_Vec2i')
 assert(symbols, "no 'symbols' returned")
 
 local structs = ast_reader.get_structs(symbols, 'nene')

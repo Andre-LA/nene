@@ -8,7 +8,7 @@ SPDX-License-Identifier: Zlib
 local Node = require 'bindgen.node'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/math/rectf.txt', 'nene_Rectf')
+local symbols = ast_reader.read_file('math/rectf', 'nene_Rectf')
 assert(symbols, "no 'symbols' returned")
 
 local structs = ast_reader.get_structs(symbols, 'nene')

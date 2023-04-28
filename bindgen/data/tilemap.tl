@@ -9,7 +9,7 @@ local utils = require 'bindgen.utils'
 local Node = require 'bindgen.node'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/tilemap.txt', 'nene_Tilemap')
+local symbols = ast_reader.read_file('tilemap', 'nene_Tilemap')
 assert(symbols, "no 'symbols' returned")
 
 local structs = ast_reader.get_structs(symbols, 'nene')
