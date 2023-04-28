@@ -98,11 +98,9 @@ end
 -- TODO: remove these aliases and use function fields on record's declarations
 
 -- Header
-local Header = Node.Header
-local Header_mt: metatable<Header> = { __index = Header }
-
-function Header.new(init: Header): Header
-  local header --[[<total>]]: Header = {
+local Header_mt: metatable<Node.Header> = { __index = Node.Header }
+function Node.Header.new(init: Node.Header): Node.Header
+  local header --[[<total>]]: Node.Header = {
     header       = assert(init.header      , "you must set 'header' field."),
     is_sysheader = assert(init.is_sysheader, "you must set 'is_sysheader' field."),
   }
@@ -110,11 +108,9 @@ function Header.new(init: Header): Header
 end
 
 -- Struct
-local Struct = Node.Struct
-local Struct_mt: metatable<Struct> = { __index = Struct }
-
-function Struct.new(init: Struct): Struct
-  local struct --[[<total>]]: Struct = {
+local Struct_mt: metatable<Node.Struct> = { __index = Node.Struct }
+function Node.Struct.new(init: Node.Struct): Node.Struct
+  local struct --[[<total>]]: Node.Struct = {
     name     = assert(init.name    , "you must set 'name' field."),
     cname    = assert(init.cname   , "you must set 'cname' field."),
     fields   = assert(init.fields  , "you must set 'fields' field."),
@@ -123,11 +119,10 @@ function Struct.new(init: Struct): Struct
   return setmetatable(struct, Struct_mt)
 end
 
-local StructField = Node.Struct.Field
-local StructField_mt: metatable<StructField> = { __index = StructField }
+local StructField_mt: metatable<Node.Struct.Field> = { __index = Node.Struct.Field }
 
-function StructField.new(init: StructField): StructField
-  local struct_field --[[<total>]]: StructField = {
+function Node.Struct.Field.new(init: Node.Struct.Field): Node.Struct.Field
+  local struct_field --[[<total>]]: Node.Struct.Field = {
     name     = assert(init.name    , "you must set 'name' field."),
     type     = assert(init.type    , "you must set 'type' field."),
     comments = assert(init.comments, "you must set 'comments' field."),
@@ -136,11 +131,10 @@ function StructField.new(init: StructField): StructField
 end
 
 -- Enum
-local Enum = Node.Enum
-local Enum_mt: metatable<Enum> = { __index = Enum }
+local Enum_mt: metatable<Node.Enum> = { __index = Node.Enum }
 
-function Enum.new(init: Enum): Enum
-  local enum_node --[[<total>]]: Enum = {
+function Node.Enum.new(init: Node.Enum): Node.Enum
+  local enum_node --[[<total>]]: Node.Enum = {
     name      = assert(init.name     , "you must set 'name' field."),
     cname     = assert(init.cname    , "you must set 'cname' field."),
     constants = assert(init.constants, "you must set 'constants' field."),
@@ -149,11 +143,10 @@ function Enum.new(init: Enum): Enum
   return setmetatable(enum_node, Enum_mt)
 end
 
-local EnumConstant = Node.Enum.Constant
-local EnumConstant_mt: metatable<EnumConstant> = { __index = EnumConstant }
+local EnumConstant_mt: metatable<Node.Enum.Constant> = { __index = Node.Enum.Constant }
 
-function EnumConstant.new(init: EnumConstant): EnumConstant
-  local enum_constant --[[<total>]]: EnumConstant = {
+function Node.Enum.Constant.new(init: Node.Enum.Constant): Node.Enum.Constant
+  local enum_constant --[[<total>]]: Node.Enum.Constant = {
     name      = assert(init.name    , "you must set 'name' field."),
     value     = assert(init.value   , "you must set 'value' field."),
     comments  = assert(init.comments, "you must set 'comments' field."),
@@ -162,13 +155,10 @@ function EnumConstant.new(init: EnumConstant): EnumConstant
 end
 
 -- Func
-local Func = Node.Func
-local Func_mt: metatable<Func> = {
-  __index = Func,
-}
+local Func_mt: metatable<Node.Func> = { __index = Node.Func }
 
-function Func.new(init: Func): Func
-  local func --[[<total>]]: Func = {
+function Node. Func.new(init: Node.Func): Node.Func
+  local func --[[<total>]]: Node.Func = {
     name     = assert(init.name    , "you must set 'name' field."),
     cname    = assert(init.cname   , "you must set 'cname' field."),
     ret_type = assert(init.ret_type, "you must set 'ret_type' field."),
@@ -179,15 +169,14 @@ function Func.new(init: Func): Func
   return setmetatable(func, Func_mt)
 end
 
-function Func:get_mod_prefix(): string
+function Node.Func:get_mod_prefix(): string
   return (self.cname:gsub('_'..self.name, ''))
 end
 
-local FuncParam = Node.Func.Param
-local FuncParam_mt: metatable<FuncParam> = { __index = FuncParam }
+local FuncParam_mt: metatable<Node.Func.Param> = { __index = Node.Func.Param }
 
-function FuncParam.new(init: FuncParam): FuncParam
-  local fn_param --[[<total>]]: FuncParam = {
+function Node.Func.Param.new(init: Node.Func.Param): Node.Func.Param
+  local fn_param --[[<total>]]: Node.Func.Param = {
     name     = assert(init.name    , "you must set 'name' field."),
     type     = assert(init.type    , "you must set 'type' field."),
     comments = assert(init.comments, "you must set 'comments' field."),
@@ -196,11 +185,10 @@ function FuncParam.new(init: FuncParam): FuncParam
 end
 
 -- GlobalVar
-local GlobalVar = Node.GlobalVar
-local GlobalVar_mt: metatable<GlobalVar> = { __index = GlobalVar }
+local GlobalVar_mt: metatable<Node.GlobalVar> = { __index = Node.GlobalVar }
 
-function GlobalVar.new(init: GlobalVar): GlobalVar
-  local globalvar --[[<total>]]: GlobalVar = {
+function Node.GlobalVar.new(init: Node.GlobalVar): Node.GlobalVar
+  local globalvar --[[<total>]]: Node.GlobalVar = {
     name     = assert(init.name    , "you must set 'name' field."),
     cname    = assert(init.cname   , "you must set 'cname' field."),
     type     = assert(init.type    , "you must set 'type' field."),
@@ -210,11 +198,10 @@ function GlobalVar.new(init: GlobalVar): GlobalVar
 end
 
 -- TypeAlias
-local TypeAlias = Node.TypeAlias
-local TypeAlias_mt: metatable<TypeAlias> = { __index = TypeAlias }
+local TypeAlias_mt: metatable<Node.TypeAlias> = { __index = Node.TypeAlias }
 
-function TypeAlias.new(init: TypeAlias): TypeAlias
-  local typealias --[[<total>]]: TypeAlias = {
+function Node.TypeAlias.new(init: Node.TypeAlias): Node.TypeAlias
+  local typealias --[[<total>]]: Node.TypeAlias = {
     name         = assert(init.name        , "you must set 'name' field."),
     cname        = assert(init.cname       , "you must set 'cname' field."),
     aliased_type = assert(init.aliased_type, "you must set 'aliased_type' field."),
@@ -224,11 +211,10 @@ function TypeAlias.new(init: TypeAlias): TypeAlias
 end
 
 -- File:
-local File = Node.File
-local File_mt: metatable<File> = { __index = File }
+local File_mt: metatable<Node.File> = { __index = Node.File }
 
-function File.new(init: File): File
-  local file --[[<total>]]: File = {
+function Node.File.new(init: Node.File): Node.File
+  local file --[[<total>]]: Node.File = {
     dependencies = assert(init.dependencies, "you must set 'dependencies' field."),
     modname      = assert(init.modname     , "you must set 'modname' field."),
     enums        = assert(init.enums       , "you must set 'enums' field."),
@@ -240,7 +226,7 @@ function File.new(init: File): File
   return setmetatable(file, File_mt)
 end
 
-function File:set_op_overloadings(op_table: {string:Node.Op})
+function Node.File:set_op_overloadings(op_table: {string:Node.Op})
   for _, func in ipairs(self.funcs) do
     if op_table[func.name] then
       func.is_op = op_table[func.name]
