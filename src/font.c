@@ -5,7 +5,7 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "nene/font.h"
 #include "nene/core.h"
 

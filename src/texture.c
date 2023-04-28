@@ -5,8 +5,8 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_render.h>
+#include <SDL_image.h>
+#include <SDL_render.h>
 #include "nene/texture.h"
 #include "nene/core.h"
 

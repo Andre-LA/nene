@@ -9,7 +9,7 @@ SPDX-License-Identifier: Zlib
 #define NENE_COLOR_H
 
 #include <stdbool.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 /// Alias to SDL_color
 typedef SDL_Color nene_Color;

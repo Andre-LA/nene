@@ -9,7 +9,7 @@ local utils = require 'bindgen.utils'
 local Node = require 'bindgen.node'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/intersections.txt', 'nene_IntersectionRectfWithRectf')
+local symbols = ast_reader.read_file('intersections', 'nene_IntersectionRectfWithRectf')
 assert(symbols, "no 'symbols' returned")
 
 local structs = ast_reader.get_structs(symbols, 'nene')

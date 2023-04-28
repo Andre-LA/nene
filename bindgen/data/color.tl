@@ -8,7 +8,7 @@ SPDX-License-Identifier: Zlib
 local Node = require 'bindgen.node'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/color.txt', 'nene_Color')
+local symbols = ast_reader.read_file('color', 'nene_Color')
 assert(symbols, "no 'symbols' returned")
 
 local funcs = ast_reader.get_functions(symbols, 'nene_Color')

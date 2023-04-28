@@ -10,7 +10,7 @@ SPDX-License-Identifier: Zlib
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "nene/math/vec2.h"
 #include "nene/math/rect.h"

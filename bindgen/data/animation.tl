@@ -8,7 +8,7 @@ SPDX-License-Identifier: Zlib
 local Node = require 'bindgen.node'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('build/ast_dumps/animation.txt', 'nene_Animation')
+local symbols = ast_reader.read_file('animation', 'nene_Animation')
 assert(symbols, "no 'symbols' returned")
 
 local enums = ast_reader.get_enums(symbols, 'nene')

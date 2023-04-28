@@ -10,7 +10,7 @@ SPDX-License-Identifier: Zlib
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <SDL2/SDL_mixer.h>
+#include <SDL_mixer.h>
 
 typedef struct nene_Music {
   Mix_Music *raw;

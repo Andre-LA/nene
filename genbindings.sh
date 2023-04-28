@@ -8,73 +8,25 @@
 # tl: the Teal language compiler.
 # You also will need to install a Lua runtime on your system (required by Teal).
 
-# usage: just use the command "$ sh build.sh"
-#
-# you can also change the C compiler or object archiver by
-# passing arguments, like: "$ sh build.sh emcc emar"
-#
-# Note: currently only clang with llvm-ar, and emcc with emar are tested.
+# usage: just use the command "$ sh genbindings.sh"
 
 # utils
-build_log() {
-  echo "nene build log: $1"
+bindgen_log() {
+  echo "nene bindgen log: $1"
 }
 
-# variables
-CC=clang
-AR=llvm-ar
-
-if [ $# -gt 0 ] # C compiler passed
-then
-CC=$1
-fi
-
-if [ $# -gt 1 ] # Object archiver passed
-then
-AR=$2
-fi
-
-# log configuration
-build_log "C compiler: $CC"
-build_log "Object achiver: $AR"
-
-# setup flags
-
-## warning flags
-WFLAGS="-Wall -Wextra -Wpedantic"
-
-## C standard flag
-CSTD="-std=c99"
-
-## include flags
-IFLAGS="-I./include/"
-
-## source files
-SOURCES="src/*.c src/math/*.c src/audio/*.c"
-
 # clear previous build
-build_log "clear previous build"
+bindgen_log "clear previous build"
 
-rm -rf build/
-mkdir build/
-mkdir build/ast_dumps
-mkdir build/ast_dumps/math
-mkdir build/ast_dumps/audio
-
-# compile sources
-build_log "creating object files"
-
-$CC -c $WFLAGS $CSTD $IFLAGS $SOURCES
-mv *.o build/
-
-# archive objects for static linking
-build_log "archiving object files"
-$AR -rcs build/libnene.a build/*.o
+rm -rf dumps/
+mkdir dumps/
+mkdir dumps/math
+mkdir dumps/audio
 
 # dump AST
-build_log "dumping ASTs"
+bindgen_log "dumping ASTs"
 dump_ast() {
-  clang-check include/nene/$1.h -ast-dump -ast-dump-filter=$2 --extra-arg="-fno-color-diagnostics" > build/ast_dumps/$3.txt 
+  clang-check include/nene/$1.h -ast-dump -ast-dump-filter=$2 --extra-arg="-fno-color-diagnostics" > dumps/$3.txt 
 }
 
 dump_ast "core" "nene" "core"
@@ -97,8 +49,11 @@ dump_ast "tilemap" "nene_Tilemap" "tilemap"
 dump_ast "color" "nene_Color" "color"
 
 # generate bindings
-build_log "generating bindings"
-build_log "generating nelua bindings"
+bindgen_log "generating bindings"
+bindgen_log "generating nelua bindings"
 tl run bindgen/generate_nelua.tl
 
-build_log "done"
+# bindgen_log "generating carp bindings"
+# $LUA bindgen/generate_carp.lua
+
+bindgen_log "done"

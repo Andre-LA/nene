@@ -250,12 +250,14 @@ end
 
 local ast_reader = {}
 
-function ast_reader.read_file(filepath: string, modname: string, first_expected_symbol: string): {Symbol}
-   assert(filepath, "expected 'filepath' argument, got nil")
+function ast_reader.read_file(source_file: string, modname: string, first_expected_symbol: string): {Symbol}
+   assert(source_file, "expected 'source_file' argument, got nil")
    assert(modname, "expected 'modname' argument, got nil")
    assert(not first_expected_symbol or #first_expected_symbol > 0, "expected 'first_expected_symbol' argument, got nil")
 
    first_expected_symbol = first_expected_symbol or modname
+
+   local filepath = string.format('dumps/%s.txt', source_file)
 
    local dumping: string = ''
 

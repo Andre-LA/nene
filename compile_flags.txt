@@ -3,3 +3,7 @@
 -Wpedantic
 -std=c99
 -I./include/
+-I./external/SDL/include
+-I./external/SDL_mixer/include
+-I./external/SDL_image
+-I./external/SDL_ttf

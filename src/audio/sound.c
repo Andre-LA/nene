@@ -6,7 +6,7 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/audio/sound.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 Mix_Chunk *nene_Sound_get_raw(nene_Sound sound) {
   SDL_assert(sound.raw != NULL);
