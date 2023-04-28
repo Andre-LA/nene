@@ -13,7 +13,7 @@ if ccinfo.is_emscripten then
 else
   linklib 'SDL2'
 end
-cinclude '<SDL2/SDL.h>'
+cinclude '<SDL.h>'
 ]]
 global function SDL_GetPlatform(): cstring <cimport,nodecl> end
 global FILE: type <cimport,nodecl,forwarddecl> = @record{}

@@ -4,7 +4,7 @@ if ccinfo.is_emscripten then
 else
   linklib 'SDL2_mixer'
 end
-cinclude '<SDL2/SDL_mixer.h>'
+cinclude '<SDL_mixer.h>'
 ]]
 global function Mix_Linked_Version(): *SDL_version <cimport,nodecl> end
 global MIX_InitFlags: type <cimport,nodecl,using> = @enum(cint){

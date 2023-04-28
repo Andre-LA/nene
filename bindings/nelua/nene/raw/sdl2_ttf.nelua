@@ -4,7 +4,7 @@ if ccinfo.is_emscripten then
 else
   linklib 'SDL2_ttf'
 end
-cinclude '<SDL2/SDL_ttf.h>'
+cinclude '<SDL_ttf.h>'
 ]]
 global function TTF_Linked_Version(): *SDL_version <cimport,nodecl> end
 global function TTF_GetFreeTypeVersion(major: *cint, minor: *cint, patch: *cint): void <cimport,nodecl> end

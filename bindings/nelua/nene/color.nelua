@@ -1,6 +1,6 @@
 ## cinclude '"nene/color.h"'
 
-## cinclude '<SDL2/SDL.h>'
+## cinclude '<SDL.h>'
 
 
 require 'nene.raw.sdl2'

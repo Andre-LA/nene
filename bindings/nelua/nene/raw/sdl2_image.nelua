@@ -4,7 +4,7 @@ if ccinfo.is_emscripten then
 else
   linklib 'SDL2_image'
 end
-cinclude '<SDL2/SDL_image.h>'
+cinclude '<SDL_image.h>'
 ]]
 global function IMG_Linked_Version(): *SDL_version <cimport,nodecl> end
 global IMG_InitFlags: type <cimport,nodecl,using> = @enum(cint){
