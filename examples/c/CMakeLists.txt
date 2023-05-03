@@ -19,3 +19,6 @@ set(CMAKE_C_STANDARD_REQUIRED 99)
 # finally, the examples
 add_executable(collisions WIN32 collisions.c)
 target_link_libraries(collisions PRIVATE nene)
+
+add_executable(flappy_circle WIN32 flappy_circle.c)
+target_link_libraries(flappy_circle PRIVATE nene)
