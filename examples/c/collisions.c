@@ -9,7 +9,7 @@ SPDX-License-Identifier: Zlib
 #include "nene/core.h"
 #include "nene/collision.h"
 
-int main(void) {
+int main(int argc, char *argv[]) {
   bool ok = nene_Core_init("collision test", 1280, 720, SDL_WINDOW_SHOWN);
   if (!ok) {
     return EXIT_FAILURE;
