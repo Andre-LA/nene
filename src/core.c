@@ -6,12 +6,12 @@ SPDX-License-Identifier: Zlib
 */
 
 #include <math.h>
-#include <SDL_events.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include "nene/core.h"
 #include <stdio.h>
+#include "SDL_events.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
+#include "SDL_mixer.h"
+#include "nene/core.h"
 
 // define and empty-initialize global variables
 nene_Core _nene_instance = { .quit = false };

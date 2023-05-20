@@ -6,7 +6,7 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/audio/music.h"
-#include <SDL.h>
+#include "SDL.h"
 
 Mix_Music *nene_Music_get_raw(nene_Music music) {
   SDL_assert(music.raw != NULL);
