@@ -10,9 +10,14 @@
 set(SDL2IMAGE_VENDORED ON CACHE BOOL "")
 set(SDL2MIXER_VENDORED ON CACHE BOOL "")
 set(SDL2TTF_VENDORED ON CACHE BOOL "")
-set(SDL2TTF_INSTALL OFF CACHE BOOL "")
-set(SDL2MIXER_INSTALL OFF CACHE BOOL "")
-set(SDL2IMAGE_INSTALL OFF CACHE BOOL "")
+set(SDL2_DISABLE_INSTALL OFF CACHE BOOL "")
+
+set(SDL2IMAGE_SAMPLES OFF CACHE BOOL "")
+set(SDL2TTF_SAMPLES OFF CACHE BOOL "")
+set(SDL2MIXER_SAMPLES OFF CACHE BOOL "")
+
+set(SDL2IMAGE_TESTS OFF CACHE BOOL "")
+set(SDL_TEST OFF CACHE BOOL "")
 
 # Adds the SDL subdirectories, which are git sub-modules,
 # be sure to clone nene with "recurse-submodules" flag, otherwise the SDL
@@ -28,11 +33,10 @@ add_library(external_libs INTERFACE)
 # adding linking to the SDL libraries to the project build.
 # context: https://wiki.libsdl.org/SDL2/README/cmake
 if(TARGET SDL2::SDL2main)
-  target_link_libraries(nene INTERFACE SDL2::SDL2main)
+  target_link_libraries(external_libs INTERFACE SDL2::SDL2main)
 endif()
 
-target_link_libraries(nene INTERFACE SDL2::SDL2)
-target_link_libraries(nene INTERFACE SDL2_image::SDL2_image)
-target_link_libraries(nene INTERFACE SDL2_mixer::SDL2_mixer)
-target_link_libraries(nene INTERFACE SDL2_ttf::SDL2_ttf)
-
+target_link_libraries(external_libs INTERFACE SDL2::SDL2)
+target_link_libraries(external_libs INTERFACE SDL2_image::SDL2_image)
+target_link_libraries(external_libs INTERFACE SDL2_mixer::SDL2_mixer)
+target_link_libraries(external_libs INTERFACE SDL2_ttf::SDL2_ttf)

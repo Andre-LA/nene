@@ -9,7 +9,7 @@ SPDX-License-Identifier: Zlib
 #define NENE_CORE_H
 
 #include <stdbool.h>
-#include <SDL.h>
+#include "SDL.h"
 #include "nene/config.h"
 #include "nene/math/vec2.h"
 #include "nene/math/vec2i.h"

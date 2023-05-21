@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Zlib
 
 # This version should match the interval of nene's root CMakeLists.txt
-cmake_minimum_required(VERSION 3.15-3.26)
+cmake_minimum_required(VERSION 3.23-3.26)
 
 # Set the project name, version and language
 project(
@@ -13,9 +13,14 @@ project(
   LANGUAGES C
 )
 
-# set the C standard, be sure to follow what's written on compile_flags.txt file.
-set(CMAKE_C_STANDARD_REQUIRED 99)
-
 # finally, the examples
 add_executable(collisions WIN32 collisions.c)
 target_link_libraries(collisions PRIVATE nene)
+
+# set the C standard properties, 
+# be sure to follow the same standard of nene (see the src/CMakeLists.txt file)
+set_target_properties(collisions PROPERTIES
+  C_STANDARD 99
+  C_STANDARD_REQUIRED YES
+  C_EXTENSIONS NO
+)
