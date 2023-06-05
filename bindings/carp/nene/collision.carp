@@ -1,0 +1,12 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/collision.h\""))
+
+(load "nene/math/rectf.carp")
+(load "nene/math/segment.carp")
+(load "nene/math/vec2.carp")
+
+(register-type Collision "nene_Collision" [collided Bool, delta Vec2])
+(defmodule Collision
+  (register no-collision (Fn [] Collision) "nene_Collision_no_collision")
+  (register rectf-with-rectf (Fn [Rectf Rectf Vec2] Collision) "nene_Collision_rectf_with_rectf")
+  (register rectf-with-segment (Fn [Rectf Segment Vec2] Collision) "nene_Collision_rectf_with_segment")
+)

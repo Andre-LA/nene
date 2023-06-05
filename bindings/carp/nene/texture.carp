@@ -1,0 +1,28 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/texture.h\""))
+
+(Unsafe.preproc (Unsafe.emit-c "#include \"SDL.h\""))
+(load "nene/color.carp")
+(load "nene/math/rect.carp")
+(load "nene/math/vec2.carp")
+
+
+(load "nene/sdl/sdl2.carp")
+
+
+(register-type Texture "nene_Texture" [raw (Ptr SDL_Texture), width Uint16, height Uint16, access SDL_TextureAccess])
+(register-type TextureCreation "nene_TextureCreation" [created Bool, texture Texture])
+(defmodule Texture
+  (register destroy (Fn [(Ptr Texture)] ()) "nene_Texture_destroy")
+  (register get-raw (Fn [Texture] (Ptr SDL_Texture)) "nene_Texture_get_raw")
+  (register apply-raw (Fn [(Ptr Texture) (Ptr SDL_Texture)] Bool) "nene_Texture_apply_raw")
+  (register set-blend-mode (Fn [Texture SDL_BlendMode] Bool) "nene_Texture_set_blend_mode")
+  (register set-color-mod (Fn [Texture Color] Bool) "nene_Texture_set_color_mod")
+  (register create-with-access (Fn [Uint16 Uint16 SDL_TextureAccess] TextureCreation) "nene_Texture_create_with_access")
+  (register create (Fn [Uint16 Uint16] TextureCreation) "nene_Texture_create")
+  (register load (Fn [(Ptr CChar)] TextureCreation) "nene_Texture_load")
+  (register get-full-source-rect (Fn [Texture] Rect) "nene_Texture_get_full_source_rect")
+  (register draw-to-point (Fn [Texture Rect Vec2 Bool] Bool) "nene_Texture_draw_to_point")
+  (register draw-to-rect (Fn [Texture Rect Rect] Bool) "nene_Texture_draw_to_rect")
+  (register draw-to-point-ex (Fn [Texture Rect Vec2 Bool Double Vec2 Bool Bool] Bool) "nene_Texture_draw_to_point_ex")
+  (register draw-to-rect-ex (Fn [Texture Rect Rect Double Vec2 Bool Bool] Bool) "nene_Texture_draw_to_rect_ex")
+)

@@ -1,0 +1,21 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/color.h\""))
+
+(Unsafe.preproc (Unsafe.emit-c "#include \"SDL.h\""))
+
+
+(load "nene/sdl/sdl2.carp")
+
+
+(register-type Color "SDL_Color" [r Uint8, g Uint8, b Uint8, a Uint8])
+
+(defmodule Color
+  (register equals (Fn [Color Color] Bool) "nene_Color_equals")
+  (register black Color "nene_Color_black")
+  (register white Color "nene_Color_white")
+  (register red Color "nene_Color_red")
+  (register green Color "nene_Color_green")
+  (register blue Color "nene_Color_blue")
+  (register yellow Color "nene_Color_yellow")
+  (register cyan Color "nene_Color_cyan")
+  (register bg Color "nene_Color_bg")
+)

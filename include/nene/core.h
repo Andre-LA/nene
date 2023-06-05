@@ -102,6 +102,8 @@ bool nene_Core_get_cursor_visibility(void);
 
 bool nene_Core_set_cursor_visibility(bool visible);
 
+float nene_Core_get_delta_time(void);
+
 nene_Vec2i nene_Core_get_window_size(void);
 
 nene_Vec2 nene_Core_get_screen_center(void);

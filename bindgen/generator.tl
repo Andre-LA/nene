@@ -44,14 +44,15 @@ function Generator:apply_typemap(text: string): string
    text = text:gsub('const ', '')
 
    if text == 'char *' then
-      return 'cstring'
+      return self.typemap['cstring'] or 'cstring'
    end
    
    local ctype, ptr_or_arr = text:match('([%w_]+) ?([%[%]%*%d]*)')
 
-   for T, neluaT in pairs(self.typemap) do
-      if ctype:match('^'..T..'$') then
-         ctype = ctype:gsub(T, neluaT)
+   for T, langT in pairs(self.typemap) do
+      if ctype == T then
+         ctype = langT
+         break
       end
    end
 

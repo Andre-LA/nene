@@ -53,7 +53,7 @@ bindgen_log "generating bindings"
 bindgen_log "generating nelua bindings"
 tl run bindgen/generate_nelua.tl
 
-# bindgen_log "generating carp bindings"
-# $LUA bindgen/generate_carp.lua
+bindgen_log "generating carp bindings"
+tl run bindgen/generate_carp.tl
 
 bindgen_log "done"

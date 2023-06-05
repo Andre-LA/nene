@@ -1,0 +1,12 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/math/segment.h\""))
+
+(load "nene/math/vec2.carp")
+
+(register-type Segment "nene_Segment" [origin Vec2, ending Vec2])
+(defmodule Segment
+  (register equals (Fn [Segment Segment] Bool) "nene_Segment_equals")
+  (register as-vec2 (Fn [Segment] Vec2) "nene_Segment_as_vec2")
+  (register get-midpoint (Fn [Segment] Vec2) "nene_Segment_get_midpoint")
+  (register len-sqr (Fn [Segment] Float) "nene_Segment_len_sqr")
+  (register len (Fn [Segment] Float) "nene_Segment_len")
+)

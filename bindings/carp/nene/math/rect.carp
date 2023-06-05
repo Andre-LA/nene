@@ -1,0 +1,18 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/math/rect.h\""))
+
+(Unsafe.preproc (Unsafe.emit-c "#include \"SDL.h\""))
+(load "nene/math/vec2i.carp")
+
+
+(load "nene/sdl/sdl2.carp")
+
+
+(register-type Rect "nene_Rect" [pos Vec2i, size Vec2i])
+(defmodule Rect
+  (register zero (Fn [] Rect) "nene_Rect_zero")
+  (register to-raw (Fn [Rect] SDL_Rect) "nene_Rect_to_raw")
+  (register equals (Fn [Rect Rect] Bool) "nene_Rect_equals")
+  (register add-pos (Fn [Rect Vec2i] Rect) "nene_Rect_add_pos")
+  (register add-size (Fn [Rect Vec2i] Rect) "nene_Rect_add_size")
+  (register get-center (Fn [Rect] Vec2i) "nene_Rect_get_center")
+)

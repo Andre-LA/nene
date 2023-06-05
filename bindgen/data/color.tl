@@ -23,7 +23,7 @@ assert(global_vars, "no 'global_vars' returned")
 local color = Node.File.new {
    dependencies = {
       dependencies = {
-         ['SDL'] = { '<SDL.h>', is_header = true },
+         ['SDL'] = { '"SDL.h"', is_header = true },
       },
       header = '"nene/color.h"',
    },

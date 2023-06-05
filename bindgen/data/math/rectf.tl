@@ -20,7 +20,7 @@ assert(funcs, "no 'funcs' returned")
 local rectf = Node.File.new {
    dependencies = {
       dependencies = {
-         ['SDL'] = { '<SDL.h>', is_header = true },
+         ['SDL'] = { '"SDL.h"', is_header = true },
          ['Vec2'] = { 'nene', 'math', 'vec2' },
          ['Rect'] = { 'nene', 'math', 'rect' },
       },

@@ -23,7 +23,7 @@ assert(aliases, "no 'aliases' returned")
 local core = Node.File.new {
    dependencies = {
       dependencies = {
-         ['SDL'] = { '<SDL.h>', is_header = true },
+         ['SDL'] = { '"SDL.h"', is_header = true },
          ['Vec2']  = { 'nene', 'math', 'vec2' },
          ['Vec2i'] = { 'nene', 'math', 'vec2i' },
          ['Rect']  = { 'nene', 'math', 'rect' },

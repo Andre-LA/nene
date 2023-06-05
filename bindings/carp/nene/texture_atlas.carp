@@ -1,0 +1,18 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/texture_atlas.h\""))
+
+(load "nene/math/grid.carp")
+(load "nene/texture.carp")
+(load "nene/math/vec2.carp")
+(load "nene/math/vec2i.carp")
+
+(register-type TextureAtlas "nene_TextureAtlas" [width Uint16, grid Grid, texture Texture])
+(register-type TextureAtlasCreation "nene_TextureAtlasCreation" [created Bool, texture_atlas TextureAtlas])
+(defmodule TextureAtlas
+  (register destroy (Fn [(Ptr TextureAtlas)] ()) "nene_TextureAtlas_destroy")
+  (register load (Fn [(Ptr CChar) Uint16 Grid] TextureAtlasCreation) "nene_TextureAtlas_load")
+  (register draw-sub-texture (Fn [TextureAtlas Vec2i Vec2 Bool] Bool) "nene_TextureAtlas_draw_sub_texture")
+  (register draw-sub-texture-ex (Fn [TextureAtlas Vec2i Vec2 Bool Double Vec2 Bool Bool] Bool) "nene_TextureAtlas_draw_sub_texture_ex")
+  (register draw-nth-sub-texture (Fn [TextureAtlas Uint32 Vec2 Bool] Bool) "nene_TextureAtlas_draw_nth_sub_texture")
+  (register draw-nth-sub-texture-ex (Fn [TextureAtlas Uint32 Vec2 Bool Double Vec2 Bool Bool] Bool) "nene_TextureAtlas_draw_nth_sub_texture_ex")
+  (register get-sub-texture-center (Fn [TextureAtlas] Vec2) "nene_TextureAtlas_get_sub_texture_center")
+)

@@ -17,22 +17,22 @@ assert(structs, "no 'structs' returned")
 local funcs = ast_reader.get_functions(symbols, 'nene_Shape')
 assert(funcs, "no 'funcs' returned")
 
-local segment = Node.File.new {
+local shape = Node.File.new {
    dependencies = {
       dependencies = {
          ['Segment'] = { 'nene', 'math', 'segment' },
          ['Rect']    = { 'nene', 'math', 'rect' },
          ['Rectf']   = { 'nene', 'math', 'rectf' },
       },
-      header = '"nene/math/segment.h"',
+      header = '"nene/math/shape.h"',
    },
-   modname = 'Segment',
+   modname = 'Shape',
    enums = {},
    structs = structs,
    funcs = funcs,
    aliases = {},
    global_vars = {},
 }
-assert(segment, "no 'segment' created")
+assert(shape, "no 'shape' created")
 
-return segment
+return shape

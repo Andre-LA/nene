@@ -400,6 +400,13 @@ bool nene_Core_set_cursor_visibility(bool visible) {
   return true;
 }
 
+float nene_Core_get_delta_time(void) {
+  SDL_assert_release(_nene_initialized);
+
+  const nene_Core *const instance = nene_Core_instance();
+  return instance->delta_time;
+}
+
 nene_Vec2i nene_Core_get_window_size(void) {
   SDL_assert_release(_nene_initialized);
 

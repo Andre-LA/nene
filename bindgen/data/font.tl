@@ -23,7 +23,7 @@ assert(enums, "no 'enums' returned")
 local font = Node.File.new {
    dependencies = {
       dependencies = {
-         ['SDL_ttf'] = { '<SDL_ttf.h>', is_header = true },
+         ['SDL_ttf'] = { '"SDL_ttf.h"', is_header = true },
          ['Vec2i']  = { 'nene', 'math', 'vec2i' },
          ['Texture']  = { 'nene', 'texture' },
          ['Color'] = { 'nene', 'color' },

@@ -1,0 +1,7 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/animation.h\""))
+
+
+(register-type Animation "nene_Animation" [interval Uint16, from Uint16, to Uint16, loop Bool])
+(defmodule Animation
+  (register equals (Fn [Animation Animation] Bool) "nene_Animation_equals")
+)

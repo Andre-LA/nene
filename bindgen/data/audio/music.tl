@@ -20,7 +20,7 @@ assert(funcs, "no 'funcs' returned")
 local music = Node.File.new {
    dependencies = {
       dependencies = {
-         ['SDL_mixer'] = { '<SDL_mixer.h>', is_header = true },
+         ['SDL_mixer'] = { '"SDL_mixer.h"', is_header = true },
       },
       header = '"nene/audio/music.h"',
    },

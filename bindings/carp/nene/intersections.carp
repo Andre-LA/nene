@@ -1,0 +1,18 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/intersections.h\""))
+
+(load "nene/math/rectf.carp")
+(load "nene/math/segment.carp")
+(load "nene/math/vec2.carp")
+
+(register-type IntersectionRectfWithRectf "nene_IntersectionRectfWithRectf" [intersected Bool, intersection Rectf])
+(register-type IntersectionSegmentWithRectf "nene_IntersectionSegmentWithRectf")
+(register-type IntersectionSegmentWithSegment "nene_IntersectionSegmentWithSegment" [intersected Bool, is_parallel Bool, point Vec2, a_intersecting_scalar Float, b_intersecting_scalar Float])
+(defmodule Intersections
+  (register is-intersecting-rectf-with-rectf (Fn [Rectf Rectf] Bool) "nene_Intersections_is_intersecting_rectf_with_rectf")
+  (register is-intersecting-rectf-with-point (Fn [Rectf Vec2] Bool) "nene_Intersections_is_intersecting_rectf_with_point")
+  (register no-intersection (Fn [] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_no_intersection")
+  (register get-intersection (Fn [Rectf Rectf] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_get_intersection")
+  ; (register no-intersection (Fn [] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_no_intersection")
+  ; (register get-intersection (Fn [Segment Rectf] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_get_intersection")
+  ; (register get-intersection (Fn [Segment Segment] IntersectionSegmentWithSegment) "nene_IntersectionSegmentWithSegment_get_intersection")
+)

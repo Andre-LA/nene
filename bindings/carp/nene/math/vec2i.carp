@@ -1,0 +1,20 @@
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/math/vec2i.h\""))
+
+
+(register-type Vec2i "nene_Vec2i" [x Int32, y Int32])
+(defmodule Vec2i
+  (register zero (Fn [] Vec2i) "nene_Vec2i_zero")
+  (register one (Fn [] Vec2i) "nene_Vec2i_one")
+  (register equals (Fn [Vec2i Vec2i] Bool) "nene_Vec2i_equals")
+  (register add (Fn [Vec2i Vec2i] Vec2i) "nene_Vec2i_add")
+  (register sub (Fn [Vec2i Vec2i] Vec2i) "nene_Vec2i_sub")
+  (register mul (Fn [Vec2i Vec2i] Vec2i) "nene_Vec2i_mul")
+  (register scale (Fn [Vec2i Float] Vec2i) "nene_Vec2i_scale")
+  (register negate (Fn [Vec2i] Vec2i) "nene_Vec2i_negate")
+  (register len-sqr (Fn [Vec2i] Float) "nene_Vec2i_len_sqr")
+  (register len (Fn [Vec2i] Float) "nene_Vec2i_len")
+  (register lerp (Fn [Vec2i Vec2i Float] Vec2i) "nene_Vec2i_lerp")
+  (register dot (Fn [Vec2i Vec2i] Float) "nene_Vec2i_dot")
+  (register cross (Fn [Vec2i Vec2i] Float) "nene_Vec2i_cross")
+  (register perpendicular (Fn [Vec2i] Vec2i) "nene_Vec2i_perpendicular")
+)
