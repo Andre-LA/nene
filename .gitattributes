@@ -1,1 +1,2 @@
 *.nelua text linguist-language=lua
+*.carp text linguist-language=clojure
