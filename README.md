@@ -21,7 +21,7 @@ Installed externally, like on Visual Studio Installer or your system package man
 - C compiler (tested: Clang, MSVC, GCC)
 - CMake
 - Git
-
+- [Ninja](https://ninja-build.org/) (Optional, but recommended)
 
 ### Generating Nene bindings
 For now this is only expected to work on Linux, better support for Windows will be written, however
@@ -41,8 +41,43 @@ $ sh genbindings.sh
 
 ## Building
 
+First, be sure to install a C compiler and CMake.
+
 > **Note**
-> This section it's still being written.
+>
+> The following steps were reproduced on Fedora Linux 38
+
+---
+
+Clone `nene` with it's dependencies bundled:
+
+```
+$ git clone https://github.com/Andre-LA/nene.git --recurse-submodules
+```
+
+Generate the building template of CMake:
+
+```
+$ cmake -S . -B build -G Ninja
+```
+
+> **Note**
+>
+> To use a different C compiler from the default, append the `CMAKE_C_COMPILER` option, example: `-D CMAKE_C_COMPILER=clang` where `clang` is the C compiler of choice.
+
+Build Nene and it's dependencies:
+
+```
+$ cmake --build build
+```
+
+To properly organize the files, install it to the local `libnene` subdirectory:
+
+```
+$ cmake --install build --prefix libnene
+```
+
+And that's it! Nene development build it's properly done at the `libnene` subdirectory.
 
 ## Usage
 
