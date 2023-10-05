@@ -33,17 +33,5 @@ function Comment:iter_lines(): (function(): integer, string)
 	return ipairs(self.text)
 end
 
-function Comment.from_string(str: string): Comment
-	local com: Comment = Comment.new({
-		text = {},
-	})
-
-	for line in string.gmatch(str, '.-\n') do
-		com:append_line(line)
-	end
-
-	return com
-end
-
 return Comment
 

@@ -310,7 +310,7 @@ local function remove_prefix(original: string, prefix_count: integer): string
 end
 
 local function get_ast_comment(comments: {string}): AST.Comment
-	return AST.Comment.from_string(table.concat(comments, '\n'))
+	return AST.Comment.new({ text = comments })
 end
 
 function ast_reader.get_symbol_func_params(symbol: Symbol): {AST.Func.Param}

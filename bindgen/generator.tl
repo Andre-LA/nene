@@ -5,60 +5,77 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Node = require 'bindgen.node'
+local Utils <const> = require 'bindgen.tools.utils'
+local AST <const> = require 'bindgen.ast.ast'
 
 local record Generator
-   type TypeMap = {string:string}
+	type TypeMap = {string:string}
+	type DepMap = {string:string}
 
-   record WrapOptions
-      prepend: string
-      append: string
-      ignore_overloading: {Node.Op:boolean}
-      privatize: {string:boolean}
-   end
+	record WrapOptions
+		prepend: string
+		append: string
+		ignore_overloading: {AST.Op:boolean}
+		privatize: {string:boolean}
+	end
 
-   typemap: TypeMap
+	typemap: TypeMap
+	depmap: DepMap
 end
 
-local Generator_mt: metatable<Generator> = {
-   __index = Generator
-}
+local Generator_mt: metatable<Generator> = { __index = Generator }
 
-function Generator.new(typemap: Generator.TypeMap): Generator
-   local generator: Generator = {
-      typemap = typemap,
-   }
-   
-   return setmetatable(generator, Generator_mt)
+function Generator.new(typemap: Generator.TypeMap, depmap: Generator.DepMap): Generator
+	local generator: Generator = {
+		typemap = typemap,
+		depmap = depmap,
+	}
+	
+	return setmetatable(generator, Generator_mt)
 end
 
 function Generator.is_system_header(header: string): boolean
-   return string.sub(header, 1, 1) == '<'
+	return string.sub(header, 1, 1) == '<'
 end
 
-function Generator:is_private_func(func: Node.Func, wrap_options: Generator.WrapOptions): boolean
-   return wrap_options.privatize and not not wrap_options.privatize[func.cname]
+function Generator:is_private_func(func: AST.Func, wrap_options: Generator.WrapOptions): boolean
+	return func.meta.is_private or (wrap_options.privatize and not not wrap_options.privatize[func.sym.cname])
+end
+
+-- generate comment lines
+function Generator:gen_comments(comment: AST.Comment, prefix: string, postfix: string, indent: integer): string
+	assert(prefix, "you must pass 'prefix'.")
+	assert(postfix, "you must pass 'postfix'.")
+
+	local result: {string} = {}
+
+	for _, line in comment:iter_lines() do
+		local indent_str = string.rep('	', indent)
+		table.insert(result, string.format("%s%s%s%s", indent_str, prefix, line, postfix))
+	end
+
+	return table.concat(result, '\n')
 end
 
 function Generator:apply_typemap(text: string): string
-   text = text:gsub('const ', '')
+	text = text:gsub('const ', '')
 
-   if text == 'char *' then
-      return self.typemap['cstring'] or 'cstring'
-   end
-   
-   local ctype, ptr_or_arr = text:match('([%w_]+) ?([%[%]%*%d]*)')
+	if text == 'char *' then
+		return self.typemap['cstring']
+	end
+	
+	local ctype, ptr_or_arr = text:match('([%w_]+) ?([%[%]%*%d]*)')
 
-   for T, langT in pairs(self.typemap) do
-      if ctype == T then
-         ctype = langT
-         break
-      end
-   end
+	for T, langT in pairs(self.typemap) do
+		if ctype == T then
+			ctype = langT
+			break
+		end
+	end
 
-   ptr_or_arr = ptr_or_arr:gsub('%[%]', '*[0]')
+	ptr_or_arr = ptr_or_arr:gsub('%[%]', '*[0]')
 
-   return ptr_or_arr .. ctype
+	return ptr_or_arr .. ctype
 end
 
 return Generator
