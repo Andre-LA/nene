@@ -31,12 +31,10 @@ function Vec2i.__add(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_add', nodec
 function Vec2i.__sub(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_sub', nodecl> end
 
 
-
-function Vec2i.__mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mul', nodecl> end
-
+local function nene_Vec2i_mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mul', nodecl> end
 
 
-function Vec2i.__mul(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
+local function nene_Vec2i_scale(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
 
 
 
@@ -67,6 +65,19 @@ function Vec2i.cross(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_cross', n
 
 function Vec2i.perpendicular(v: Vec2i): Vec2i <cimport 'nene_Vec2i_perpendicular', nodecl> end
 
+
+
+
+function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): Vec2i
+	## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
+	## if a.type == Vec2i.value and b.type == Vec2i.value then -- both are vectors
+		return nene_Vec2i_mul(a, b)
+	## elseif a.type.is_scalar then -- b is a vector
+		return nene_Vec2i_scale(b, a)
+	## else
+		return nene_Vec2i_scale(a, b)
+	## end
+end
 
 
 

@@ -90,8 +90,20 @@ end
 
 -- Vec2i
 local Vec2i = require 'bindgen.data.math.vec2i'
-
-bind_file(Vec2i, 'math/vec2i', {})
+bind_file(Vec2i, 'math/vec2i', {
+	append = [[
+function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): Vec2i
+	## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
+	## if a.type == Vec2i.value and b.type == Vec2i.value then -- both are vectors
+		return nene_Vec2i_mul(a, b)
+	## elseif a.type.is_scalar then -- b is a vector
+		return nene_Vec2i_scale(b, a)
+	## else
+		return nene_Vec2i_scale(a, b)
+	## end
+end
+]]
+})
 --   ignore_overloading = {
 --     ['*'] = true 
 --   },

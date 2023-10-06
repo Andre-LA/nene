@@ -19,14 +19,19 @@ local funcs = ast_reader.get_functions(symbols, 'nene_Vec2i')
 assert(funcs, "no 'funcs' returned")
 
 AstCommon.set_op_overloading_functions(funcs, {
-   ['nene_Vec2i_equals'] = '==',
-   ['nene_Vec2i_add'] = '+',
-   ['nene_Vec2i_sub'] = '-',
-	-- TODO: make a wrapper of this
-   ['nene_Vec2i_mul'] = '*',
-   ['nene_Vec2i_scale'] = '*',
-   ['nene_Vec2i_negate'] = '-u',
+	['nene_Vec2i_equals'] = '==',
+	['nene_Vec2i_add'] = '+',
+	['nene_Vec2i_sub'] = '-',
+	['nene_Vec2i_negate'] = '-u',
 })
+
+AstCommon.set_on_functions(
+	funcs,
+	{ 'nene_Vec2i_mul', 'nene_Vec2i_scale' },
+	function(fn: AST.Func): any
+		fn.meta.is_private = true
+	end
+)
 
 local vec2i = AST.Module.new {
 	name = 'Vec2i',

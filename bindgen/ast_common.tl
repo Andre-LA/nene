@@ -32,6 +32,7 @@ end
 
 function AstCommon.set_maybe_functions(functions: {AST.Func}, maybe_functions: { {{AST.Struct}, string, AST.Func.Meta.MaybeWrap} })
 	assert(functions, "'functions' must be given")
+	assert(maybe_functions, "'maybe_functions' must be given")
 
 	for i, maybe_fn in ipairs(maybe_functions) do
 		local structs = assert(
@@ -70,6 +71,7 @@ end
 
 function AstCommon.set_op_overloading_functions(functions: {AST.Func}, op_functions: {string:AST.Op})
 	assert(functions, "'functions' must be given")
+	assert(op_functions, "'op_functions' must be given")
 
 	for fn_name, fn_op in pairs(op_functions) do
 		Utils.find_and_call(
@@ -81,6 +83,20 @@ function AstCommon.set_op_overloading_functions(functions: {AST.Func}, op_functi
 			function(fn: AST.Func): any
 				fn:set_as_op_overloading_function(fn_op)
 			end
+		)
+	end
+end
+
+function AstCommon.set_on_functions(functions: {AST.Func}, fn_names: {string}, callback: function(AST.Func): any)
+	assert(functions, "'functions' must be given")
+	assert(fn_names, "'fn_names' must be given")
+
+	for _, fn_name in ipairs(fn_names) do
+		Utils.find_and_call(
+			functions,
+			fn_name,
+			function (fn: AST.Func): string return fn.sym.cname end,
+			callback
 		)
 	end
 end
