@@ -69,6 +69,5 @@ function Vec2i.perpendicular(v: Vec2i): Vec2i <cimport 'nene_Vec2i_perpendicular
 
 
 
-local Vec2i.Vec2i: type = Vec2i
 
 return Vec2i

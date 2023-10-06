@@ -343,12 +343,16 @@ function NeluaGenerator:module(module: AST.Module, wrap_options: Generator.WrapO
 
 	-- generate enumerations
 	for _, enum in ipairs(module.enums) do
-		table.insert(result, fmt('local %s.%s: type = %s', module.name, enum.sym.name, enum.sym.name))
+		if enum.sym.name ~= module.name then 
+			table.insert(result, fmt('local %s.%s: type = %s', module.name, enum.sym.name, enum.sym.name))
+		end
 	end
 
 	-- generate structs
 	for _, struct in ipairs(module.structs) do
-		table.insert(result, fmt('local %s.%s: type = %s', module.name, struct.sym.name, struct.sym.name))
+		if struct.sym.name ~= module.name then 
+			table.insert(result, fmt('local %s.%s: type = %s', module.name, struct.sym.name, struct.sym.name))
+		end
 	end
 
 	-- generate module return
