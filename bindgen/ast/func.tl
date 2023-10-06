@@ -23,7 +23,7 @@ local record Func
 	record Meta
 		enum Kind
 			'default'
-			'operator-overloading'
+			'op-overloading'
 			'maybe'
 		end
 
@@ -35,7 +35,7 @@ local record Func
 
 		kind: Kind
 		is_private: boolean
-		operator_overloading: Op
+		op_overloading: Op
 		maybe_func: MaybeWrap
 	end
 
@@ -69,7 +69,8 @@ end
 function Func.Meta.new(init: Func.Meta): Func.Meta
 	local param: Func.Meta = {
 		kind = init.kind or 'default',
-		operator_overloading = init.operator_overloading, -- optional!
+		is_private = init.is_private or false,
+		op_overloading = init.op_overloading, -- optional!
 		maybe_func = init.maybe_func, -- optional!
 	}
 	return setmetatable(param, Meta_mt)
@@ -115,9 +116,19 @@ function Func:get_maybewrap_result_field(structs: {Struct}): (Struct.Field, stri
 end
 
 function Func:set_as_maybe_function(maybe_fn: Func.Meta.MaybeWrap)
-	self.meta.kind = 'maybe'
-	self.meta.is_private = true
-	self.meta.maybe_func = Func.Meta.MaybeWrap.new(maybe_fn)
+	self.meta = Func.Meta.new({
+		kind = 'maybe',
+		is_private = true,
+		maybe_func = Func.Meta.MaybeWrap.new(maybe_fn),
+	})
+end
+
+function Func:set_as_op_overloading_function(op: Op)
+	self.meta = Func.Meta.new({
+		kind = 'op-overloading',
+		is_private = false,
+		op_overloading = op,
+	})
 end
 
 return Func

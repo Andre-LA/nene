@@ -89,9 +89,9 @@ end
 --[ Math ]--
 
 -- Vec2i
--- local Vec2i = require 'bindgen.data.math.vec2i'
+local Vec2i = require 'bindgen.data.math.vec2i'
 
--- bind_file(Vec2i, 'math/vec2i', {})
+bind_file(Vec2i, 'math/vec2i', {})
 --   ignore_overloading = {
 --     ['*'] = true 
 --   },

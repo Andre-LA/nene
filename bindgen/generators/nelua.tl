@@ -186,13 +186,18 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		))
 	end
 
-	-- generate imported C function
-	local function fn_fun()
+	-- generated imported C function with arbitrary name
+	local function fn_named_fun(name: string)
 		table.insert(result, fmt(
 			"function %s.%s",
 			func:get_mod_prefix(),
-			func.sym.name
+			name
 		))
+	end
+
+	-- generate imported C function
+	local function fn_fun()
+		fn_named_fun(func.sym.name)
 	end
 
 	-- generate function parameters
@@ -240,20 +245,35 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		))
 	end
 
+	-- generate operator overloading wrapping function
+	local function fn_op_overloading()
+		fn_named_fun(op_overloading[func.meta.op_overloading])
+	end
+
 	if func.meta.is_private then
 		fn_localfun()
 	else
 		fn_comments()
-		fn_fun()
+		if func.meta.kind ~= 'op-overloading' then
+			fn_fun()
+		end
 	end
 
-	fn_params()
-	fn_rettype()
-	fn_cimport()
-	fn_end()
+	if func.meta.kind ~= 'op-overloading' then
+		fn_params()
+		fn_rettype()
+		fn_cimport()
+		fn_end()
+	end
 
-	-- add maybe wrapper if it's a "maybe" function
-	if func.meta.kind == 'maybe' then
+	-- generate respective wrapper
+	if func.meta.kind == 'op-overloading' then
+		fn_op_overloading()
+		fn_params()
+		fn_rettype()
+		fn_cimport()
+		fn_end()
+	elseif func.meta.kind == 'maybe' then
 		fn_comments()
 		fn_fun()
 		fn_params()

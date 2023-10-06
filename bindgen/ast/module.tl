@@ -52,7 +52,7 @@ function Module:set_op_overloading(op_table: {string:Op})
 	Fun.endo_map(self.funcs, function(func: Func): Func
 		local op = op_table[func.sym.name]
 		if op then
-			func.meta.operator_overloading = op
+			func.meta.op_overloading = op
 		end
 		return func
 	end)

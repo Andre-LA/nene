@@ -68,4 +68,21 @@ function AstCommon.set_maybe_functions(functions: {AST.Func}, maybe_functions: {
 	end
 end
 
+function AstCommon.set_op_overloading_functions(functions: {AST.Func}, op_functions: {string:AST.Op})
+	assert(functions, "'functions' must be given")
+
+	for fn_name, fn_op in pairs(op_functions) do
+		Utils.find_and_call(
+			functions,
+			fn_name,
+			function(f: AST.Func): string
+				return f.sym.cname
+			end,
+			function(fn: AST.Func): any
+				fn:set_as_op_overloading_function(fn_op)
+			end
+		)
+	end
+end
+
 return AstCommon
