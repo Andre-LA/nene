@@ -7,13 +7,15 @@ local Vec2i <cimport 'nene_Vec2i', nodecl> = @record{
 	y: int32,
 }
 
---- Returns a vector with `0` value on `x` and `y` components.
-function Vec2i.zero(): Vec2i <cimport 'nene_Vec2i_zero', nodecl> end
+local function nene_Vec2i_zero(): Vec2i <cimport 'nene_Vec2i_zero', nodecl> end
 
+--- Returns a vector with `0` value on `x` and `y` components.
+local Vec2i.zero: Vec2i <const> = nene_Vec2i_zero()
+
+local function nene_Vec2i_one(): Vec2i <cimport 'nene_Vec2i_one', nodecl> end
 
 --- Returns a vector with `1` value on `x` and `y` components.
-function Vec2i.one(): Vec2i <cimport 'nene_Vec2i_one', nodecl> end
-
+local Vec2i.one: Vec2i <const> = nene_Vec2i_one()
 
 --- Returns a clone of the vector reference.
 function Vec2i.clone(v: Vec2i): Vec2i <cimport 'nene_Vec2i_clone', nodecl> end

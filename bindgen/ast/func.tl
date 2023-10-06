@@ -25,6 +25,7 @@ local record Func
 			'default'
 			'op-overloading'
 			'maybe'
+			'readonly-property'
 		end
 
 		record MaybeWrap
@@ -128,6 +129,13 @@ function Func:set_as_op_overloading_function(op: Op)
 		kind = 'op-overloading',
 		is_private = false,
 		op_overloading = op,
+	})
+end
+
+function Func:set_as_readonly_property()
+	self.meta = Func.Meta.new({
+		kind = 'readonly-property',
+		is_private = true,
 	})
 end
 

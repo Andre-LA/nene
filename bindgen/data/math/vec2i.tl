@@ -33,6 +33,14 @@ AstCommon.set_on_functions(
 	end
 )
 
+AstCommon.set_on_functions(
+	funcs,
+	{ 'nene_Vec2i_zero', 'nene_Vec2i_one' },
+	function(fn: AST.Func): any
+		fn:set_as_readonly_property()
+	end
+)
+
 local vec2i = AST.Module.new {
 	name = 'Vec2i',
 	dependencies = {},

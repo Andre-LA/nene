@@ -250,6 +250,17 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		fn_named_fun(op_overloading[func.meta.op_overloading])
 	end
 
+	-- generate read-only property
+	local function fn_readonly_property()
+		table.insert(result, fmt(
+			"local %s.%s: %s <const> = %s()\n",
+			self.module_ast.name,
+			func.sym.name,
+			self:type(func.ret_type),
+			func.sym.cname
+		))
+	end
+
 	if func.meta.is_private then
 		fn_localfun()
 	else
@@ -281,6 +292,9 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		fn_cimport()
 		fn_maybewrap_body()
 		fn_end()
+	elseif func.meta.kind == 'readonly-property' then
+		fn_comments()
+		fn_readonly_property()
 	end
 
 	return table.concat(result)
