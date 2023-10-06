@@ -190,7 +190,7 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 	local function fn_named_fun(name: string)
 		table.insert(result, fmt(
 			"function %s.%s",
-			func:get_mod_prefix(),
+			self.module_ast.name,
 			name
 		))
 	end
