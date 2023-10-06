@@ -380,7 +380,7 @@ function ast_reader.get_symbol_enum_constants(symbol: Symbol): {AST.Enum.Constan
 	for _, field in ipairs(symbol.field_seq) do
 		table.insert(constants, AST.Enum.Constant.new {
 			sym = {
-				name = field.name,
+				name = Utils.from_all_caps_to_pascal_case(remove_prefix(field.name, 2)),
 				cname = field.name,
 				comment = get_ast_comment(field.comments),
 			},

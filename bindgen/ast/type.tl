@@ -43,6 +43,10 @@ function Type.new(init: Type): Type
 	return setmetatable(ty, Type_mt)
 end
 
+function Type:is_primitive(): boolean
+	return is_primitive_type(self.ctype) or false
+end
+
 function Type.from_ctype(ctype: string): Type
 	local _ctype = ctype
 	ctype = ctype:gsub('const char %*', 'cstring')

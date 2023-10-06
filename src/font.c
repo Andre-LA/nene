@@ -45,12 +45,12 @@ nene_TextureCreation nene_Font_render(nene_Font font, const char text[], nene_Te
   SDL_Surface *raw_surface = NULL;
 
   switch (quality) {
-    case NENE_TEXT_QUALITY_SOLID: {
+    case NENE_TEXTQUALITY_SOLID: {
       if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_Font_get_raw(font), text, color, wrap_length); }
       else                 { raw_surface = TTF_RenderUTF8_Solid(nene_Font_get_raw(font), text, color);                      }
       break;
     }
-    case NENE_TEXT_QUALITY_BLENDED: {
+    case NENE_TEXTQUALITY_BLENDED: {
       if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_Font_get_raw(font), text, color, wrap_length); }
       else                 { raw_surface = TTF_RenderUTF8_Blended(nene_Font_get_raw(font), text, color);                      }
       break;

@@ -14,7 +14,7 @@ local TextQuality <cimport 'nene_TextQuality', nodecl> = @enum{
 --- You should not use the internal resource
 local Font <cimport 'nene_Font', nodecl> = @record{
 
-	raw: *TTF_Font,
+	raw: Font,
 }
 
 --- A font creation result.
@@ -57,51 +57,51 @@ local TextDimensions <cimport 'nene_TextDimensions', nodecl> = @record{
 function Font.get_raw(font: Font): Font <cimport 'nene_Font_get_raw', nodecl> end
 
 
-local function nene_Font_load(filepath: cstring, pt_size: int16_t): FontCreation <cimport 'nene_Font_load', nodecl> end
+local function nene_Font_load(filepath: cstring, pt_size: int16): FontCreation <cimport 'nene_Font_load', nodecl> end
 
 --- Returns the font creation result, this creates a font from a font asset (like .ttf files).
-function Font.load(filepath: cstring, pt_size: int16_t): (boolean, Font) <cimport 'nene_Font_load', nodecl> 
+function Font.load(filepath: cstring, pt_size: int16): (boolean, Font) <cimport 'nene_Font_load', nodecl> 
 	local maybe_result = nene_Font_load((filepath, pt_size))
 	return maybe_result.created, maybe_result.font
 end
 
 
-local function nene_Font_render(font: Font, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32_t): TextureCreation <cimport 'nene_Font_render', nodecl> end
+local function nene_Font_render(font: Font, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32): TextureCreation <cimport 'nene_Font_render', nodecl> end
 
 --- Renders a text using the given font, returns a texture creation result.
-function Font.render(font: Font, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32_t): (boolean, Texture) <cimport 'nene_Font_render', nodecl> 
+function Font.render(font: Font, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32): (boolean, Texture) <cimport 'nene_Font_render', nodecl> 
 	local maybe_result = nene_Font_render((font, text, quality, color, wrap_length))
 	return maybe_result.created, maybe_result.texture
 end
 
 
 --- Updates the text of the reference texture, (this mutates the reference).
-function Font.update_text(font: Font, text_texture: Texture, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32_t): bool <cimport 'nene_Font_update_text', nodecl> end
+function Font.update_text(font: Font, text_texture: Texture, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32): boolean <cimport 'nene_Font_update_text', nodecl> end
 
 
-local function nene_Font_get_glyph_metrics(font: Font, glyph: uint32_t): GlyphMetricsQuery <cimport 'nene_Font_get_glyph_metrics', nodecl> end
+local function nene_Font_get_glyph_metrics(font: Font, glyph: uint32): GlyphMetricsQuery <cimport 'nene_Font_get_glyph_metrics', nodecl> end
 
 --- Query the metrics of the given glyph of the given font.
-function Font.get_glyph_metrics(font: Font, glyph: uint32_t): (boolean, GlyphMetrics) <cimport 'nene_Font_get_glyph_metrics', nodecl> 
+function Font.get_glyph_metrics(font: Font, glyph: uint32): (boolean, GlyphMetrics) <cimport 'nene_Font_get_glyph_metrics', nodecl> 
 	local maybe_result = nene_Font_get_glyph_metrics((font, glyph))
 	return maybe_result.queried, maybe_result.metrics
 end
 
 
 --- Get font's height.
-function Font.get_height(font: Font): uint16_t <cimport 'nene_Font_get_height', nodecl> end
+function Font.get_height(font: Font): uint16 <cimport 'nene_Font_get_height', nodecl> end
 
 
 --- Get font's ascent.
-function Font.get_ascent(font: Font): uint16_t <cimport 'nene_Font_get_ascent', nodecl> end
+function Font.get_ascent(font: Font): uint16 <cimport 'nene_Font_get_ascent', nodecl> end
 
 
 --- Get font's descent.
-function Font.get_descent(font: Font): uint16_t <cimport 'nene_Font_get_descent', nodecl> end
+function Font.get_descent(font: Font): uint16 <cimport 'nene_Font_get_descent', nodecl> end
 
 
 --- Get's the line skip height.
-function Font.get_line_skip(font: Font): uint16_t <cimport 'nene_Font_get_line_skip', nodecl> end
+function Font.get_line_skip(font: Font): uint16 <cimport 'nene_Font_get_line_skip', nodecl> end
 
 
 local function nene_Font_get_text_dimensions(font: Font, text: cstring): TextDimensions <cimport 'nene_Font_get_text_dimensions', nodecl> end
@@ -114,7 +114,7 @@ end
 
 
 --- Checks if the given font is mono spaced.
-function Font.is_monospaced(font: Font): bool <cimport 'nene_Font_is_monospaced', nodecl> end
+function Font.is_monospaced(font: Font): boolean <cimport 'nene_Font_is_monospaced', nodecl> end
 
 
 --- Destroys the font resource.

@@ -45,15 +45,19 @@ function NeluaGenerator.new(lib_typemap: Generator.TypeMap, lib_depmap: Generato
 		['_Bool'] = 'boolean',
 	}
 	
-	for T, langT in pairs(lib_typemap) do
-		typemap[T] = langT
-	end
 
 	local neluagen: NeluaGenerator = {
 		generator = Generator.new(typemap, lib_depmap)
 	}
 
 	return setmetatable(neluagen, NeluaGenerator_mt)
+end
+
+function NeluaGenerator:type(type: AST.Type): string
+	if type:is_primitive() then
+		return self.generator:apply_typemap(type.ctype)
+	end
+	return type.type
 end
 
 function NeluaGenerator:comments(comment: AST.Comment, indent: integer): string
@@ -117,7 +121,7 @@ function NeluaGenerator:struct_field(field: AST.Struct.Field, _: Generator.WrapO
 	table.insert(result, fmt(
 		"	%s: %s,",
 		field.sym.name,
-		self.generator:apply_typemap(field.type.ctype)
+		self:type(field.type)
 	))
 	return table.concat(result, '\n')
 end
@@ -149,7 +153,7 @@ end
 
 function NeluaGenerator:func_param(param: AST.Func.Param, _: Generator.WrapOptions, as_call: boolean): string
 	if not as_call then
-		return fmt('%s: %s', param.sym.name, param.type.type)
+		return fmt('%s: %s', param.sym.name, self:type(param.type))
 	else
 		return fmt('%s', param.sym.name)
 	end
@@ -200,7 +204,7 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 	local function fn_rettype()
 		table.insert(result, fmt(
 			": %s ",
-			func.ret_type.type
+			self:type(func.ret_type)
 		))
 	end
 
@@ -214,7 +218,7 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		table.insert(result, 'end\n\n')
 	end
 
-		-- generate function wrapping body
+	-- generate function wrapping body
 	local function fn_maybewrap_body()
 		table.insert(
 			result,
@@ -232,7 +236,7 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 	local function fn_maybewrap_rettype()
 		table.insert(result, fmt(
 			": (boolean, %s) ",
-			func.meta.maybe_func.result_type.type
+			self:type(func.meta.maybe_func.result_type)
 		))
 	end
 

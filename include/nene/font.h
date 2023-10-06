@@ -18,9 +18,9 @@ SPDX-License-Identifier: Zlib
 /// The quality of the text rendering.
 typedef enum nene_TextQuality {
   /// Solid is faster, but not "smooth", ideal for fast rendering or pixel-art fonts.
-  NENE_TEXT_QUALITY_SOLID   = 0,
+  NENE_TEXTQUALITY_SOLID = 0,
   /// Blended is slower, but have high-quality, with antialiasing.
-  NENE_TEXT_QUALITY_BLENDED = 2,
+  NENE_TEXTQUALITY_BLENDED = 2,
 } nene_TextQuality;
 
 /// The Font handle.

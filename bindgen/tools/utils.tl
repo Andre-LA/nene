@@ -92,6 +92,17 @@ function Utils.slice<T>(arr: {T}, first: integer, last: integer): {T}
 	return table.move(arr, first, last, 1, {}) 
 end
 
+function Utils.from_all_caps_to_pascal_case(all_caps: string): string
+	local words = Utils.string_separate(all_caps, '(%w+)_?')
+	local result: {string} = {}
+
+	for _, word in ipairs(words) do
+		table.insert(result, word:sub(1, 1) .. word:sub(2, -1):lower())
+	end
+
+	return table.concat(result)
+end
+
 function Utils.pipe(pipeline: {any}): any
 	assert(pipeline, "'pipeline' argument expected.")
 	assert(#pipeline % 2 == 0, "on 'pipeline' argument: expected even number of arguments.")
