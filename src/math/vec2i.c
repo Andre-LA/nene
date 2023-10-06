@@ -12,6 +12,13 @@ nene_Vec2i nene_Vec2i_zero(void) {
   return (nene_Vec2i){ .x = 0, .y = 0 };
 }
 
+nene_Vec2i nene_Vec2i_clone(nene_Vec2i *v) {
+  if (v != NULL) {
+    return *v;
+  }
+  return nene_Vec2i_zero();
+}
+
 nene_Vec2i nene_Vec2i_one(void) {
   return (nene_Vec2i){ .x = 1, .y = 1 };
 }

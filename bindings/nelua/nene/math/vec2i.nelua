@@ -1,33 +1,33 @@
 
 --- 2D mathematical vector with `x` and `y` components (using 32-bit integer type, a.k.a. `int32_t`).
 local Vec2i <cimport 'nene_Vec2i', nodecl> = @record{
-
+	--- The `x` component.
 	x: int32,
-
+	--- The `y` component.
 	y: int32,
 }
 
-
+--- Returns a vector with `0` value on `x` and `y` components.
 function Vec2i.zero(): Vec2i <cimport 'nene_Vec2i_zero', nodecl> end
 
 
-
+--- Returns a vector with `1` value on `x` and `y` components.
 function Vec2i.one(): Vec2i <cimport 'nene_Vec2i_one', nodecl> end
 
 
-
+--- Returns a clone of the vector reference.
 function Vec2i.clone(v: Vec2i): Vec2i <cimport 'nene_Vec2i_clone', nodecl> end
 
 
-
+--- Tests equality between `a` and `b` vectors.
 function Vec2i.__eq(a: Vec2i, b: Vec2i): boolean <cimport 'nene_Vec2i_equals', nodecl> end
 
 
-
+--- Returns the sum of two vectors.
 function Vec2i.__add(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_add', nodecl> end
 
 
-
+--- Returns the difference between two vectors.
 function Vec2i.__sub(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_sub', nodecl> end
 
 
@@ -37,32 +37,33 @@ local function nene_Vec2i_mul(a: Vec2i, b: Vec2i): Vec2i <cimport 'nene_Vec2i_mu
 local function nene_Vec2i_scale(v: Vec2i, s: float32): Vec2i <cimport 'nene_Vec2i_scale', nodecl> end
 
 
-
+--- Returns the negation of the `v` vector.
 function Vec2i.__unm(v: Vec2i): Vec2i <cimport 'nene_Vec2i_negate', nodecl> end
 
 
-
+--- Returns a squared length of the `v` vector
 function Vec2i.len_sqr(v: Vec2i): float32 <cimport 'nene_Vec2i_len_sqr', nodecl> end
 
 
-
+--- Returns the length of the `v` vector.
 function Vec2i.len(v: Vec2i): float32 <cimport 'nene_Vec2i_len', nodecl> end
 
 
-
+--- Returns a vector that's the interpolation between `a` and `b` vectors by the scalar `t`.
 function Vec2i.lerp(a: Vec2i, b: Vec2i, t: float32): Vec2i <cimport 'nene_Vec2i_lerp', nodecl> end
 
 
-
+--- Returns the dot product of `a` and `b` vectors.
 function Vec2i.dot(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_dot', nodecl> end
 
 
---- note: since this is a 2D vector (or z=0), the cross product returns
---- the magnitude of the cross product vector instead of the vector itself.
+--- Note: since this is a 2D vector (or z=0), the cross product returns
+--- The magnitude of the cross product vector instead of the vector itself.
 function Vec2i.cross(a: Vec2i, b: Vec2i): float32 <cimport 'nene_Vec2i_cross', nodecl> end
 
 
-
+--- Returns the perpendicular vector of the vector v, with the same magnitude (length)
+--- > note: The "rotation" it's counterclockwise.
 function Vec2i.perpendicular(v: Vec2i): Vec2i <cimport 'nene_Vec2i_perpendicular', nodecl> end
 
 
