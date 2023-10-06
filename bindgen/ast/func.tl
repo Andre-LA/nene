@@ -90,6 +90,12 @@ function Func.new(init: Func): Func
 	return setmetatable(func, Func_mt)
 end
 
+function Func:get_mod_prefix(): string
+	local libprefix = self.sym:cname_with_only_prefixes(1)
+	local cmodname = self.sym:cname_with_only_prefixes(2)
+	return (cmodname:gsub(libprefix..'_', ''))
+end
+
 function Func:get_maybewrap_result_field(structs: {Struct}): (Struct.Field, string)
 	local ret_type = Utils.ifindk(structs, self.ret_type.ctype, function(s: Struct): string
 		return s.sym.cname
