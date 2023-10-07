@@ -5,9 +5,10 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local utils = require 'bindgen.utils'
-local Node = require 'bindgen.node'
+local AST = require 'bindgen.ast.ast'
 local ast_reader = require 'bindgen.ast_reader'
+local AstCommon = require 'bindgen.ast_common'
+local Utils = require 'bindgen.tools.utils'
 
 local symbols = ast_reader.read_file('tilemap', 'nene_Tilemap')
 assert(symbols, "no 'symbols' returned")
@@ -18,31 +19,31 @@ assert(structs, "no 'structs' returned")
 local funcs = ast_reader.get_functions(symbols, 'nene_Tilemap')
 assert(funcs, "no 'funcs' returned")
 
-local draw_func = utils.ifindk(funcs, 'draw', function(fn: Node.Func): string return fn.name end) as Node.Func
-assert(draw_func, "no 'draw_func' returned")
+AstCommon.set_on_functions(funcs, {'nene_Tilemap_draw'}, function(fn: AST.Func): any
+	-- ast-dumps don't keep the information that some pointer it's actually an array
+	-- thus, we need to undo this lost information.
+	local tiles = Utils.ifindk(
+		fn.params, 'tiles',
+		function(param: AST.Func.Param): string
+			return param.sym.name
+		end
+	) as AST.Func.Param
+	assert(tiles, "no 'tiles' returned")
+	
+	-- tiles.type = tiles.type.ctype:gsub('uint16_t %*', 'uint16_t []')
+end)
 
--- ast-dumps don't keep the information that some pointer it's actually an array
--- thus, we need to undo this lost information.
-local draw_func_tiles_param = utils.ifindk(draw_func.params, 'tiles', function(param: Node.Func.Param): string return param.name end) as Node.Func.Param
-assert(draw_func_tiles_param, "no 'draw_func_tiles_param' returned")
-draw_func_tiles_param.type = draw_func_tiles_param.type:gsub('uint16_t %*', 'uint16_t []')
-
-local tilemap = Node.File.new {
-   dependencies = {
-      dependencies = {
-         ['Grid'] = { 'nene', 'math', 'grid' },
-         ['Vec2i'] = { 'nene', 'math', 'vec2i' },
-         ['Vec2'] = { 'nene', 'math', 'vec2' },
-         ['TextureAtlas'] = { 'nene', 'texture_atlas' },
-      },
-      header = '"nene/tilemap.h"',
-   },
-   modname = 'Tilemap',
-   enums = {},
-   structs = structs,
-   funcs = funcs,
-   aliases = {},
-   global_vars = {},
+local tilemap = AST.Module.new {
+	name = 'Tilemap',
+	dependencies = {
+		{ module = 'Grid' },
+		{ module = 'Vec2i' },
+		{ module = 'Vec2' },
+		{ module = 'TextureAtlas' },
+	},
+	enums = {},
+	structs = structs,
+	funcs = funcs,
 }
 assert(tilemap, "no 'tilemap' created")
 

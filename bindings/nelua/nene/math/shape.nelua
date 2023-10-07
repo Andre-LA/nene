@@ -1,31 +1,39 @@
-## cinclude '"nene/math/segment.h"'
-
+local Segment = require 'nene.math.segment'
 local Rect = require 'nene.math.rect'
 local Rectf = require 'nene.math.rectf'
-local Segment = require 'nene.math.segment'
 
 
 local Shape = @record{}
-
-
--- Quadrilateral shape data strucuture, it holds four segments.
+--- Quadrilateral shape data strucuture, it holds four segments.
 local ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral', nodecl> = @record{
-  
-  sides: [4]Segment,
+
+	sides: Segment,
 }
 
--- Returns a quadrilateral shape made from a rectanle with floating values.
+local function nene_ShapeQuadrilateral_zero(): ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral_zero', nodecl> end
+
+--- Returns a zeroed quatrilateral shape
+local Shape.zero: ShapeQuadrilateral <const> = nene_ShapeQuadrilateral_zero()
+
+--- Returns a clone of the quadrilateral shape reference
+function ShapeQuadrilateral.clone(quadrilateral_shape: ShapeQuadrilateral): ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral_clone', nodecl> end
+
+
+--- Returns a quadrilateral shape made from a rectanle with floating values.
 function Shape.get_rectf_shape(rect: Rectf): ShapeQuadrilateral <cimport 'nene_Shape_get_rectf_shape', nodecl> end
--- Returns a quadrilateral shape made from a rectanle.
+
+
+--- Returns a quadrilateral shape made from a rectanle.
 function Shape.get_rect_shape(rect: Rect): ShapeQuadrilateral <cimport 'nene_Shape_get_rect_shape', nodecl> end
--- Returns the diagonal of a rectangle as a segment,
--- with direction that's horizontally left-to-right, while the vertical direction it's given
--- on the `up_to_down` boolean parameter.
+
+
+--- Returns the diagonal of a rectangle as a segment,
+--- with direction that's horizontally left-to-right, while the vertical direction it's given
+--- on the `up_to_down` boolean parameter.
 function Shape.get_rectf_diagonal(rect: Rectf, up_to_down: boolean): Segment <cimport 'nene_Shape_get_rectf_diagonal', nodecl> end
 
 
-local Shape.Quadrilateral: type = @ShapeQuadrilateral
 
+local Shape.ShapeQuadrilateral: type = ShapeQuadrilateral
 
-
-return Segment
+return Shape
