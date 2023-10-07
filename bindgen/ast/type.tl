@@ -21,7 +21,8 @@ local primitive_types: {string:boolean} = {
 	['uint64_t'] = true,
 	['bool'] = true,
 	['_Bool'] = true,
-	['cstring'] = true
+	['cstring'] = true,
+	['void'] = true,
 }
 
 local function is_primitive_type(ctype: string): boolean
@@ -55,11 +56,15 @@ function Type.from_ctype(ctype: string): Type
 
 	-- if it isn't a primitive type, then remove library prefix
 	if not is_primitive_type(type_id) then
-		type_id = Utils.pipe {
-			Utils.string_separate, { type_id, '(%w+)_?' },
-			Utils.slice, { 2 },
-			table.concat, { '_' }
-		} as string
+		-- FIXME: This is hacky, but for now this will help, probably be resolved when we stop using SDL's symbols on bindings (like in Color today)
+		local _type_words = Utils.string_separate(type_id, '(%w+)_?')
+		local _type_first = Utils.slice(_type_words, 1, 1)
+		local _type_n = Utils.slice(_type_words, 2)
+		local _type_id = table.concat(_type_n, '_')
+
+		if _type_first[1] ~= 'SDL' and _type_first[1] ~= 'TTF' and _type_first[1] ~= 'IMG' then
+			type_id = _type_id
+		end
 	end
 
 	ctype = (pointers or '') .. type_id

@@ -28,7 +28,7 @@ function Tilemap.draw(tilemap: Tilemap, position: Vec2, is_world_pos: boolean, t
 
 
 
-function Tilemap.destroy(tilemap: *Tilemap):  <cimport 'nene_Tilemap_destroy', nodecl> end
+function Tilemap.destroy(tilemap: *Tilemap): void <cimport 'nene_Tilemap_destroy', nodecl> end
 
 
 

@@ -5,13 +5,13 @@ local Color = require 'nene.color'
 
 local Texture <cimport 'nene_Texture', nodecl> = @record{
 
-	raw: *Texture,
+	raw: *SDL_Texture,
 
 	width: uint16,
 
 	height: uint16,
 
-	access: TextureAccess,
+	access: SDL_TextureAccess,
 }
 
 
@@ -23,29 +23,29 @@ local TextureCreation <cimport 'nene_TextureCreation', nodecl> = @record{
 }
 
 
-function Texture.destroy(texture: *Texture):  <cimport 'nene_Texture_destroy', nodecl> end
+function Texture.destroy(texture: *Texture): void <cimport 'nene_Texture_destroy', nodecl> end
 
 
 
-function Texture.get_raw(texture: Texture): *Texture <cimport 'nene_Texture_get_raw', nodecl> end
+function Texture.get_raw(texture: Texture): *SDL_Texture <cimport 'nene_Texture_get_raw', nodecl> end
 
 
 
-function Texture.apply_raw(texture: *Texture, raw_texture: *Texture): boolean <cimport 'nene_Texture_apply_raw', nodecl> end
+function Texture.apply_raw(texture: *Texture, raw_texture: *SDL_Texture): boolean <cimport 'nene_Texture_apply_raw', nodecl> end
 
 
 
-function Texture.set_blend_mode(texture: Texture, blend_mode: BlendMode): boolean <cimport 'nene_Texture_set_blend_mode', nodecl> end
+function Texture.set_blend_mode(texture: Texture, blend_mode: SDL_BlendMode): boolean <cimport 'nene_Texture_set_blend_mode', nodecl> end
 
 
 
 function Texture.set_color_mod(texture: Texture, color: Color): boolean <cimport 'nene_Texture_set_color_mod', nodecl> end
 
 
-local function nene_Texture_create_with_access(width: uint16, height: uint16, access: TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
+local function nene_Texture_create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
 
 
-function Texture.create_with_access(width: uint16, height: uint16, access: TextureAccess): (boolean, Texture) <cimport 'nene_Texture_create_with_access', nodecl> 
+function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): (boolean, Texture) <cimport 'nene_Texture_create_with_access', nodecl> 
 	local maybe_result = nene_Texture_create_with_access((width, height, access))
 	return maybe_result.created, maybe_result.texture
 end

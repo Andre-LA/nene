@@ -18,7 +18,7 @@ function Rect.clone(rect: *Rect): Rect <cimport 'nene_Rect_clone', nodecl> end
 
 
 
-function Rect.to_raw(rect: Rect): Rect <cimport 'nene_Rect_to_raw', nodecl> end
+function Rect.to_raw(rect: Rect): SDL_Rect <cimport 'nene_Rect_to_raw', nodecl> end
 
 
 

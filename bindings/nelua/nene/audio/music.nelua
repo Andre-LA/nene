@@ -31,7 +31,7 @@ function Music.play(music: Music, loops: int16): boolean <cimport 'nene_Music_pl
 
 
 
-function Music.stop():  <cimport 'nene_Music_stop', nodecl> end
+function Music.stop(): void <cimport 'nene_Music_stop', nodecl> end
 
 
 
@@ -39,7 +39,7 @@ function Music.set_volume(volume: float32): float32 <cimport 'nene_Music_set_vol
 
 
 
-function Music.destroy(music: *Music):  <cimport 'nene_Music_destroy', nodecl> end
+function Music.destroy(music: *Music): void <cimport 'nene_Music_destroy', nodecl> end
 
 
 

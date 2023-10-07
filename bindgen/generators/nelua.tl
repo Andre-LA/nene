@@ -44,6 +44,7 @@ function NeluaGenerator.new(lib_depmap: Generator.DepMap): NeluaGenerator
 		['bool'] = 'boolean',
 		['_Bool'] = 'boolean',
 		['cstring'] = 'cstring',
+		['void'] = 'void',
 	}
 
 

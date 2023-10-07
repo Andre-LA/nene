@@ -14,7 +14,7 @@ local TextQuality <cimport 'nene_TextQuality', nodecl> = @enum{
 --- You should not use the internal resource
 local Font <cimport 'nene_Font', nodecl> = @record{
 
-	raw: *Font,
+	raw: *TTF_Font,
 }
 
 --- A font creation result.
@@ -54,7 +54,7 @@ local TextDimensions <cimport 'nene_TextDimensions', nodecl> = @record{
 }
 
 --- Returns the internal data of the Font handle.
-function Font.get_raw(font: Font): *Font <cimport 'nene_Font_get_raw', nodecl> end
+function Font.get_raw(font: Font): *TTF_Font <cimport 'nene_Font_get_raw', nodecl> end
 
 
 local function nene_Font_load(filepath: cstring, pt_size: int16): FontCreation <cimport 'nene_Font_load', nodecl> end
@@ -118,7 +118,7 @@ function Font.is_monospaced(font: Font): boolean <cimport 'nene_Font_is_monospac
 
 
 --- Destroys the font resource.
-function Font.destroy(font: *Font):  <cimport 'nene_Font_destroy', nodecl> end
+function Font.destroy(font: *Font): void <cimport 'nene_Font_destroy', nodecl> end
 
 
 

@@ -18,7 +18,7 @@ local GamepadState <cimport 'nene_GamepadState', nodecl> = @record{
 
 	active: boolean,
 
-	game_controller: *GameController,
+	game_controller: *SDL_GameController,
 
 	joystick_id: cint,
 
@@ -38,9 +38,9 @@ local Core <cimport 'nene_Core', nodecl> = @record{
 	--- extra offset for rendering.
 	render_offset: Vec2,
 	--- reference to the window created on initialization; using more than 1 window it's currently a non-goal for Nene.
-	window: *Window,
+	window: *SDL_Window,
 	--- reference to the window's renderer, created on initialization.
-	renderer: *Renderer,
+	renderer: *SDL_Renderer,
 	--- store the state of (keyboard) scancode keys in the current frame (`true` means "pressed").
 	scancode_state: [512]bool,
 	--- the state of `scancode_state` on the previous frame.
@@ -62,7 +62,7 @@ local Core <cimport 'nene_Core', nodecl> = @record{
 }
 
 --- outputs an warning message to stderr stream.
-function Core.warn(fn: cstring, msg: cstring):  <cimport 'nene_Core_warn', nodecl> end
+function Core.warn(fn: cstring, msg: cstring): void <cimport 'nene_Core_warn', nodecl> end
 
 
 --- Returns if nene is initialized.
@@ -74,19 +74,19 @@ function Core.instance(): *Core <cimport 'nene_Core_instance', nodecl> end
 
 
 --- Update's nene's state
-function Core.update():  <cimport 'nene_Core_update', nodecl> end
+function Core.update(): void <cimport 'nene_Core_update', nodecl> end
 
 
 
-function Core.is_scancode_held(scancode: Scancode): boolean <cimport 'nene_Core_is_scancode_held', nodecl> end
+function Core.is_scancode_held(scancode: SDL_Scancode): boolean <cimport 'nene_Core_is_scancode_held', nodecl> end
 
 
 
-function Core.is_scancode_pressed(scancode: Scancode): boolean <cimport 'nene_Core_is_scancode_pressed', nodecl> end
+function Core.is_scancode_pressed(scancode: SDL_Scancode): boolean <cimport 'nene_Core_is_scancode_pressed', nodecl> end
 
 
 
-function Core.is_scancode_released(scancode: Scancode): boolean <cimport 'nene_Core_is_scancode_released', nodecl> end
+function Core.is_scancode_released(scancode: SDL_Scancode): boolean <cimport 'nene_Core_is_scancode_released', nodecl> end
 
 
 
@@ -102,19 +102,19 @@ function Core.is_mouse_button_released(mouse_button: uint32): boolean <cimport '
 
 
 
-function Core.is_gamepad_button_held(gamepad_index: uint8, gamepad_button: GameControllerButton): boolean <cimport 'nene_Core_is_gamepad_button_held', nodecl> end
+function Core.is_gamepad_button_held(gamepad_index: uint8, gamepad_button: SDL_GameControllerButton): boolean <cimport 'nene_Core_is_gamepad_button_held', nodecl> end
 
 
 
-function Core.is_gamepad_button_pressed(gamepad_index: uint8, gamepad_button: GameControllerButton): boolean <cimport 'nene_Core_is_gamepad_button_pressed', nodecl> end
+function Core.is_gamepad_button_pressed(gamepad_index: uint8, gamepad_button: SDL_GameControllerButton): boolean <cimport 'nene_Core_is_gamepad_button_pressed', nodecl> end
 
 
 
-function Core.is_gamepad_button_released(gamepad_index: uint8, gamepad_button: GameControllerButton): boolean <cimport 'nene_Core_is_gamepad_button_released', nodecl> end
+function Core.is_gamepad_button_released(gamepad_index: uint8, gamepad_button: SDL_GameControllerButton): boolean <cimport 'nene_Core_is_gamepad_button_released', nodecl> end
 
 
 
-function Core.get_gamepad_axis(gamepad_index: uint8, gamepad_axis: GameControllerAxis, deadzone: float32): float32 <cimport 'nene_Core_get_gamepad_axis', nodecl> end
+function Core.get_gamepad_axis(gamepad_index: uint8, gamepad_axis: SDL_GameControllerAxis, deadzone: float32): float32 <cimport 'nene_Core_get_gamepad_axis', nodecl> end
 
 
 
@@ -148,7 +148,7 @@ function Core.set_render_draw_color(color: Color): boolean <cimport 'nene_Core_s
 
 
 
-function Core.set_render_blend_mode(blend_mode: BlendMode): boolean <cimport 'nene_Core_set_render_blend_mode', nodecl> end
+function Core.set_render_blend_mode(blend_mode: SDL_BlendMode): boolean <cimport 'nene_Core_set_render_blend_mode', nodecl> end
 
 
 
@@ -156,7 +156,9 @@ function Core.set_render_clip(clip_rect: Rect, clip_is_screenspace: boolean): bo
 
 
 
-function Core.set_render_target(raw_target: *Texture): boolean <cimport 'nene_Core_set_render_target', nodecl> end
+function Core.set_render_target(raw_target: *SDL_Texture): boolean <cimport 'nene_Core_set_render_target', nodecl> end
+
+
 
 
 function Core.render_clear(color: Color): boolean <cimport 'nene_Core_render_clear', nodecl> end
@@ -171,11 +173,11 @@ function Core.render_draw_rect(rect: Rect, only_lines: boolean, color: Color, is
 
 
 
-function Core.render_present():  <cimport 'nene_Core_render_present', nodecl> end
+function Core.render_present(): void <cimport 'nene_Core_render_present', nodecl> end
 
 
 
-function Core.init(title: cstring, width: uint16, height: uint16, flags: WindowFlags): boolean <cimport 'nene_Core_init', nodecl> end
+function Core.init(title: cstring, width: uint16, height: uint16, flags: SDL_WindowFlags): boolean <cimport 'nene_Core_init', nodecl> end
 
 
 
@@ -183,7 +185,7 @@ function Core.should_quit(): boolean <cimport 'nene_Core_should_quit', nodecl> e
 
 
 
-function Core.terminate():  <cimport 'nene_Core_terminate', nodecl> end
+function Core.terminate(): void <cimport 'nene_Core_terminate', nodecl> end
 
 
 

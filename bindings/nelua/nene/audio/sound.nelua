@@ -45,7 +45,7 @@ function Sound.set_volume(sound: Sound, volume: float32): float32 <cimport 'nene
 
 
 
-function Sound.destroy(sound: *Sound):  <cimport 'nene_Sound_destroy', nodecl> end
+function Sound.destroy(sound: *Sound): void <cimport 'nene_Sound_destroy', nodecl> end
 
 
 
