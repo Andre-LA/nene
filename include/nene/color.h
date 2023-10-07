@@ -8,28 +8,33 @@ SPDX-License-Identifier: Zlib
 #ifndef NENE_COLOR_H
 #define NENE_COLOR_H
 
+#include <stdint.h>
 #include <stdbool.h>
-#include "SDL.h"
 
-/// Alias to SDL_color
-typedef SDL_Color nene_Color;
+/// The color structure, it's a rgba color strucuture using one byte each
+typedef struct nene_Color {
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+	uint8_t a;
+} nene_Color;
 
 /// The "black" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)
-extern const nene_Color nene_Color_black;
+nene_Color nene_Color_black(void);
 /// The "white" color of nene's palette (`{ .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff }`)
-extern const nene_Color nene_Color_white;
+nene_Color nene_Color_white(void);
 /// The "red" color of nene's palette (`{ .r = 0xff, .g = 0x00, .b = 0x00, .a = 0xff }`)
-extern const nene_Color nene_Color_red;
+nene_Color nene_Color_red(void);
 /// The "green" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0x00, .a = 0xff }`)
-extern const nene_Color nene_Color_green;
+nene_Color nene_Color_green(void);
 /// The "blue" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0xff, .a = 0xff }`)
-extern const nene_Color nene_Color_blue;
+nene_Color nene_Color_blue(void);
 /// The "yellow" color of nene's palette (`{ .r = 0xfc, .g = 0xea, .b = 0x20, .a = 0xff }`)
-extern const nene_Color nene_Color_yellow;
+nene_Color nene_Color_yellow(void);
 /// The "cyan" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0xff, .a = 0xff }`)
-extern const nene_Color nene_Color_cyan;
+nene_Color nene_Color_cyan(void);
 /// The "bg" color of nene's palette (`{ .r = 0x69, .g = 0x46, .b = 0x6b, .a = 0xff }`)
-extern const nene_Color nene_Color_bg;
+nene_Color nene_Color_bg(void);
 
 bool nene_Color_equals(nene_Color a, nene_Color b);
 

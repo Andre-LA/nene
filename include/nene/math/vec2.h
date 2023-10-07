@@ -9,12 +9,15 @@ SPDX-License-Identifier: Zlib
 #define NENE_VEC2_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include "nene/math/vec2i.h"
 
 /// 2D mathematical vector with `x` and `y` components.
 typedef struct nene_Vec2 {
-  float x;
-  float y;
+	/// The `x` component.
+	float x;
+	/// The `y` component.
+	float y;
 } nene_Vec2;
 
 /// converts a `nene_Vec2i` value to `nene_Vec2`.
@@ -28,6 +31,9 @@ nene_Vec2 nene_Vec2_zero(void);
 
 /// returns a vector with `1` value on `x` and `y` components.
 nene_Vec2 nene_Vec2_one(void);
+
+/// returns a clone of the vector reference.
+nene_Vec2 nene_Vec2_clone(nene_Vec2 *v);
 
 /// tests equality between `a` and `b` vectors.
 bool nene_Vec2_equals(nene_Vec2 a, nene_Vec2 b);

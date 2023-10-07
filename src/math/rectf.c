@@ -20,6 +20,13 @@ nene_Rectf nene_Rectf_zero(void) {
   };
 }
 
+nene_Rectf nene_Rectf_clone(nene_Rectf *rect) {
+  if (rect != NULL) {
+    return *rect;
+  }
+  return nene_Rectf_zero();
+}
+
 SDL_FRect nene_Rectf_to_raw(nene_Rectf rect) {
   return (SDL_FRect){
     .x = rect.pos.x,

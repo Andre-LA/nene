@@ -6,6 +6,20 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/math/grid.h"
+#include "nene/math/vec2i.h"
+
+nene_Grid nene_Grid_zero(void) {
+  return (nene_Grid){
+    .cell_size = nene_Vec2i_zero(),
+  };
+}
+
+nene_Grid nene_Grid_clone(nene_Grid *grid) {
+  if (grid != NULL) {
+    return *grid;
+  }
+  return nene_Grid_zero();
+}
 
 bool nene_Grid_equals(nene_Grid a, nene_Grid b) {
   return nene_Vec2i_equals(a.cell_size, b.cell_size) && nene_Vec2i_equals(a.gap, b.gap);

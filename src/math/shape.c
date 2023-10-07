@@ -6,6 +6,31 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/math/shape.h"
+#include "nene/math/segment.h"
+
+nene_ShapeQuadrilateral nene_ShapeQuadrilateral_zero(void) {
+  return (nene_ShapeQuadrilateral) {
+    nene_Segment_zero(),
+    nene_Segment_zero(),
+    nene_Segment_zero(),
+    nene_Segment_zero()
+  };
+}
+
+nene_ShapeQuadrilateral nene_ShapeQuadrilateral_clone(nene_ShapeQuadrilateral *quadrilateral_shape) {
+  if (quadrilateral_shape != NULL) {
+    nene_ShapeQuadrilateral result = {
+      .sides = {
+        quadrilateral_shape->sides[0],
+        quadrilateral_shape->sides[1],
+        quadrilateral_shape->sides[2],
+        quadrilateral_shape->sides[3]
+      }
+    };
+    return result;
+  }
+  return nene_ShapeQuadrilateral_zero();
+}
 
 nene_ShapeQuadrilateral nene_Shape_get_rectf_shape(nene_Rectf rect) {
   // create the four sides of the rectangle.
