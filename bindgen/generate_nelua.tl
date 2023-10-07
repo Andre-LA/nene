@@ -10,51 +10,27 @@ local Generator = require 'bindgen.generator'
 local NeluaGenerator = require 'bindgen.generators.nelua'
 
 local depmap: Generator.DepMap = {
-  ['Vec2i'] = 'nene.math.vec2i',
-  ['Texture'] = 'nene.texture',
-  ['Color'] = 'nene.color',
+	['Core'] = 'nene.core',
+	['Texture'] = 'nene.texture',
+	['Font'] = 'nene.font',
+	['TextureAtlas'] = 'nene.texture_atlas',
+	['Music'] = 'nene.audio.music',
+	['Sound'] = 'nene.audio.sound',
+	['Vec2i'] = 'nene.math.vec2i',
+	['Vec2'] = 'nene.math.vec2',
+	['Rect'] = 'nene.math.rect',
+	['Rectf'] = 'nene.math.rectf',
+	['Grid'] = 'nene.math.grid',
+	['Segment'] = 'nene.math.segment',
+	['Shape'] = 'nene.math.shape',
+	['Intersections'] = 'nene.intersections',
+	['Collision'] = 'nene.collision',
+	['Animation'] = 'nene.animation',
+	['Tilemap'] = 'nene.tilemap',
+	['Color'] = 'nene.color',
 }
 
-local typemap: {string:string} = {
-  ['nene_Core'] = 'Core',
-  ['nene_MilliTime'] = 'MilliTime',
-  ['nene_GamepadState'] = 'GamepadState',
-  ['nene_Color'] = 'Color',
-  ['nene_Vec2i'] = 'Vec2i',
-  ['nene_Vec2']  = 'Vec2',
-  ['nene_Rect'] = 'Rect',
-  ['nene_Rectf'] = 'Rectf',
-  ['nene_Grid'] = 'Grid',
-  ['nene_Segment'] = 'Segment',
-  ['nene_Shape'] = 'Shape',
-  ['nene_ShapeQuadrilateral'] = 'ShapeQuadrilateral',
-  ['nene_Animation'] = 'Animation',
-  ['nene_Intersections'] = 'Intersections',
-  ['nene_IntersectionRectfWithRectf'] = 'IntersectionRectfWithRectf',
-  ['nene_IntersectionSegmentWithRectf'] = 'IntersectionSegmentWithRectf',
-  ['nene_IntersectionSegmentWithSegment'] = 'IntersectionSegmentWithSegment',
-  ['nene_Collision'] = 'Collision',
-  ['nene_Texture'] = 'Texture',
-  ['nene_TextureCreation'] = 'TextureCreation',
-   -- TODO: remove these
-  ['nene_Font'] = 'Font',
-  ['nene_TextQuality'] = 'TextQuality',
-  ['NENE_TEXT_QUALITY_SOLID'] = 'Solid',
-  ['NENE_TEXT_QUALITY_BLENDED'] = 'Blended',
-  ['nene_FontCreation'] = 'FontCreation',
-  ['nene_GlyphMetrics'] = 'GlyphMetrics',
-  ['nene_GlyphMetricsQuery'] = 'GlyphMetricsQuery',
-  ['nene_TextDimensions'] = 'TextDimensions',
-  ['nene_TextureAtlas'] = 'TextureAtlas',
-  ['nene_TextureAtlasCreation'] = 'TextureAtlasCreation',
-  ['nene_Tilemap'] = 'Tilemap',
-  ['nene_Music'] = 'Music',
-  ['nene_MusicCreation'] = 'MusicCreation',
-  ['nene_Sound'] = 'Sound',
-  ['nene_SoundCreation'] = 'SoundCreation',
-}
-
-local neluagen = NeluaGenerator.new(typemap, depmap)
+local neluagen = NeluaGenerator.new(depmap)
 
 local function bind_file(file: AST.Module, src: string, wrap_options: Generator.WrapOptions)
    local binding = neluagen:module(file, wrap_options)

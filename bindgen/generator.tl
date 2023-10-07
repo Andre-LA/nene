@@ -5,7 +5,6 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Utils <const> = require 'bindgen.tools.utils'
 local AST <const> = require 'bindgen.ast.ast'
 
 local record Generator

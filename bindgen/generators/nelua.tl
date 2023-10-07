@@ -28,7 +28,7 @@ local NeluaGenerator_mt: metatable<NeluaGenerator> = {
 	__index = NeluaGenerator
 }
 
-function NeluaGenerator.new(lib_typemap: Generator.TypeMap, lib_depmap: Generator.DepMap): NeluaGenerator
+function NeluaGenerator.new(lib_depmap: Generator.DepMap): NeluaGenerator
 	local typemap: Generator.TypeMap = {
 		['int'] = 'cint',
 		['float'] = 'float32',
@@ -44,7 +44,7 @@ function NeluaGenerator.new(lib_typemap: Generator.TypeMap, lib_depmap: Generato
 		['bool'] = 'boolean',
 		['_Bool'] = 'boolean',
 	}
-	
+
 
 	local neluagen: NeluaGenerator = {
 		generator = Generator.new(typemap, lib_depmap)
@@ -53,11 +53,11 @@ function NeluaGenerator.new(lib_typemap: Generator.TypeMap, lib_depmap: Generato
 	return setmetatable(neluagen, NeluaGenerator_mt)
 end
 
-function NeluaGenerator:type(type: AST.Type): string
-	if type:is_primitive() then
-		return self.generator:apply_typemap(type.ctype)
+function NeluaGenerator:type(_type: AST.Type): string
+	if _type:is_primitive() then
+		return self.generator:apply_typemap(_type.ctype)
 	end
-	return type.type
+	return _type.type
 end
 
 function NeluaGenerator:comments(comment: AST.Comment, indent: integer): string
