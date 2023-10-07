@@ -24,7 +24,7 @@ function Tilemap.get_size(tilemap: Tilemap): Vec2i <cimport 'nene_Tilemap_get_si
 
 
 
-function Tilemap.draw(tilemap: Tilemap, position: Vec2, is_world_pos: boolean, tiles: *[0]uint16_t, count: uint32): boolean <cimport 'nene_Tilemap_draw', nodecl> end
+function Tilemap.draw(tilemap: Tilemap, position: Vec2, is_world_pos: boolean, tiles: *[0]uint16, count: uint32): boolean <cimport 'nene_Tilemap_draw', nodecl> end
 
 
 

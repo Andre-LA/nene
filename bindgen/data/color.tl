@@ -12,6 +12,9 @@ local AstCommon = require 'bindgen.ast_common'
 local symbols = ast_reader.read_file('color', 'nene_Color')
 assert(symbols, "no 'symbols' returned")
 
+local structs = ast_reader.get_structs(symbols, 'nene')
+assert(structs, "no 'structs' returned")
+
 local funcs = ast_reader.get_functions(symbols, 'nene_Color')
 assert(funcs, "no 'funcs' returned")
 
@@ -40,7 +43,7 @@ local color = AST.Module.new {
 	name = 'Color',
 	dependencies = {},
 	enums = {},
-	structs = {},
+	structs = structs,
 	funcs = funcs,
 }
 assert(color, "no 'color' created")

@@ -227,7 +227,7 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		table.insert(
 			result,
 			fmt(
-				'\n	local maybe_result = %s(%s)\n	return maybe_result.%s, maybe_result.%s\n',
+				'\n	local maybe_result = %s%s\n	return maybe_result.%s, maybe_result.%s\n',
 				func.sym.cname,
 				self:func_params(func.params, wrap_options, true),
 				func.meta.maybe_func.ok,
@@ -288,7 +288,6 @@ function NeluaGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions
 		fn_fun()
 		fn_params()
 		fn_maybewrap_rettype()
-		fn_cimport()
 		fn_maybewrap_body()
 		fn_end()
 	elseif func.meta.kind == 'readonly-property' then

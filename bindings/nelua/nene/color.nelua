@@ -1,6 +1,16 @@
 
+--- The color structure, it's a rgba color strucuture using one byte each
+local Color <cimport 'nene_Color', nodecl> = @record{
 
-local Color = @record{}
+	r: uint8,
+
+	g: uint8,
+
+	b: uint8,
+
+	a: uint8,
+}
+
 local function nene_Color_black(): Color <cimport 'nene_Color_black', nodecl> end
 
 --- The "black" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)

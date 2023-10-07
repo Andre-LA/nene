@@ -45,7 +45,7 @@ function Type.new(init: Type): Type
 end
 
 function Type:is_primitive(): boolean
-	return is_primitive_type(self.ctype) or false
+	return is_primitive_type(self.type) or false
 end
 
 function Type.from_ctype(ctype: string): Type
@@ -62,7 +62,7 @@ function Type.from_ctype(ctype: string): Type
 		local _type_n = Utils.slice(_type_words, 2)
 		local _type_id = table.concat(_type_n, '_')
 
-		if _type_first[1] ~= 'SDL' and _type_first[1] ~= 'TTF' and _type_first[1] ~= 'IMG' then
+		if _type_first[1] ~= 'SDL' and _type_first[1] ~= 'TTF' and _type_first[1] ~= 'IMG' and _type_first[1] ~= 'Mix' then
 			type_id = _type_id
 		end
 	end

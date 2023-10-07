@@ -2,7 +2,7 @@
 
 local Music <cimport 'nene_Music', nodecl> = @record{
 
-	raw: *Music,
+	raw: *Mix_Music,
 }
 
 
@@ -14,14 +14,14 @@ local MusicCreation <cimport 'nene_MusicCreation', nodecl> = @record{
 }
 
 
-function Music.get_raw(music: Music): *Music <cimport 'nene_Music_get_raw', nodecl> end
+function Music.get_raw(music: Music): *Mix_Music <cimport 'nene_Music_get_raw', nodecl> end
 
 
 local function nene_Music_load(filepath: cstring): MusicCreation <cimport 'nene_Music_load', nodecl> end
 
 
-function Music.load(filepath: cstring): (boolean, Music) <cimport 'nene_Music_load', nodecl> 
-	local maybe_result = nene_Music_load((filepath))
+function Music.load(filepath: cstring): (boolean, Music) 
+	local maybe_result = nene_Music_load(filepath)
 	return maybe_result.created, maybe_result.music
 end
 

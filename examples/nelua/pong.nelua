@@ -119,7 +119,7 @@ local Ball = @record{
 function Ball:get_rectf(): Rectf
   return Rectf{
     pos = self.pos,
-    size = Vec2.one() * SETTINGS.ball.size,
+    size = Vec2.one * SETTINGS.ball.size,
   }
 end
 
@@ -189,8 +189,11 @@ local function game()
   times, it doesn't try to hide it, so you will interact with SDL sometimes,
   especially to go beyond Nene capabilities if needed.
   ]]
-  local ok, screen <close> = Texture.create_with_access(SETTINGS.screen_size.x, SETTINGS.screen_size.y, SDL_TEXTUREACCESS_TARGET)
+  local ok, screen = Texture.create_with_access(SETTINGS.screen_size.x, SETTINGS.screen_size.y, SDL_TEXTUREACCESS_TARGET)
   assert(ok, 'could not create the screen texture target')
+  defer
+    screen:destroy()
+  end
 
   -- creates players rackets and the ball
   local pl_1: Racket = Racket.init()
@@ -202,15 +205,21 @@ local function game()
   }
 
   -- "monogram_extended" font is available with nene, but it's not loaded automatically.
-  local ok, font <close> = Font.load('../../resources/monogram_extended.ttf', 72)
+  local ok, font = Font.load('../../resources/monogram_extended.ttf', 72)
   assert(ok, 'could not load monogram_extended font')
 
   -- creates both players texts and then defer it's destroy calls
-  local ok, r1_text <close> = font:render('0', Font.TextQuality.Solid, Color.white)
+  local ok, r1_text = font:render('0', Font.TextQuality.Solid, Color.white)
   assert(ok, "could not render first text")
   
-  local ok, r2_text <close> = font:render('0', Font.TextQuality.Solid, Color.white)
+  local ok, r2_text = font:render('0', Font.TextQuality.Solid, Color.white)
   assert(ok, "could not render second text")
+
+  defer
+    font:destroy()
+    r1_text:destroy()
+    r2_text:destroy()
+  end
 
   local nene = Nene.instance()
 

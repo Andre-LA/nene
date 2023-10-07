@@ -52,10 +52,33 @@ bind_file(Core, 'core', {
 -- this contains the bindings for SDL2 and the linking procedures
 ## linklib 'nene'
 ## linklib 'm'
+
+## cinclude 'nene/core.h'
+## cinclude 'nene/config.h'
+## cinclude 'nene/texture.h'
+## cinclude 'nene/font.h'
+## cinclude 'nene/texture_atlas.h'
+## cinclude 'nene/audio/music.h'
+## cinclude 'nene/audio/sound.h'
+## cinclude 'nene/math/vec2i.h'
+## cinclude 'nene/math/vec2.h'
+## cinclude 'nene/math/rect.h'
+## cinclude 'nene/math/rectf.h'
+## cinclude 'nene/math/grid.h'
+## cinclude 'nene/math/segment.h'
+## cinclude 'nene/math/shape.h'
+## cinclude 'nene/intersections.h'
+## cinclude 'nene/collision.h'
+## cinclude 'nene/animation.h'
+## cinclude 'nene/tilemap.h'
+## cinclude 'nene/color.h'
+
 require 'nene.raw.sdl2'
 require 'nene.raw.sdl2_image'
 require 'nene.raw.sdl2_mixer'
 require 'nene.raw.sdl2_ttf'
+
+local MilliTime: type = @uint64
 ]],
 	append = [[
 local Core.MilliTime: type = @MilliTime 
@@ -126,7 +149,11 @@ bind_file(Texture, 'texture', {})
 
 -- Font
 local Font = require 'bindgen.data.font'
-bind_file(Font, 'font', {})
+bind_file(Font, 'font', {
+	prepend = [[
+local TextureCreation: type = @Texture.TextureCreation
+]]
+})
 
 -- Music
 local Music = require 'bindgen.data.audio.music'

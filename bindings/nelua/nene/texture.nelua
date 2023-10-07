@@ -45,8 +45,8 @@ function Texture.set_color_mod(texture: Texture, color: Color): boolean <cimport
 local function nene_Texture_create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
 
 
-function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): (boolean, Texture) <cimport 'nene_Texture_create_with_access', nodecl> 
-	local maybe_result = nene_Texture_create_with_access((width, height, access))
+function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): (boolean, Texture) 
+	local maybe_result = nene_Texture_create_with_access(width, height, access)
 	return maybe_result.created, maybe_result.texture
 end
 
@@ -54,8 +54,8 @@ end
 local function nene_Texture_create(width: uint16, height: uint16): TextureCreation <cimport 'nene_Texture_create', nodecl> end
 
 
-function Texture.create(width: uint16, height: uint16): (boolean, Texture) <cimport 'nene_Texture_create', nodecl> 
-	local maybe_result = nene_Texture_create((width, height))
+function Texture.create(width: uint16, height: uint16): (boolean, Texture) 
+	local maybe_result = nene_Texture_create(width, height)
 	return maybe_result.created, maybe_result.texture
 end
 
@@ -63,8 +63,8 @@ end
 local function nene_Texture_load(filepath: cstring): TextureCreation <cimport 'nene_Texture_load', nodecl> end
 
 
-function Texture.load(filepath: cstring): (boolean, Texture) <cimport 'nene_Texture_load', nodecl> 
-	local maybe_result = nene_Texture_load((filepath))
+function Texture.load(filepath: cstring): (boolean, Texture) 
+	local maybe_result = nene_Texture_load(filepath)
 	return maybe_result.created, maybe_result.texture
 end
 

@@ -2,7 +2,7 @@
 
 local Sound <cimport 'nene_Sound', nodecl> = @record{
 
-	raw: *Chunk,
+	raw: *Mix_Chunk,
 
 	channel: int16,
 }
@@ -16,14 +16,14 @@ local SoundCreation <cimport 'nene_SoundCreation', nodecl> = @record{
 }
 
 
-function Sound.get_raw(sound: Sound): *Chunk <cimport 'nene_Sound_get_raw', nodecl> end
+function Sound.get_raw(sound: Sound): *Mix_Chunk <cimport 'nene_Sound_get_raw', nodecl> end
 
 
 local function nene_Sound_load(filepath: cstring): SoundCreation <cimport 'nene_Sound_load', nodecl> end
 
 
-function Sound.load(filepath: cstring): (boolean, Sound) <cimport 'nene_Sound_load', nodecl> 
-	local maybe_result = nene_Sound_load((filepath))
+function Sound.load(filepath: cstring): (boolean, Sound) 
+	local maybe_result = nene_Sound_load(filepath)
 	return maybe_result.created, maybe_result.sound
 end
 

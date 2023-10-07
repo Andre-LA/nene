@@ -28,8 +28,8 @@ function TextureAtlas.destroy(texture_atlas: *TextureAtlas): void <cimport 'nene
 local function nene_TextureAtlas_load(filepath: cstring, width: uint16, grid: Grid): TextureAtlasCreation <cimport 'nene_TextureAtlas_load', nodecl> end
 
 
-function TextureAtlas.load(filepath: cstring, width: uint16, grid: Grid): (boolean, TextureAtlas) <cimport 'nene_TextureAtlas_load', nodecl> 
-	local maybe_result = nene_TextureAtlas_load((filepath, width, grid))
+function TextureAtlas.load(filepath: cstring, width: uint16, grid: Grid): (boolean, TextureAtlas) 
+	local maybe_result = nene_TextureAtlas_load(filepath, width, grid)
 	return maybe_result.created, maybe_result.texture_atlas
 end
 

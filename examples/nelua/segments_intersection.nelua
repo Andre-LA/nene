@@ -49,7 +49,7 @@ local function example()
       ab.ending = mouse_world_pos
     end
 
-    local intersection = Intersections.SegmentWithSegment.get_intersection(ab, cd)
+    local intersection = Intersections.IntersectionSegmentWithSegment.get_intersection(ab, cd)
 
     Nene.render_clear(Color.black)
 

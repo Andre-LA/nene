@@ -2,10 +2,33 @@
 -- this contains the bindings for SDL2 and the linking procedures
 ## linklib 'nene'
 ## linklib 'm'
+
+## cinclude 'nene/core.h'
+## cinclude 'nene/config.h'
+## cinclude 'nene/texture.h'
+## cinclude 'nene/font.h'
+## cinclude 'nene/texture_atlas.h'
+## cinclude 'nene/audio/music.h'
+## cinclude 'nene/audio/sound.h'
+## cinclude 'nene/math/vec2i.h'
+## cinclude 'nene/math/vec2.h'
+## cinclude 'nene/math/rect.h'
+## cinclude 'nene/math/rectf.h'
+## cinclude 'nene/math/grid.h'
+## cinclude 'nene/math/segment.h'
+## cinclude 'nene/math/shape.h'
+## cinclude 'nene/intersections.h'
+## cinclude 'nene/collision.h'
+## cinclude 'nene/animation.h'
+## cinclude 'nene/tilemap.h'
+## cinclude 'nene/color.h'
+
 require 'nene.raw.sdl2'
 require 'nene.raw.sdl2_image'
 require 'nene.raw.sdl2_mixer'
 require 'nene.raw.sdl2_ttf'
+
+local MilliTime: type = @uint64
 
 
 local Vec2 = require 'nene.math.vec2'
@@ -42,9 +65,9 @@ local Core <cimport 'nene_Core', nodecl> = @record{
 	--- reference to the window's renderer, created on initialization.
 	renderer: *SDL_Renderer,
 	--- store the state of (keyboard) scancode keys in the current frame (`true` means "pressed").
-	scancode_state: [512]bool,
+	scancode_state: [512]boolean,
 	--- the state of `scancode_state` on the previous frame.
-	prev_scancode_state: [512]bool,
+	prev_scancode_state: [512]boolean,
 	--- store the state of "NENE_CFG_GAMEPAD_COUNT" gamepads (by default, four), you can change this on config.h file.
 	gamepads_state: [4]GamepadState,
 	--- store the mouse position in screen space, relative to window origin (top-left corner).
