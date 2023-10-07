@@ -57,7 +57,8 @@ function Generator:gen_comments(comment: AST.Comment, prefix: string, postfix: s
 	return table.concat(result, '\n')
 end
 
-function Generator:apply_typemap(text: string): string
+function Generator:apply_typemap(_type: AST.Type): string
+	local text = _type.ctype
 	text = text:gsub('const ', '')
 
 	if text == 'char *' then
@@ -66,11 +67,15 @@ function Generator:apply_typemap(text: string): string
 	
 	local ctype, ptr_or_arr = text:match('([%w_]+) ?([%[%]%*%d]*)')
 
-	for T, langT in pairs(self.typemap) do
-		if ctype == T then
-			ctype = langT
-			break
+	if _type:is_primitive() then
+		for T, langT in pairs(self.typemap) do
+			if ctype == T then
+				ctype = langT
+				break
+			end
 		end
+	else
+		ctype = _type.type
 	end
 
 	ptr_or_arr = ptr_or_arr:gsub('%[%]', '*[0]')

@@ -14,7 +14,7 @@ local function nene_Rect_zero(): Rect <cimport 'nene_Rect_zero', nodecl> end
 local Rect.zero: Rect <const> = nene_Rect_zero()
 
 
-function Rect.clone(rect: Rect): Rect <cimport 'nene_Rect_clone', nodecl> end
+function Rect.clone(rect: *Rect): Rect <cimport 'nene_Rect_clone', nodecl> end
 
 
 

@@ -14,7 +14,7 @@ local function nene_Segment_zero(): Segment <cimport 'nene_Segment_zero', nodecl
 local Segment.zero: Segment <const> = nene_Segment_zero()
 
 --- returns a segment clone from a reference
-function Segment.clone(segment: Segment): Segment <cimport 'nene_Segment_clone', nodecl> end
+function Segment.clone(segment: *Segment): Segment <cimport 'nene_Segment_clone', nodecl> end
 
 
 --- tests the equality between two segments

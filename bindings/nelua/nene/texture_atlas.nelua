@@ -22,7 +22,7 @@ local TextureAtlasCreation <cimport 'nene_TextureAtlasCreation', nodecl> = @reco
 }
 
 
-function TextureAtlas.destroy(texture_atlas: TextureAtlas):  <cimport 'nene_TextureAtlas_destroy', nodecl> end
+function TextureAtlas.destroy(texture_atlas: *TextureAtlas):  <cimport 'nene_TextureAtlas_destroy', nodecl> end
 
 
 local function nene_TextureAtlas_load(filepath: cstring, width: uint16, grid: Grid): TextureAtlasCreation <cimport 'nene_TextureAtlas_load', nodecl> end

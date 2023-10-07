@@ -7,7 +7,6 @@ SPDX-License-Identifier: Zlib
 
 local AST = require 'bindgen.ast.ast'
 local ast_reader = require 'bindgen.ast_reader'
-local AstCommon = require 'bindgen.ast_common'
 
 local symbols = ast_reader.read_file('core', 'nene_GamepadState')
 assert(symbols, "no 'symbols' returned")

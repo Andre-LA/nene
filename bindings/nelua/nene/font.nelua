@@ -14,7 +14,7 @@ local TextQuality <cimport 'nene_TextQuality', nodecl> = @enum{
 --- You should not use the internal resource
 local Font <cimport 'nene_Font', nodecl> = @record{
 
-	raw: Font,
+	raw: *Font,
 }
 
 --- A font creation result.
@@ -54,7 +54,7 @@ local TextDimensions <cimport 'nene_TextDimensions', nodecl> = @record{
 }
 
 --- Returns the internal data of the Font handle.
-function Font.get_raw(font: Font): Font <cimport 'nene_Font_get_raw', nodecl> end
+function Font.get_raw(font: Font): *Font <cimport 'nene_Font_get_raw', nodecl> end
 
 
 local function nene_Font_load(filepath: cstring, pt_size: int16): FontCreation <cimport 'nene_Font_load', nodecl> end
@@ -76,7 +76,7 @@ end
 
 
 --- Updates the text of the reference texture, (this mutates the reference).
-function Font.update_text(font: Font, text_texture: Texture, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32): boolean <cimport 'nene_Font_update_text', nodecl> end
+function Font.update_text(font: Font, text_texture: *Texture, text: cstring, quality: TextQuality, color: Color, wrap_length: uint32): boolean <cimport 'nene_Font_update_text', nodecl> end
 
 
 local function nene_Font_get_glyph_metrics(font: Font, glyph: uint32): GlyphMetricsQuery <cimport 'nene_Font_get_glyph_metrics', nodecl> end
@@ -118,7 +118,7 @@ function Font.is_monospaced(font: Font): boolean <cimport 'nene_Font_is_monospac
 
 
 --- Destroys the font resource.
-function Font.destroy(font: Font):  <cimport 'nene_Font_destroy', nodecl> end
+function Font.destroy(font: *Font):  <cimport 'nene_Font_destroy', nodecl> end
 
 
 

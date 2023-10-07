@@ -7,7 +7,7 @@ local Shape = @record{}
 --- Quadrilateral shape data strucuture, it holds four segments.
 local ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral', nodecl> = @record{
 
-	sides: Segment,
+	sides: [4]Segment,
 }
 
 local function nene_ShapeQuadrilateral_zero(): ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral_zero', nodecl> end
@@ -16,7 +16,7 @@ local function nene_ShapeQuadrilateral_zero(): ShapeQuadrilateral <cimport 'nene
 local Shape.zero: ShapeQuadrilateral <const> = nene_ShapeQuadrilateral_zero()
 
 --- Returns a clone of the quadrilateral shape reference
-function ShapeQuadrilateral.clone(quadrilateral_shape: ShapeQuadrilateral): ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral_clone', nodecl> end
+function ShapeQuadrilateral.clone(quadrilateral_shape: *ShapeQuadrilateral): ShapeQuadrilateral <cimport 'nene_ShapeQuadrilateral_clone', nodecl> end
 
 
 --- Returns a quadrilateral shape made from a rectanle with floating values.

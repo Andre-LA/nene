@@ -2,7 +2,7 @@
 
 local Music <cimport 'nene_Music', nodecl> = @record{
 
-	raw: Music,
+	raw: *Music,
 }
 
 
@@ -14,7 +14,7 @@ local MusicCreation <cimport 'nene_MusicCreation', nodecl> = @record{
 }
 
 
-function Music.get_raw(music: Music): Music <cimport 'nene_Music_get_raw', nodecl> end
+function Music.get_raw(music: Music): *Music <cimport 'nene_Music_get_raw', nodecl> end
 
 
 local function nene_Music_load(filepath: cstring): MusicCreation <cimport 'nene_Music_load', nodecl> end
@@ -39,7 +39,7 @@ function Music.set_volume(volume: float32): float32 <cimport 'nene_Music_set_vol
 
 
 
-function Music.destroy(music: Music):  <cimport 'nene_Music_destroy', nodecl> end
+function Music.destroy(music: *Music):  <cimport 'nene_Music_destroy', nodecl> end
 
 
 

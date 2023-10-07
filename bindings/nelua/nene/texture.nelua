@@ -5,7 +5,7 @@ local Color = require 'nene.color'
 
 local Texture <cimport 'nene_Texture', nodecl> = @record{
 
-	raw: Texture,
+	raw: *Texture,
 
 	width: uint16,
 
@@ -23,15 +23,15 @@ local TextureCreation <cimport 'nene_TextureCreation', nodecl> = @record{
 }
 
 
-function Texture.destroy(texture: Texture):  <cimport 'nene_Texture_destroy', nodecl> end
+function Texture.destroy(texture: *Texture):  <cimport 'nene_Texture_destroy', nodecl> end
 
 
 
-function Texture.get_raw(texture: Texture): Texture <cimport 'nene_Texture_get_raw', nodecl> end
+function Texture.get_raw(texture: Texture): *Texture <cimport 'nene_Texture_get_raw', nodecl> end
 
 
 
-function Texture.apply_raw(texture: Texture, raw_texture: Texture): boolean <cimport 'nene_Texture_apply_raw', nodecl> end
+function Texture.apply_raw(texture: *Texture, raw_texture: *Texture): boolean <cimport 'nene_Texture_apply_raw', nodecl> end
 
 
 

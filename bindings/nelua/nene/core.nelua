@@ -18,7 +18,7 @@ local GamepadState <cimport 'nene_GamepadState', nodecl> = @record{
 
 	active: boolean,
 
-	game_controller: GameController,
+	game_controller: *GameController,
 
 	joystick_id: cint,
 
@@ -38,15 +38,15 @@ local Core <cimport 'nene_Core', nodecl> = @record{
 	--- extra offset for rendering.
 	render_offset: Vec2,
 	--- reference to the window created on initialization; using more than 1 window it's currently a non-goal for Nene.
-	window: Window,
+	window: *Window,
 	--- reference to the window's renderer, created on initialization.
-	renderer: Renderer,
+	renderer: *Renderer,
 	--- store the state of (keyboard) scancode keys in the current frame (`true` means "pressed").
-	scancode_state: bool,
+	scancode_state: [512]bool,
 	--- the state of `scancode_state` on the previous frame.
-	prev_scancode_state: bool,
+	prev_scancode_state: [512]bool,
 	--- store the state of "NENE_CFG_GAMEPAD_COUNT" gamepads (by default, four), you can change this on config.h file.
-	gamepads_state: GamepadState,
+	gamepads_state: [4]GamepadState,
 	--- store the mouse position in screen space, relative to window origin (top-left corner).
 	mouse_pos: Vec2,
 	--- store the mouse relative motion.
@@ -70,7 +70,7 @@ function Core.is_initialized(): boolean <cimport 'nene_Core_is_initialized', nod
 
 
 --- Returns the active nene instance, if nene isn't initialized, this will trigger an error.
-function Core.instance(): Core <cimport 'nene_Core_instance', nodecl> end
+function Core.instance(): *Core <cimport 'nene_Core_instance', nodecl> end
 
 
 --- Update's nene's state
@@ -156,7 +156,7 @@ function Core.set_render_clip(clip_rect: Rect, clip_is_screenspace: boolean): bo
 
 
 
-function Core.set_render_target(raw_target: Texture): boolean <cimport 'nene_Core_set_render_target', nodecl> end
+function Core.set_render_target(raw_target: *Texture): boolean <cimport 'nene_Core_set_render_target', nodecl> end
 
 
 function Core.render_clear(color: Color): boolean <cimport 'nene_Core_render_clear', nodecl> end

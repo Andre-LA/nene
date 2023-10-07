@@ -21,7 +21,7 @@ local IntersectionSegmentWithRectf <cimport 'nene_IntersectionSegmentWithRectf',
 	--- The intersected "sides" of the rectangle, the first element
 	--- it's the one that intersects `intersection.origin`, while the
 	--- second element it's the one that intersects `intersection.ending`.
-	intersected_rect_sides: Segment,
+	intersected_rect_sides: [2]Segment,
 }
 
 --- Segment with segment intersection.

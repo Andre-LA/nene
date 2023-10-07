@@ -30,7 +30,7 @@ AstCommon.set_on_functions(funcs, {'nene_Tilemap_draw'}, function(fn: AST.Func):
 	) as AST.Func.Param
 	assert(tiles, "no 'tiles' returned")
 	
-	-- tiles.type = tiles.type.ctype:gsub('uint16_t %*', 'uint16_t []')
+	tiles.type.ctype = tiles.type.ctype:gsub('uint16_t %*', 'uint16_t []')
 end)
 
 local tilemap = AST.Module.new {

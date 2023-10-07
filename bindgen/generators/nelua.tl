@@ -43,6 +43,7 @@ function NeluaGenerator.new(lib_depmap: Generator.DepMap): NeluaGenerator
 		['uint64_t'] = 'uint64',
 		['bool'] = 'boolean',
 		['_Bool'] = 'boolean',
+		['cstring'] = 'cstring',
 	}
 
 
@@ -54,10 +55,7 @@ function NeluaGenerator.new(lib_depmap: Generator.DepMap): NeluaGenerator
 end
 
 function NeluaGenerator:type(_type: AST.Type): string
-	if _type:is_primitive() then
-		return self.generator:apply_typemap(_type.ctype)
-	end
-	return _type.type
+	return self.generator:apply_typemap(_type)
 end
 
 function NeluaGenerator:comments(comment: AST.Comment, indent: integer): string
@@ -83,7 +81,7 @@ end
 function NeluaGenerator:enum_constant(constant: AST.Enum.Constant, _: Generator.WrapOptions): string
 	return fmt(
 		"	%s = %s,",
-		self.generator:apply_typemap(constant.sym.name),
+		constant.sym.name,
 		constant.constant
 	)
 end
@@ -97,7 +95,7 @@ function NeluaGenerator:enum(enum: AST.Enum, wrap_options: Generator.WrapOptions
 	-- generate enum name
 	table.insert(result, fmt(
 		"local %s %s = @enum{",
-		self.generator:apply_typemap(enum.sym.name),
+		enum.sym.name,
 		self:cimport(enum.sym.cname)
 	))
 
@@ -375,7 +373,7 @@ function NeluaGenerator:module(module: AST.Module, wrap_options: Generator.WrapO
 	end
 
 	-- generate module return
-	table.insert(result, fmt('\nreturn %s', self.generator:apply_typemap(module.name)))
+	table.insert(result, fmt('\nreturn %s', module.name))
 
 	return table.concat(result, '\n') .. '\n'
 end

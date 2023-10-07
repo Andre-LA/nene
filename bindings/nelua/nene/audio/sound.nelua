@@ -2,7 +2,7 @@
 
 local Sound <cimport 'nene_Sound', nodecl> = @record{
 
-	raw: Chunk,
+	raw: *Chunk,
 
 	channel: int16,
 }
@@ -16,7 +16,7 @@ local SoundCreation <cimport 'nene_SoundCreation', nodecl> = @record{
 }
 
 
-function Sound.get_raw(sound: Sound): Chunk <cimport 'nene_Sound_get_raw', nodecl> end
+function Sound.get_raw(sound: Sound): *Chunk <cimport 'nene_Sound_get_raw', nodecl> end
 
 
 local function nene_Sound_load(filepath: cstring): SoundCreation <cimport 'nene_Sound_load', nodecl> end
@@ -29,11 +29,11 @@ end
 
 
 
-function Sound.play(sound: Sound, loops: int16): boolean <cimport 'nene_Sound_play', nodecl> end
+function Sound.play(sound: *Sound, loops: int16): boolean <cimport 'nene_Sound_play', nodecl> end
 
 
 
-function Sound.halt(sound: Sound): boolean <cimport 'nene_Sound_halt', nodecl> end
+function Sound.halt(sound: *Sound): boolean <cimport 'nene_Sound_halt', nodecl> end
 
 
 
@@ -45,7 +45,7 @@ function Sound.set_volume(sound: Sound, volume: float32): float32 <cimport 'nene
 
 
 
-function Sound.destroy(sound: Sound):  <cimport 'nene_Sound_destroy', nodecl> end
+function Sound.destroy(sound: *Sound):  <cimport 'nene_Sound_destroy', nodecl> end
 
 
 
