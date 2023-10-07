@@ -670,7 +670,7 @@ bool nene_Core_init(const char title[], uint16_t width, uint16_t height, SDL_Win
     .renderer = renderer,
   };
 
-  nene_Core_set_render_draw_color(nene_Color_white);
+  nene_Core_set_render_draw_color(nene_Color_white());
   nene_Core_set_render_blend_mode(SDL_BLENDMODE_BLEND);
 
   return true;

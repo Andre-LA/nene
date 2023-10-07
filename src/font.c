@@ -8,6 +8,7 @@ SPDX-License-Identifier: Zlib
 #include "SDL.h"
 #include "nene/font.h"
 #include "nene/core.h"
+#include "nene/impl/utils.h"
 
 TTF_Font *nene_Font_get_raw(nene_Font font) {
   SDL_assert_release(font.raw != NULL);
@@ -43,16 +44,17 @@ nene_TextureCreation nene_Font_render(nene_Font font, const char text[], nene_Te
   nene_Core *const instance = nene_Core_instance();
 
   SDL_Surface *raw_surface = NULL;
+  SDL_Color sdl_color = ImplUtils_color_to_sdlcolor(color);
 
   switch (quality) {
     case NENE_TEXTQUALITY_SOLID: {
-      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_Font_get_raw(font), text, color, wrap_length); }
-      else                 { raw_surface = TTF_RenderUTF8_Solid(nene_Font_get_raw(font), text, color);                      }
+      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_Font_get_raw(font), text, sdl_color, wrap_length); }
+      else                 { raw_surface = TTF_RenderUTF8_Solid(nene_Font_get_raw(font), text, sdl_color);                      }
       break;
     }
     case NENE_TEXTQUALITY_BLENDED: {
-      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_Font_get_raw(font), text, color, wrap_length); }
-      else                 { raw_surface = TTF_RenderUTF8_Blended(nene_Font_get_raw(font), text, color);                      }
+      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_Font_get_raw(font), text, sdl_color, wrap_length); }
+      else                 { raw_surface = TTF_RenderUTF8_Blended(nene_Font_get_raw(font), text, sdl_color);                      }
       break;
     }
     default: {
