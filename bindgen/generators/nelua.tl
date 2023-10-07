@@ -305,6 +305,11 @@ function NeluaGenerator:module(module: AST.Module, wrap_options: Generator.WrapO
 
 	self.module_ast = module
 
+	-- add begin prepend
+	if wrap_options.begin_prepend then
+		table.insert(result, '\n' .. wrap_options.begin_prepend  .. '\n')
+	end
+
 	-- generate dependencies
 	for _, dependency in ipairs(module.dependencies) do
 		table.insert(result, self:dependency(dependency, wrap_options))

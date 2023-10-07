@@ -45,22 +45,22 @@ local function bind_file(file: AST.Module, src: string, wrap_options: Generator.
 end
 
 -- core
--- local Core = require 'bindgen.data.core'
+local Core = require 'bindgen.data.core'
 
--- bind_file(Core, 'core', {
---   prepend = [[
--- -- this contains the bindings for SDL2 and the linking procedures
--- ## linklib 'nene'
--- ## linklib 'm'
--- require 'nene.raw.sdl2'
--- require 'nene.raw.sdl2_image'
--- require 'nene.raw.sdl2_mixer'
--- require 'nene.raw.sdl2_ttf'
--- ]],
---   append = [[
--- local Core.MilliTime: type = @MilliTime 
--- ]]
--- })
+bind_file(Core, 'core', {
+	begin_prepend = [[
+-- this contains the bindings for SDL2 and the linking procedures
+## linklib 'nene'
+## linklib 'm'
+require 'nene.raw.sdl2'
+require 'nene.raw.sdl2_image'
+require 'nene.raw.sdl2_mixer'
+require 'nene.raw.sdl2_ttf'
+]],
+	append = [[
+local Core.MilliTime: type = @MilliTime 
+]]
+})
 
 --[ Math ]--
 

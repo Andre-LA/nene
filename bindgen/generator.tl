@@ -12,6 +12,7 @@ local record Generator
 	type DepMap = {string:string}
 
 	record WrapOptions
+		begin_prepend: string
 		prepend: string
 		append: string
 		ignore_overloading: {AST.Op:boolean}
