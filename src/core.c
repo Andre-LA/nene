@@ -448,6 +448,14 @@ nene_Vec2 nene_Core_get_screen_center(void) {
   return nene_Vec2_from_vec2i(nene_Vec2i_scale(screen_size, 0.5f));
 }
 
+nene_Vec2 nene_Core_get_render_offset(void) {
+  SDL_assert_release(_nene_initialized);
+
+  const nene_Core *const instance = nene_Core_instance();
+
+  return instance->render_offset;
+}
+
 nene_Vec2 nene_Core_screen_point_to_world_pos(nene_Vec2 point) {
   SDL_assert_release(_nene_initialized);
   
@@ -533,6 +541,13 @@ bool nene_Core_set_render_target(SDL_Texture *raw_target) {
   return true;
 }
 
+void nene_Core_set_render_offset(nene_Vec2 render_offset) {
+  SDL_assert_release(_nene_initialized);
+
+  nene_Core *const instance = nene_Core_instance();
+
+  instance->render_offset = render_offset;
+}
 
 bool nene_Core_render_clear(nene_Color color) {
   SDL_assert_release(_nene_initialized);

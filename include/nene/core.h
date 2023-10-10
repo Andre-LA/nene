@@ -108,6 +108,8 @@ nene_Vec2i nene_Core_get_window_size(void);
 
 nene_Vec2 nene_Core_get_screen_center(void);
 
+nene_Vec2 nene_Core_get_render_offset(void);
+
 nene_Vec2 nene_Core_screen_point_to_world_pos(nene_Vec2 point);
 
 nene_Vec2 nene_Core_world_pos_to_screen_point(nene_Vec2 pos);
@@ -119,6 +121,8 @@ bool nene_Core_set_render_blend_mode(SDL_BlendMode blend_mode);
 bool nene_Core_set_render_clip(nene_Rect clip_rect, bool clip_is_screenspace);
 
 bool nene_Core_set_render_target(SDL_Texture *raw_target);
+
+void nene_Core_set_render_offset(nene_Vec2 render_offset);
 
 bool nene_Core_render_clear(nene_Color color);
 

@@ -159,6 +159,12 @@ function Core.get_window_size(): Vec2i <cimport 'nene_Core_get_window_size', nod
 
 function Core.get_screen_center(): Vec2 <cimport 'nene_Core_get_screen_center', nodecl> end
 
+
+
+function Core.get_render_offset(): Vec2 <cimport 'nene_Core_get_render_offset', nodecl> end
+
+
+
 function Core.screen_point_to_world_pos(point: Vec2): Vec2 <cimport 'nene_Core_screen_point_to_world_pos', nodecl> end
 
 
@@ -181,6 +187,9 @@ function Core.set_render_clip(clip_rect: Rect, clip_is_screenspace: boolean): bo
 
 function Core.set_render_target(raw_target: *SDL_Texture): boolean <cimport 'nene_Core_set_render_target', nodecl> end
 
+
+
+function Core.set_render_offset(render_offset: Vec2): void <cimport 'nene_Core_set_render_offset', nodecl> end
 
 
 
