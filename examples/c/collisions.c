@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   do {
     nene_Core_update();
 
-    nene_Core_render_clear(nene_Color_bg);
+    nene_Core_render_clear(nene_Color_bg());
 
     nene_Vec2 delta = nene_Vec2_zero();
 
@@ -58,12 +58,12 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    nene_Color color = nene_Core_is_scancode_held(SDL_SCANCODE_SPACE) ? nene_Color_cyan : nene_Color_white;
+    nene_Color color = nene_Core_is_scancode_held(SDL_SCANCODE_SPACE) ? nene_Color_cyan(): nene_Color_white();
 
     nene_Core_render_draw_rect(nene_Rectf_to_rect(rect), true, color, true);
 
     for (int i = 0; i < SEGMENTS_COUNT; ++i) {
-      nene_Core_render_draw_line(segments[i].origin, segments[i].ending, nene_Color_black, true);
+      nene_Core_render_draw_line(segments[i].origin, segments[i].ending, nene_Color_black(), true);
     }
 
     nene_Core_render_present();
