@@ -5,7 +5,7 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local AST = require 'bindgen.ast.ast'
+local AST = require 'bindgen.ast'
 local Utils = require 'bindgen.tools.utils'
 
 local AstCommon = {}

@@ -5,7 +5,7 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local AST <const> = require 'bindgen.ast.ast'
+local AST <const> = require 'bindgen.ast'
 
 local record Generator
 	type TypeMap = {string:string}

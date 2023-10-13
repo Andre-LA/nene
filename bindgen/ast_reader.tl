@@ -7,7 +7,7 @@ SPDX-License-Identifier: Zlib
 
 local Utils = require 'bindgen.tools.utils'
 
-local AST = require 'bindgen.ast.ast'
+local AST = require 'bindgen.ast'
 
 local function no_repeat(arr: {any}, value: any): boolean
 	for _, v in ipairs(arr) do

@@ -6,7 +6,7 @@ SPDX-License-Identifier: Zlib
 ]]
 
 local Utils <const> = require 'bindgen.tools.utils'
-local AST <const> = require 'bindgen.ast.ast'
+local AST <const> = require 'bindgen.ast'
 local Generator <const> = require 'bindgen.generator'
 
 local fmt <const> = string.format

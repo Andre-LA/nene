@@ -5,7 +5,7 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local AST = require 'bindgen.ast.ast'
+local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
 
 local symbols = ast_reader.read_file('core', 'nene_GamepadState')
