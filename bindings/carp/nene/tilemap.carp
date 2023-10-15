@@ -1,14 +1,14 @@
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/tilemap.h\""))
-
 (load "nene/math/grid.carp")
-(load "nene/texture_atlas.carp")
-(load "nene/math/vec2.carp")
 (load "nene/math/vec2i.carp")
+(load "nene/math/vec2.carp")
+(load "nene/texture_atlas.carp")
+
 
 (register-type Tilemap "nene_Tilemap" [tileset TextureAtlas, width Uint16, grid Grid, tile_count Uint32])
+
 (defmodule Tilemap
-  (register get-size-in-tiles (Fn [Tilemap] Vec2i) "nene_Tilemap_get_size_in_tiles")
-  (register get-size (Fn [Tilemap] Vec2i) "nene_Tilemap_get_size")
-  (register draw (Fn [Tilemap Vec2 Bool (PtrPtr Uint16) Uint32] Bool) "nene_Tilemap_draw")
-  (register destroy (Fn [(Ptr Tilemap)] ()) "nene_Tilemap_destroy")
+	(register get-size-in-tiles (Fn [Tilemap] Vec2i) "nene_Tilemap_get_size_in_tiles")
+	(register get-size (Fn [Tilemap] Vec2i) "nene_Tilemap_get_size")
+	(register draw (Fn [Tilemap, Vec2, Bool, (Ptr [0]Uint16), Uint32] Bool) "nene_Tilemap_draw")
+	(register destroy (Fn [(Ptr Tilemap)] ()) "nene_Tilemap_destroy")
 )

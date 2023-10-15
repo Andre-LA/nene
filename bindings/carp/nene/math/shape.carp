@@ -1,13 +1,16 @@
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/math/shape.h\""))
-
-(load "nene/math/rect.carp")
-(use Rect)
-(load "nene/math/rectf.carp")
-(use Rectf)
 (load "nene/math/segment.carp")
-(use Segment)
+(load "nene/math/rect.carp")
+(load "nene/math/rectf.carp")
 
-(register-type ShapeQuadrilateral "nene_ShapeQuadrilateral" [sides (Ptr Segment)])
-(register get-rectf-shape (Fn [Rectf] ShapeQuadrilateral) "nene_Shape_get_rectf_shape")
-(register get-rect-shape (Fn [Rect] ShapeQuadrilateral) "nene_Shape_get_rect_shape")
-(register get-rectf-diagonal (Fn [Rectf Bool] Segment) "nene_Shape_get_rectf_diagonal")
+(defmodule Shape
+
+	(register-type ShapeQuadrilateral "nene_ShapeQuadrilateral")
+
+	(defmodule ShapeQuadrilateral
+		(register zero (Fn [] ShapeQuadrilateral) "nene_ShapeQuadrilateral_zero")
+		(register clone (Fn [(Ptr ShapeQuadrilateral)] ShapeQuadrilateral) "nene_ShapeQuadrilateral_clone")
+	)
+	(register get-rectf-shape (Fn [Rectf] ShapeQuadrilateral) "nene_Shape_get_rectf_shape")
+	(register get-rect-shape (Fn [Rect] ShapeQuadrilateral) "nene_Shape_get_rect_shape")
+	(register get-rectf-diagonal (Fn [Rectf, Bool] Segment) "nene_Shape_get_rectf_diagonal")
+)

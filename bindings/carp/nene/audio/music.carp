@@ -1,18 +1,13 @@
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/audio/music.h\""))
-
-(Unsafe.preproc (Unsafe.emit-c "#include \"SDL_mixer.h\""))
-
-
-(load "nene/sdl/sdl2_mixer.carp")
 
 
 (register-type Music "nene_Music" [raw (Ptr Mix_Music)])
 (register-type MusicCreation "nene_MusicCreation" [created Bool, music Music])
+
 (defmodule Music
-  (register get-raw (Fn [Music] (Ptr Mix_Music)) "nene_Music_get_raw")
-  (register load (Fn [(Ptr CChar)] MusicCreation) "nene_Music_load")
-  (register play (Fn [Music Int16] Bool) "nene_Music_play")
-  (register stop (Fn [] ()) "nene_Music_stop")
-  (register set-volume (Fn [Float] Float) "nene_Music_set_volume")
-  (register destroy (Fn [(Ptr Music)] ()) "nene_Music_destroy")
+	(register get-raw (Fn [Music] (Ptr Mix_Music)) "nene_Music_get_raw")
+	(register load (Fn [(Ptr CChar)] MusicCreation) "nene_Music_load")
+	(register play (Fn [Music, Int16] Bool) "nene_Music_play")
+	(register stop (Fn [] ()) "nene_Music_stop")
+	(register set-volume (Fn [Float] Float) "nene_Music_set_volume")
+	(register destroy (Fn [(Ptr Music)] ()) "nene_Music_destroy")
 )

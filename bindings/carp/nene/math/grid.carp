@@ -1,13 +1,15 @@
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/math/grid.h\""))
-
-(load "nene/math/rect.carp")
 (load "nene/math/vec2i.carp")
+(load "nene/math/rect.carp")
+
 
 (register-type Grid "nene_Grid" [cell_size Vec2i, gap Vec2i])
+
 (defmodule Grid
-  (register equals (Fn [Grid Grid] Bool) "nene_Grid_equals")
-  (register get-nth-cell-coord (Fn [Uint32 Uint16] Vec2i) "nene_Grid_get_nth_cell_coord")
-  (register get-cell-position (Fn [Grid Vec2i] Vec2i) "nene_Grid_get_cell_position")
-  (register get-nth-cell-position (Fn [Grid Uint32 Uint16] Vec2i) "nene_Grid_get_nth_cell_position")
-  (register get-rect (Fn [Grid Vec2i] Rect) "nene_Grid_get_rect")
+	(register zero (Fn [] Grid) "nene_Grid_zero")
+	(register clone (Fn [(Ptr Grid)] Grid) "nene_Grid_clone")
+	(register equals (Fn [Grid, Grid] Bool) "nene_Grid_equals")
+	(register get-nth-cell-coord (Fn [Uint32, Uint16] Vec2i) "nene_Grid_get_nth_cell_coord")
+	(register get-cell-position (Fn [Grid, Vec2i] Vec2i) "nene_Grid_get_cell_position")
+	(register get-nth-cell-position (Fn [Grid, Uint32, Uint16] Vec2i) "nene_Grid_get_nth_cell_position")
+	(register get-rect (Fn [Grid, Vec2i] Rect) "nene_Grid_get_rect")
 )

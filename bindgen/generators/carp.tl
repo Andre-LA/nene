@@ -5,249 +5,264 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local utils = require 'bindgen.utils'
-local Node = require 'bindgen.node'
-local Generator = require 'bindgen.generator'
-local Dependencies = require 'bindgen.dependencies'
+local Utils <const> = require 'bindgen.tools.utils'
+local Fun <const> = require 'bindgen.tools.fun'
+local AST <const> = require 'bindgen.ast'
+local AstCommon <const> = require 'bindgen.ast_common'
+local Generator <const> = require 'bindgen.generator'
 
-local fmt = string.format
-
--- TODO: operator overloading
+local fmt <const> = string.format
 
 local record CarpGenerator
-   generator: Generator
+	generator: Generator
+	module_ast: AST.Module
+	indent_level: integer
 end
 
 local CarpGenerator_mt: metatable<CarpGenerator> = {
-   __index = CarpGenerator
+	__index = CarpGenerator
 }
 
-function CarpGenerator.new(lib_typemap: Generator.TypeMap): CarpGenerator
-   local typemap: Generator.TypeMap = {
-      ['int'     ] = 'Int',
-      ['float'   ] = 'Float',
-      ['double'  ] = 'Double',
-      ['int8_t'  ] = 'Int8',
-      ['int16_t' ] = 'Int16',
-      ['int32_t' ] = 'Int32',
-      ['int64_t' ] = 'Int64',
-      ['uint8_t' ] = 'Uint8',
-      ['uint16_t'] = 'Uint16',
-      ['uint32_t'] = 'Uint32',
-      ['uint64_t'] = 'Uint64',
-      ['bool'    ] = 'Bool',
-      ['_Bool'   ] = 'Bool',
-      ['cstring' ] = '(Ptr CChar)',
-      ['void' ] = '()',
-   }
-   
-   for T, langT in pairs(lib_typemap) do
-      typemap[T] = langT
-   end
+function CarpGenerator.new(lib_depmap: Generator.TypeMap): CarpGenerator
+	local typemap: Generator.TypeMap = {
+		['int'] = 'Int',
+		['float'] = 'Float',
+		['double'] = 'Double',
+		['int8_t'] = 'Int8',
+		['int16_t'] = 'Int16',
+		['int32_t'] = 'Int32',
+		['int64_t'] = 'Int64',
+		['uint8_t'] = 'Uint8',
+		['uint16_t'] = 'Uint16',
+		['uint32_t'] = 'Uint32',
+		['uint64_t'] = 'Uint64',
+		['bool'] = 'Bool',
+		['_Bool'] = 'Bool',
+		['cstring'] = '(Ptr CChar)',
+		['void'] = '()',
+	}
 
-   local carpgen: CarpGenerator = {
-      generator = Generator.new(typemap)
-   }
-   return setmetatable(carpgen, CarpGenerator_mt)
+	local carpgen: CarpGenerator = {
+		generator = Generator.new(typemap, lib_depmap),
+		indent_level = 0,
+	}
+
+	return setmetatable(carpgen, CarpGenerator_mt)
 end
 
-function CarpGenerator:apply_typemap(type: string): string
-   local ty = self.generator:apply_typemap(type)
-                            :gsub("([%*%[%]%d]+)(%a[%w_]+)", "(%1 %2)")
-                            :gsub("%*", "Ptr")
-                            :gsub("([%[%d%]]+) (%a[%w_]+)", "Ptr %2")
-   return ty
+function CarpGenerator:add_indentation(delta: integer)
+	self.indent_level = math.max(self.indent_level + delta, 0)
 end
 
-function CarpGenerator:global_var(global_var: Node.GlobalVar, _: Generator.WrapOptions): string
-   return fmt(
-      '(register %s %s)',
-      global_var.name,
-      self:apply_typemap(global_var.type)
-   )
+function CarpGenerator:indentation(): string
+	return string.rep('	', self.indent_level)
 end
 
-function CarpGenerator:include_header(header: string): string
-   assert(header, "'header' expected")
-   assert(#header > 1, "'header' is empty")
-   return fmt('(Unsafe.preproc (Unsafe.emit-c "#include %s"))', header:gsub('"', '\\"'))
+function CarpGenerator:type(_type: AST.Type, _: Generator.WrapOptions): string
+	local _type = self.generator:apply_typemap(_type)
+	_type = _type:gsub('%*(.+)', '(Ptr %1)')
+	return _type
 end
 
-function CarpGenerator:dependency(dep_name: string, dependency: Dependencies.Dependency, _: Generator.WrapOptions): string
-   if dependency.is_header then
-      return self:include_header(dependency[1])
-   else
-      return table.concat({
-         fmt('(load "%s.carp")', table.concat(dependency, '/'))
-         -- fmt('(use %s)', dep_name)
-      }, '\n')
-   end
+function CarpGenerator:dependency(dependency: AST.Dependency, _: Generator.WrapOptions): string
+	return fmt(
+		'(load "%s.carp")',
+		self.generator.depmap[dependency.module]
+	)
 end
 
-function CarpGenerator:dependencies(dependencies: Dependencies, wrap_options: Generator.WrapOptions): string
-   local result: {string} = {}
-
-   -- generate required header
-   if dependencies.header then
-      table.insert(result, self:include_header(dependencies.header) .. '\n')
-   end
-
-   -- generate required modules or readers
-   local dep_names, _ = utils.kpairs_to_alphabetic_ipairs(dependencies.dependencies)
-
-   -- generate required headers
-   for _, dep_name in ipairs(dep_names) do
-      local dep = dependencies.dependencies[dep_name]
-      if dep.is_header then
-         table.insert(result, self:dependency(dep_name, dep, wrap_options))
-      end
-   end
-
-   -- generate required modules
-   for _, dep_name in ipairs(dep_names) do
-      local dep = dependencies.dependencies[dep_name]
-      if not dep.is_header then
-         table.insert(result, self:dependency(dep_name, dep, wrap_options))
-      end
-   end
-
-   return table.concat(result, '\n') .. '\n'
+function CarpGenerator:enum_constant(constant: AST.Enum.Constant, _: Generator.WrapOptions): string
+	return fmt(
+		'%s(register %s Int "%s")',
+		self:indentation(),
+		Utils.from_snake_case_to_kebab_case(constant.sym.name),
+		constant.sym.cname
+	)
 end
 
-function CarpGenerator:type_alias(type_alias: Node.TypeAlias, _: Generator.WrapOptions): string
-   return fmt(
-      '(register-type %s "%s")',
-      self:apply_typemap(type_alias.name),
-      self:apply_typemap(type_alias.aliased_type)
-   )
+function CarpGenerator:enum_constants(constants: {AST.Enum.Constant}, wrap_options: Generator.WrapOptions): string
+	self:add_indentation(1)
+
+	local result: {string} = Fun.map(constants, function(c: AST.Enum.Constant): string
+		return self:enum_constant(c, wrap_options)
+	end)
+
+	self:add_indentation(-1)
+
+	return table.concat(result, '\n')
 end
 
-function CarpGenerator:enum_constant(constant: Node.Enum.Constant, enum: Node.Enum, _: Generator.WrapOptions): string
-   return fmt(
-      '  (register %s %s "%s")',
-      constant.name:lower():gsub('_', '-'):gsub('nene%-', ''),
-      self:apply_typemap(enum.name),
-      constant.name
-   )
+function CarpGenerator:enum(enum: AST.Enum, wrap_options: Generator.WrapOptions): string
+	local constants = self:enum_constants(enum.constants, wrap_options)
+	return fmt(
+		[[
+%s(register-type %s "%s")
+%s(defmodule %s
+%s
+%s)]],
+		self:indentation(),
+		enum.sym.name,
+		enum.sym.cname,
+		self:indentation(),
+		enum.sym.name,
+		constants,
+		self:indentation()
+	)
 end
 
-function CarpGenerator:enum(enum: Node.Enum, wrap_options: Generator.WrapOptions): string
-   local result: {string} = {}
-
-   table.insert(result, fmt(
-      '(register-type %s "%s")',
-      self:apply_typemap(enum.name),
-      enum.cname
-   ))
-
-   for _, constant in ipairs(enum.constants) do
-      table.insert(result, self:enum_constant(constant, enum, wrap_options))
-   end
-
-   return table.concat(result, '\n') .. '\n'
+function CarpGenerator:struct_field(field: AST.Struct.Field, _: Generator.WrapOptions): string
+	return fmt('%s %s', field.sym.name, self:type(field.type))
 end
 
-function CarpGenerator:struct_field(field: Node.Struct.Field, _: Generator.WrapOptions): string
-   return fmt('%s %s', field.name, self:apply_typemap(field.type))
+function CarpGenerator:struct_fields(fields: {AST.Struct.Field}, wrap_options: Generator.WrapOptions): string
+	local result: {string} = Fun.map(fields, function(f: AST.Struct.Field): string
+		return self:struct_field(f, wrap_options)
+	end)
+
+	return table.concat(result, ', ')
 end
 
-function CarpGenerator:struct(struct: Node.Struct, wrap_options: Generator.WrapOptions): string
-   -- struct fields
-   local struct_fields: {string} = {}
+function CarpGenerator:struct(struct: AST.Struct, wrap_options: Generator.WrapOptions): string
+	-- Carp doesn't supports arrays yet.
+	local contains_array = #Fun.filter(struct.fields, function(f: AST.Struct.Field): boolean
+		local ftype = self:type(f.type)
+		return ftype:match('%[') ~= nil
+	end) > 0
 
-   for _, field in ipairs(struct.fields) do
-      table.insert(struct_fields, self:struct_field(field))
-   end
-   
-   return fmt(
-      '(register-type %s "%s" [%s])',
-      struct.name,
-      struct.cname,
-      table.concat(struct_fields, ', ')
-   )
+	if contains_array then -- emit opaque type
+		return fmt(
+			'%s(register-type %s "%s")',
+			self:indentation(),
+			struct.sym.name,
+			struct.sym.cname
+		)
+	else
+		return fmt(
+			'%s(register-type %s "%s" [%s])',
+			self:indentation(),
+			struct.sym.name,
+			struct.sym.cname,
+			self:struct_fields(struct.fields, wrap_options)
+		)
+	end
 end
 
-function CarpGenerator:func_param(param: Node.Func.Param, _: Generator.WrapOptions): string
-   return self:apply_typemap(param.type)
+function CarpGenerator:struct_mod(struct: AST.Struct, _: Generator.WrapOptions): string
+	return fmt(
+		'%s(defmodule %s',
+		self:indentation(),
+		struct.sym.name
+	)
 end
 
-function CarpGenerator:func_params(params: {Node.Func.Param}, wrap_options: Generator.WrapOptions): string
-   local func_params: {string} = {}
-
-   for _, param in ipairs(params) do
-      table.insert(func_params, self:func_param(param, wrap_options))
-   end
-
-   return table.concat(func_params, ' ')
+function CarpGenerator:func_ret_type(ret_type: AST.Type, wrap_options: Generator.WrapOptions): string
+	return self:type(ret_type, wrap_options)
 end
 
-function CarpGenerator:func(func: Node.Func, wrap_options: Generator.WrapOptions): string
-   return fmt(
-      '(register %s (Fn [%s] %s) "%s")',
-      func.name:gsub('_', '-'),
-      self:func_params(func.params, wrap_options),
-      self:apply_typemap(func.ret_type),
-      func.cname
-   )
+function CarpGenerator:func_param(param: AST.Func.Param, _: Generator.WrapOptions, emit_type: boolean): string
+	local type_name = emit_type and self:type(param.type) or param.sym.name
+	return fmt('%s', type_name)
 end
 
-function CarpGenerator:file(file: Node.File, wrap_options: Generator.WrapOptions): string
-   local result: {string} = {}
+function CarpGenerator:func_params(params: {AST.Func.Param}, wrap_options: Generator.WrapOptions, emit_type: boolean): string
+	-- generate parameters
+	local result: {string} = Fun.map(params, function(p: AST.Func.Param): string
+		return self:func_param(p, wrap_options, emit_type)
+	end)
 
-   -- generate dependencies
-   table.insert(result, self:dependencies(file.dependencies, wrap_options))
+	return table.concat(result, ', ')
+end
 
-   -- add prepend
-   if wrap_options.prepend then
-      table.insert(result, '\n' .. wrap_options.prepend  .. '\n')
-   end
+function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions): string
+	return fmt(
+		'%s(register %s (Fn [%s] %s) "%s")',
+		self:indentation(),
+		Utils.from_snake_case_to_kebab_case(func.sym.name),
+		self:func_params(func.params, wrap_options, true),
+		self:func_ret_type(func.ret_type, wrap_options),
+		func.sym.cname
+	)
+end
 
-   -- generate type aliases
-   for _, alias in ipairs(file.aliases) do
-      table.insert(result, self:type_alias(alias, wrap_options) .. '\n')
-   end
+function CarpGenerator:module(module: AST.Module, wrap_options: Generator.WrapOptions): string
+	local result: {string} = {}
 
-   -- generate enumerations
-   for _, enum in ipairs(file.enums) do
-      table.insert(result, self:enum(enum, wrap_options))
-   end
+	self.module_ast = module
+	self.indent_level = 0
 
-   -- generate structs
-   for _, struct in ipairs(file.structs) do
-      table.insert(result, self:struct(struct, wrap_options))
-   end
+	-- add begin prepend
+	if wrap_options.begin_prepend then
+		table.insert(result, '\n' .. wrap_options.begin_prepend .. '\n')
+	end
 
-   -- defmodule
-   table.insert(result, fmt('(defmodule %s', file.modname))
+	-- generate dependencies
+	for _, dependency in ipairs(module.dependencies) do
+		table.insert(result, self:dependency(dependency, wrap_options))
+	end
+	table.insert(result, '')
 
-   -- generate functions
-   for _, func in ipairs(file.funcs) do
-      table.insert(result, self:func(func, wrap_options))
-   end
+	-- defmodule
 
-   -- generate variables
-   for _, global_var in ipairs(file.global_vars) do
-      table.insert(result, self:global_var(global_var, wrap_options))
-   end
-   
-   -- add append
-   if wrap_options.append then
-      table.insert(result, '\n' .. wrap_options.append .. '\n')
-   end
+	-- if there is a main structure, then we need to ake the module namespace
+	local module_struct = Generator.there_is_module_struct(module)
+	if not module_struct then
+		table.insert(result, fmt('(defmodule %s', module.name))
+		self:add_indentation(1)
+	end
 
-   -- indent everything after defmodule and close it
-   local indent = false
-   for i=1, #result do
-      if indent then
-         result[i] = '  ' .. result[i]
-      end
-      if result[i] == ('(defmodule ' .. file.modname) then
-         indent = true
-      end
-   end
-   table.insert(result, ')')
+	-- add prepend
+	if wrap_options.prepend then
+		table.insert(result, '\n' .. wrap_options.prepend  .. '\n')
+	end
 
-   return table.concat(result, '\n') .. '\n'
+	-- TODO: enumerations should probably be inside module's defmodule?
+	-- generate enumerations
+	for _, enum in ipairs(module.enums) do
+		table.insert(result, self:enum(enum, wrap_options))
+	end
+
+	table.insert(result, '')
+
+	-- generate structs
+	for _, struct in ipairs(module.structs) do
+		table.insert(result, self:struct(struct, wrap_options))
+	end
+
+	table.insert(result, '')
+
+	-- generate methods
+	for _, struct in ipairs(module.structs) do
+		local methods = AstCommon.get_methods(struct, module.funcs)
+
+		if #methods > 0 then
+			table.insert(result, self:struct_mod(struct, wrap_options))
+			self:add_indentation(1)
+
+			for _, func in ipairs(methods) do
+				table.insert(result, self:func(func, wrap_options))
+			end
+			self:add_indentation(-1)
+			table.insert(result, self:indentation() .. ')')
+		end
+	end
+
+	-- generate static (non-methods) functions
+	local static_funcs = AstCommon.get_static_functions(module.structs, module.funcs)
+	for _, func in ipairs(static_funcs) do
+		table.insert(result, self:func(func, wrap_options))
+	end
+
+	-- add append
+	if wrap_options.append then
+		table.insert(result, '\n' .. wrap_options.append .. '\n')
+	end
+
+	-- close defmodule
+	if not module_struct then
+		table.insert(result, ')')
+	end
+
+	return table.concat(result, '\n') .. '\n'
 end
 
 return CarpGenerator

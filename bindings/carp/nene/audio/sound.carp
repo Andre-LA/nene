@@ -1,19 +1,14 @@
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/audio/sound.h\""))
-
-(Unsafe.preproc (Unsafe.emit-c "#include \"SDL_mixer.h\""))
-
-
-(load "nene/sdl/sdl2_mixer.carp")
 
 
 (register-type Sound "nene_Sound" [raw (Ptr Mix_Chunk), channel Int16])
 (register-type SoundCreation "nene_SoundCreation" [created Bool, sound Sound])
+
 (defmodule Sound
-  (register get-raw (Fn [Sound] (Ptr Mix_Chunk)) "nene_Sound_get_raw")
-  (register load (Fn [(Ptr CChar)] SoundCreation) "nene_Sound_load")
-  (register play (Fn [(Ptr Sound) Int16] Bool) "nene_Sound_play")
-  (register halt (Fn [(Ptr Sound)] Bool) "nene_Sound_halt")
-  (register halt-all (Fn [] Bool) "nene_Sound_halt_all")
-  (register set-volume (Fn [Sound Float] Float) "nene_Sound_set_volume")
-  (register destroy (Fn [(Ptr Sound)] ()) "nene_Sound_destroy")
+	(register get-raw (Fn [Sound] (Ptr Mix_Chunk)) "nene_Sound_get_raw")
+	(register load (Fn [(Ptr CChar)] SoundCreation) "nene_Sound_load")
+	(register play (Fn [(Ptr Sound), Int16] Bool) "nene_Sound_play")
+	(register halt (Fn [(Ptr Sound)] Bool) "nene_Sound_halt")
+	(register halt-all (Fn [] Bool) "nene_Sound_halt_all")
+	(register set-volume (Fn [Sound, Float] Float) "nene_Sound_set_volume")
+	(register destroy (Fn [(Ptr Sound)] ()) "nene_Sound_destroy")
 )

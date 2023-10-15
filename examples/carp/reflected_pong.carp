@@ -4,21 +4,26 @@
 ;; SPDX-License-Identifier: Zlib
 
 (Project.config "search-path" "./bindings/carp")
-(Project.config "title" "Reflected_Pong")
+(Project.config "title" "Reflected-Pong")
 
 (load "nene/core.carp")
 (load "nene/math/rectf.carp")
 (load "nene/intersections.carp")
 (load "nene/font.carp")
+(load "nene/color.carp")
 
 ;; utils ;;
 
+(defn fl [v]
+  (from-long v))
+
 ;; hacky utils while I'm still learning the language ;-;
-(defn u8 [v] (Uint8.from-long v))
-(defn u16 [v] (Uint16.from-long v))
-(defn u32 [v] (Uint32.from-long v))
-(defn i16 [v] (Int16.from-long v))
-(defn i32 [v] (Int32.from-long v))
+(defn u8 [v] (fl v))
+(defn u16 [v] (fl v))
+(defn u32 [v] (fl v))
+(defn i16 [v] (fl v))
+(defn i32 [v] (fl v))
+
 (sig clone-vec2i (Fn [(Ref Vec2i)] Vec2i))
 (defn clone-vec2i [v] (Vec2i.init @(Vec2i.x v) @(Vec2i.y v)))
 (defn clone-vec2 [v] (Vec2.init @(Vec2.x v) @(Vec2.y v)))
@@ -197,8 +202,8 @@
           info-tex (empty-static-texture)]
       (let [font-creation (Font.load (cstr "resources/monogram_extended.ttf") (i16 48l))
             font (clone-font (FontCreation.font &font-creation))
-            _1 (Font.update-text font (Pointer.address &points-tex) (cstr "0 pts") text-quality-solid Color.white (u32 0l))
-            _2 (Font.update-text font (Pointer.address &info-tex) (cstr "Press [left] or [right] arrows") text-quality-solid Color.white (u32 0l))
+            _1 (Font.update-text font (Pointer.address &points-tex) (cstr "0 pts") Solid (Color.white) (u32 0l))
+            _2 (Font.update-text font (Pointer.address &info-tex) (cstr "Press [left] or [right] arrows") Solid (Color.white) (u32 0l))
            ] ;; TODO: check font-creation's result to check for a runtime error
       
       (GameState.init (Paddle.new) (Ball.new) font points-tex info-tex ))))
@@ -208,14 +213,14 @@
     (let [font (GameState.font gamestate)
           points-tex (GameState.points-tex gamestate)]
       (ignore
-        (Font.update-text (clone-font font) (Pointer.address points-tex) (cstr &(String.concat &[(str Game-Points) @" pts"])) text-quality-solid Color.white (u32 0l)))))
+        (Font.update-text (clone-font font) (Pointer.address points-tex) (cstr &(String.concat &[(str Game-Points) @" pts"])) Solid (Color.white) (u32 0l)))))
       
   (sig update-info-tex (Fn [(Ref GameState) (Ptr CChar)] ()))
   (defn update-info-tex [gamestate text]
     (let [font (GameState.font gamestate)
           info-tex (GameState.info-tex gamestate)]
       (ignore
-        (Font.update-text (clone-font font) (Pointer.address info-tex) text text-quality-solid Color.white (u32 0l)))))
+        (Font.update-text (clone-font font) (Pointer.address info-tex) text Solid (Color.white) (u32 0l)))))
 
   (sig draw (Fn [(Ref GameState)] ()))
   (defn-do draw [gamestate]

@@ -8,16 +8,21 @@
 
 (load "nene/core.carp")
 
-;; hacky utils while I'm still learning the language ;-;
-(defn u8 [v] (Uint8.from-long v))
-(defn u16 [v] (Uint16.from-long v))
+(defn fl [v] (from-long v))
+
+(def background (Color.init (fl 20l) (fl 20l) (fl 20l) (fl 255l)))
+
+(defn-do tick []
+	(ignore-do
+		(Core.update)
+		(Core.render-clear background)
+		(Core.render-present)))
 
 (defn-do main [] 
-  (let-do [_ (Core.init (cstr "Minimal Hello World") (u16 800l) (u16 600l) sdl-window-shown)] 
-    (until (Core.should-quit)
-      (ignore-do
-        (Core.update)
-        (Core.render-clear (Color.init (u8 20l) (u8 20l) (u8 20l) (u8 255l)))
-        (Core.render-present)))
-    (Core.terminate))
-  0)
+	(let [init-ok (Core.init (cstr "Minimal Hello World") (fl 800l) (fl 600l) sdl-window-shown)] 
+		(when init-ok
+			(do
+				(until (Core.should-quit)
+					(tick))
+				(Core.terminate))))
+	0)

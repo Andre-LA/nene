@@ -1,34 +1,30 @@
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/font.h\""))
-
-(Unsafe.preproc (Unsafe.emit-c "#include \"SDL_ttf.h\""))
-(load "nene/color.carp")
-(load "nene/texture.carp")
 (load "nene/math/vec2i.carp")
-
-
-(load "nene/sdl/sdl2_ttf.carp")
-
+(load "nene/texture.carp")
+(load "nene/color.carp")
 
 (register-type TextQuality "nene_TextQuality")
-  (register text-quality-solid TextQuality "NENE_TEXT_QUALITY_SOLID")
-  (register text-quality-blended TextQuality "NENE_TEXT_QUALITY_BLENDED")
+(defmodule TextQuality
+	(register Solid TextQuality "NENE_TEXTQUALITY_SOLID")
+	(register Blended TextQuality "NENE_TEXTQUALITY_BLENDED")
+)
 
 (register-type Font "nene_Font" [raw (Ptr TTF_Font)])
 (register-type FontCreation "nene_FontCreation" [created Bool, font Font])
 (register-type GlyphMetrics "nene_GlyphMetrics" [min_x Int16, min_y Int16, max_x Int16, max_y Int16])
 (register-type GlyphMetricsQuery "nene_GlyphMetricsQuery" [queried Bool, metrics GlyphMetrics])
 (register-type TextDimensions "nene_TextDimensions" [calculated Bool, dimensions Vec2i])
+
 (defmodule Font
-  (register get-raw (Fn [Font] (Ptr TTF_Font)) "nene_Font_get_raw")
-  (register load (Fn [(Ptr CChar) Int16] FontCreation) "nene_Font_load")
-  (register render (Fn [Font (Ptr CChar) TextQuality Color Uint32] TextureCreation) "nene_Font_render")
-  (register update-text (Fn [Font (Ptr Texture) (Ptr CChar) TextQuality Color Uint32] Bool) "nene_Font_update_text")
-  (register get-glyph-metrics (Fn [Font Uint32] GlyphMetricsQuery) "nene_Font_get_glyph_metrics")
-  (register get-height (Fn [Font] Uint16) "nene_Font_get_height")
-  (register get-ascent (Fn [Font] Uint16) "nene_Font_get_ascent")
-  (register get-descent (Fn [Font] Uint16) "nene_Font_get_descent")
-  (register get-line-skip (Fn [Font] Uint16) "nene_Font_get_line_skip")
-  (register get-text-dimensions (Fn [Font (Ptr CChar)] TextDimensions) "nene_Font_get_text_dimensions")
-  (register is-monospaced (Fn [Font] Bool) "nene_Font_is_monospaced")
-  (register destroy (Fn [(Ptr Font)] ()) "nene_Font_destroy")
+	(register get-raw (Fn [Font] (Ptr TTF_Font)) "nene_Font_get_raw")
+	(register load (Fn [(Ptr CChar), Int16] FontCreation) "nene_Font_load")
+	(register render (Fn [Font, (Ptr CChar), TextQuality, Color, Uint32] TextureCreation) "nene_Font_render")
+	(register update-text (Fn [Font, (Ptr Texture), (Ptr CChar), TextQuality, Color, Uint32] Bool) "nene_Font_update_text")
+	(register get-glyph-metrics (Fn [Font, Uint32] GlyphMetricsQuery) "nene_Font_get_glyph_metrics")
+	(register get-height (Fn [Font] Uint16) "nene_Font_get_height")
+	(register get-ascent (Fn [Font] Uint16) "nene_Font_get_ascent")
+	(register get-descent (Fn [Font] Uint16) "nene_Font_get_descent")
+	(register get-line-skip (Fn [Font] Uint16) "nene_Font_get_line_skip")
+	(register get-text-dimensions (Fn [Font, (Ptr CChar)] TextDimensions) "nene_Font_get_text_dimensions")
+	(register is-monospaced (Fn [Font] Bool) "nene_Font_is_monospaced")
+	(register destroy (Fn [(Ptr Font)] ()) "nene_Font_destroy")
 )
