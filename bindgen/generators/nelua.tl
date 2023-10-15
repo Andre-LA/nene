@@ -5,7 +5,6 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Utils <const> = require 'bindgen.tools.utils'
 local AST <const> = require 'bindgen.ast'
 local Generator <const> = require 'bindgen.generator'
 
@@ -65,10 +64,6 @@ end
 
 function NeluaGenerator:cimport(cname: string): string
 	return fmt("<cimport '%s', nodecl>", cname)
-end
-
-function NeluaGenerator:header(header: AST.Header, _: Generator.WrapOptions): string
-	return fmt("## cinclude '%s'", header.header)
 end
 
 function NeluaGenerator:dependency(dependency: AST.Dependency, _: Generator.WrapOptions): string
@@ -150,20 +145,20 @@ function NeluaGenerator:struct(struct: AST.Struct, wrap_options: Generator.WrapO
 	return table.concat(result, '\n') .. '\n'
 end
 
-function NeluaGenerator:func_param(param: AST.Func.Param, _: Generator.WrapOptions, as_call: boolean): string
-	if not as_call then
+function NeluaGenerator:func_param(param: AST.Func.Param, _: Generator.WrapOptions, without_type_sig: boolean): string
+	if not without_type_sig then
 		return fmt('%s: %s', param.sym.name, self:type(param.type))
 	else
 		return fmt('%s', param.sym.name)
 	end
 end
 
-function NeluaGenerator:func_params(params: {AST.Func.Param}, wrap_options: Generator.WrapOptions, as_call: boolean): string
-	local result = {}
+function NeluaGenerator:func_params(params: {AST.Func.Param}, wrap_options: Generator.WrapOptions, without_type_sig: boolean): string
+	local result: {string} = {}
 
 	-- generate parameters
 	for _, param in ipairs(params) do
-		table.insert(result, self:func_param(param, wrap_options, as_call))
+		table.insert(result, self:func_param(param, wrap_options, without_type_sig))
 	end
 	
 	return '(' .. table.concat(result, ', ') .. ')'
@@ -315,16 +310,8 @@ function NeluaGenerator:module(module: AST.Module, wrap_options: Generator.WrapO
 
 	table.insert(result, '')
 
-	-- find if there's a struct that matches the module name
-	local struct_mod = Utils.ifindk(
-		module.structs,
-		module.name,
-		function(s: AST.Struct): string
-			return s.sym.name
-		end
-	) as AST.Struct
-
-	if not struct_mod then
+	-- if there isn't a main structure, then we need to make the module namespace
+	if not Generator.there_is_module_struct(module) then
 		table.insert(result, '')
 		table.insert(result, fmt('local %s = @record{}', module.name))
 	end

@@ -7,8 +7,33 @@ SPDX-License-Identifier: Zlib
 
 local AST = require 'bindgen.ast'
 local Utils = require 'bindgen.tools.utils'
+local Fun = require 'bindgen.tools.fun'
 
 local AstCommon = {}
+
+function AstCommon.get_methods(struct: AST.Struct, funcs: {AST.Func}): {AST.Func}
+	return Fun.filter(funcs, function(f: AST.Func): boolean
+		return f:is_method_of_struct(struct)
+	end)
+end
+
+function AstCommon.get_static_functions(structs: {AST.Struct}, funcs: {AST.Func}): {AST.Func}
+	local result: {AST.Func} = {}
+
+	for _, func in ipairs(funcs) do
+		for _, struct in ipairs(structs) do
+			if func:is_method_of_struct(struct) then
+				goto continue
+			end
+		end
+
+		table.insert(result, func)
+
+		::continue::
+	end
+
+	return result
+end
 
 function AstCommon.get_maybe_func_result_type(func: AST.Func, maybe_wrap: AST.Func.Meta.MaybeWrap, structs: {AST.Struct}): (AST.Struct.Field, string)
 	local ret_type = Utils.ifindk(structs, func.ret_type.ctype, function(s: AST.Struct): string

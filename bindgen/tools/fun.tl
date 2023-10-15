@@ -35,11 +35,11 @@ end
 ---
 --- It returns a new array table whose elements are the results
 --- of f over the elements of xs.
-function Fun.map<T>(xs: {T}, f: function(T): T): {T}
+function Fun.map<T, U>(xs: {T}, f: function(T): U): {U}
 	assert(xs, "you must pass the 'xs' argument.")
 	assert(f, "you must pass the 'f' argument.")
 
-	local result: {T} = {}
+	local result: {U} = {}
 
 	for i=1, #xs do
 		result[i] = f(xs[i])

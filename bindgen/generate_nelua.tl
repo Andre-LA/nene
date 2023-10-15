@@ -32,8 +32,8 @@ local depmap: Generator.DepMap = {
 
 local neluagen = NeluaGenerator.new(depmap)
 
-local function bind_file(file: AST.Module, src: string, wrap_options: Generator.WrapOptions)
-	local binding = neluagen:module(file, wrap_options)
+local function bind_module(module: AST.Module, src: string, wrap_options: Generator.WrapOptions)
+	local binding = neluagen:module(module, wrap_options)
 
 	local outpath = 'bindings/nelua/nene/'..src..'.nelua'
 	local outfile = io.open(outpath, 'w')
@@ -47,7 +47,7 @@ end
 -- core
 local Core = require 'bindgen.data.core'
 
-bind_file(Core, 'core', {
+bind_module(Core, 'core', {
 	begin_prepend = [[
 -- this contains the bindings for SDL2 and the linking procedures
 ## linklib 'nene'
@@ -89,7 +89,7 @@ local Core.MilliTime: type = @MilliTime
 
 -- Vec2i
 local Vec2i = require 'bindgen.data.math.vec2i'
-bind_file(Vec2i, 'math/vec2i', {
+bind_module(Vec2i, 'math/vec2i', {
 	append = [[
 function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): Vec2i
 	## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2i multiply needs at least one Vec2i value')
@@ -106,7 +106,7 @@ end
 
 -- Vec2
 local Vec2 = require 'bindgen.data.math.vec2'
-bind_file(Vec2, 'math/vec2', {
+bind_module(Vec2, 'math/vec2', {
 	append = [[
 function Vec2.__mul(a: overload(float32, Vec2), b: overload(float32, Vec2)): Vec2
 	## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2 multiply needs at least one Vec2 value')
@@ -123,33 +123,33 @@ end
 
 -- Rect
 local Rect = require 'bindgen.data.math.rect'
-bind_file(Rect, 'math/rect', {})
+bind_module(Rect, 'math/rect', {})
 
 -- Rectf
 local Rectf = require 'bindgen.data.math.rectf'
-bind_file(Rectf, 'math/rectf', {})
+bind_module(Rectf, 'math/rectf', {})
 
 -- Grid
 local Grid = require 'bindgen.data.math.grid'
-bind_file(Grid, 'math/grid', {})
+bind_module(Grid, 'math/grid', {})
 
 -- Segment
 local Segment = require 'bindgen.data.math.segment'
-bind_file(Segment, 'math/segment', {})
+bind_module(Segment, 'math/segment', {})
 
 -- Shape
 local Shape = require 'bindgen.data.math.shape'
-bind_file(Shape, 'math/shape', {})
+bind_module(Shape, 'math/shape', {})
 
 --[ Resources ]--
 
 -- Texture
 local Texture = require 'bindgen.data.texture'
-bind_file(Texture, 'texture', {})
+bind_module(Texture, 'texture', {})
 
 -- Font
 local Font = require 'bindgen.data.font'
-bind_file(Font, 'font', {
+bind_module(Font, 'font', {
 	prepend = [[
 local TextureCreation: type = @Texture.TextureCreation
 ]]
@@ -157,34 +157,34 @@ local TextureCreation: type = @Texture.TextureCreation
 
 -- Music
 local Music = require 'bindgen.data.audio.music'
-bind_file(Music, 'audio/music', {})
+bind_module(Music, 'audio/music', {})
 
 -- Sound
 local Sound = require 'bindgen.data.audio.sound'
-bind_file(Sound, 'audio/sound', {})
+bind_module(Sound, 'audio/sound', {})
 
 -- Texture Atlas
 local TextureAtlas = require 'bindgen.data.texture_atlas'
-bind_file(TextureAtlas, 'texture_atlas', {})
+bind_module(TextureAtlas, 'texture_atlas', {})
 
 -- Tilemap
 local Tilemap = require 'bindgen.data.tilemap'
-bind_file(Tilemap, 'tilemap', {})
+bind_module(Tilemap, 'tilemap', {})
 
 --[ Etc ]--
 -- Intersections
 local Intersections = require 'bindgen.data.intersections'
 
-bind_file(Intersections, 'intersections', {})
+bind_module(Intersections, 'intersections', {})
 
 -- Collision
 local Collision = require 'bindgen.data.collision'
-bind_file(Collision, 'collision', {})
+bind_module(Collision, 'collision', {})
 
 -- Animation
 local Animation = require 'bindgen.data.animation'
-bind_file(Animation, 'animation', {})
+bind_module(Animation, 'animation', {})
 
 -- Color
 local Color = require 'bindgen.data.color'
-bind_file(Color, 'color', {})
+bind_module(Color, 'color', {})

@@ -6,6 +6,7 @@ SPDX-License-Identifier: Zlib
 ]]
 
 local AST <const> = require 'bindgen.ast'
+local Utils <const> = require 'bindgen.tools.utils'
 
 local record Generator
 	type TypeMap = {string:string}
@@ -34,12 +35,15 @@ function Generator.new(typemap: Generator.TypeMap, depmap: Generator.DepMap): Ge
 	return setmetatable(generator, Generator_mt)
 end
 
-function Generator.is_system_header(header: string): boolean
-	return string.sub(header, 1, 1) == '<'
-end
-
-function Generator:is_private_func(func: AST.Func, wrap_options: Generator.WrapOptions): boolean
-	return func.meta.is_private or (wrap_options.privatize and not not wrap_options.privatize[func.sym.cname])
+-- returns the module's main strucutre if applicable, nil otherwise.
+function Generator.there_is_module_struct(module: AST.Module): AST.Struct
+	return Utils.ifindk(
+		module.structs,
+		module.name,
+		function(s: AST.Struct): string
+			return s.sym.name
+		end
+	) as AST.Struct
 end
 
 -- generate comment lines

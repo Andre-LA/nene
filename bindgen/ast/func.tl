@@ -96,6 +96,10 @@ function Func:get_mod_prefix(): string
 	return (cmodname:gsub(libprefix..'_', ''))
 end
 
+function Func:is_method_of_struct(struct: Struct): boolean
+	return self:get_mod_prefix() == struct.sym.name
+end
+
 function Func:get_maybewrap_result_field(structs: {Struct}): (Struct.Field, string)
 	local ret_type = Utils.ifindk(structs, self.ret_type.ctype, function(s: Struct): string
 		return s.sym.cname

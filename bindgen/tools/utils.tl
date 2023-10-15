@@ -103,6 +103,10 @@ function Utils.from_all_caps_to_pascal_case(all_caps: string): string
 	return table.concat(result)
 end
 
+function Utils.from_snake_case_to_kebab_case(snake_case: string): string
+	return (snake_case:gsub('_', '-'))
+end
+
 function Utils.pipe(pipeline: {any}): any
 	assert(pipeline, "'pipeline' argument expected.")
 	assert(#pipeline % 2 == 0, "on 'pipeline' argument: expected even number of arguments.")
