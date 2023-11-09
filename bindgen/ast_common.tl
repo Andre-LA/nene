@@ -126,4 +126,14 @@ function AstCommon.set_on_functions(functions: {AST.Func}, fn_names: {string}, c
 	end
 end
 
+function AstCommon.autoset_function_kinds(functions: {AST.Func})
+	for _, func in ipairs(functions) do
+		if func.sym.name == 'zero' then
+			func:set_as_zero_init()
+		elseif func.sym.name == 'copy' then
+			func:set_as_copy()
+		end
+	end
+end
+
 return AstCommon

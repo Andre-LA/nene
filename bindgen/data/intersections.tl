@@ -7,6 +7,7 @@ SPDX-License-Identifier: Zlib
 
 local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
+local AstCommon = require 'bindgen.ast_common'
 
 local symbols = ast_reader.read_file('intersections', 'nene_IntersectionRectfWithRectf')
 assert(symbols, "no 'symbols' returned")
@@ -16,6 +17,8 @@ assert(structs, "no 'structs' returned")
 
 local funcs = ast_reader.get_functions(symbols, 'nene_Intersection')
 assert(funcs, "no 'funcs' returned")
+
+AstCommon.autoset_function_kinds(funcs)
 
 local intersections = AST.Module.new {
 	name = 'Intersections',

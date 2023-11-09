@@ -19,6 +19,8 @@ assert(structs, "no 'structs' returned")
 local funcs = ast_reader.get_functions(symbols, 'nene_Tilemap')
 assert(funcs, "no 'funcs' returned")
 
+AstCommon.autoset_function_kinds(funcs)
+
 AstCommon.set_on_functions(funcs, {'nene_Tilemap_draw'}, function(fn: AST.Func): any
 	-- ast-dumps don't keep the information that some pointer it's actually an array
 	-- thus, we need to undo this lost information.

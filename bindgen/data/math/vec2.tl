@@ -18,6 +18,8 @@ assert(structs, "no 'structs' returned")
 local funcs = ast_reader.get_functions(symbols, 'nene_Vec2')
 assert(funcs, "no 'funcs' returned")
 
+AstCommon.autoset_function_kinds(funcs)
+
 AstCommon.set_op_overloading_functions(funcs, {
 	['nene_Vec2_equals'] = '==',
 	['nene_Vec2_add'] = '+',

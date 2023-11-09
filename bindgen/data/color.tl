@@ -22,6 +22,8 @@ AstCommon.set_op_overloading_functions(funcs, {
 	['nene_Color_equals'] = '==',
 })
 
+AstCommon.autoset_function_kinds(funcs)
+
 AstCommon.set_on_functions(
 	funcs,
 	{

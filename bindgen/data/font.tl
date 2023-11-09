@@ -21,6 +21,8 @@ assert(enums, "no 'enums' returned")
 local structs = ast_reader.get_structs(symbols, 'nene')
 assert(structs, "no 'structs' returned")
 
+
+AstCommon.autoset_function_kinds(funcs)
 local funcs = ast_reader.get_functions(symbols, 'nene_Font')
 assert(funcs, "no 'funcs' returned")
 

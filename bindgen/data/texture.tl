@@ -18,6 +18,8 @@ assert(structs, "no 'structs' returned")
 local funcs = ast_reader.get_functions(symbols, 'nene_Texture')
 assert(funcs, "no 'funcs' returned")
 
+AstCommon.autoset_function_kinds(funcs)
+
 AstCommon.set_maybe_functions(funcs, {
 	{
 		structs,
