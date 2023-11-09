@@ -26,6 +26,8 @@ local record Func
 			'op-overloading'
 			'maybe'
 			'readonly-property'
+			'zero-init'
+			'copy'
 		end
 
 		record MaybeWrap
@@ -140,6 +142,18 @@ function Func:set_as_readonly_property()
 	self.meta = Func.Meta.new({
 		kind = 'readonly-property',
 		is_private = true,
+	})
+end
+
+function Func:set_as_zero_init()
+	self.meta = Func.Meta.new({
+		kind = 'zero-init'
+	})
+end
+
+function Func:set_as_copy()
+	self.meta = Func.Meta.new({
+		kind = 'copy'
 	})
 end
 
