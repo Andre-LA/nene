@@ -33,7 +33,7 @@ local depmap: Generator.DepMap = {
 local carpgen = CarpGenerator.new(depmap)
 
 local function bind_module(module: AST.Module, src: string, wrap_options: Generator.WrapOptions, post_fn: function(string): string)
-	local binding = carpgen:module(module, wrap_options)
+	local binding = carpgen:module(module, Generator.WrapOptions.new(wrap_options))
 	if post_fn then
 		binding = post_fn(binding)
 	end
@@ -57,9 +57,8 @@ bind_module(Core, 'core', {
 (load "nene/sdl/sdl2_mixer.carp")
 (load "nene/sdl/sdl2_ttf.carp")
 
-(Project.config "cflag" "-fuse-ld=lld -I libnene/include -I libnene/include/SDL2 -std=c11 -L libnene/lib -L libnene/lib64 -Wl,-rpath='$ORIGIN/libnene/lib64'")
+(Project.config "cflag" "-std=c11 -fuse-ld=lld -I libnene/include -I libnene/include/SDL2 -L libnene/lib -L libnene/lib64 -Wl,-rpath='$ORIGIN/libnene/lib64'")
 (Project.config "libflag" "-lnene -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf")
-(Project.config "output-directory" ".")
 
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL.h\""))
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL_image.h\""))
@@ -84,36 +83,41 @@ bind_module(Core, 'core', {
 (Unsafe.preproc (Unsafe.emit-c "#include \"nene/collision.h\""))
 (Unsafe.preproc (Unsafe.emit-c "#include \"nene/animation.h\""))
 (Unsafe.preproc (Unsafe.emit-c "#include \"nene/tilemap.h\""))
-(Unsafe.preproc (Unsafe.emit-c "#include \"nene/color.h\""))
-
-
-]]
--- [
--- -- this contains the bindings for SDL2 and the linking procedures
--- ## linklib 'nene'
--- ## linklib 'm'
-
--- require 'nene.raw.sdl2'
--- require 'nene.raw.sdl2_image'
--- require 'nene.raw.sdl2_mixer'
--- require 'nene.raw.sdl2_ttf'
-
--- local MilliTime: type = @uint64
--- ]
-	}
-	-- function(binding: string): string
-	-- 	return (binding:gsub('%(register%-type Core "nene_Core".-\n', '(register-type Core "nene_Core")'))
-	-- end
-)
+(Unsafe.preproc (Unsafe.emit-c "#include \"nene/color.h\""))]]
+})
 --[ Math ]--
 
 -- Vec2i
 local Vec2i = require 'bindgen.data.math.vec2i'
-bind_module(Vec2i, 'math/vec2i', {})
+bind_module(Vec2i, 'math/vec2i', {
+	privatize = {
+		['nene_Vec2i_scale'] = false,
+	}
+},
+	function(content: string): string
+		return (content:gsub(
+			'("nene_Vec2i_mul"%))',
+			[[%1
+	(implements * Vec2i.-private-mul)]]
+		))
+	end
+)
 
 -- Vec2
 local Vec2 = require 'bindgen.data.math.vec2'
-bind_module(Vec2, 'math/vec2', {})
+bind_module(Vec2, 'math/vec2', {
+	privatize = {
+		['nene_Vec2_scale'] = false,
+	}
+},
+	function(content: string): string
+		return (content:gsub(
+			'("nene_Vec2_mul"%))',
+			[[%1
+	(implements * Vec2.-private-mul)]]
+		))
+	end
+)
 
 -- Rect
 local Rect = require 'bindgen.data.math.rect'
@@ -162,7 +166,7 @@ bind_module(Tilemap, 'tilemap', {})
 --[ Etc ]--
 -- Intersections
 local Intersections = require 'bindgen.data.intersections'
-bind_module(Intersections, 'intersections', {})
+bind_module(Intersections, 'intersections', {}) 
 
 -- Collision
 local Collision = require 'bindgen.data.collision'

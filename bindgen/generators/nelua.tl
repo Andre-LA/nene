@@ -15,6 +15,7 @@ local op_overloading: {AST.Op:string} = {
 	['-']  = '__sub',
 	['-u'] = '__unm',
 	['*']  = '__mul',
+	['/']  = '__div',
 	['=='] = '__eq',
 }
 

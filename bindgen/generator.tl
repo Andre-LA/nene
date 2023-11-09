@@ -12,6 +12,7 @@ local record Generator
 	type TypeMap = {string:string}
 	type DepMap = {string:string}
 
+	-- TODO: remove ignore_overloading and privatize
 	record WrapOptions
 		begin_prepend: string
 		prepend: string
@@ -33,6 +34,16 @@ function Generator.new(typemap: Generator.TypeMap, depmap: Generator.DepMap): Ge
 	}
 	
 	return setmetatable(generator, Generator_mt)
+end
+
+function Generator.WrapOptions.new(init: Generator.WrapOptions): Generator.WrapOptions
+	return {
+		begin_prepend = init.begin_prepend or '',
+		prepend = init.prepend or '',
+		append = init.append or '',
+		ignore_overloading = init.ignore_overloading or {},
+		privatize = init.privatize or {},
+	}
 end
 
 -- returns the module's main strucutre if applicable, nil otherwise.

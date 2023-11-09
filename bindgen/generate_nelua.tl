@@ -33,7 +33,7 @@ local depmap: Generator.DepMap = {
 local neluagen = NeluaGenerator.new(depmap)
 
 local function bind_module(module: AST.Module, src: string, wrap_options: Generator.WrapOptions)
-	local binding = neluagen:module(module, wrap_options)
+	local binding = neluagen:module(module, Generator.WrapOptions.new(wrap_options))
 
 	local outpath = 'bindings/nelua/nene/'..src..'.nelua'
 	local outfile = io.open(outpath, 'w')
@@ -101,7 +101,7 @@ function Vec2i.__mul(a: overload(float32, Vec2i), b: overload(float32, Vec2i)): 
 		return nene_Vec2i_scale(a, b)
 	## end
 end
-]]
+]],
 })
 
 -- Vec2
