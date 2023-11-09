@@ -19,6 +19,12 @@ typedef struct nene_Color {
 	uint8_t a;
 } nene_Color;
 
+/// Returns a zero-initialized color, that's a transparent black.
+nene_Color nene_Color_zero(void);
+
+/// Returns a copy of the color.
+nene_Color nene_Color_copy(nene_Color *color);
+
 /// The "black" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)
 nene_Color nene_Color_black(void);
 /// The "white" color of nene's palette (`{ .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff }`)

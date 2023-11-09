@@ -28,6 +28,8 @@ typedef struct nene_TextureCreation {
   nene_Texture texture;
 } nene_TextureCreation;
 
+nene_Texture nene_Texture_zero(void);
+nene_Texture nene_Texture_copy(nene_Texture *texture);
 void nene_Texture_destroy(nene_Texture *texture);
 SDL_Texture *nene_Texture_get_raw(nene_Texture texture);
 bool nene_Texture_apply_raw(nene_Texture *texture, SDL_Texture *raw_texture);

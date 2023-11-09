@@ -26,8 +26,8 @@ nene_Vec2i nene_Vec2i_zero(void);
 /// Returns a vector with `1` value on `x` and `y` components.
 nene_Vec2i nene_Vec2i_one(void);
 
-/// Returns a clone of the vector reference.
-nene_Vec2i nene_Vec2i_clone(nene_Vec2i *v);
+/// Returns a copy of the vector reference.
+nene_Vec2i nene_Vec2i_copy(nene_Vec2i *v);
 
 /// Tests equality between `a` and `b` vectors.
 bool nene_Vec2i_equals(nene_Vec2i a, nene_Vec2i b);

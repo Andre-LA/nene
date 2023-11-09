@@ -23,20 +23,6 @@ typedef enum nene_TextQuality {
   NENE_TEXTQUALITY_BLENDED = 2,
 } nene_TextQuality;
 
-/// The Font handle.
-/// You should not use the internal resource
-typedef struct nene_Font {
-  TTF_Font *raw;
-} nene_Font;
-
-/// A font creation result.
-typedef struct nene_FontCreation {
-  /// true if font creation succeded.
-  bool created;
-  /// the font handle created, empty on case of failure.
-  nene_Font font;
-} nene_FontCreation;
-
 /// The metrics of the font
 typedef struct nene_GlyphMetrics {
   int16_t min_x;
@@ -56,6 +42,32 @@ typedef struct nene_TextDimensions {
   bool calculated;
   nene_Vec2i dimensions;
 } nene_TextDimensions;
+
+/// The Font handle.
+/// You should not use the internal resource
+typedef struct nene_Font {
+  TTF_Font *raw;
+} nene_Font;
+
+/// A font creation result.
+typedef struct nene_FontCreation {
+  /// true if font creation succeded.
+  bool created;
+  /// the font handle created, empty on case of failure.
+  nene_Font font;
+} nene_FontCreation;
+
+/// Returns a zero-initialized Glyph Metrics.
+nene_GlyphMetrics nene_GlyphMetrics_zero(void);
+
+/// Returns a copy of the glyph metrics
+nene_GlyphMetrics nene_GlyphMetrics_copy(nene_GlyphMetrics *metrics);
+
+/// Returns a zero-initialized Font handle.
+nene_Font nene_Font_zero(void);
+
+/// Returns a copy of the Font handle (it doesn't clones the Font resource).
+nene_Font nene_Font_copy(nene_Font *font);
 
 /// Returns the internal data of the Font handle.
 TTF_Font *nene_Font_get_raw(nene_Font font);

@@ -8,6 +8,21 @@ SPDX-License-Identifier: Zlib
 #include "nene/texture_atlas.h"
 #include "nene/core.h"
 
+nene_TextureAtlas nene_TextureAtlas_zero(void) {
+  return (nene_TextureAtlas){
+    .texture = nene_Texture_zero()
+  };
+}
+
+nene_TextureAtlas nene_TextureAtlas_copy(nene_TextureAtlas *texture_atlas) {
+  if (texture_atlas == NULL) {
+    return nene_TextureAtlas_zero();
+  }
+  else {
+    return *texture_atlas;
+  }
+}
+
 void nene_TextureAtlas_destroy(nene_TextureAtlas *texture_atlas) {
   SDL_assert_release(texture_atlas != NULL);
 

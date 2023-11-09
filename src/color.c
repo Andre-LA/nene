@@ -1,4 +1,20 @@
 #include "nene/color.h"
+#include <stdlib.h>
+
+nene_Color nene_Color_zero(void) {
+	return (nene_Color) {
+		.r = 0x00
+	};
+}
+
+nene_Color nene_Color_copy(nene_Color *color) {
+	if (color == NULL) {
+		return nene_Color_zero();
+	}
+	else {
+		return *color;
+	}
+}
 
 nene_Color nene_Color_black(void) {
 	return (nene_Color){ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff };
@@ -33,5 +49,5 @@ nene_Color nene_Color_bg(void) {
 }
 
 bool nene_Color_equals(nene_Color a, nene_Color b) {
-  return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
+	return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
 }

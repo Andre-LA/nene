@@ -19,7 +19,7 @@ typedef struct nene_Grid {
 
 nene_Grid nene_Grid_zero(void);
 
-nene_Grid nene_Grid_clone(nene_Grid *grid);
+nene_Grid nene_Grid_copy(nene_Grid *grid);
 
 bool nene_Grid_equals(nene_Grid a, nene_Grid b);
 

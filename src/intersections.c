@@ -24,16 +24,23 @@ bool nene_Intersections_is_intersecting_rectf_with_point(nene_Rectf rect, nene_V
          point.y <= rect.pos.y && point.y >= rect.pos.y - rect.size.y;
 }
 
-nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void) {
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_zero(void) {
   return (nene_IntersectionRectfWithRectf){ 
     .intersected = false,
   };
 }
 
-nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_no_intersection(void) {
-  return (nene_IntersectionSegmentWithRectf){
-    .count = 0,
-  };
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_copy(nene_IntersectionRectfWithRectf *intersection) {
+  if (intersection == NULL) {
+    return nene_IntersectionRectfWithRectf_zero();
+  }
+  else {
+    return *intersection;
+  }
+}
+
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void) {
+  return nene_IntersectionRectfWithRectf_zero();
 }
 
 nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection(nene_Rectf a, nene_Rectf b) {
@@ -63,6 +70,25 @@ nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection
       .size = { .x = fabsf(min_sx - max_x), .y = fabsf(max_sy - min_y) },
     },
   };
+}
+
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_zero(void) {
+  return (nene_IntersectionSegmentWithRectf){
+    .count = 0,
+  };
+}
+
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_copy(nene_IntersectionSegmentWithRectf *intersection) {
+  if (intersection == NULL) {
+    return nene_IntersectionSegmentWithRectf_zero();
+  }
+  else {
+    return *intersection;
+  }
+}
+
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_no_intersection(void) {
+  return nene_IntersectionSegmentWithRectf_zero();
 }
 
 nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_get_intersection(nene_Segment segment, nene_Rectf rect) {
@@ -104,6 +130,25 @@ nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_get_intersec
   };
 
   return result;
+}
+
+nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_zero(void) {
+  return (nene_IntersectionSegmentWithSegment){
+    .intersected = false
+  };
+}
+
+nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_copy(nene_IntersectionSegmentWithSegment *intersection) {
+  if (intersection == NULL) {
+    return nene_IntersectionSegmentWithSegment_zero();
+  }
+  else {
+    return *intersection;
+  }
+}
+
+nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_no_intersection(void) {
+  return nene_IntersectionSegmentWithSegment_zero();
 }
 
 nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_get_intersection(nene_Segment a, nene_Segment b) {

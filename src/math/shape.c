@@ -17,8 +17,11 @@ nene_ShapeQuadrilateral nene_ShapeQuadrilateral_zero(void) {
   };
 }
 
-nene_ShapeQuadrilateral nene_ShapeQuadrilateral_clone(nene_ShapeQuadrilateral *quadrilateral_shape) {
-  if (quadrilateral_shape != NULL) {
+nene_ShapeQuadrilateral nene_ShapeQuadrilateral_copy(nene_ShapeQuadrilateral *quadrilateral_shape) {
+  if (quadrilateral_shape == NULL) {
+    return nene_ShapeQuadrilateral_zero();
+  }
+  else {
     nene_ShapeQuadrilateral result = {
       .sides = {
         quadrilateral_shape->sides[0],
@@ -29,7 +32,6 @@ nene_ShapeQuadrilateral nene_ShapeQuadrilateral_clone(nene_ShapeQuadrilateral *q
     };
     return result;
   }
-  return nene_ShapeQuadrilateral_zero();
 }
 
 nene_ShapeQuadrilateral nene_Shape_get_rectf_shape(nene_Rectf rect) {

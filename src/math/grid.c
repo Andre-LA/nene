@@ -14,11 +14,13 @@ nene_Grid nene_Grid_zero(void) {
   };
 }
 
-nene_Grid nene_Grid_clone(nene_Grid *grid) {
-  if (grid != NULL) {
+nene_Grid nene_Grid_copy(nene_Grid *grid) {
+  if (grid == NULL) {
+    return nene_Grid_zero();
+  }
+  else {
     return *grid;
   }
-  return nene_Grid_zero();
 }
 
 bool nene_Grid_equals(nene_Grid a, nene_Grid b) {

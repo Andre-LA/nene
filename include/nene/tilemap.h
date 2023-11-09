@@ -10,6 +10,7 @@ SPDX-License-Identifier: Zlib
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "nene/texture.h"
 #include "nene/texture_atlas.h"
 #include "nene/math/grid.h"
 #include "nene/math/vec2i.h"
@@ -20,6 +21,10 @@ typedef struct nene_Tilemap {
   nene_Grid grid;
   uint32_t tile_count;
 } nene_Tilemap;
+
+nene_Tilemap nene_Tilemap_zero(void);
+
+nene_Tilemap nene_Tilemap_copy(nene_Tilemap *tilemap);
 
 nene_Vec2i nene_Tilemap_get_size_in_tiles(nene_Tilemap tilemap);
 

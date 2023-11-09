@@ -85,6 +85,21 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
   ) != 0;
 }
 
+nene_Texture nene_Texture_zero(void) {
+  return (nene_Texture){
+    .raw = NULL
+  };
+}
+
+nene_Texture nene_Texture_copy(nene_Texture *texture) {
+  if (texture == NULL) {
+    return nene_Texture_zero();
+  }
+  else {
+    return *texture;
+  }
+}
+
 void nene_Texture_destroy(nene_Texture *texture) {
   SDL_assert_release(texture != NULL);
   

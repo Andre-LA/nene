@@ -13,11 +13,13 @@ nene_Segment nene_Segment_zero(void) {
   };
 }
 
-nene_Segment nene_Segment_clone(nene_Segment *segment) {
-  if (segment != NULL) {
+nene_Segment nene_Segment_copy(nene_Segment *segment) {
+  if (segment == NULL) {
+    return nene_Segment_zero();
+  }
+  else {
     return *segment;
   }
-  return nene_Segment_zero();
 }
 
 bool nene_Segment_equals(nene_Segment a, nene_Segment b) {

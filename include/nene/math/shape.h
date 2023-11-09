@@ -23,8 +23,8 @@ typedef struct nene_ShapeQuadrilateral {
 /// Returns a zeroed quatrilateral shape
 nene_ShapeQuadrilateral nene_ShapeQuadrilateral_zero(void);
 
-/// Returns a clone of the quadrilateral shape reference
-nene_ShapeQuadrilateral nene_ShapeQuadrilateral_clone(nene_ShapeQuadrilateral *quadrilateral_shape);
+/// Returns a copy of the quadrilateral shape reference
+nene_ShapeQuadrilateral nene_ShapeQuadrilateral_copy(nene_ShapeQuadrilateral *quadrilateral_shape);
 
 /// Returns a quadrilateral shape made from a rectanle with floating values.
 nene_ShapeQuadrilateral nene_Shape_get_rectf_shape(nene_Rectf rect);

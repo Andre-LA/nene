@@ -10,6 +10,36 @@ SPDX-License-Identifier: Zlib
 #include "nene/core.h"
 #include "nene/impl/utils.h"
 
+nene_GlyphMetrics nene_GlyphMetrics_zero(void) {
+  return (nene_GlyphMetrics){
+    .min_x = 0,
+  };
+}
+
+nene_GlyphMetrics nene_GlyphMetrics_copy(nene_GlyphMetrics *metrics) {
+  if (metrics == NULL) {
+    return nene_GlyphMetrics_zero();
+  }
+  else {
+    return *metrics;
+  }
+}
+
+nene_Font nene_Font_zero(void) {
+  return (nene_Font){
+    .raw = NULL
+  };
+}
+
+nene_Font nene_Font_copy(nene_Font *font) {
+  if (font == NULL) {
+    return nene_Font_zero();
+  }
+  else {
+    return *font;
+  }
+}
+
 TTF_Font *nene_Font_get_raw(nene_Font font) {
   SDL_assert_release(font.raw != NULL);
   return font.raw;
@@ -176,5 +206,5 @@ void nene_Font_destroy(nene_Font *font) {
   
   TTF_CloseFont(nene_Font_get_raw(*font));
 
-  *font = (nene_Font){ .raw = NULL };
+  *font = nene_Font_zero();
 }

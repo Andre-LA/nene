@@ -7,6 +7,7 @@ SPDX-License-Identifier: Zlib
 
 #include <math.h>
 #include "nene/collision.h"
+#include "nene/color.h"
 #include "nene/intersections.h"
 #include "nene/math/segment.h"
 #include "nene/math/shape.h"
@@ -160,11 +161,23 @@ static nene_impl_CollidingData nene_impl_Collision_rect_with_segment_get_collidi
   };  
 }
 
-nene_Collision nene_Collision_no_collision(void) {
+nene_Collision nene_Collision_zero(void) {
   return (nene_Collision){
-    .collided = false,
-    .delta = nene_Vec2_zero(),
+    .collided = false
   };
+}
+
+nene_Collision nene_Collision_copy(nene_Collision *collision) {
+  if (collision == NULL) {
+    return nene_Collision_zero();
+  }
+  else {
+    return *collision;
+  }
+}
+
+nene_Collision nene_Collision_no_collision(void) {
+  return nene_Collision_zero();
 }
 
 nene_Collision nene_Collision_rectf_with_rectf(nene_Rectf rect, nene_Rectf intersected_rect, nene_Vec2 delta_pos) {
