@@ -8,6 +8,7 @@ SPDX-License-Identifier: Zlib
 local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
 local AstCommon = require 'bindgen.ast_common'
+local Utils = require 'bindgen.tools.utils'
 
 -- Danger! Be careful about cyclic dependency
 local TextureMod = require 'bindgen.data.texture'
@@ -21,10 +22,15 @@ assert(enums, "no 'enums' returned")
 local structs = ast_reader.get_structs(symbols, 'nene')
 assert(structs, "no 'structs' returned")
 
+local font_funcs = ast_reader.get_functions(symbols, 'nene_Font')
+assert(font_funcs, "no 'font_funcs' returned")
+
+local glyph_funcs = ast_reader.get_functions(symbols, 'nene_GlyphMetrics')
+assert(glyph_funcs, "no 'glyph_funcs' returned")
+
+local funcs = Utils.imerge(glyph_funcs, font_funcs)
 
 AstCommon.autoset_function_kinds(funcs)
-local funcs = ast_reader.get_functions(symbols, 'nene_Font')
-assert(funcs, "no 'funcs' returned")
 
 AstCommon.set_maybe_functions(funcs, {
 	{
