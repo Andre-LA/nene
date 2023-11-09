@@ -87,7 +87,9 @@ function Func.new(init: Func): Func
 			assert(init.params, "you must set 'params' field."),
 			function(p: Func.Param): Func.Param return Func.Param.new(p) end
 		),
-		meta = assert(init.meta, "you must set 'meta' field."),
+		meta = Func.Meta.new(
+			assert(init.meta, "you must set 'meta' field.")
+		),
 	}
 	return setmetatable(func, Func_mt)
 end
@@ -122,7 +124,7 @@ function Func:get_maybewrap_result_field(structs: {Struct}): (Struct.Field, stri
 	return result_field
 end
 
-function Func:set_as_maybe_function(maybe_fn: Func.Meta.MaybeWrap)
+function Func:set_as_maybe(maybe_fn: Func.Meta.MaybeWrap)
 	self.meta = Func.Meta.new({
 		kind = 'maybe',
 		is_private = true,
@@ -130,7 +132,13 @@ function Func:set_as_maybe_function(maybe_fn: Func.Meta.MaybeWrap)
 	})
 end
 
-function Func:set_as_op_overloading_function(op: Op)
+function Func:set_as_default()
+	self.meta = Func.Meta.new({
+		kind = 'default',
+	})
+end
+
+function Func:set_as_op_overloading(op: Op)
 	self.meta = Func.Meta.new({
 		kind = 'op-overloading',
 		is_private = false,

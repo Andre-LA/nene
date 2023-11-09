@@ -88,7 +88,7 @@ function AstCommon.set_maybe_functions(functions: {AST.Func}, maybe_functions: {
 
 				maybe_wrap.result_type = result_field.type
 
-				fn:set_as_maybe_function(maybe_wrap)
+				fn:set_as_maybe(maybe_wrap)
 			end
 		)
 	end
@@ -106,7 +106,7 @@ function AstCommon.set_op_overloading_functions(functions: {AST.Func}, op_functi
 				return f.sym.cname
 			end,
 			function(fn: AST.Func): any
-				fn:set_as_op_overloading_function(fn_op)
+				fn:set_as_op_overloading(fn_op)
 			end
 		)
 	end
