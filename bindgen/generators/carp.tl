@@ -67,6 +67,15 @@ function CarpGenerator:indentation(): string
 	return string.rep('	', self.indent_level)
 end
 
+function CarpGenerator:comments(sym: AST.Symbol): string
+	return fmt(
+		'%s(doc %s "%s")',
+		self:indentation(),
+		sym.name,
+		table.concat(sym.comment.text, '\n'):gsub('"', '\\"')
+	)
+end
+
 function CarpGenerator:type(_type: AST.Type, _: Generator.WrapOptions): string
 	local _type = self.generator:apply_typemap(_type)
 	_type = _type:gsub('%*(.+)', '(Ptr %1)')
@@ -82,7 +91,10 @@ end
 
 function CarpGenerator:enum_constant(constant: AST.Enum.Constant, from_enum: AST.Enum, _: Generator.WrapOptions): string
 	return fmt(
-		'%s(register %s %s "%s")',
+		[[
+%s
+%s(register %s %s "%s")]],
+		self:comments(constant.sym),
 		self:indentation(),
 		Utils.from_snake_case_to_kebab_case(constant.sym.name),
 		from_enum.sym.name,
@@ -106,10 +118,12 @@ function CarpGenerator:enum(enum: AST.Enum, wrap_options: Generator.WrapOptions)
 	local constants = self:enum_constants(enum.constants, enum, wrap_options)
 	return fmt(
 		[[
+%s
 %s(register-type %s "%s")
 %s(defmodule %s
 %s
 %s)]],
+		self:comments(enum.sym),
 		self:indentation(),
 		enum.sym.name,
 		enum.sym.cname,
@@ -139,15 +153,17 @@ function CarpGenerator:struct(struct: AST.Struct, wrap_options: Generator.WrapOp
 		return ftype:match('%[') ~= nil
 	end) > 0
 
+	local comments = self:comments(struct.sym) .. '\n'
+
 	if contains_array then -- emit opaque type
-		return fmt(
+		return comments .. fmt(
 			'%s(register-type %s "%s")',
 			self:indentation(),
 			struct.sym.name,
 			struct.sym.cname
 		)
 	else
-		return fmt(
+		return comments .. fmt(
 			'%s(register-type %s "%s" [%s])',
 			self:indentation(),
 			struct.sym.name,
@@ -212,6 +228,7 @@ function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions)
 		func:set_as_zero_init()
 	end
 
+	local fn_comments = self:comments(func.sym)
 	local is_private = self:is_private_func(func, wrap_options)
 	local fn_mod = func:get_mod_prefix()
 	local fn_name = Utils.from_snake_case_to_kebab_case(func.sym.name)
@@ -274,6 +291,7 @@ function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions)
 		local maybewrap_code: {string} = {
 			fn_reg,
 			maybewrap_sig,
+			fn_comments,
 			maybewrap_defn,
 			maybewrap_body
 		}
@@ -309,6 +327,7 @@ function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions)
 
 		local copy_code: {string} = {
 			fn_reg,
+			fn_comments,
 			copy_copy,
 			copy_icopy,
 			copy_blit,
@@ -322,6 +341,7 @@ function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions)
 	
 		local prop_code: {string} = {
 			fn_reg,
+			fn_comments,
 			prop_def
 		}
 
@@ -331,6 +351,7 @@ function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions)
 		local zero_impl = fmt('%s(implements zero %s.%s)', ind(), fn_mod, fn_name)
 
 		local zero_code: {string} = {
+			fn_comments,
 			fn_reg,
 			zero_impl
 		}
@@ -347,6 +368,7 @@ function CarpGenerator:func(func: AST.Func, wrap_options: Generator.WrapOptions)
 		)
 
 		local op_code: {string} = {
+			fn_comments,
 			fn_reg,
 			op_fn
 		}
