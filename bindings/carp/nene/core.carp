@@ -1,3 +1,6 @@
+
+
+
 (load "nene/math/vec2.carp")
 (load "nene/math/vec2i.carp")
 (load "nene/math/rect.carp")
@@ -9,9 +12,8 @@
 (load "nene/sdl/sdl2_mixer.carp")
 (load "nene/sdl/sdl2_ttf.carp")
 
-(Project.config "cflag" "-fuse-ld=lld -I libnene/include -I libnene/include/SDL2 -std=c11 -L libnene/lib -L libnene/lib64 -Wl,-rpath='$ORIGIN/libnene/lib64'")
+(Project.config "cflag" "-std=c11 -fuse-ld=lld -I libnene/include -I libnene/include/SDL2 -L libnene/lib -L libnene/lib64 -Wl,-rpath='$ORIGIN/libnene/lib64'")
 (Project.config "libflag" "-lnene -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf")
-(Project.config "output-directory" ".")
 
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL.h\""))
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL_image.h\""))
@@ -39,10 +41,9 @@
 (Unsafe.preproc (Unsafe.emit-c "#include \"nene/color.h\""))
 
 
-
-
-
+(doc GamepadState "The gamepad state data structure.")
 (register-type GamepadState "nene_GamepadState" [active Bool, game_controller (Ptr SDL_GameController), joystick_id Int, prev_buttons Uint32, buttons Uint32])
+(doc Core "The core data structure of Nene")
 (register-type Core "nene_Core")
 
 (defmodule Core
@@ -81,3 +82,6 @@
 	(register should-quit (Fn [] Bool) "nene_Core_should_quit")
 	(register terminate (Fn [] ()) "nene_Core_terminate")
 )
+
+
+

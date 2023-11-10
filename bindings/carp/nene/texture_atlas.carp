@@ -1,18 +1,50 @@
+
+
+
 (load "nene/math/grid.carp")
 (load "nene/math/vec2i.carp")
 (load "nene/math/vec2.carp")
 (load "nene/texture.carp")
 
 
+
+
+
+(doc TextureAtlas "")
 (register-type TextureAtlas "nene_TextureAtlas" [width Uint16, grid Grid, texture Texture])
+(doc TextureAtlasCreation "")
 (register-type TextureAtlasCreation "nene_TextureAtlasCreation" [created Bool, texture_atlas TextureAtlas])
 
 (defmodule TextureAtlas
+	(doc zero "")
+	(register zero (Fn [] TextureAtlas) "nene_TextureAtlas_zero")
+	(implements zero TextureAtlas.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr TextureAtlas)] TextureAtlas) "nene_TextureAtlas_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref TextureAtlas)] TextureAtlas))
+	(defn copy [x]
+		(TextureAtlas.-private-copy (the (Ptr TextureAtlas) (Unsafe.coerce x))))
+	(implements copy TextureAtlas.copy)
+	(sig -private-blit (Fn [TextureAtlas] TextureAtlas))
+	(defn- -private-blit [x] (the TextureAtlas x))
+	(implements blit TextureAtlas.-private-blit)
 	(register destroy (Fn [(Ptr TextureAtlas)] ()) "nene_TextureAtlas_destroy")
-	(register load (Fn [(Ptr CChar), Uint16, Grid] TextureAtlasCreation) "nene_TextureAtlas_load")
+	(private -private-load) (hidden -private-load)
+	(register -private-load (Fn [(Ptr CChar), Uint16, Grid] TextureAtlasCreation) "nene_TextureAtlas_load")
+	(sig load (Fn [(Ptr CChar) Uint16 Grid] (Maybe TextureAtlas)))
+	(doc load "")
+	(defn load [filepath, width, grid]
+		(let [maybe-result (TextureAtlas.-private-load filepath width grid)]
+			(if @(TextureAtlasCreation.created &maybe-result)
+				(Maybe.Just @(TextureAtlas.texture_atlas &maybe-result))
+				(Nothing))))
 	(register draw-sub-texture (Fn [TextureAtlas, Vec2i, Vec2, Bool] Bool) "nene_TextureAtlas_draw_sub_texture")
 	(register draw-sub-texture-ex (Fn [TextureAtlas, Vec2i, Vec2, Bool, Double, Vec2, Bool, Bool] Bool) "nene_TextureAtlas_draw_sub_texture_ex")
 	(register draw-nth-sub-texture (Fn [TextureAtlas, Uint32, Vec2, Bool] Bool) "nene_TextureAtlas_draw_nth_sub_texture")
 	(register draw-nth-sub-texture-ex (Fn [TextureAtlas, Uint32, Vec2, Bool, Double, Vec2, Bool, Bool] Bool) "nene_TextureAtlas_draw_nth_sub_texture_ex")
 	(register get-sub-texture-center (Fn [TextureAtlas] Vec2) "nene_TextureAtlas_get_sub_texture_center")
 )
+
+
+

@@ -1,4 +1,10 @@
 
+
+
+
+
+
+
 --- The color structure, it's a rgba color strucuture using one byte each
 local Color <cimport 'nene_Color', nodecl> = @record{
 
@@ -10,6 +16,14 @@ local Color <cimport 'nene_Color', nodecl> = @record{
 
 	a: uint8,
 }
+
+--- Returns a zero-initialized color, that's a transparent black.
+function Color.zero(): Color <cimport 'nene_Color_zero', nodecl> end
+
+
+--- Returns a copy of the color.
+function Color.copy(color: *Color): Color <cimport 'nene_Color_copy', nodecl> end
+
 
 local function nene_Color_black(): Color <cimport 'nene_Color_black', nodecl> end
 
@@ -53,6 +67,9 @@ local Color.bg: Color <const> = nene_Color_bg()
 
 
 function Color.__eq(a: Color, b: Color): boolean <cimport 'nene_Color_equals', nodecl> end
+
+
+
 
 
 

@@ -1,30 +1,108 @@
+
+
+
 (load "nene/math/vec2i.carp")
 (load "nene/texture.carp")
 (load "nene/color.carp")
 
+
+
+
+(doc TextQuality "The quality of the text rendering.")
 (register-type TextQuality "nene_TextQuality")
 (defmodule TextQuality
+	(doc Solid "Solid is faster, but not \"smooth\", ideal for fast rendering or pixel-art fonts.")
 	(register Solid TextQuality "NENE_TEXTQUALITY_SOLID")
+	(doc Blended "Blended is slower, but have high-quality, with antialiasing.")
 	(register Blended TextQuality "NENE_TEXTQUALITY_BLENDED")
 )
 
-(register-type Font "nene_Font" [raw (Ptr TTF_Font)])
-(register-type FontCreation "nene_FontCreation" [created Bool, font Font])
+(doc GlyphMetrics "The metrics of the font")
 (register-type GlyphMetrics "nene_GlyphMetrics" [min_x Int16, min_y Int16, max_x Int16, max_y Int16])
+(doc GlyphMetricsQuery "The query result about a font.")
 (register-type GlyphMetricsQuery "nene_GlyphMetricsQuery" [queried Bool, metrics GlyphMetrics])
+(doc TextDimensions "The dimensions result of a text.")
 (register-type TextDimensions "nene_TextDimensions" [calculated Bool, dimensions Vec2i])
+(doc Font "The Font handle.
+You should not use the internal resource")
+(register-type Font "nene_Font" [raw (Ptr TTF_Font)])
+(doc FontCreation "A font creation result.")
+(register-type FontCreation "nene_FontCreation" [created Bool, font Font])
 
+(defmodule GlyphMetrics
+	(doc zero "Returns a zero-initialized Glyph Metrics.")
+	(register zero (Fn [] GlyphMetrics) "nene_GlyphMetrics_zero")
+	(implements zero GlyphMetrics.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr GlyphMetrics)] GlyphMetrics) "nene_GlyphMetrics_copy")
+	(doc copy "Returns a copy of the glyph metrics")
+	(sig copy (Fn [(Ref GlyphMetrics)] GlyphMetrics))
+	(defn copy [x]
+		(GlyphMetrics.-private-copy (the (Ptr GlyphMetrics) (Unsafe.coerce x))))
+	(implements copy GlyphMetrics.copy)
+	(sig -private-blit (Fn [GlyphMetrics] GlyphMetrics))
+	(defn- -private-blit [x] (the GlyphMetrics x))
+	(implements blit GlyphMetrics.-private-blit)
+)
 (defmodule Font
+	(doc zero "Returns a zero-initialized Font handle.")
+	(register zero (Fn [] Font) "nene_Font_zero")
+	(implements zero Font.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Font)] Font) "nene_Font_copy")
+	(doc copy "Returns a copy of the Font handle (it doesn't clones the Font resource).")
+	(sig copy (Fn [(Ref Font)] Font))
+	(defn copy [x]
+		(Font.-private-copy (the (Ptr Font) (Unsafe.coerce x))))
+	(implements copy Font.copy)
+	(sig -private-blit (Fn [Font] Font))
+	(defn- -private-blit [x] (the Font x))
+	(implements blit Font.-private-blit)
 	(register get-raw (Fn [Font] (Ptr TTF_Font)) "nene_Font_get_raw")
-	(register load (Fn [(Ptr CChar), Int16] FontCreation) "nene_Font_load")
-	(register render (Fn [Font, (Ptr CChar), TextQuality, Color, Uint32] TextureCreation) "nene_Font_render")
+	(private -private-load) (hidden -private-load)
+	(register -private-load (Fn [(Ptr CChar), Int16] FontCreation) "nene_Font_load")
+	(sig load (Fn [(Ptr CChar) Int16] (Maybe Font)))
+	(doc load "Returns the font creation result, this creates a font from a font asset (like .ttf files).")
+	(defn load [filepath, pt_size]
+		(let [maybe-result (Font.-private-load filepath pt_size)]
+			(if @(FontCreation.created &maybe-result)
+				(Maybe.Just @(Font.font &maybe-result))
+				(Nothing))))
+	(private -private-render) (hidden -private-render)
+	(register -private-render (Fn [Font, (Ptr CChar), TextQuality, Color, Uint32] TextureCreation) "nene_Font_render")
+	(sig render (Fn [Font (Ptr CChar) TextQuality Color Uint32] (Maybe Texture)))
+	(doc render "Renders a text using the given font, returns a texture creation result.")
+	(defn render [font, text, quality, color, wrap_length]
+		(let [maybe-result (Font.-private-render font text quality color wrap_length)]
+			(if @(TextureCreation.created &maybe-result)
+				(Maybe.Just @(Font.texture &maybe-result))
+				(Nothing))))
 	(register update-text (Fn [Font, (Ptr Texture), (Ptr CChar), TextQuality, Color, Uint32] Bool) "nene_Font_update_text")
-	(register get-glyph-metrics (Fn [Font, Uint32] GlyphMetricsQuery) "nene_Font_get_glyph_metrics")
+	(private -private-get-glyph-metrics) (hidden -private-get-glyph-metrics)
+	(register -private-get-glyph-metrics (Fn [Font, Uint32] GlyphMetricsQuery) "nene_Font_get_glyph_metrics")
+	(sig get-glyph-metrics (Fn [Font Uint32] (Maybe GlyphMetrics)))
+	(doc get_glyph_metrics "Query the metrics of the given glyph of the given font.")
+	(defn get-glyph-metrics [font, glyph]
+		(let [maybe-result (Font.-private-get-glyph-metrics font glyph)]
+			(if @(GlyphMetricsQuery.queried &maybe-result)
+				(Maybe.Just @(Font.metrics &maybe-result))
+				(Nothing))))
 	(register get-height (Fn [Font] Uint16) "nene_Font_get_height")
 	(register get-ascent (Fn [Font] Uint16) "nene_Font_get_ascent")
 	(register get-descent (Fn [Font] Uint16) "nene_Font_get_descent")
 	(register get-line-skip (Fn [Font] Uint16) "nene_Font_get_line_skip")
-	(register get-text-dimensions (Fn [Font, (Ptr CChar)] TextDimensions) "nene_Font_get_text_dimensions")
+	(private -private-get-text-dimensions) (hidden -private-get-text-dimensions)
+	(register -private-get-text-dimensions (Fn [Font, (Ptr CChar)] TextDimensions) "nene_Font_get_text_dimensions")
+	(sig get-text-dimensions (Fn [Font (Ptr CChar)] (Maybe Vec2i)))
+	(doc get_text_dimensions "Calculates the dimensions of the given text using the given font.")
+	(defn get-text-dimensions [font, text]
+		(let [maybe-result (Font.-private-get-text-dimensions font text)]
+			(if @(TextDimensions.calculated &maybe-result)
+				(Maybe.Just @(Font.dimensions &maybe-result))
+				(Nothing))))
 	(register is-monospaced (Fn [Font] Bool) "nene_Font_is_monospaced")
 	(register destroy (Fn [(Ptr Font)] ()) "nene_Font_destroy")
 )
+
+
+

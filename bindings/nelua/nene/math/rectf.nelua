@@ -1,5 +1,11 @@
+
+
+
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
+
+
+
 
 
 local Rectf <cimport 'nene_Rectf', nodecl> = @record{
@@ -15,7 +21,7 @@ local function nene_Rectf_zero(): Rectf <cimport 'nene_Rectf_zero', nodecl> end
 local Rectf.zero: Rectf <const> = nene_Rectf_zero()
 
 
-function Rectf.clone(rect: *Rectf): Rectf <cimport 'nene_Rectf_clone', nodecl> end
+function Rectf.copy(rect: *Rectf): Rectf <cimport 'nene_Rectf_copy', nodecl> end
 
 
 
@@ -44,6 +50,9 @@ function Rectf.to_rect(rect: Rectf): Rect <cimport 'nene_Rectf_to_rect', nodecl>
 
 
 function Rectf.from_rect(rect: Rect): Rectf <cimport 'nene_Rectf_from_rect', nodecl> end
+
+
+
 
 
 

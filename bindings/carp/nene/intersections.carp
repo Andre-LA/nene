@@ -1,24 +1,76 @@
+
+
+
 (load "nene/math/vec2.carp")
 (load "nene/math/rectf.carp")
 (load "nene/math/segment.carp")
 
+
+
+
+
+(doc IntersectionRectfWithRectf "Rectangle with rectangle intersection.")
+(register-type IntersectionRectfWithRectf "nene_IntersectionRectfWithRectf" [intersected Bool, intersection Rectf])
+(doc IntersectionSegmentWithRectf "Segment with rectangle intersection.")
+(register-type IntersectionSegmentWithRectf "nene_IntersectionSegmentWithRectf")
+(doc IntersectionSegmentWithSegment "Segment with segment intersection.")
+(register-type IntersectionSegmentWithSegment "nene_IntersectionSegmentWithSegment" [intersected Bool, is_parallel Bool, point Vec2, a_intersecting_scalar Float, b_intersecting_scalar Float])
+
+(defmodule IntersectionRectfWithRectf
+	(doc zero "Returns a zero-initialized RectfWithRectf value.")
+	(register zero (Fn [] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_zero")
+	(implements zero IntersectionRectfWithRectf.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr IntersectionRectfWithRectf)] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_copy")
+	(doc copy "Returns a copy of a RectfWithRectf intersection.")
+	(sig copy (Fn [(Ref IntersectionRectfWithRectf)] IntersectionRectfWithRectf))
+	(defn copy [x]
+		(IntersectionRectfWithRectf.-private-copy (the (Ptr IntersectionRectfWithRectf) (Unsafe.coerce x))))
+	(implements copy IntersectionRectfWithRectf.copy)
+	(sig -private-blit (Fn [IntersectionRectfWithRectf] IntersectionRectfWithRectf))
+	(defn- -private-blit [x] (the IntersectionRectfWithRectf x))
+	(implements blit IntersectionRectfWithRectf.-private-blit)
+	(register no-intersection (Fn [] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_no_intersection")
+	(register get-intersection (Fn [Rectf, Rectf] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_get_intersection")
+)
+(defmodule IntersectionSegmentWithRectf
+	(doc zero "Returns a zero-initialized RectfWithRectf value.")
+	(register zero (Fn [] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_zero")
+	(implements zero IntersectionSegmentWithRectf.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr IntersectionSegmentWithRectf)] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_copy")
+	(doc copy "Returns a copy of a RectfWithRectf intersection.")
+	(sig copy (Fn [(Ref IntersectionSegmentWithRectf)] IntersectionSegmentWithRectf))
+	(defn copy [x]
+		(IntersectionSegmentWithRectf.-private-copy (the (Ptr IntersectionSegmentWithRectf) (Unsafe.coerce x))))
+	(implements copy IntersectionSegmentWithRectf.copy)
+	(sig -private-blit (Fn [IntersectionSegmentWithRectf] IntersectionSegmentWithRectf))
+	(defn- -private-blit [x] (the IntersectionSegmentWithRectf x))
+	(implements blit IntersectionSegmentWithRectf.-private-blit)
+	(register no-intersection (Fn [] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_no_intersection")
+	(register get-intersection (Fn [Segment, Rectf] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_get_intersection")
+)
+(defmodule IntersectionSegmentWithSegment
+	(doc zero "Returns a zero-initialized IntersectionSegmentWithSegment value.")
+	(register zero (Fn [] IntersectionSegmentWithSegment) "nene_IntersectionSegmentWithSegment_zero")
+	(implements zero IntersectionSegmentWithSegment.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr IntersectionSegmentWithSegment)] IntersectionSegmentWithSegment) "nene_IntersectionSegmentWithSegment_copy")
+	(doc copy "Returns a copy of a IntersectionSegmentWithSegment intersection.")
+	(sig copy (Fn [(Ref IntersectionSegmentWithSegment)] IntersectionSegmentWithSegment))
+	(defn copy [x]
+		(IntersectionSegmentWithSegment.-private-copy (the (Ptr IntersectionSegmentWithSegment) (Unsafe.coerce x))))
+	(implements copy IntersectionSegmentWithSegment.copy)
+	(sig -private-blit (Fn [IntersectionSegmentWithSegment] IntersectionSegmentWithSegment))
+	(defn- -private-blit [x] (the IntersectionSegmentWithSegment x))
+	(implements blit IntersectionSegmentWithSegment.-private-blit)
+	(register no-intersection (Fn [] IntersectionSegmentWithSegment) "nene_IntersectionSegmentWithSegment_no_intersection")
+	(register get-intersection (Fn [Segment, Segment] IntersectionSegmentWithSegment) "nene_IntersectionSegmentWithSegment_get_intersection")
+)
 (defmodule Intersections
-
-	(register-type IntersectionRectfWithRectf "nene_IntersectionRectfWithRectf" [intersected Bool, intersection Rectf])
-	(register-type IntersectionSegmentWithRectf "nene_IntersectionSegmentWithRectf")
-	(register-type IntersectionSegmentWithSegment "nene_IntersectionSegmentWithSegment" [intersected Bool, is_parallel Bool, point Vec2, a_intersecting_scalar Float, b_intersecting_scalar Float])
-
-	(defmodule IntersectionRectfWithRectf
-		(register no-intersection (Fn [] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_no_intersection")
-		(register get-intersection (Fn [Rectf, Rectf] IntersectionRectfWithRectf) "nene_IntersectionRectfWithRectf_get_intersection")
-	)
-	(defmodule IntersectionSegmentWithRectf
-		(register no-intersection (Fn [] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_no_intersection")
-		(register get-intersection (Fn [Segment, Rectf] IntersectionSegmentWithRectf) "nene_IntersectionSegmentWithRectf_get_intersection")
-	)
-	(defmodule IntersectionSegmentWithSegment
-		(register get-intersection (Fn [Segment, Segment] IntersectionSegmentWithSegment) "nene_IntersectionSegmentWithSegment_get_intersection")
-	)
 	(register is-intersecting-rectf-with-rectf (Fn [Rectf, Rectf] Bool) "nene_Intersections_is_intersecting_rectf_with_rectf")
 	(register is-intersecting-rectf-with-point (Fn [Rectf, Vec2] Bool) "nene_Intersections_is_intersecting_rectf_with_point")
 )
+
+
+

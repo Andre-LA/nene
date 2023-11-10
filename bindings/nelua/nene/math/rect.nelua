@@ -1,4 +1,10 @@
+
+
+
 local Vec2i = require 'nene.math.vec2i'
+
+
+
 
 
 local Rect <cimport 'nene_Rect', nodecl> = @record{
@@ -14,7 +20,7 @@ local function nene_Rect_zero(): Rect <cimport 'nene_Rect_zero', nodecl> end
 local Rect.zero: Rect <const> = nene_Rect_zero()
 
 
-function Rect.clone(rect: *Rect): Rect <cimport 'nene_Rect_clone', nodecl> end
+function Rect.copy(rect: *Rect): Rect <cimport 'nene_Rect_copy', nodecl> end
 
 
 
@@ -35,6 +41,9 @@ function Rect.add_size(rect: Rect, size: Vec2i): Rect <cimport 'nene_Rect_add_si
 
 
 function Rect.get_center(rect: Rect): Vec2i <cimport 'nene_Rect_get_center', nodecl> end
+
+
+
 
 
 

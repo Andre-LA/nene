@@ -1,23 +1,71 @@
+
+
+
 (load "nene/math/vec2.carp")
 (load "nene/math/rect.carp")
 (load "nene/color.carp")
 
 
+
+
+
+(doc Texture "")
 (register-type Texture "nene_Texture" [raw (Ptr SDL_Texture), width Uint16, height Uint16, access SDL_TextureAccess])
+(doc TextureCreation "")
 (register-type TextureCreation "nene_TextureCreation" [created Bool, texture Texture])
 
 (defmodule Texture
+	(doc zero "")
+	(register zero (Fn [] Texture) "nene_Texture_zero")
+	(implements zero Texture.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Texture)] Texture) "nene_Texture_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref Texture)] Texture))
+	(defn copy [x]
+		(Texture.-private-copy (the (Ptr Texture) (Unsafe.coerce x))))
+	(implements copy Texture.copy)
+	(sig -private-blit (Fn [Texture] Texture))
+	(defn- -private-blit [x] (the Texture x))
+	(implements blit Texture.-private-blit)
 	(register destroy (Fn [(Ptr Texture)] ()) "nene_Texture_destroy")
 	(register get-raw (Fn [Texture] (Ptr SDL_Texture)) "nene_Texture_get_raw")
 	(register apply-raw (Fn [(Ptr Texture), (Ptr SDL_Texture)] Bool) "nene_Texture_apply_raw")
 	(register set-blend-mode (Fn [Texture, SDL_BlendMode] Bool) "nene_Texture_set_blend_mode")
 	(register set-color-mod (Fn [Texture, Color] Bool) "nene_Texture_set_color_mod")
-	(register create-with-access (Fn [Uint16, Uint16, SDL_TextureAccess] TextureCreation) "nene_Texture_create_with_access")
-	(register create (Fn [Uint16, Uint16] TextureCreation) "nene_Texture_create")
-	(register load (Fn [(Ptr CChar)] TextureCreation) "nene_Texture_load")
+	(private -private-create-with-access) (hidden -private-create-with-access)
+	(register -private-create-with-access (Fn [Uint16, Uint16, SDL_TextureAccess] TextureCreation) "nene_Texture_create_with_access")
+	(sig create-with-access (Fn [Uint16 Uint16 SDL_TextureAccess] (Maybe Texture)))
+	(doc create_with_access "")
+	(defn create-with-access [width, height, access]
+		(let [maybe-result (Texture.-private-create-with-access width height access)]
+			(if @(TextureCreation.created &maybe-result)
+				(Maybe.Just @(Texture.texture &maybe-result))
+				(Nothing))))
+	(private -private-create) (hidden -private-create)
+	(register -private-create (Fn [Uint16, Uint16] TextureCreation) "nene_Texture_create")
+	(sig create (Fn [Uint16 Uint16] (Maybe Texture)))
+	(doc create "")
+	(defn create [width, height]
+		(let [maybe-result (Texture.-private-create width height)]
+			(if @(TextureCreation.created &maybe-result)
+				(Maybe.Just @(Texture.texture &maybe-result))
+				(Nothing))))
+	(private -private-load) (hidden -private-load)
+	(register -private-load (Fn [(Ptr CChar)] TextureCreation) "nene_Texture_load")
+	(sig load (Fn [(Ptr CChar)] (Maybe Texture)))
+	(doc load "")
+	(defn load [filepath]
+		(let [maybe-result (Texture.-private-load filepath)]
+			(if @(TextureCreation.created &maybe-result)
+				(Maybe.Just @(Texture.texture &maybe-result))
+				(Nothing))))
 	(register get-full-source-rect (Fn [Texture] Rect) "nene_Texture_get_full_source_rect")
 	(register draw-to-point (Fn [Texture, Rect, Vec2, Bool] Bool) "nene_Texture_draw_to_point")
 	(register draw-to-rect (Fn [Texture, Rect, Rect] Bool) "nene_Texture_draw_to_rect")
 	(register draw-to-point-ex (Fn [Texture, Rect, Vec2, Bool, Double, Vec2, Bool, Bool] Bool) "nene_Texture_draw_to_point_ex")
 	(register draw-to-rect-ex (Fn [Texture, Rect, Rect, Double, Vec2, Bool, Bool] Bool) "nene_Texture_draw_to_rect_ex")
 )
+
+
+

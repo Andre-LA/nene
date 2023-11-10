@@ -1,5 +1,11 @@
+
+
+
 local Vec2i = require 'nene.math.vec2i'
 local Rect = require 'nene.math.rect'
+
+
+
 
 
 local Grid <cimport 'nene_Grid', nodecl> = @record{
@@ -15,7 +21,7 @@ local function nene_Grid_zero(): Grid <cimport 'nene_Grid_zero', nodecl> end
 local Grid.zero: Grid <const> = nene_Grid_zero()
 
 
-function Grid.clone(grid: *Grid): Grid <cimport 'nene_Grid_clone', nodecl> end
+function Grid.copy(grid: *Grid): Grid <cimport 'nene_Grid_copy', nodecl> end
 
 
 
@@ -36,6 +42,9 @@ function Grid.get_nth_cell_position(grid: Grid, nth: uint32, grid_width: uint16)
 
 
 function Grid.get_rect(grid: Grid, cell_coord: Vec2i): Rect <cimport 'nene_Grid_get_rect', nodecl> end
+
+
+
 
 
 

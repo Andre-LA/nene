@@ -1,7 +1,33 @@
 
 
+
+
+
+
+
+
+(doc Animation "Animation range type, used on Spritesheets")
 (register-type Animation "nene_Animation" [interval Uint16, from Uint16, to Uint16, loop Bool])
 
 (defmodule Animation
-	(register equals (Fn [Animation, Animation] Bool) "nene_Animation_equals")
+	(doc zero "Returns a zero-initialized animation.")
+	(register zero (Fn [] Animation) "nene_Animation_zero")
+	(implements zero Animation.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Animation)] Animation) "nene_Animation_copy")
+	(doc copy "Returns a copy of the animation.")
+	(sig copy (Fn [(Ref Animation)] Animation))
+	(defn copy [x]
+		(Animation.-private-copy (the (Ptr Animation) (Unsafe.coerce x))))
+	(implements copy Animation.copy)
+	(sig -private-blit (Fn [Animation] Animation))
+	(defn- -private-blit [x] (the Animation x))
+	(implements blit Animation.-private-blit)
+	(doc equals "Tests if a and b animation ranges are equal.")
+	(private -private-equals) (hidden -private-equals)
+	(register -private-equals (Fn [Animation, Animation] Bool) "nene_Animation_equals")
+	(implements = Animation.-private-equals)
 )
+
+
+

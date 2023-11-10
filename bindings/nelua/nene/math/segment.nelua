@@ -1,4 +1,10 @@
+
+
+
 local Vec2 = require 'nene.math.vec2'
+
+
+
 
 
 local Segment <cimport 'nene_Segment', nodecl> = @record{
@@ -13,8 +19,8 @@ local function nene_Segment_zero(): Segment <cimport 'nene_Segment_zero', nodecl
 --- returns a segment with zeroed values
 local Segment.zero: Segment <const> = nene_Segment_zero()
 
---- returns a segment clone from a reference
-function Segment.clone(segment: *Segment): Segment <cimport 'nene_Segment_clone', nodecl> end
+--- returns a segment copy from a reference
+function Segment.copy(segment: *Segment): Segment <cimport 'nene_Segment_copy', nodecl> end
 
 
 --- tests the equality between two segments
@@ -35,6 +41,9 @@ function Segment.len_sqr(segment: Segment): float32 <cimport 'nene_Segment_len_s
 
 --- Get the length of the segment.
 function Segment.len(segment: Segment): float32 <cimport 'nene_Segment_len', nodecl> end
+
+
+
 
 
 

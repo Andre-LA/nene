@@ -1,4 +1,10 @@
+
+
+
 local Vec2i = require 'nene.math.vec2i'
+
+
+
 
 --- 2D mathematical vector with `x` and `y` components.
 local Vec2 <cimport 'nene_Vec2', nodecl> = @record{
@@ -26,8 +32,8 @@ local function nene_Vec2_one(): Vec2 <cimport 'nene_Vec2_one', nodecl> end
 --- returns a vector with `1` value on `x` and `y` components.
 local Vec2.one: Vec2 <const> = nene_Vec2_one()
 
---- returns a clone of the vector reference.
-function Vec2.clone(v: *Vec2): Vec2 <cimport 'nene_Vec2_clone', nodecl> end
+--- returns a copy of the vector reference.
+function Vec2.copy(v: *Vec2): Vec2 <cimport 'nene_Vec2_copy', nodecl> end
 
 
 --- tests equality between `a` and `b` vectors.

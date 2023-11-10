@@ -1,12 +1,35 @@
+
+
+
 (load "nene/math/vec2.carp")
 (load "nene/math/rectf.carp")
 (load "nene/math/segment.carp")
 
 
+
+
+
+(doc Collision "Collision data structure.")
 (register-type Collision "nene_Collision" [collided Bool, delta Vec2])
 
 (defmodule Collision
+	(doc zero "Returns a zero-initialialized collision")
+	(register zero (Fn [] Collision) "nene_Collision_zero")
+	(implements zero Collision.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Collision)] Collision) "nene_Collision_copy")
+	(doc copy "Returns a copy of the collision.")
+	(sig copy (Fn [(Ref Collision)] Collision))
+	(defn copy [x]
+		(Collision.-private-copy (the (Ptr Collision) (Unsafe.coerce x))))
+	(implements copy Collision.copy)
+	(sig -private-blit (Fn [Collision] Collision))
+	(defn- -private-blit [x] (the Collision x))
+	(implements blit Collision.-private-blit)
 	(register no-collision (Fn [] Collision) "nene_Collision_no_collision")
 	(register rectf-with-rectf (Fn [Rectf, Rectf, Vec2] Collision) "nene_Collision_rectf_with_rectf")
 	(register rectf-with-segment (Fn [Rectf, Segment, Vec2] Collision) "nene_Collision_rectf_with_segment")
 )
+
+
+

@@ -1,5 +1,11 @@
 
 
+
+
+
+
+
+
 local Sound <cimport 'nene_Sound', nodecl> = @record{
 
 	raw: *Mix_Chunk,
@@ -14,6 +20,14 @@ local SoundCreation <cimport 'nene_SoundCreation', nodecl> = @record{
 
 	sound: Sound,
 }
+
+
+function Sound.zero(): Sound <cimport 'nene_Sound_zero', nodecl> end
+
+
+
+function Sound.copy(sound: *Sound): Sound <cimport 'nene_Sound_copy', nodecl> end
+
 
 
 function Sound.get_raw(sound: Sound): *Mix_Chunk <cimport 'nene_Sound_get_raw', nodecl> end
@@ -46,6 +60,9 @@ function Sound.set_volume(sound: Sound, volume: float32): float32 <cimport 'nene
 
 
 function Sound.destroy(sound: *Sound): void <cimport 'nene_Sound_destroy', nodecl> end
+
+
+
 
 
 

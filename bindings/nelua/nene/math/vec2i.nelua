@@ -1,4 +1,10 @@
 
+
+
+
+
+
+
 --- 2D mathematical vector with `x` and `y` components (using 32-bit integer type, a.k.a. `int32_t`).
 local Vec2i <cimport 'nene_Vec2i', nodecl> = @record{
 	--- The `x` component.
@@ -17,8 +23,8 @@ local function nene_Vec2i_one(): Vec2i <cimport 'nene_Vec2i_one', nodecl> end
 --- Returns a vector with `1` value on `x` and `y` components.
 local Vec2i.one: Vec2i <const> = nene_Vec2i_one()
 
---- Returns a clone of the vector reference.
-function Vec2i.clone(v: *Vec2i): Vec2i <cimport 'nene_Vec2i_clone', nodecl> end
+--- Returns a copy of the vector reference.
+function Vec2i.copy(v: *Vec2i): Vec2i <cimport 'nene_Vec2i_copy', nodecl> end
 
 
 --- Tests equality between `a` and `b` vectors.

@@ -1,3 +1,6 @@
+
+
+
 local Vec2i = require 'nene.math.vec2i'
 local Texture = require 'nene.texture'
 local Color = require 'nene.color'
@@ -12,21 +15,6 @@ local TextQuality <cimport 'nene_TextQuality', nodecl> = @enum{
 	Solid = 0,
 	--- Blended is slower, but have high-quality, with antialiasing.
 	Blended = 2,
-}
-
---- The Font handle.
---- You should not use the internal resource
-local Font <cimport 'nene_Font', nodecl> = @record{
-
-	raw: *TTF_Font,
-}
-
---- A font creation result.
-local FontCreation <cimport 'nene_FontCreation', nodecl> = @record{
-	--- true if font creation succeded.
-	created: boolean,
-	--- the font handle created, empty on case of failure.
-	font: Font,
 }
 
 --- The metrics of the font
@@ -56,6 +44,37 @@ local TextDimensions <cimport 'nene_TextDimensions', nodecl> = @record{
 
 	dimensions: Vec2i,
 }
+
+--- The Font handle.
+--- You should not use the internal resource
+local Font <cimport 'nene_Font', nodecl> = @record{
+
+	raw: *TTF_Font,
+}
+
+--- A font creation result.
+local FontCreation <cimport 'nene_FontCreation', nodecl> = @record{
+	--- true if font creation succeded.
+	created: boolean,
+	--- the font handle created, empty on case of failure.
+	font: Font,
+}
+
+--- Returns a zero-initialized Glyph Metrics.
+function GlyphMetrics.zero(): GlyphMetrics <cimport 'nene_GlyphMetrics_zero', nodecl> end
+
+
+--- Returns a copy of the glyph metrics
+function GlyphMetrics.copy(metrics: *GlyphMetrics): GlyphMetrics <cimport 'nene_GlyphMetrics_copy', nodecl> end
+
+
+--- Returns a zero-initialized Font handle.
+function Font.zero(): Font <cimport 'nene_Font_zero', nodecl> end
+
+
+--- Returns a copy of the Font handle (it doesn't clones the Font resource).
+function Font.copy(font: *Font): Font <cimport 'nene_Font_copy', nodecl> end
+
 
 --- Returns the internal data of the Font handle.
 function Font.get_raw(font: Font): *TTF_Font <cimport 'nene_Font_get_raw', nodecl> end
@@ -126,10 +145,13 @@ function Font.destroy(font: *Font): void <cimport 'nene_Font_destroy', nodecl> e
 
 
 
+
+
+
 local Font.TextQuality: type = TextQuality
-local Font.FontCreation: type = FontCreation
 local Font.GlyphMetrics: type = GlyphMetrics
 local Font.GlyphMetricsQuery: type = GlyphMetricsQuery
 local Font.TextDimensions: type = TextDimensions
+local Font.FontCreation: type = FontCreation
 
 return Font

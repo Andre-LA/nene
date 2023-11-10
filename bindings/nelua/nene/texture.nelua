@@ -1,6 +1,12 @@
+
+
+
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
 local Color = require 'nene.color'
+
+
+
 
 
 local Texture <cimport 'nene_Texture', nodecl> = @record{
@@ -21,6 +27,14 @@ local TextureCreation <cimport 'nene_TextureCreation', nodecl> = @record{
 
 	texture: Texture,
 }
+
+
+function Texture.zero(): Texture <cimport 'nene_Texture_zero', nodecl> end
+
+
+
+function Texture.copy(texture: *Texture): Texture <cimport 'nene_Texture_copy', nodecl> end
+
 
 
 function Texture.destroy(texture: *Texture): void <cimport 'nene_Texture_destroy', nodecl> end
@@ -87,6 +101,9 @@ function Texture.draw_to_point_ex(texture: Texture, source: Rect, point: Vec2, i
 
 
 function Texture.draw_to_rect_ex(texture: Texture, source: Rect, destination: Rect, angle: float64, rotation_center: Vec2, flip_x: boolean, flip_y: boolean): boolean <cimport 'nene_Texture_draw_to_rect_ex', nodecl> end
+
+
+
 
 
 

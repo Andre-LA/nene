@@ -1,7 +1,13 @@
+
+
+
 local Grid = require 'nene.math.grid'
 local Vec2i = require 'nene.math.vec2i'
 local Vec2 = require 'nene.math.vec2'
 local Texture = require 'nene.texture'
+
+
+
 
 
 local TextureAtlas <cimport 'nene_TextureAtlas', nodecl> = @record{
@@ -20,6 +26,14 @@ local TextureAtlasCreation <cimport 'nene_TextureAtlasCreation', nodecl> = @reco
 
 	texture_atlas: TextureAtlas,
 }
+
+
+function TextureAtlas.zero(): TextureAtlas <cimport 'nene_TextureAtlas_zero', nodecl> end
+
+
+
+function TextureAtlas.copy(texture_atlas: *TextureAtlas): TextureAtlas <cimport 'nene_TextureAtlas_copy', nodecl> end
+
 
 
 function TextureAtlas.destroy(texture_atlas: *TextureAtlas): void <cimport 'nene_TextureAtlas_destroy', nodecl> end
@@ -52,6 +66,9 @@ function TextureAtlas.draw_nth_sub_texture_ex(texture_atlas: TextureAtlas, nth: 
 
 
 function TextureAtlas.get_sub_texture_center(texture_atlas: TextureAtlas): Vec2 <cimport 'nene_TextureAtlas_get_sub_texture_center', nodecl> end
+
+
+
 
 
 

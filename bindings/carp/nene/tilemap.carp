@@ -1,14 +1,37 @@
+
+
+
 (load "nene/math/grid.carp")
 (load "nene/math/vec2i.carp")
 (load "nene/math/vec2.carp")
 (load "nene/texture_atlas.carp")
 
 
+
+
+
+(doc Tilemap "")
 (register-type Tilemap "nene_Tilemap" [tileset TextureAtlas, width Uint16, grid Grid, tile_count Uint32])
 
 (defmodule Tilemap
+	(doc zero "")
+	(register zero (Fn [] Tilemap) "nene_Tilemap_zero")
+	(implements zero Tilemap.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Tilemap)] Tilemap) "nene_Tilemap_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref Tilemap)] Tilemap))
+	(defn copy [x]
+		(Tilemap.-private-copy (the (Ptr Tilemap) (Unsafe.coerce x))))
+	(implements copy Tilemap.copy)
+	(sig -private-blit (Fn [Tilemap] Tilemap))
+	(defn- -private-blit [x] (the Tilemap x))
+	(implements blit Tilemap.-private-blit)
 	(register get-size-in-tiles (Fn [Tilemap] Vec2i) "nene_Tilemap_get_size_in_tiles")
 	(register get-size (Fn [Tilemap] Vec2i) "nene_Tilemap_get_size")
 	(register draw (Fn [Tilemap, Vec2, Bool, (Ptr [0]Uint16), Uint32] Bool) "nene_Tilemap_draw")
 	(register destroy (Fn [(Ptr Tilemap)] ()) "nene_Tilemap_destroy")
 )
+
+
+
