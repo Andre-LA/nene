@@ -12,6 +12,7 @@ SPDX-License-Identifier: Zlib
 #include "SDL_ttf.h"
 #include "SDL_mixer.h"
 #include "nene/core.h"
+#include "nene/math/vec2.h"
 
 // define and empty-initialize global variables
 nene_Core _nene_instance = { .quit = false };
@@ -400,6 +401,13 @@ bool nene_Core_set_cursor_visibility(bool visible) {
   return true;
 }
 
+float nene_Core_get_delta_time(void) {
+  SDL_assert_release(_nene_initialized);
+
+  const nene_Core *const instance = nene_Core_instance();
+  return instance->delta_time;
+}
+
 nene_Vec2i nene_Core_get_window_size(void) {
   SDL_assert_release(_nene_initialized);
 
@@ -438,6 +446,14 @@ nene_Vec2 nene_Core_get_screen_center(void) {
   }
 
   return nene_Vec2_from_vec2i(nene_Vec2i_scale(screen_size, 0.5f));
+}
+
+nene_Vec2 nene_Core_get_render_offset(void) {
+  SDL_assert_release(_nene_initialized);
+
+  const nene_Core *const instance = nene_Core_instance();
+
+  return instance->render_offset;
 }
 
 nene_Vec2 nene_Core_screen_point_to_world_pos(nene_Vec2 point) {
@@ -525,6 +541,13 @@ bool nene_Core_set_render_target(SDL_Texture *raw_target) {
   return true;
 }
 
+void nene_Core_set_render_offset(nene_Vec2 render_offset) {
+  SDL_assert_release(_nene_initialized);
+
+  nene_Core *const instance = nene_Core_instance();
+
+  instance->render_offset = render_offset;
+}
 
 bool nene_Core_render_clear(nene_Color color) {
   SDL_assert_release(_nene_initialized);
@@ -663,7 +686,7 @@ bool nene_Core_init(const char title[], uint16_t width, uint16_t height, SDL_Win
     .renderer = renderer,
   };
 
-  nene_Core_set_render_draw_color(nene_Color_white);
+  nene_Core_set_render_draw_color(nene_Color_white());
   nene_Core_set_render_blend_mode(SDL_BLENDMODE_BLEND);
 
   return true;

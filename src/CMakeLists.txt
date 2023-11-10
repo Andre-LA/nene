@@ -29,6 +29,7 @@ target_include_directories(nene PUBLIC "${PROJECT_SOURCE_DIR}/external/SDL_ttf")
 
 # set the sources of the nene target
 set(NENE_SOURCE_FILES
+  impl/utils.c
   core.c
   texture.c
   font.c
@@ -51,6 +52,7 @@ set(NENE_SOURCE_FILES
 
 # set the headers of the nene target
 set(NENE_HEADER_FILES
+  "${NENE_INCLUDE_DIR}/nene/impl/utils.h"
   "${NENE_INCLUDE_DIR}/nene/core.h"
   "${NENE_INCLUDE_DIR}/nene/config.h"
   "${NENE_INCLUDE_DIR}/nene/texture.h"

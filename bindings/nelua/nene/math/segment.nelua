@@ -1,25 +1,51 @@
-## cinclude '"nene/math/segment.h"'
+
+
 
 local Vec2 = require 'nene.math.vec2'
 
 
+
+
+
 local Segment <cimport 'nene_Segment', nodecl> = @record{
-  
-  origin: Vec2,
-  
-  ending: Vec2,
+
+	origin: Vec2,
+
+	ending: Vec2,
 }
 
--- tests the equality between two segments
-function Segment.equals(a: Segment, b: Segment): boolean <cimport 'nene_Segment_equals', nodecl> end
--- Returns the segment as 2D vector.
+local function nene_Segment_zero(): Segment <cimport 'nene_Segment_zero', nodecl> end
+
+--- returns a segment with zeroed values
+local Segment.zero: Segment <const> = nene_Segment_zero()
+
+--- returns a segment copy from a reference
+function Segment.copy(segment: *Segment): Segment <cimport 'nene_Segment_copy', nodecl> end
+
+
+--- tests the equality between two segments
+function Segment.__eq(a: Segment, b: Segment): boolean <cimport 'nene_Segment_equals', nodecl> end
+
+
+--- Returns the segment as 2D vector.
 function Segment.as_vec2(segment: Segment): Vec2 <cimport 'nene_Segment_as_vec2', nodecl> end
--- Get the midpoint (or middle point) of the segment.
+
+
+--- Get the midpoint (or middle point) of the segment.
 function Segment.get_midpoint(segment: Segment): Vec2 <cimport 'nene_Segment_get_midpoint', nodecl> end
--- Get the squared length of the segment.
+
+
+--- Get the squared length of the segment.
 function Segment.len_sqr(segment: Segment): float32 <cimport 'nene_Segment_len_sqr', nodecl> end
--- Get the length of the segment.
+
+
+--- Get the length of the segment.
 function Segment.len(segment: Segment): float32 <cimport 'nene_Segment_len', nodecl> end
+
+
+
+
+
 
 
 return Segment

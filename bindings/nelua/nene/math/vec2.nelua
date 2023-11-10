@@ -1,63 +1,105 @@
-## cinclude '"nene/math/vec2.h"'
+
+
 
 local Vec2i = require 'nene.math.vec2i'
 
--- 2D mathematical vector with `x` and `y` components.
+
+
+
+--- 2D mathematical vector with `x` and `y` components.
 local Vec2 <cimport 'nene_Vec2', nodecl> = @record{
-  
-  x: float32,
-  
-  y: float32,
+	--- The `x` component.
+	x: float32,
+	--- The `y` component.
+	y: float32,
 }
 
--- converts a `nene_Vec2i` value to `nene_Vec2`.
+--- converts a `nene_Vec2i` value to `nene_Vec2`.
 function Vec2.from_vec2i(v: Vec2i): Vec2 <cimport 'nene_Vec2_from_vec2i', nodecl> end
--- converts a `nene_Vec2` value to `nene_Vec2i`.
+
+
+--- converts a `nene_Vec2` value to `nene_Vec2i`.
 function Vec2.to_vec2i(v: Vec2): Vec2i <cimport 'nene_Vec2_to_vec2i', nodecl> end
--- returns a vector with `0` value on `x` and `y` components.
-function Vec2.zero(): Vec2 <cimport 'nene_Vec2_zero', nodecl> end
--- returns a vector with `1` value on `x` and `y` components.
-function Vec2.one(): Vec2 <cimport 'nene_Vec2_one', nodecl> end
--- tests equality between `a` and `b` vectors.
+
+
+local function nene_Vec2_zero(): Vec2 <cimport 'nene_Vec2_zero', nodecl> end
+
+--- returns a vector with `0` value on `x` and `y` components.
+local Vec2.zero: Vec2 <const> = nene_Vec2_zero()
+
+local function nene_Vec2_one(): Vec2 <cimport 'nene_Vec2_one', nodecl> end
+
+--- returns a vector with `1` value on `x` and `y` components.
+local Vec2.one: Vec2 <const> = nene_Vec2_one()
+
+--- returns a copy of the vector reference.
+function Vec2.copy(v: *Vec2): Vec2 <cimport 'nene_Vec2_copy', nodecl> end
+
+
+--- tests equality between `a` and `b` vectors.
 function Vec2.__eq(a: Vec2, b: Vec2): boolean <cimport 'nene_Vec2_equals', nodecl> end
--- returns the sum of two vectors.
+
+
+--- returns the sum of two vectors.
 function Vec2.__add(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_add', nodecl> end
--- returns the difference between two vectors.
+
+
+--- returns the difference between two vectors.
 function Vec2.__sub(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_sub', nodecl> end
--- returns the product between two vectors.
+
+
 local function nene_Vec2_mul(a: Vec2, b: Vec2): Vec2 <cimport 'nene_Vec2_mul', nodecl> end
--- returns a vector that's the vector `a` scaled by `s` scalar.
+
+
 local function nene_Vec2_scale(a: Vec2, s: float32): Vec2 <cimport 'nene_Vec2_scale', nodecl> end
--- returns the negation of the `v` vector.
+
+
+--- returns the negation of the `v` vector.
 function Vec2.__unm(v: Vec2): Vec2 <cimport 'nene_Vec2_negate', nodecl> end
--- returns a squared length of the `v` vector
+
+
+--- returns a squared length of the `v` vector
 function Vec2.len_sqr(v: Vec2): float32 <cimport 'nene_Vec2_len_sqr', nodecl> end
--- returns the length of the `v` vector.
+
+
+--- returns the length of the `v` vector.
 function Vec2.len(v: Vec2): float32 <cimport 'nene_Vec2_len', nodecl> end
--- returns a vector that's the interpolation between `a` and `b` vectors by the scalar `t`.
+
+
+--- returns a vector that's the interpolation between `a` and `b` vectors by the scalar `t`.
 function Vec2.lerp(a: Vec2, b: Vec2, t: float32): Vec2 <cimport 'nene_Vec2_lerp', nodecl> end
--- returns the `v` vector normalized.
+
+
+--- returns the `v` vector normalized.
 function Vec2.normalize(v: Vec2): Vec2 <cimport 'nene_Vec2_normalize', nodecl> end
--- returns the dot product of `a` and `b` vectors.
+
+
+--- returns the dot product of `a` and `b` vectors.
 function Vec2.dot(a: Vec2, b: Vec2): float32 <cimport 'nene_Vec2_dot', nodecl> end
--- returns the cross product of the `a` and `b` vector.
--- > note: since this is a 2D vector (no `z` component), the cross product returns
--- > the magnitude of the cross product vector instead of the vector itself.
+
+
+--- returns the cross product of the `a` and `b` vector.
+--- > note: since this is a 2D vector (no `z` component), the cross product returns
+--- > the magnitude of the cross product vector instead of the vector itself.
 function Vec2.cross(a: Vec2, b: Vec2): float32 <cimport 'nene_Vec2_cross', nodecl> end
--- returns the perpendicular vector of the vector v, with the same magnitude (length)
--- > note: The "rotation" it's counterclockwise.
+
+
+--- returns the perpendicular vector of the vector v, with the same magnitude (length)
+--- > note: The "rotation" it's counterclockwise.
 function Vec2.perpendicular(v: Vec2): Vec2 <cimport 'nene_Vec2_perpendicular', nodecl> end
 
 
+
+
 function Vec2.__mul(a: overload(float32, Vec2), b: overload(float32, Vec2)): Vec2
-  ## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2 multiply needs at least one Vec2 value')
-  ## if a.type == Vec2.value and b.type == Vec2.value then -- both are vectors
-    return nene_Vec2_mul(a, b)
-  ## elseif a.type.is_scalar then -- b is a vector
-    return nene_Vec2_scale(b, a)
-  ## else
-    return nene_Vec2_scale(a, b)
-  ## end
+	## static_assert(not (a.type.is_scalar and b.type.is_scalar), 'A Vec2 multiply needs at least one Vec2 value')
+	## if a.type == Vec2.value and b.type == Vec2.value then -- both are vectors
+		return nene_Vec2_mul(a, b)
+	## elseif a.type.is_scalar then -- b is a vector
+		return nene_Vec2_scale(b, a)
+	## else
+		return nene_Vec2_scale(a, b)
+	## end
 end
 
 

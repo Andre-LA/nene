@@ -1,54 +1,71 @@
-## cinclude '"nene/audio/sound.h"'
-
-## cinclude '<SDL_mixer.h>'
 
 
-require 'nene.raw.sdl2_mixer'
+
+
+
 
 
 
 local Sound <cimport 'nene_Sound', nodecl> = @record{
-  
-  raw: *Mix_Chunk,
-  
-  channel: int16,
+
+	raw: *Mix_Chunk,
+
+	channel: int16,
 }
 
 
 local SoundCreation <cimport 'nene_SoundCreation', nodecl> = @record{
-  
-  created: boolean,
-  
-  sound: Sound,
+
+	created: boolean,
+
+	sound: Sound,
 }
+
+
+function Sound.zero(): Sound <cimport 'nene_Sound_zero', nodecl> end
+
+
+
+function Sound.copy(sound: *Sound): Sound <cimport 'nene_Sound_copy', nodecl> end
+
 
 
 function Sound.get_raw(sound: Sound): *Mix_Chunk <cimport 'nene_Sound_get_raw', nodecl> end
 
+
 local function nene_Sound_load(filepath: cstring): SoundCreation <cimport 'nene_Sound_load', nodecl> end
+
+
+function Sound.load(filepath: cstring): (boolean, Sound) 
+	local maybe_result = nene_Sound_load(filepath)
+	return maybe_result.created, maybe_result.sound
+end
+
+
 
 function Sound.play(sound: *Sound, loops: int16): boolean <cimport 'nene_Sound_play', nodecl> end
 
+
+
 function Sound.halt(sound: *Sound): boolean <cimport 'nene_Sound_halt', nodecl> end
+
+
 
 function Sound.halt_all(): boolean <cimport 'nene_Sound_halt_all', nodecl> end
 
+
+
 function Sound.set_volume(sound: Sound, volume: float32): float32 <cimport 'nene_Sound_set_volume', nodecl> end
+
+
 
 function Sound.destroy(sound: *Sound): void <cimport 'nene_Sound_destroy', nodecl> end
 
 
-local Sound.Creation: type = @SoundCreation
-
-function Sound.load(filepath: cstring): (boolean, Sound)
-  local sound_creation: SoundCreation = nene_Sound_load(filepath)
-  return sound_creation.created, sound_creation.sound
-end
-
-function Sound:__close()
-  self:destroy()
-end
 
 
+
+
+local Sound.SoundCreation: type = SoundCreation
 
 return Sound

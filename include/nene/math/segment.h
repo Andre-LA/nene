@@ -15,6 +15,12 @@ typedef struct nene_Segment {
   nene_Vec2 ending;
 } nene_Segment;
 
+/// returns a segment with zeroed values
+nene_Segment nene_Segment_zero(void);
+
+/// returns a segment copy from a reference
+nene_Segment nene_Segment_copy(nene_Segment *segment);
+
 /// tests the equality between two segments
 bool nene_Segment_equals(nene_Segment a, nene_Segment b);
 

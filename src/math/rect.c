@@ -20,6 +20,15 @@ nene_Rect nene_Rect_zero(void) {
   };
 }
 
+nene_Rect nene_Rect_copy(nene_Rect *rect) {
+  if (rect == NULL) {
+    return nene_Rect_zero();
+  }
+  else {
+    return *rect;
+  }
+}
+
 SDL_Rect nene_Rect_to_raw(nene_Rect rect) {
   return (SDL_Rect){
     .x = rect.pos.x,

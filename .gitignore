@@ -1,3 +1,4 @@
-nelua_cache
-build/
-dumps/
+/nelua_cache/
+/libnene/
+/build/
+/dumps/

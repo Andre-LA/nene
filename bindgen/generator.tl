@@ -5,59 +5,97 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Node = require 'bindgen.node'
+local AST <const> = require 'bindgen.ast'
+local Utils <const> = require 'bindgen.tools.utils'
 
 local record Generator
-   type TypeMap = {string:string}
+	type TypeMap = {string:string}
+	type DepMap = {string:string}
 
-   record WrapOptions
-      prepend: string
-      append: string
-      ignore_overloading: {Node.Op:boolean}
-      privatize: {string:boolean}
-   end
+	-- TODO: remove ignore_overloading and privatize
+	record WrapOptions
+		begin_prepend: string
+		prepend: string
+		append: string
+		ignore_overloading: {AST.Op:boolean}
+		privatize: {string:boolean}
+	end
 
-   typemap: TypeMap
+	typemap: TypeMap
+	depmap: DepMap
 end
 
-local Generator_mt: metatable<Generator> = {
-   __index = Generator
-}
+local Generator_mt: metatable<Generator> = { __index = Generator }
 
-function Generator.new(typemap: Generator.TypeMap): Generator
-   local generator: Generator = {
-      typemap = typemap,
-   }
-   
-   return setmetatable(generator, Generator_mt)
+function Generator.new(typemap: Generator.TypeMap, depmap: Generator.DepMap): Generator
+	local generator: Generator = {
+		typemap = typemap,
+		depmap = depmap,
+	}
+	
+	return setmetatable(generator, Generator_mt)
 end
 
-function Generator.is_system_header(header: string): boolean
-   return string.sub(header, 1, 1) == '<'
+function Generator.WrapOptions.new(init: Generator.WrapOptions): Generator.WrapOptions
+	return {
+		begin_prepend = init.begin_prepend or '',
+		prepend = init.prepend or '',
+		append = init.append or '',
+		ignore_overloading = init.ignore_overloading or {},
+		privatize = init.privatize or {},
+	}
 end
 
-function Generator:is_private_func(func: Node.Func, wrap_options: Generator.WrapOptions): boolean
-   return wrap_options.privatize and not not wrap_options.privatize[func.cname]
+-- returns the module's main strucutre if applicable, nil otherwise.
+function Generator.there_is_module_struct(module: AST.Module): AST.Struct
+	return Utils.ifindk(
+		module.structs,
+		module.name,
+		function(s: AST.Struct): string
+			return s.sym.name
+		end
+	) as AST.Struct
 end
 
-function Generator:apply_typemap(text: string): string
-   text = text:gsub('const ', '')
+-- generate comment lines
+function Generator:gen_comments(comment: AST.Comment, prefix: string, postfix: string, indent: integer): string
+	assert(prefix, "you must pass 'prefix'.")
+	assert(postfix, "you must pass 'postfix'.")
 
-   if text == 'char *' then
-      return 'cstring'
-   end
-   
-   local ctype, ptr_or_arr = text:match('([%w_]+) ?([%[%]%*%d]*)')
+	local result: {string} = {}
 
-   for T, neluaT in pairs(self.typemap) do
-      if ctype:match('^'..T..'$') then
-         ctype = ctype:gsub(T, neluaT)
-      end
-   end
+	for _, line in comment:iter_lines() do
+		local indent_str = string.rep('	', indent)
+		table.insert(result, string.format("%s%s%s%s", indent_str, prefix, line, postfix))
+	end
 
-   ptr_or_arr = ptr_or_arr:gsub('%[%]', '*[0]')
+	return table.concat(result, '\n')
+end
 
-   return ptr_or_arr .. ctype
+function Generator:apply_typemap(_type: AST.Type): string
+	local text = _type.ctype
+	text = text:gsub('const ', '')
+
+	if text == 'char *' then
+		return self.typemap['cstring']
+	end
+	
+	local ctype, ptr_or_arr = text:match('([%w_]+) ?([%[%]%*%d]*)')
+
+	if _type:is_primitive() then
+		for T, langT in pairs(self.typemap) do
+			if ctype == T then
+				ctype = langT
+				break
+			end
+		end
+	else
+		ctype = _type.type
+	end
+
+	ptr_or_arr = ptr_or_arr:gsub('%[%]', '*[0]')
+
+	return ptr_or_arr .. ctype
 end
 
 return Generator

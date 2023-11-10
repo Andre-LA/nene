@@ -20,6 +20,7 @@ typedef struct nene_Rectf {
 } nene_Rectf;
 
 nene_Rectf nene_Rectf_zero(void);
+nene_Rectf nene_Rectf_copy(nene_Rectf *rect);
 SDL_FRect nene_Rectf_to_raw(nene_Rectf rect);
 bool nene_Rectf_equals(nene_Rectf a, nene_Rectf b);
 nene_Rectf nene_Rectf_add_pos(nene_Rectf rect, nene_Vec2 pos);

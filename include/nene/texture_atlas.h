@@ -27,6 +27,10 @@ typedef struct nene_TextureAtlasCreation {
   nene_TextureAtlas texture_atlas;
 } nene_TextureAtlasCreation;
 
+nene_TextureAtlas nene_TextureAtlas_zero(void);
+
+nene_TextureAtlas nene_TextureAtlas_copy(nene_TextureAtlas *texture_atlas);
+
 void nene_TextureAtlas_destroy(nene_TextureAtlas *texture_atlas);
 
 nene_TextureAtlasCreation nene_TextureAtlas_load(const char *filepath, uint16_t width, nene_Grid grid);

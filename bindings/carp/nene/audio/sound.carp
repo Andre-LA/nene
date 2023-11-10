@@ -1,0 +1,46 @@
+
+
+
+
+
+
+
+
+(doc Sound "")
+(register-type Sound "nene_Sound" [raw (Ptr Mix_Chunk), channel Int16])
+(doc SoundCreation "")
+(register-type SoundCreation "nene_SoundCreation" [created Bool, sound Sound])
+
+(defmodule Sound
+	(doc zero "")
+	(register zero (Fn [] Sound) "nene_Sound_zero")
+	(implements zero Sound.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Sound)] Sound) "nene_Sound_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref Sound)] Sound))
+	(defn copy [x]
+		(Sound.-private-copy (the (Ptr Sound) (Unsafe.coerce x))))
+	(implements copy Sound.copy)
+	(sig -private-blit (Fn [Sound] Sound))
+	(defn- -private-blit [x] (the Sound x))
+	(implements blit Sound.-private-blit)
+	(register get-raw (Fn [Sound] (Ptr Mix_Chunk)) "nene_Sound_get_raw")
+	(private -private-load) (hidden -private-load)
+	(register -private-load (Fn [(Ptr CChar)] SoundCreation) "nene_Sound_load")
+	(sig load (Fn [(Ptr CChar)] (Maybe Sound)))
+	(doc load "")
+	(defn load [filepath]
+		(let [maybe-result (Sound.-private-load filepath)]
+			(if @(SoundCreation.created &maybe-result)
+				(Maybe.Just @(Sound.sound &maybe-result))
+				(Nothing))))
+	(register play (Fn [(Ptr Sound), Int16] Bool) "nene_Sound_play")
+	(register halt (Fn [(Ptr Sound)] Bool) "nene_Sound_halt")
+	(register halt-all (Fn [] Bool) "nene_Sound_halt_all")
+	(register set-volume (Fn [Sound, Float] Float) "nene_Sound_set_volume")
+	(register destroy (Fn [(Ptr Sound)] ()) "nene_Sound_destroy")
+)
+
+
+

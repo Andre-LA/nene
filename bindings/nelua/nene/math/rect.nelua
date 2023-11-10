@@ -1,32 +1,51 @@
-## cinclude '"nene/math/rect.h"'
 
-## cinclude '<SDL.h>'
+
+
 local Vec2i = require 'nene.math.vec2i'
 
 
-require 'nene.raw.sdl2'
 
 
 
 local Rect <cimport 'nene_Rect', nodecl> = @record{
-  
-  pos: Vec2i,
-  
-  size: Vec2i,
+
+	pos: Vec2i,
+
+	size: Vec2i,
 }
 
+local function nene_Rect_zero(): Rect <cimport 'nene_Rect_zero', nodecl> end
 
-function Rect.zero(): Rect <cimport 'nene_Rect_zero', nodecl> end
+
+local Rect.zero: Rect <const> = nene_Rect_zero()
+
+
+function Rect.copy(rect: *Rect): Rect <cimport 'nene_Rect_copy', nodecl> end
+
+
 
 function Rect.to_raw(rect: Rect): SDL_Rect <cimport 'nene_Rect_to_raw', nodecl> end
 
+
+
 function Rect.__eq(a: Rect, b: Rect): boolean <cimport 'nene_Rect_equals', nodecl> end
+
+
 
 function Rect.add_pos(rect: Rect, pos: Vec2i): Rect <cimport 'nene_Rect_add_pos', nodecl> end
 
+
+
 function Rect.add_size(rect: Rect, size: Vec2i): Rect <cimport 'nene_Rect_add_size', nodecl> end
 
+
+
 function Rect.get_center(rect: Rect): Vec2i <cimport 'nene_Rect_get_center', nodecl> end
+
+
+
+
+
 
 
 return Rect

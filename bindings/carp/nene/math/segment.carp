@@ -1,0 +1,38 @@
+
+
+
+(load "nene/math/vec2.carp")
+
+
+
+
+
+(doc Segment "")
+(register-type Segment "nene_Segment" [origin Vec2, ending Vec2])
+
+(defmodule Segment
+	(doc zero "returns a segment with zeroed values")
+	(register zero (Fn [] Segment) "nene_Segment_zero")
+	(implements zero Segment.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Segment)] Segment) "nene_Segment_copy")
+	(doc copy "returns a segment copy from a reference")
+	(sig copy (Fn [(Ref Segment)] Segment))
+	(defn copy [x]
+		(Segment.-private-copy (the (Ptr Segment) (Unsafe.coerce x))))
+	(implements copy Segment.copy)
+	(sig -private-blit (Fn [Segment] Segment))
+	(defn- -private-blit [x] (the Segment x))
+	(implements blit Segment.-private-blit)
+	(doc equals "tests the equality between two segments")
+	(private -private-equals) (hidden -private-equals)
+	(register -private-equals (Fn [Segment, Segment] Bool) "nene_Segment_equals")
+	(implements = Segment.-private-equals)
+	(register as-vec2 (Fn [Segment] Vec2) "nene_Segment_as_vec2")
+	(register get-midpoint (Fn [Segment] Vec2) "nene_Segment_get_midpoint")
+	(register len-sqr (Fn [Segment] Float) "nene_Segment_len_sqr")
+	(register len (Fn [Segment] Float) "nene_Segment_len")
+)
+
+
+

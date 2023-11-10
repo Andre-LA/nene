@@ -5,8 +5,9 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Node = require 'bindgen.node'
+local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
+local AstCommon = require 'bindgen.ast_common'
 
 local symbols = ast_reader.read_file('animation', 'nene_Animation')
 assert(symbols, "no 'symbols' returned")
@@ -20,22 +21,19 @@ assert(structs, "no 'structs' returned")
 local funcs = ast_reader.get_functions(symbols, 'nene_Animation')
 assert(funcs, "no 'funcs' returned")
 
-local animation = Node.File.new {
-   dependencies = {
-      dependencies = {},
-      header = '"nene/animation.h"',
-   },
-   modname = 'Animation',
-   enums = enums,
-   structs = structs,
-   funcs = funcs,
-   aliases = {},
-   global_vars = {},
+AstCommon.autoset_function_kinds(funcs)
+
+AstCommon.set_op_overloading_functions(funcs, {
+	['nene_Animation_equals'] = '==',
+})
+
+local animation = AST.Module.new {
+	name = 'Animation',
+	dependencies = {},
+	enums = enums,
+	structs = structs,
+	funcs = funcs,
 }
 assert(animation, "no 'animation' created")
-
-animation:set_op_overloadings({
-  ['equals'] = '==',
-})
 
 return animation

@@ -1,0 +1,37 @@
+
+
+
+(load "nene/math/segment.carp")
+(load "nene/math/rect.carp")
+(load "nene/math/rectf.carp")
+
+
+
+
+
+(doc ShapeQuadrilateral "Quadrilateral shape data strucuture, it holds four segments.")
+(register-type ShapeQuadrilateral "nene_ShapeQuadrilateral")
+
+(defmodule ShapeQuadrilateral
+	(doc zero "Returns a zeroed quatrilateral shape")
+	(register zero (Fn [] ShapeQuadrilateral) "nene_ShapeQuadrilateral_zero")
+	(implements zero ShapeQuadrilateral.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr ShapeQuadrilateral)] ShapeQuadrilateral) "nene_ShapeQuadrilateral_copy")
+	(doc copy "Returns a copy of the quadrilateral shape reference")
+	(sig copy (Fn [(Ref ShapeQuadrilateral)] ShapeQuadrilateral))
+	(defn copy [x]
+		(ShapeQuadrilateral.-private-copy (the (Ptr ShapeQuadrilateral) (Unsafe.coerce x))))
+	(implements copy ShapeQuadrilateral.copy)
+	(sig -private-blit (Fn [ShapeQuadrilateral] ShapeQuadrilateral))
+	(defn- -private-blit [x] (the ShapeQuadrilateral x))
+	(implements blit ShapeQuadrilateral.-private-blit)
+)
+(defmodule Shape
+	(register get-rectf-shape (Fn [Rectf] ShapeQuadrilateral) "nene_Shape_get_rectf_shape")
+	(register get-rect-shape (Fn [Rect] ShapeQuadrilateral) "nene_Shape_get_rect_shape")
+	(register get-rectf-diagonal (Fn [Rectf, Bool] Segment) "nene_Shape_get_rectf_diagonal")
+)
+
+
+

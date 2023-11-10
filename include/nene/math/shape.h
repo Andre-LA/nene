@@ -12,10 +12,19 @@ SPDX-License-Identifier: Zlib
 #include "nene/math/rect.h"
 #include "nene/math/rectf.h"
 
+// FIXME: the module is "Shape", but it implements "ShapeQuadrilateral", this confuses binding generators.
+// TODO: separate as a separate module or refactor this module.
+
 /// Quadrilateral shape data strucuture, it holds four segments.
 typedef struct nene_ShapeQuadrilateral {
   nene_Segment sides[4];
 } nene_ShapeQuadrilateral;
+
+/// Returns a zeroed quatrilateral shape
+nene_ShapeQuadrilateral nene_ShapeQuadrilateral_zero(void);
+
+/// Returns a copy of the quadrilateral shape reference
+nene_ShapeQuadrilateral nene_ShapeQuadrilateral_copy(nene_ShapeQuadrilateral *quadrilateral_shape);
 
 /// Returns a quadrilateral shape made from a rectanle with floating values.
 nene_ShapeQuadrilateral nene_Shape_get_rectf_shape(nene_Rectf rect);

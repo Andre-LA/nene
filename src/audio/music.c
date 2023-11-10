@@ -8,6 +8,21 @@ SPDX-License-Identifier: Zlib
 #include "nene/audio/music.h"
 #include "SDL.h"
 
+nene_Music nene_Music_zero(void) {
+  return (nene_Music){
+    .raw = NULL
+  };
+}
+
+nene_Music nene_Music_copy(nene_Music *music) {
+  if (music == NULL) {
+    return nene_Music_zero();
+  }
+  else {
+    return *music;
+  }
+}
+
 Mix_Music *nene_Music_get_raw(nene_Music music) {
   SDL_assert(music.raw != NULL);
   return music.raw;

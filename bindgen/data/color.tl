@@ -5,39 +5,49 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 ]]
 
-local Node = require 'bindgen.node'
+local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
+local AstCommon = require 'bindgen.ast_common'
 
 local symbols = ast_reader.read_file('color', 'nene_Color')
 assert(symbols, "no 'symbols' returned")
 
+local structs = ast_reader.get_structs(symbols, 'nene')
+assert(structs, "no 'structs' returned")
+
 local funcs = ast_reader.get_functions(symbols, 'nene_Color')
 assert(funcs, "no 'funcs' returned")
 
-local aliases = ast_reader.get_type_aliases(symbols, 'nene_Color')
-assert(aliases, "no 'aliases' returned")
+AstCommon.set_op_overloading_functions(funcs, {
+	['nene_Color_equals'] = '==',
+})
 
-local global_vars = ast_reader.get_global_vars(symbols, 'nene_Color')
-assert(global_vars, "no 'global_vars' returned")
+AstCommon.autoset_function_kinds(funcs)
 
-local color = Node.File.new {
-   dependencies = {
-      dependencies = {
-         ['SDL'] = { '<SDL.h>', is_header = true },
-      },
-      header = '"nene/color.h"',
-   },
-   modname = 'Color',
-   enums = {},
-   structs = {},
-   funcs = funcs,
-   aliases = aliases,
-   global_vars = global_vars,
+AstCommon.set_on_functions(
+	funcs,
+	{
+		'nene_Color_black',
+		'nene_Color_white',
+		'nene_Color_red',
+		'nene_Color_green',
+		'nene_Color_blue',
+		'nene_Color_yellow',
+		'nene_Color_cyan',
+		'nene_Color_bg',
+	},
+	function(fn: AST.Func): any
+		fn:set_as_readonly_property()
+	end
+)
+
+local color = AST.Module.new {
+	name = 'Color',
+	dependencies = {},
+	enums = {},
+	structs = structs,
+	funcs = funcs,
 }
 assert(color, "no 'color' created")
-
-color:set_op_overloadings({
-  ['equals'] = '==',
-})
 
 return color

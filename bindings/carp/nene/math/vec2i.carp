@@ -1,0 +1,59 @@
+
+
+
+
+
+
+
+
+(doc Vec2i "2D mathematical vector with `x` and `y` components (using 32-bit integer type, a.k.a. `int32_t`).")
+(register-type Vec2i "nene_Vec2i" [x Int32, y Int32])
+
+(defmodule Vec2i
+	(doc zero "Returns a vector with `0` value on `x` and `y` components.")
+	(register zero (Fn [] Vec2i) "nene_Vec2i_zero")
+	(implements zero Vec2i.zero)
+	(private -private-one) (hidden -private-one)
+	(register -private-one (Fn [] Vec2i) "nene_Vec2i_one")
+	(doc one "Returns a vector with `1` value on `x` and `y` components.")
+	(def one (Vec2i.-private-one))
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Vec2i)] Vec2i) "nene_Vec2i_copy")
+	(doc copy "Returns a copy of the vector reference.")
+	(sig copy (Fn [(Ref Vec2i)] Vec2i))
+	(defn copy [x]
+		(Vec2i.-private-copy (the (Ptr Vec2i) (Unsafe.coerce x))))
+	(implements copy Vec2i.copy)
+	(sig -private-blit (Fn [Vec2i] Vec2i))
+	(defn- -private-blit [x] (the Vec2i x))
+	(implements blit Vec2i.-private-blit)
+	(doc equals "Tests equality between `a` and `b` vectors.")
+	(private -private-equals) (hidden -private-equals)
+	(register -private-equals (Fn [Vec2i, Vec2i] Bool) "nene_Vec2i_equals")
+	(implements = Vec2i.-private-equals)
+	(doc add "Returns the sum of two vectors.")
+	(private -private-add) (hidden -private-add)
+	(register -private-add (Fn [Vec2i, Vec2i] Vec2i) "nene_Vec2i_add")
+	(implements + Vec2i.-private-add)
+	(doc sub "Returns the difference between two vectors.")
+	(private -private-sub) (hidden -private-sub)
+	(register -private-sub (Fn [Vec2i, Vec2i] Vec2i) "nene_Vec2i_sub")
+	(implements - Vec2i.-private-sub)
+	(private -private-mul) (hidden -private-mul)
+	(register -private-mul (Fn [Vec2i, Vec2i] Vec2i) "nene_Vec2i_mul")
+	(implements * Vec2i.-private-mul)
+	(register scale (Fn [Vec2i, Float] Vec2i) "nene_Vec2i_scale")
+	(doc negate "Returns the negation of the `v` vector.")
+	(private -private-negate) (hidden -private-negate)
+	(register -private-negate (Fn [Vec2i] Vec2i) "nene_Vec2i_negate")
+	(implements neg Vec2i.-private-negate)
+	(register len-sqr (Fn [Vec2i] Float) "nene_Vec2i_len_sqr")
+	(register len (Fn [Vec2i] Float) "nene_Vec2i_len")
+	(register lerp (Fn [Vec2i, Vec2i, Float] Vec2i) "nene_Vec2i_lerp")
+	(register dot (Fn [Vec2i, Vec2i] Float) "nene_Vec2i_dot")
+	(register cross (Fn [Vec2i, Vec2i] Float) "nene_Vec2i_cross")
+	(register perpendicular (Fn [Vec2i] Vec2i) "nene_Vec2i_perpendicular")
+)
+
+
+

@@ -23,6 +23,12 @@ typedef struct nene_Animation {
   bool loop;
 } nene_Animation;
 
+/// Returns a zero-initialized animation.
+nene_Animation nene_Animation_zero(void);
+
+/// Returns a copy of the animation.
+nene_Animation nene_Animation_copy(nene_Animation *animation);
+
 /// Tests if a and b animation ranges are equal.
 bool nene_Animation_equals(nene_Animation a, nene_Animation b);
 

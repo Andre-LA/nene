@@ -17,6 +17,10 @@ typedef struct nene_Grid {
   nene_Vec2i gap;
 } nene_Grid;
 
+nene_Grid nene_Grid_zero(void);
+
+nene_Grid nene_Grid_copy(nene_Grid *grid);
+
 bool nene_Grid_equals(nene_Grid a, nene_Grid b);
 
 nene_Vec2i nene_Grid_get_nth_cell_coord(uint32_t nth, uint16_t grid_width);

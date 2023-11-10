@@ -44,19 +44,41 @@ bool nene_Intersections_is_intersecting_rectf_with_rectf(nene_Rectf a, nene_Rect
 /// Returns if a rectangle is intersecting with a point.
 bool nene_Intersections_is_intersecting_rectf_with_point(nene_Rectf rect, nene_Vec2 point);
 
-/// Returns "no rect with rect intersection" value.
-nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void);
+/// Returns a zero-initialized RectfWithRectf value.
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_zero(void);
 
-/// Returns "no segment with rect intersection" value.
-nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_no_intersection(void);
+/// Returns a copy of a RectfWithRectf intersection.
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_copy(nene_IntersectionRectfWithRectf *intersection);
+
+/// Returns "no rect with rect intersection" value, it's an alias to the "zero" function.
+nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_no_intersection(void);
 
 /// Returns the intersection rectangle between two rectangles.
 nene_IntersectionRectfWithRectf nene_IntersectionRectfWithRectf_get_intersection(nene_Rectf a, nene_Rectf b);
 
+/// Returns a zero-initialized RectfWithRectf value.
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_zero(void);
+
+/// Returns a copy of a RectfWithRectf intersection.
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_copy(nene_IntersectionSegmentWithRectf *intersection);
+
+/// Returns "no segment with rect intersection" value, it's an alias to the "zero" function.
+nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_no_intersection(void);
+
 /// Returns the intersection data between a segment and a rectangle.
 nene_IntersectionSegmentWithRectf nene_IntersectionSegmentWithRectf_get_intersection(nene_Segment segment, nene_Rectf rect);
 
+/// Returns a zero-initialized IntersectionSegmentWithSegment value.
+nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_zero(void);
+
+/// Returns a copy of a IntersectionSegmentWithSegment intersection.
+nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_copy(nene_IntersectionSegmentWithSegment *intersection);
+
+/// Returns "no segment with segment intersection" value, it's an alias to the "zero" function.
+nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_no_intersection(void);
+
 /// Returns the intersection data between two segments.
 nene_IntersectionSegmentWithSegment nene_IntersectionSegmentWithSegment_get_intersection(nene_Segment a, nene_Segment b);
+
 
 #endif // NENE_INTERSECTIONS_H

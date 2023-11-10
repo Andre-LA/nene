@@ -1,0 +1,422 @@
+;; Copyright (c) 2021-present André Luiz Alvares
+;; Nene is licensed under the Zlib license.
+;; Please refer to the LICENSE file for details
+;; SPDX-License-Identifier: Zlib
+
+(Project.config "search-path" "./bindings/carp")
+(Project.config "title" "Reflected-Pong")
+(Project.config "output-directory" ".")
+
+(load "nene/core.carp")
+(load "nene/math/rectf.carp")
+(load "nene/intersections.carp")
+(load "nene/font.carp")
+(load "nene/color.carp")
+
+;; utils
+(register exit-failure Int "EXIT_FAILURE")
+(register exit-success Int "EXIT_SUCCESS")
+
+(defn fl [a] (from-long a))
+(defn fi [a] (from-int a))
+(defn i32toi [a] (Long.to-int (to-long a)))
+(defn i32tof [a] (Float.from-int (i32toi a)))
+(defn itoi32 [a] (Int32.from-long (Long.from-int a)))
+(defn u16tof [a] (Float.from-int (Long.to-int (Uint16.to-long a))))
+
+;; Global variables
+(def fg-color (Color.init (fl 0xb3l) (fl 0x9dl) (fl 0xf3l) (fl 0xffl)))
+(def bg-color (Color.init (fl 0x2Cl) (fl 0x2El) (fl 0x34l) (fl 0xffl)))
+
+;; Messenger
+(defmodule Messenger
+	(def game-running-signal! (fn [] ()))
+	(def game-start-signal! (fn [] ()))
+)
+
+;; Input
+(defmodule Input
+	(deftype Kind Held Pressed)
+
+	(defn- either-scancodes [is-held? a b]
+		(if is-held?
+			(or
+				(Core.is-scancode-held a)
+				(Core.is-scancode-held b))
+			(or
+				(Core.is-scancode-pressed a)
+				(Core.is-scancode-pressed b))))
+
+	(defn move-dir [is-held?]
+		(cond
+			(either-scancodes is-held? sdl-scancode-d sdl-scancode-right)
+				1f
+			(either-scancodes is-held? sdl-scancode-a sdl-scancode-left)
+				-1f
+			0f))
+
+	(defn is-moving? [is-held?]
+		(> (abs (Input.move-dir is-held?)) 0f))
+)
+
+;; resources
+(deftype Resources 
+	[font Font
+	points Texture
+	info Texture])
+(derive Resources zero)
+
+(defmodule Resources
+	(def resources (Resources.zero))
+
+	(defmodule Utils
+		(defn update-text [texture text] 
+			(Font.update-text @(font &resources) (address texture) (cstr text) Solid Color.white (fl 0l)))
+	)
+
+	(defn-do load! []
+		(set-font! &resources
+			(or-zero
+				(Font.load (cstr "resources/monogram_extended.ttf") (fl 48l))))
+		(ignore (Utils.update-text (points &resources) "0 pts"))
+		(ignore (Utils.update-text (info &resources) "Press [left] or [right] arrows")))
+
+	(defn-do unload! []
+		(Font.destroy (address (font &resources)))
+		(Texture.destroy (address (points &resources)))
+		(Texture.destroy (address (info &resources))))
+)
+
+;; Entities
+(definterface get-bounding-box (Fn [a] Rect))
+
+(defmodule Entities
+	(defn draw! [e]
+		(ignore
+			(Core.render-draw-rect (get-bounding-box e) false fg-color false)))
+)
+
+(defmodule Frame
+	(def first-frame 0)
+	(def last-frame 4)
+	(def margin 50)
+
+	(defn- offset [frame]
+		(* frame 2))
+
+	(defn- offset-with-margin [frame]
+		(+ (offset frame) margin))
+
+	(defn width [frame]
+		(let [window-width @(x &(Core.get-window-size))]
+			(- window-width (itoi32 (* (offset-with-margin frame) 2)))))
+
+	(defn height [frame]
+		(let [window-height @(y &(Core.get-window-size))]
+			(- window-height (itoi32 (* (offset-with-margin frame) 2)))))
+
+	(defn origin [frame]
+		(itoi32 (offset-with-margin frame)))
+
+	(defn rect [frame]
+		(let [frame-origin (origin frame)]
+			(Rect.init
+				(Vec2i.init frame-origin frame-origin)
+				(Vec2i.init (width frame) (height frame)))))
+
+	(defn center-x [frame]
+		(let [o (i32tof (origin frame)) w (i32tof (width frame))]
+			(floor (+ o (/ w 2f)))))
+
+	(defn top [frame]
+		(itoi32 (offset-with-margin frame)))
+
+	(defn bottom [frame]
+		(+ (origin frame) (height frame)))
+
+	(defn left [frame]
+		@(x (pos &(rect frame))))
+	
+	(defn right [frame]
+		(+ (left frame) (width frame)))
+
+	(defn outside-top [frame]
+		(Rect.init
+			(Vec2i.zero)
+			(Vec2i.init @(x &(Core.get-window-size)) (top frame))))
+
+	(defn outside-left [frame]
+		(Rect.init
+			(Vec2i.zero)
+			(Vec2i.init (left frame) @(y &(Core.get-window-size)))))
+	
+	(defn outside-right[frame]
+		(set-pos (outside-left frame) (Vec2i.init (right frame) (zero))))
+
+	(defn outside-bottom[frame]
+		(set-pos (outside-top frame) (Vec2i.init (zero) (bottom frame))))
+
+	(sig clamp-inside (Fn [(Ref Vec2) (Ref Vec2)] Vec2))
+	(defn clamp-inside [p s]
+		(with Frame
+			(let
+				[leftf (i32tof (left last-frame))
+				rightf (i32tof (right last-frame))
+				topf (i32tof (top last-frame))
+				bottomf (i32tof (bottom last-frame))
+				clamp-x (clamp leftf (- rightf @(x s)) @(x p))
+				clamp-y (clamp topf (- bottomf @(y s)) @(y p))]
+				(Vec2.init clamp-x clamp-y))))
+			
+
+	(defn draw! [] 
+		(for [i first-frame last-frame]
+			(let [frame-rect (rect i)]
+				(ignore
+					(Core.render-draw-rect frame-rect true fg-color false)))))
+)
+
+(defmodule Common
+	(defn move! [pos dir speed]
+		(if (= (len-sqr dir) 0f)
+			@pos
+			(let
+				[delta-time (Core.get-delta-time)
+				delta-space (scale (Vec2.normalize dir) (* speed delta-time))]
+				(+ @pos delta-space))))
+)
+
+(deftype Paddle [pos Vec2])
+(derive Paddle zero)
+(defmodule Paddle
+	(def- speed 256f)
+
+	(defn- width [] 100)
+	(defn- height [] 8)
+
+	(defn create []
+		(let 
+			[frame-bottom (i32toi (Frame.bottom last-frame))
+			x (- (Frame.center-x last-frame) (fi (/ (width) 2)))
+			y (fi (- frame-bottom (height)))]
+			(Paddle.init (Vec2.init x y))))
+
+	(defn bounding-box [self]
+		(Rect.init 
+			(to-vec2i @(pos self))
+			(Vec2i.init (itoi32 (width)) (itoi32 (height)))))
+
+	(defn move! [self dir]
+		(set-x! (pos self)
+			(clamp
+				(i32tof (Frame.left last-frame))
+				(- (i32tof (Frame.right last-frame)) (fi (width)))
+				@(x &(Common.move! (pos self) (Vec2.init dir 0f) speed)))))
+
+	(defn update! [self]
+		(let [dir (Input.move-dir true)]
+			(move! self dir)))
+
+	(implements get-bounding-box Paddle.bounding-box)
+)
+
+(deftype Ball [pos Vec2 dir Vec2])
+(derive Ball zero)
+
+(defmodule Ball
+	(defn- size [] 16)
+	(def- speed 224f)
+
+	(defn bounding-box [self]
+		(let
+			[half-size (Float.from-int (/ (size) 2))
+			offset-to-center (neg (Vec2.init half-size half-size))
+			i32size (itoi32 (size))]
+			(Rect.init 
+				(to-vec2i (+ @(pos self) offset-to-center))
+				(Vec2i.init i32size i32size))))
+
+	(defn create []
+		(let [frame-bottom (i32toi (Frame.bottom last-frame))]
+			(Ball.init
+				(Vec2.init (Frame.center-x first-frame) (fi (- frame-bottom (* 2 (size)))))
+				(Vec2.init 1f -1f))))
+
+	(defn move! [self]
+		(set-pos! self
+			(Common.move! (pos self) @(dir self) speed)))
+
+	(defn- hits [self rect]
+		(let
+			[to-wpos &(fn [p] (Core.screen-point-to-world-pos p)) ;; Intersection math it's done at world position
+			self-rect (Rectf.update-pos (from-rect (bounding-box self)) to-wpos)
+			other-rect (Rectf.update-pos (from-rect rect) to-wpos)]
+			(Intersections.is-intersecting-rectf-with-rectf self-rect other-rect)))
+
+	(defn-do update! [self paddle]
+		(move! self)
+		(set-dir!
+			self
+			(*
+				@(dir self)
+				(let
+					[no-reflection Vec2.one
+					reflect-x (Vec2.init -1f 1f)
+					reflect-y (neg reflect-x)]
+					(with Frame
+						(cond
+							(or (hits self (outside-left last-frame)) (hits self (outside-right last-frame)))
+								reflect-x
+							(hits self (outside-top last-frame))
+								reflect-y
+							(hits self (get-bounding-box paddle))
+								reflect-y
+							(hits self (outside-bottom last-frame))
+								(do
+									(Messenger.game-start-signal!)
+									reflect-y)
+							no-reflection))))))
+
+	(implements get-bounding-box Ball.bounding-box)
+)
+
+;; game sub states common functions
+(defmodule GameCommon
+	(defn draw-message! [msg-tex]
+		(ignore
+			(let
+				[msg-w (u16tof @(width msg-tex))
+				pos (- (Frame.center-x 4) (/ msg-w 2f))]
+				(draw-to-point 
+					@msg-tex
+					(zero)
+					(Vec2.init pos 0f)
+					false))))
+)
+
+;; game sub states
+(definterface tick-update! (Fn [a] Bool))
+(definterface tick-draw! (Fn [a] ()))
+
+(deftype GameStart [])
+(derive GameStart zero)
+
+(defmodule GameStart
+	(defn create []
+		(GameStart.zero))
+
+	(sig update! (Fn [(Ref GameStart)] Bool))
+	(defn-do update! [self] 
+		(when (Input.is-moving? false)
+			(Messenger.game-running-signal!))
+		false)
+
+	(sig draw! (Fn [(Ref GameStart)] ()))
+	(defn-do draw! [self] 
+		(Frame.draw!)
+		(ignore
+			(let [info-tex (Resources.info &Resources.resources)]
+				(GameCommon.draw-message! info-tex))))
+
+	(implements tick-update! GameStart.update!)
+	(implements tick-draw! GameStart.draw!)
+)
+
+(deftype GameRunning [paddle Paddle ball Ball])
+(derive GameRunning zero)
+
+(defmodule GameRunning
+	(defn create []
+		(GameRunning.init
+			(Paddle.create) (Ball.create)))
+
+	(sig update! (Fn [(Ref GameRunning)] Bool))
+	(defn-do update! [self]
+		(Paddle.update! (paddle self))
+		(Ball.update! (ball self) (paddle self))
+		false)
+
+	(sig draw! (Fn [(Ref GameRunning)] ()))
+	(defn-do draw! [self]
+		(Frame.draw!)
+		(Entities.draw! (paddle self))
+		(Entities.draw! (ball self)))
+
+	(implements tick-update! GameRunning.update!)
+	(implements tick-draw! GameRunning.draw!)
+)
+
+;; main game state
+(deftype GameState
+	(Start [GameStart])
+	(Running [GameRunning]))
+
+(defmodule GameState
+ (defn zero [] (GameState.Start (zero)))
+ (implements zero zero)
+)
+
+(deftype Game [state GameState])
+(derive Game zero)
+
+(defmodule Game
+	(def game (Game.zero))
+
+	(defn change-state! [state]
+		(set! game (Game.init state)))
+
+	(defn-do setup-messenger! []
+		(set! Messenger.game-start-signal!
+			(fn [] (Game.change-state! (Start (GameStart.create)))))
+		(set! Messenger.game-running-signal!
+			(fn [] (Game.change-state! (Running (GameRunning.create))))))
+
+	(defn-do create []
+		(let-do [ok (Core.init (cstr "Reflected Pong") (fl 800l) (fl 600l) sdl-window-shown)]
+			(when ok
+				(do
+					(Resources.load!)
+					(setup-messenger!)
+					(change-state! (Start (GameStart.create)))))
+			ok))
+
+	(defn update! []
+		(match-ref (state &game)
+			(Start g) (tick-update! g)
+			(Running g) (tick-update! g)))
+
+	(defn draw! []
+		(match-ref (state &game)
+			(Start g) (tick-draw! g)
+			(Running g) (tick-draw! g)))
+
+	(defn game-tick! []
+		(ignore-do
+			;; update state
+			(Core.update)
+			(Game.update!)
+			;; draw game
+			(Core.render-clear bg-color)
+			(Game.draw!)
+			(Core.render-present)))
+
+	(defn game-loop! []
+		(until (Core.should-quit)
+			(game-tick!)))
+
+	(defn-do terminate! [] 
+		(Resources.unload!)
+		(Core.terminate))
+)
+
+(defn main []
+	(let [ok (Game.create)]
+		(if (not ok)
+			(do
+				(System.exit exit-failure)
+				exit-failure)
+			(do
+				(Game.game-loop!)
+				(Game.terminate!)
+				exit-success)))
+)

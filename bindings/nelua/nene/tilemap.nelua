@@ -1,30 +1,53 @@
-## cinclude '"nene/tilemap.h"'
+
+
 
 local Grid = require 'nene.math.grid'
-local TextureAtlas = require 'nene.texture_atlas'
-local Vec2 = require 'nene.math.vec2'
 local Vec2i = require 'nene.math.vec2i'
+local Vec2 = require 'nene.math.vec2'
+local TextureAtlas = require 'nene.texture_atlas'
+
+
+
 
 
 local Tilemap <cimport 'nene_Tilemap', nodecl> = @record{
-  
-  tileset: TextureAtlas,
-  
-  width: uint16,
-  
-  grid: Grid,
-  
-  tile_count: uint32,
+
+	tileset: TextureAtlas,
+
+	width: uint16,
+
+	grid: Grid,
+
+	tile_count: uint32,
 }
+
+
+function Tilemap.zero(): Tilemap <cimport 'nene_Tilemap_zero', nodecl> end
+
+
+
+function Tilemap.copy(tilemap: *Tilemap): Tilemap <cimport 'nene_Tilemap_copy', nodecl> end
+
 
 
 function Tilemap.get_size_in_tiles(tilemap: Tilemap): Vec2i <cimport 'nene_Tilemap_get_size_in_tiles', nodecl> end
 
+
+
 function Tilemap.get_size(tilemap: Tilemap): Vec2i <cimport 'nene_Tilemap_get_size', nodecl> end
+
+
 
 function Tilemap.draw(tilemap: Tilemap, position: Vec2, is_world_pos: boolean, tiles: *[0]uint16, count: uint32): boolean <cimport 'nene_Tilemap_draw', nodecl> end
 
+
+
 function Tilemap.destroy(tilemap: *Tilemap): void <cimport 'nene_Tilemap_destroy', nodecl> end
+
+
+
+
+
 
 
 return Tilemap

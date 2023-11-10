@@ -1,39 +1,77 @@
-## cinclude '"nene/color.h"'
-
-## cinclude '<SDL.h>'
 
 
-require 'nene.raw.sdl2'
 
 
-local Color: type = @SDL_Color
+
+
+
+--- The color structure, it's a rgba color strucuture using one byte each
+local Color <cimport 'nene_Color', nodecl> = @record{
+
+	r: uint8,
+
+	g: uint8,
+
+	b: uint8,
+
+	a: uint8,
+}
+
+--- Returns a zero-initialized color, that's a transparent black.
+function Color.zero(): Color <cimport 'nene_Color_zero', nodecl> end
+
+
+--- Returns a copy of the color.
+function Color.copy(color: *Color): Color <cimport 'nene_Color_copy', nodecl> end
+
+
+local function nene_Color_black(): Color <cimport 'nene_Color_black', nodecl> end
+
+--- The "black" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)
+local Color.black: Color <const> = nene_Color_black()
+
+local function nene_Color_white(): Color <cimport 'nene_Color_white', nodecl> end
+
+--- The "white" color of nene's palette (`{ .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff }`)
+local Color.white: Color <const> = nene_Color_white()
+
+local function nene_Color_red(): Color <cimport 'nene_Color_red', nodecl> end
+
+--- The "red" color of nene's palette (`{ .r = 0xff, .g = 0x00, .b = 0x00, .a = 0xff }`)
+local Color.red: Color <const> = nene_Color_red()
+
+local function nene_Color_green(): Color <cimport 'nene_Color_green', nodecl> end
+
+--- The "green" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0x00, .a = 0xff }`)
+local Color.green: Color <const> = nene_Color_green()
+
+local function nene_Color_blue(): Color <cimport 'nene_Color_blue', nodecl> end
+
+--- The "blue" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0xff, .a = 0xff }`)
+local Color.blue: Color <const> = nene_Color_blue()
+
+local function nene_Color_yellow(): Color <cimport 'nene_Color_yellow', nodecl> end
+
+--- The "yellow" color of nene's palette (`{ .r = 0xfc, .g = 0xea, .b = 0x20, .a = 0xff }`)
+local Color.yellow: Color <const> = nene_Color_yellow()
+
+local function nene_Color_cyan(): Color <cimport 'nene_Color_cyan', nodecl> end
+
+--- The "cyan" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0xff, .a = 0xff }`)
+local Color.cyan: Color <const> = nene_Color_cyan()
+
+local function nene_Color_bg(): Color <cimport 'nene_Color_bg', nodecl> end
+
+--- The "bg" color of nene's palette (`{ .r = 0x69, .g = 0x46, .b = 0x6b, .a = 0xff }`)
+local Color.bg: Color <const> = nene_Color_bg()
 
 
 function Color.__eq(a: Color, b: Color): boolean <cimport 'nene_Color_equals', nodecl> end
 
--- The "black" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)
-local Color.black: Color <cimport 'nene_Color_black', nodecl>;
 
--- The "white" color of nene's palette (`{ .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff }`)
-local Color.white: Color <cimport 'nene_Color_white', nodecl>;
 
--- The "red" color of nene's palette (`{ .r = 0xff, .g = 0x00, .b = 0x00, .a = 0xff }`)
-local Color.red: Color <cimport 'nene_Color_red', nodecl>;
 
--- The "green" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0x00, .a = 0xff }`)
-local Color.green: Color <cimport 'nene_Color_green', nodecl>;
 
--- The "blue" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0xff, .a = 0xff }`)
-local Color.blue: Color <cimport 'nene_Color_blue', nodecl>;
-
--- The "yellow" color of nene's palette (`{ .r = 0xfc, .g = 0xea, .b = 0x20, .a = 0xff }`)
-local Color.yellow: Color <cimport 'nene_Color_yellow', nodecl>;
-
--- The "cyan" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0xff, .a = 0xff }`)
-local Color.cyan: Color <cimport 'nene_Color_cyan', nodecl>;
-
--- The "bg" color of nene's palette (`{ .r = 0x69, .g = 0x46, .b = 0x6b, .a = 0xff }`)
-local Color.bg: Color <cimport 'nene_Color_bg', nodecl>;
 
 
 return Color

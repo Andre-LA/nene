@@ -1,50 +1,65 @@
-## cinclude '"nene/audio/music.h"'
-
-## cinclude '<SDL_mixer.h>'
 
 
-require 'nene.raw.sdl2_mixer'
+
+
+
 
 
 
 local Music <cimport 'nene_Music', nodecl> = @record{
-  
-  raw: *Mix_Music,
+
+	raw: *Mix_Music,
 }
 
 
 local MusicCreation <cimport 'nene_MusicCreation', nodecl> = @record{
-  
-  created: boolean,
-  
-  music: Music,
+
+	created: boolean,
+
+	music: Music,
 }
+
+
+function Music.zero(): Music <cimport 'nene_Music_zero', nodecl> end
+
+
+
+function Music.copy(music: *Music): Music <cimport 'nene_Music_copy', nodecl> end
+
 
 
 function Music.get_raw(music: Music): *Mix_Music <cimport 'nene_Music_get_raw', nodecl> end
 
+
 local function nene_Music_load(filepath: cstring): MusicCreation <cimport 'nene_Music_load', nodecl> end
+
+
+function Music.load(filepath: cstring): (boolean, Music) 
+	local maybe_result = nene_Music_load(filepath)
+	return maybe_result.created, maybe_result.music
+end
+
+
 
 function Music.play(music: Music, loops: int16): boolean <cimport 'nene_Music_play', nodecl> end
 
+
+
 function Music.stop(): void <cimport 'nene_Music_stop', nodecl> end
 
+
+
 function Music.set_volume(volume: float32): float32 <cimport 'nene_Music_set_volume', nodecl> end
+
+
 
 function Music.destroy(music: *Music): void <cimport 'nene_Music_destroy', nodecl> end
 
 
-local Music.Creation: type = @MusicCreation
-
-function Music.load(filepath: cstring): (boolean, Music)
-  local music_creation: MusicCreation = nene_Music_load(filepath)
-  return music_creation.created, music_creation.music
-end
-
-function Music:__close()
-  self:destroy()
-end
 
 
+
+
+local Music.MusicCreation: type = MusicCreation
 
 return Music

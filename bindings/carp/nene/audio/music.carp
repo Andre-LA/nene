@@ -1,0 +1,45 @@
+
+
+
+
+
+
+
+
+(doc Music "")
+(register-type Music "nene_Music" [raw (Ptr Mix_Music)])
+(doc MusicCreation "")
+(register-type MusicCreation "nene_MusicCreation" [created Bool, music Music])
+
+(defmodule Music
+	(doc zero "")
+	(register zero (Fn [] Music) "nene_Music_zero")
+	(implements zero Music.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Music)] Music) "nene_Music_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref Music)] Music))
+	(defn copy [x]
+		(Music.-private-copy (the (Ptr Music) (Unsafe.coerce x))))
+	(implements copy Music.copy)
+	(sig -private-blit (Fn [Music] Music))
+	(defn- -private-blit [x] (the Music x))
+	(implements blit Music.-private-blit)
+	(register get-raw (Fn [Music] (Ptr Mix_Music)) "nene_Music_get_raw")
+	(private -private-load) (hidden -private-load)
+	(register -private-load (Fn [(Ptr CChar)] MusicCreation) "nene_Music_load")
+	(sig load (Fn [(Ptr CChar)] (Maybe Music)))
+	(doc load "")
+	(defn load [filepath]
+		(let [maybe-result (Music.-private-load filepath)]
+			(if @(MusicCreation.created &maybe-result)
+				(Maybe.Just @(Music.music &maybe-result))
+				(Nothing))))
+	(register play (Fn [Music, Int16] Bool) "nene_Music_play")
+	(register stop (Fn [] ()) "nene_Music_stop")
+	(register set-volume (Fn [Float] Float) "nene_Music_set_volume")
+	(register destroy (Fn [(Ptr Music)] ()) "nene_Music_destroy")
+)
+
+
+

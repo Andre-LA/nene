@@ -1,0 +1,65 @@
+
+
+
+
+
+
+
+
+(doc Color "The color structure, it's a rgba color strucuture using one byte each")
+(register-type Color "nene_Color" [r Uint8, g Uint8, b Uint8, a Uint8])
+
+(defmodule Color
+	(doc zero "Returns a zero-initialized color, that's a transparent black.")
+	(register zero (Fn [] Color) "nene_Color_zero")
+	(implements zero Color.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Color)] Color) "nene_Color_copy")
+	(doc copy "Returns a copy of the color.")
+	(sig copy (Fn [(Ref Color)] Color))
+	(defn copy [x]
+		(Color.-private-copy (the (Ptr Color) (Unsafe.coerce x))))
+	(implements copy Color.copy)
+	(sig -private-blit (Fn [Color] Color))
+	(defn- -private-blit [x] (the Color x))
+	(implements blit Color.-private-blit)
+	(private -private-black) (hidden -private-black)
+	(register -private-black (Fn [] Color) "nene_Color_black")
+	(doc black "The \"black\" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xff }`)")
+	(def black (Color.-private-black))
+	(private -private-white) (hidden -private-white)
+	(register -private-white (Fn [] Color) "nene_Color_white")
+	(doc white "The \"white\" color of nene's palette (`{ .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff }`)")
+	(def white (Color.-private-white))
+	(private -private-red) (hidden -private-red)
+	(register -private-red (Fn [] Color) "nene_Color_red")
+	(doc red "The \"red\" color of nene's palette (`{ .r = 0xff, .g = 0x00, .b = 0x00, .a = 0xff }`)")
+	(def red (Color.-private-red))
+	(private -private-green) (hidden -private-green)
+	(register -private-green (Fn [] Color) "nene_Color_green")
+	(doc green "The \"green\" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0x00, .a = 0xff }`)")
+	(def green (Color.-private-green))
+	(private -private-blue) (hidden -private-blue)
+	(register -private-blue (Fn [] Color) "nene_Color_blue")
+	(doc blue "The \"blue\" color of nene's palette (`{ .r = 0x00, .g = 0x00, .b = 0xff, .a = 0xff }`)")
+	(def blue (Color.-private-blue))
+	(private -private-yellow) (hidden -private-yellow)
+	(register -private-yellow (Fn [] Color) "nene_Color_yellow")
+	(doc yellow "The \"yellow\" color of nene's palette (`{ .r = 0xfc, .g = 0xea, .b = 0x20, .a = 0xff }`)")
+	(def yellow (Color.-private-yellow))
+	(private -private-cyan) (hidden -private-cyan)
+	(register -private-cyan (Fn [] Color) "nene_Color_cyan")
+	(doc cyan "The \"cyan\" color of nene's palette (`{ .r = 0x00, .g = 0xff, .b = 0xff, .a = 0xff }`)")
+	(def cyan (Color.-private-cyan))
+	(private -private-bg) (hidden -private-bg)
+	(register -private-bg (Fn [] Color) "nene_Color_bg")
+	(doc bg "The \"bg\" color of nene's palette (`{ .r = 0x69, .g = 0x46, .b = 0x6b, .a = 0xff }`)")
+	(def bg (Color.-private-bg))
+	(doc equals "")
+	(private -private-equals) (hidden -private-equals)
+	(register -private-equals (Fn [Color, Color] Bool) "nene_Color_equals")
+	(implements = Color.-private-equals)
+)
+
+
+

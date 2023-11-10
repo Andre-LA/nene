@@ -1,23 +1,44 @@
-## cinclude '"nene/collision.h"'
 
+
+
+local Vec2 = require 'nene.math.vec2'
 local Rectf = require 'nene.math.rectf'
 local Segment = require 'nene.math.segment'
-local Vec2 = require 'nene.math.vec2'
 
--- Collision data structure.
+
+
+
+--- Collision data structure.
 local Collision <cimport 'nene_Collision', nodecl> = @record{
-  
-  collided: boolean,
-  
-  delta: Vec2,
+
+	collided: boolean,
+
+	delta: Vec2,
 }
 
--- Returns "no collision" value.
+--- Returns a zero-initialialized collision
+function Collision.zero(): Collision <cimport 'nene_Collision_zero', nodecl> end
+
+
+--- Returns a copy of the collision.
+function Collision.copy(collision: *Collision): Collision <cimport 'nene_Collision_copy', nodecl> end
+
+
+--- Returns a "no collision" value, it's an alias to the "zero" function.
 function Collision.no_collision(): Collision <cimport 'nene_Collision_no_collision', nodecl> end
--- Returns the collision response between two rects.
+
+
+--- Returns the collision response between two rects.
 function Collision.rectf_with_rectf(a: Rectf, b: Rectf, delta_pos: Vec2): Collision <cimport 'nene_Collision_rectf_with_rectf', nodecl> end
--- Returns the collision response between a rectangle and a segment.
+
+
+--- Returns the collision response between a rectangle and a segment.
 function Collision.rectf_with_segment(rect: Rectf, segment: Segment, delta_pos: Vec2): Collision <cimport 'nene_Collision_rectf_with_segment', nodecl> end
+
+
+
+
+
 
 
 return Collision

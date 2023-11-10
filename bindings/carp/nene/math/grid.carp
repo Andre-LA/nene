@@ -1,0 +1,39 @@
+
+
+
+(load "nene/math/vec2i.carp")
+(load "nene/math/rect.carp")
+
+
+
+
+
+(doc Grid "")
+(register-type Grid "nene_Grid" [cell_size Vec2i, gap Vec2i])
+
+(defmodule Grid
+	(doc zero "")
+	(register zero (Fn [] Grid) "nene_Grid_zero")
+	(implements zero Grid.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Grid)] Grid) "nene_Grid_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref Grid)] Grid))
+	(defn copy [x]
+		(Grid.-private-copy (the (Ptr Grid) (Unsafe.coerce x))))
+	(implements copy Grid.copy)
+	(sig -private-blit (Fn [Grid] Grid))
+	(defn- -private-blit [x] (the Grid x))
+	(implements blit Grid.-private-blit)
+	(doc equals "")
+	(private -private-equals) (hidden -private-equals)
+	(register -private-equals (Fn [Grid, Grid] Bool) "nene_Grid_equals")
+	(implements = Grid.-private-equals)
+	(register get-nth-cell-coord (Fn [Uint32, Uint16] Vec2i) "nene_Grid_get_nth_cell_coord")
+	(register get-cell-position (Fn [Grid, Vec2i] Vec2i) "nene_Grid_get_cell_position")
+	(register get-nth-cell-position (Fn [Grid, Uint32, Uint16] Vec2i) "nene_Grid_get_nth_cell_position")
+	(register get-rect (Fn [Grid, Vec2i] Rect) "nene_Grid_get_rect")
+)
+
+
+

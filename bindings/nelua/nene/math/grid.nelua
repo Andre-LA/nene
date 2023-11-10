@@ -1,26 +1,52 @@
-## cinclude '"nene/math/grid.h"'
 
-local Rect = require 'nene.math.rect'
+
+
 local Vec2i = require 'nene.math.vec2i'
+local Rect = require 'nene.math.rect'
+
+
+
 
 
 local Grid <cimport 'nene_Grid', nodecl> = @record{
-  
-  cell_size: Vec2i,
-  
-  gap: Vec2i,
+
+	cell_size: Vec2i,
+
+	gap: Vec2i,
 }
+
+local function nene_Grid_zero(): Grid <cimport 'nene_Grid_zero', nodecl> end
+
+
+local Grid.zero: Grid <const> = nene_Grid_zero()
+
+
+function Grid.copy(grid: *Grid): Grid <cimport 'nene_Grid_copy', nodecl> end
+
 
 
 function Grid.__eq(a: Grid, b: Grid): boolean <cimport 'nene_Grid_equals', nodecl> end
 
+
+
 function Grid.get_nth_cell_coord(nth: uint32, grid_width: uint16): Vec2i <cimport 'nene_Grid_get_nth_cell_coord', nodecl> end
+
+
 
 function Grid.get_cell_position(grid: Grid, cell_coord: Vec2i): Vec2i <cimport 'nene_Grid_get_cell_position', nodecl> end
 
+
+
 function Grid.get_nth_cell_position(grid: Grid, nth: uint32, grid_width: uint16): Vec2i <cimport 'nene_Grid_get_nth_cell_position', nodecl> end
 
+
+
 function Grid.get_rect(grid: Grid, cell_coord: Vec2i): Rect <cimport 'nene_Grid_get_rect', nodecl> end
+
+
+
+
+
 
 
 return Grid

@@ -8,6 +8,37 @@ SPDX-License-Identifier: Zlib
 #include "SDL.h"
 #include "nene/font.h"
 #include "nene/core.h"
+#include "nene/impl/utils.h"
+
+nene_GlyphMetrics nene_GlyphMetrics_zero(void) {
+  return (nene_GlyphMetrics){
+    .min_x = 0,
+  };
+}
+
+nene_GlyphMetrics nene_GlyphMetrics_copy(nene_GlyphMetrics *metrics) {
+  if (metrics == NULL) {
+    return nene_GlyphMetrics_zero();
+  }
+  else {
+    return *metrics;
+  }
+}
+
+nene_Font nene_Font_zero(void) {
+  return (nene_Font){
+    .raw = NULL
+  };
+}
+
+nene_Font nene_Font_copy(nene_Font *font) {
+  if (font == NULL) {
+    return nene_Font_zero();
+  }
+  else {
+    return *font;
+  }
+}
 
 TTF_Font *nene_Font_get_raw(nene_Font font) {
   SDL_assert_release(font.raw != NULL);
@@ -43,16 +74,17 @@ nene_TextureCreation nene_Font_render(nene_Font font, const char text[], nene_Te
   nene_Core *const instance = nene_Core_instance();
 
   SDL_Surface *raw_surface = NULL;
+  SDL_Color sdl_color = ImplUtils_color_to_sdlcolor(color);
 
   switch (quality) {
-    case NENE_TEXT_QUALITY_SOLID: {
-      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_Font_get_raw(font), text, color, wrap_length); }
-      else                 { raw_surface = TTF_RenderUTF8_Solid(nene_Font_get_raw(font), text, color);                      }
+    case NENE_TEXTQUALITY_SOLID: {
+      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_Font_get_raw(font), text, sdl_color, wrap_length); }
+      else                 { raw_surface = TTF_RenderUTF8_Solid(nene_Font_get_raw(font), text, sdl_color);                      }
       break;
     }
-    case NENE_TEXT_QUALITY_BLENDED: {
-      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_Font_get_raw(font), text, color, wrap_length); }
-      else                 { raw_surface = TTF_RenderUTF8_Blended(nene_Font_get_raw(font), text, color);                      }
+    case NENE_TEXTQUALITY_BLENDED: {
+      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_Font_get_raw(font), text, sdl_color, wrap_length); }
+      else                 { raw_surface = TTF_RenderUTF8_Blended(nene_Font_get_raw(font), text, sdl_color);                      }
       break;
     }
     default: {
@@ -174,5 +206,5 @@ void nene_Font_destroy(nene_Font *font) {
   
   TTF_CloseFont(nene_Font_get_raw(*font));
 
-  *font = (nene_Font){ .raw = NULL };
+  *font = nene_Font_zero();
 }

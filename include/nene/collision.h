@@ -19,7 +19,13 @@ typedef struct nene_Collision {
   nene_Vec2 delta;
 } nene_Collision;
 
-/// Returns "no collision" value.
+/// Returns a zero-initialialized collision
+nene_Collision nene_Collision_zero(void);
+
+/// Returns a copy of the collision.
+nene_Collision nene_Collision_copy(nene_Collision *collision);
+
+/// Returns a "no collision" value, it's an alias to the "zero" function.
 nene_Collision nene_Collision_no_collision(void);
 
 /// Returns the collision response between two rects.

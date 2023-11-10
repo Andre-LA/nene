@@ -1,0 +1,38 @@
+
+
+
+(load "nene/math/vec2i.carp")
+
+
+
+
+
+(doc Rect "")
+(register-type Rect "nene_Rect" [pos Vec2i, size Vec2i])
+
+(defmodule Rect
+	(doc zero "")
+	(register zero (Fn [] Rect) "nene_Rect_zero")
+	(implements zero Rect.zero)
+	(private -private-copy) (hidden -private-copy)
+	(register -private-copy (Fn [(Ptr Rect)] Rect) "nene_Rect_copy")
+	(doc copy "")
+	(sig copy (Fn [(Ref Rect)] Rect))
+	(defn copy [x]
+		(Rect.-private-copy (the (Ptr Rect) (Unsafe.coerce x))))
+	(implements copy Rect.copy)
+	(sig -private-blit (Fn [Rect] Rect))
+	(defn- -private-blit [x] (the Rect x))
+	(implements blit Rect.-private-blit)
+	(register to-raw (Fn [Rect] SDL_Rect) "nene_Rect_to_raw")
+	(doc equals "")
+	(private -private-equals) (hidden -private-equals)
+	(register -private-equals (Fn [Rect, Rect] Bool) "nene_Rect_equals")
+	(implements = Rect.-private-equals)
+	(register add-pos (Fn [Rect, Vec2i] Rect) "nene_Rect_add_pos")
+	(register add-size (Fn [Rect, Vec2i] Rect) "nene_Rect_add_size")
+	(register get-center (Fn [Rect] Vec2i) "nene_Rect_get_center")
+)
+
+
+

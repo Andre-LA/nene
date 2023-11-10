@@ -5,6 +5,22 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
+/*
+you can compile this source code using a "simple" compiler command (clang example, on Fedora linux 39):
+clang examples/c/collisions.c -o collisions -lnene -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lm -I libnene/include/ -I libnene/include/SDL2/ -L libnene/lib/ -L libnene/lib64 -Wl,-rpath="\$ORIGIN"/libnene/lib64
+
+command explanation:
+clang: it's clang
+examples/c/collisions.c: we're compiling this source code
+-o collisions: the output it's a "collisions" executable file
+-lnene -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lm: we're linking to nene, all SDL2 libraries and the math library
+-I libnene/include/ -I libnene/include/SDL2/: adding the include paths, otherwise the compiler can't find the headers of "#include" directives
+-L libnene/lib/ -L libnene/lib64: adding the search path of binary libraries, on linux "lib" it's for Nene and "lib64" it's for SDL2 
+-Wl,-rpath="\$ORIGIN"/libnene/lib64: SDL2 it's loaded at runtime (because they're shared libraries), this flags makes the executable to search these libraries on "$ORIGIN/libnene/lib64", "$ORIGIN" is the path relative to the exectuable.
+
+You can also check the CMakeLists to see how to use CMake in this case, although CMake it's still an WIP work.
+*/
+
 #include <stdlib.h>
 #include "nene/core.h"
 #include "nene/collision.h"
@@ -30,7 +46,7 @@ int main(int argc, char *argv[]) {
   do {
     nene_Core_update();
 
-    nene_Core_render_clear(nene_Color_bg);
+    nene_Core_render_clear(nene_Color_bg());
 
     nene_Vec2 delta = nene_Vec2_zero();
 
@@ -58,12 +74,12 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    nene_Color color = nene_Core_is_scancode_held(SDL_SCANCODE_SPACE) ? nene_Color_cyan : nene_Color_white;
+    nene_Color color = nene_Core_is_scancode_held(SDL_SCANCODE_SPACE) ? nene_Color_cyan(): nene_Color_white();
 
     nene_Core_render_draw_rect(nene_Rectf_to_rect(rect), true, color, true);
 
     for (int i = 0; i < SEGMENTS_COUNT; ++i) {
-      nene_Core_render_draw_line(segments[i].origin, segments[i].ending, nene_Color_black, true);
+      nene_Core_render_draw_line(segments[i].origin, segments[i].ending, nene_Color_black(), true);
     }
 
     nene_Core_render_present();
