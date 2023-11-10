@@ -5,24 +5,30 @@
 
 (Project.config "search-path" "./bindings/carp")
 (Project.config "title" "Minimal_Hello_World")
+(Project.config "output-directory" ".")
 
 (load "nene/core.carp")
+(load "nene/color.carp")
 
+;; utils
+(register exit-failure Int "EXIT_FAILURE")
+(register exit-success Int "EXIT_SUCCESS")
 (defn fl [v] (from-long v))
 
-(def background (Color.init (fl 20l) (fl 20l) (fl 20l) (fl 255l)))
-
-(defn-do tick []
+(defn tick []
 	(ignore-do
 		(Core.update)
-		(Core.render-clear background)
+		(Core.render-clear Color.bg)
 		(Core.render-present)))
 
-(defn-do main [] 
-	(let [init-ok (Core.init (cstr "Minimal Hello World") (fl 800l) (fl 600l) sdl-window-shown)] 
-		(when init-ok
+(defn main [] 
+	(let [ok (Core.init (cstr "Minimal Hello World") (fl 800l) (fl 600l) sdl-window-shown)] 
+		(if (not ok)
+			(do
+				(System.exit exit-failure)
+				exit-failure)
 			(do
 				(until (Core.should-quit)
 					(tick))
-				(Core.terminate))))
-	0)
+				(Core.terminate)
+				exit-success))))

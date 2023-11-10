@@ -5,6 +5,7 @@
 
 (Project.config "search-path" "./bindings/carp")
 (Project.config "title" "Reflected-Pong")
+(Project.config "output-directory" ".")
 
 (load "nene/core.carp")
 (load "nene/math/rectf.carp")
@@ -12,285 +13,410 @@
 (load "nene/font.carp")
 (load "nene/color.carp")
 
-;; utils ;;
+;; utils
+(register exit-failure Int "EXIT_FAILURE")
+(register exit-success Int "EXIT_SUCCESS")
 
-(defn fl [v]
-  (from-long v))
+(defn fl [a] (from-long a))
+(defn fi [a] (from-int a))
+(defn i32toi [a] (Long.to-int (to-long a)))
+(defn i32tof [a] (Float.from-int (i32toi a)))
+(defn itoi32 [a] (Int32.from-long (Long.from-int a)))
+(defn u16tof [a] (Float.from-int (Long.to-int (Uint16.to-long a))))
 
-;; hacky utils while I'm still learning the language ;-;
-(defn u8 [v] (fl v))
-(defn u16 [v] (fl v))
-(defn u32 [v] (fl v))
-(defn i16 [v] (fl v))
-(defn i32 [v] (fl v))
+;; Global variables
+(def fg-color (Color.init (fl 0xb3l) (fl 0x9dl) (fl 0xf3l) (fl 0xffl)))
+(def bg-color (Color.init (fl 0x2Cl) (fl 0x2El) (fl 0x34l) (fl 0xffl)))
 
-(sig clone-vec2i (Fn [(Ref Vec2i)] Vec2i))
-(defn clone-vec2i [v] (Vec2i.init @(Vec2i.x v) @(Vec2i.y v)))
-(defn clone-vec2 [v] (Vec2.init @(Vec2.x v) @(Vec2.y v)))
-(defn clone-font [v] (Font.init @(Font.raw v)))
-(defn clone-tex [v] (Texture.init @(Texture.raw v) @(Texture.width v) @(Texture.height v) sdl-textureaccess-static))
-(defn empty-static-texture [] (Texture.init NULL (u16 0l) (u16 0l) sdl-textureaccess-static))
+;; Messenger
+(defmodule Messenger
+	(def game-running-signal! (fn [] ()))
+	(def game-start-signal! (fn [] ()))
+)
 
-;; game properties (constants)
-(deftype GameplayState 
-  Start
-  Running
-  Over)
+;; Input
+(defmodule Input
+	(deftype Kind Held Pressed)
 
-(def PADDLE-SPEED 256.0f)
-(def Game-Points 0)
-(def Gameplay-State (GameplayState.Start))
+	(defn- either-scancodes [is-held? a b]
+		(if is-held?
+			(or
+				(Core.is-scancode-held a)
+				(Core.is-scancode-held b))
+			(or
+				(Core.is-scancode-pressed a)
+				(Core.is-scancode-pressed b))))
 
-;; entities
+	(defn move-dir [is-held?]
+		(cond
+			(either-scancodes is-held? sdl-scancode-d sdl-scancode-right)
+				1f
+			(either-scancodes is-held? sdl-scancode-a sdl-scancode-left)
+				-1f
+			0f))
+
+	(defn is-moving? [is-held?]
+		(> (abs (Input.move-dir is-held?)) 0f))
+)
+
+;; resources
+(deftype Resources 
+	[font Font
+	points Texture
+	info Texture])
+(derive Resources zero)
+
+(defmodule Resources
+	(def resources (Resources.zero))
+
+	(defmodule Utils
+		(defn update-text [texture text] 
+			(Font.update-text @(font &resources) (address texture) (cstr text) Solid Color.white (fl 0l)))
+	)
+
+	(defn-do load! []
+		(set-font! &resources
+			(or-zero
+				(Font.load (cstr "resources/monogram_extended.ttf") (fl 48l))))
+		(ignore (Utils.update-text (points &resources) "0 pts"))
+		(ignore (Utils.update-text (info &resources) "Press [left] or [right] arrows")))
+
+	(defn-do unload! []
+		(Font.destroy (address (font &resources)))
+		(Texture.destroy (address (points &resources)))
+		(Texture.destroy (address (info &resources))))
+)
+
+;; Entities
+(definterface get-bounding-box (Fn [a] Rect))
+
+(defmodule Entities
+	(defn draw! [e]
+		(ignore
+			(Core.render-draw-rect (get-bounding-box e) false fg-color false)))
+)
+
+(defmodule Frame
+	(def first-frame 0)
+	(def last-frame 4)
+	(def margin 50)
+
+	(defn- offset [frame]
+		(* frame 2))
+
+	(defn- offset-with-margin [frame]
+		(+ (offset frame) margin))
+
+	(defn width [frame]
+		(let [window-width @(x &(Core.get-window-size))]
+			(- window-width (itoi32 (* (offset-with-margin frame) 2)))))
+
+	(defn height [frame]
+		(let [window-height @(y &(Core.get-window-size))]
+			(- window-height (itoi32 (* (offset-with-margin frame) 2)))))
+
+	(defn origin [frame]
+		(itoi32 (offset-with-margin frame)))
+
+	(defn rect [frame]
+		(let [frame-origin (origin frame)]
+			(Rect.init
+				(Vec2i.init frame-origin frame-origin)
+				(Vec2i.init (width frame) (height frame)))))
+
+	(defn center-x [frame]
+		(let [o (i32tof (origin frame)) w (i32tof (width frame))]
+			(floor (+ o (/ w 2f)))))
+
+	(defn top [frame]
+		(itoi32 (offset-with-margin frame)))
+
+	(defn bottom [frame]
+		(+ (origin frame) (height frame)))
+
+	(defn left [frame]
+		@(x (pos &(rect frame))))
+	
+	(defn right [frame]
+		(+ (left frame) (width frame)))
+
+	(defn outside-top [frame]
+		(Rect.init
+			(Vec2i.zero)
+			(Vec2i.init @(x &(Core.get-window-size)) (top frame))))
+
+	(defn outside-left [frame]
+		(Rect.init
+			(Vec2i.zero)
+			(Vec2i.init (left frame) @(y &(Core.get-window-size)))))
+	
+	(defn outside-right[frame]
+		(set-pos (outside-left frame) (Vec2i.init (right frame) (zero))))
+
+	(defn outside-bottom[frame]
+		(set-pos (outside-top frame) (Vec2i.init (zero) (bottom frame))))
+
+	(sig clamp-inside (Fn [(Ref Vec2) (Ref Vec2)] Vec2))
+	(defn clamp-inside [p s]
+		(with Frame
+			(let
+				[leftf (i32tof (left last-frame))
+				rightf (i32tof (right last-frame))
+				topf (i32tof (top last-frame))
+				bottomf (i32tof (bottom last-frame))
+				clamp-x (clamp leftf (- rightf @(x s)) @(x p))
+				clamp-y (clamp topf (- bottomf @(y s)) @(y p))]
+				(Vec2.init clamp-x clamp-y))))
+			
+
+	(defn draw! [] 
+		(for [i first-frame last-frame]
+			(let [frame-rect (rect i)]
+				(ignore
+					(Core.render-draw-rect frame-rect true fg-color false)))))
+)
+
+(defmodule Common
+	(defn move! [pos dir speed]
+		(if (= (len-sqr dir) 0f)
+			@pos
+			(let
+				[delta-time (Core.get-delta-time)
+				delta-space (scale (Vec2.normalize dir) (* speed delta-time))]
+				(+ @pos delta-space))))
+)
+
 (deftype Paddle [pos Vec2])
+(derive Paddle zero)
 (defmodule Paddle
-  (sig new (Fn [] Paddle))
-  (defn new [] 
-    (Paddle.init (Vec2.init 300f 500f)))
+	(def- speed 256f)
 
-  (sig reset (Fn [(Ref Paddle)] ()))
-  (defn reset [paddle]
-    (let [pos (Paddle.pos paddle)]
-      (ignore-do
-        (Vec2.set-x! pos 300f)
-        (Vec2.set-y! pos 500f))))
+	(defn- width [] 100)
+	(defn- height [] 8)
 
-  (sig move (Fn [(Ref Paddle) Float] ()))
-  (defn move [paddle dir]
-    (let [delta (* PADDLE-SPEED dir)
-          pos (Paddle.pos paddle)
-          pos_x (Vec2.x pos)
-          dt (Core.get-delta-time)]
-      (Vec2.set-x! pos (clamp 58.0f 642.0f (+ @pos_x (* dt delta))))))
+	(defn create []
+		(let 
+			[frame-bottom (i32toi (Frame.bottom last-frame))
+			x (- (Frame.center-x last-frame) (fi (/ (width) 2)))
+			y (fi (- frame-bottom (height)))]
+			(Paddle.init (Vec2.init x y))))
 
-  (sig rect (Fn [(Ref Paddle)] Rect))
-  (defn rect [paddle]
-    (let [pos (Vec2.to-vec2i (clone-vec2 (Paddle.pos paddle)))
-          size (Vec2i.init (i32 100l) (i32 8l))]
-      (Rect.init pos size)))
+	(defn bounding-box [self]
+		(Rect.init 
+			(to-vec2i @(pos self))
+			(Vec2i.init (itoi32 (width)) (itoi32 (height)))))
 
-  (sig rectf (Fn [(Ref Paddle)] Rectf))
-  (defn rectf [paddle]
-    (let [rect (Paddle.rect paddle)]
-      (Rectf.from-rect rect)))
+	(defn move! [self dir]
+		(set-x! (pos self)
+			(clamp
+				(i32tof (Frame.left last-frame))
+				(- (i32tof (Frame.right last-frame)) (fi (width)))
+				@(x &(Common.move! (pos self) (Vec2.init dir 0f) speed)))))
 
-  (sig color (Fn [] Color))
-  (defn color []
-    (Color.init (u8 0xb3l) (u8 0x9dl) (u8 0xf3l) (u8 0xffl)))
+	(defn update! [self]
+		(let [dir (Input.move-dir true)]
+			(move! self dir)))
 
-  (sig draw (Fn [(Ref Paddle)] Bool))
-  (defn draw [paddle]
-    (Core.render-draw-rect (Paddle.rect paddle) false (Paddle.color) false))
+	(implements get-bounding-box Paddle.bounding-box)
+)
 
-  (sig update (Fn [(Ref Paddle)] ()))
-  (defn-do update [paddle]
-    (cond 
-      (Core.is-scancode-held sdl-scancode-left)  (Paddle.move paddle -1.0f)
-      (Core.is-scancode-held sdl-scancode-right) (Paddle.move paddle 1.0f)
-      () )))
+(deftype Ball [pos Vec2 dir Vec2])
+(derive Ball zero)
 
-(deftype Ball [pos Vec2, dir Vec2 speed Float])
 (defmodule Ball
-  (sig new (Fn [] Ball))
-  (defn new [] 
-    (Ball.init (Vec2.init 392f 200f) (Vec2.init 1.0f -1.0f) 64f))
+	(defn- size [] 16)
+	(def- speed 224f)
 
-  (sig reset (Fn [(Ref Ball)] ()))
-  (defn reset [ball]
-    (let [pos (Ball.pos ball) dir (Ball.dir ball)]
-      (ignore-do
-        (Ball.set-speed! ball 64f)
-        (Vec2.set-x! dir  1f)
-        (Vec2.set-y! dir -1f)
-        (Vec2.set-x! pos 392f)
-        (Vec2.set-y! pos 200f))))
+	(defn bounding-box [self]
+		(let
+			[half-size (Float.from-int (/ (size) 2))
+			offset-to-center (neg (Vec2.init half-size half-size))
+			i32size (itoi32 (size))]
+			(Rect.init 
+				(to-vec2i (+ @(pos self) offset-to-center))
+				(Vec2i.init i32size i32size))))
 
-  (sig rect (Fn [(Ref Ball)] Rect))
-  (defn rect [ball]
-    (let [pos (Vec2.to-vec2i (clone-vec2 (Ball.pos ball)))
-          size (Vec2i.init (i32 16l) (i32 16l))]
-      (Rect.init pos size)))
+	(defn create []
+		(let [frame-bottom (i32toi (Frame.bottom last-frame))]
+			(Ball.init
+				(Vec2.init (Frame.center-x first-frame) (fi (- frame-bottom (* 2 (size)))))
+				(Vec2.init 1f -1f))))
 
-  (sig rectf (Fn [(Ref Ball)] Rectf))
-  (defn rectf [ball]
-    (let [rect (Ball.rect ball)]
-      (Rectf.from-rect rect)))
+	(defn move! [self]
+		(set-pos! self
+			(Common.move! (pos self) @(dir self) speed)))
 
-  (sig reflect-x (Fn [(Ref Ball) Float] ()))
-  (defn reflect-x [ball limit]
-    (let-do [dir (Ball.dir ball)
-             pos (Ball.pos ball)    
-             dir_x (Vec2.x dir)
-             pos_x (Vec2.x pos)]
-      (Vec2.set-x! dir (* @dir_x -1.0f))
-      (Vec2.set-x! pos (+ limit @dir_x))))
+	(defn- hits [self rect]
+		(let
+			[to-wpos &(fn [p] (Core.screen-point-to-world-pos p)) ;; Intersection math it's done at world position
+			self-rect (Rectf.update-pos (from-rect (bounding-box self)) to-wpos)
+			other-rect (Rectf.update-pos (from-rect rect) to-wpos)]
+			(Intersections.is-intersecting-rectf-with-rectf self-rect other-rect)))
 
-  (sig reflect-y (Fn [(Ref Ball) Float] ()))
-  (defn reflect-y [ball limit]
-    (let-do [dir (Ball.dir ball)
-             pos (Ball.pos ball)    
-             dir_y (Vec2.y dir)
-             pos_y (Vec2.y pos)]
-      (Vec2.set-y! dir (* @dir_y -1.0f))
-      (Vec2.set-y! pos (+ limit @dir_y))))
-  
-  (sig reflect-if-collided-with-walls (Fn [(Ref Ball)] ()))
-  (defn reflect-if-collided-with-walls [ball]
-    (let [pos (Ball.pos ball)
-          pos_x (Vec2.x pos)
-          pos_y (Vec2.y pos)]
-      (cond 
-        (<= @pos_x 58.0f) (Ball.reflect-x ball 58.0f)
-        (>= @pos_x 726.0f) (Ball.reflect-x ball 726.0f)
-        (cond 
-          (<= @pos_y 58.0f) (Ball.reflect-y ball 58.0f)
-          (>= @pos_y 526.0f) (set! Gameplay-State (GameplayState.Over))
-          () ))))
+	(defn-do update! [self paddle]
+		(move! self)
+		(set-dir!
+			self
+			(*
+				@(dir self)
+				(let
+					[no-reflection Vec2.one
+					reflect-x (Vec2.init -1f 1f)
+					reflect-y (neg reflect-x)]
+					(with Frame
+						(cond
+							(or (hits self (outside-left last-frame)) (hits self (outside-right last-frame)))
+								reflect-x
+							(hits self (outside-top last-frame))
+								reflect-y
+							(hits self (get-bounding-box paddle))
+								reflect-y
+							(hits self (outside-bottom last-frame))
+								(do
+									(Messenger.game-start-signal!)
+									reflect-y)
+							no-reflection))))))
 
-  (sig reflect-if-collided-with-paddle (Fn [(Ref Ball) (Ref Paddle)] ()))
-  (defn reflect-if-collided-with-paddle [ball paddle] 
-    (let [paddle-rect (Paddle.rectf paddle)
-          ball-rect (Ball.rectf ball)
-          is-intersecting (Intersections.is-intersecting-rectf-with-rectf paddle-rect ball-rect)]
-      (if is-intersecting 
-        (ignore-do
-          (Ball.reflect-y ball 484.0f)
-          (++ Game-Points))
-        ())))
+	(implements get-bounding-box Ball.bounding-box)
+)
 
-  (sig move (Fn [(Ref Ball)] ()))
-  (defn move [ball]
-    (let-do [speed (Ball.speed ball)
-             pos (Ball.pos ball)
-             dir (Ball.dir ball)
-             pos_x (Vec2.x pos)
-             pos_y (Vec2.y pos)
-             dir_x (Vec2.x dir)
-             dir_y (Vec2.y dir)
-             dt (Core.get-delta-time)
-             delta (* @speed dt)]
-      (Vec2.set-x! pos (clamp 58.0f 726.0f (+ @pos_x (* delta @dir_x))))
-      (Vec2.set-y! pos (clamp 58.0f 726.0f (+ @pos_y (* delta @dir_y))))))
+;; game sub states common functions
+(defmodule GameCommon
+	(defn draw-message! [msg-tex]
+		(ignore
+			(let
+				[msg-w (u16tof @(width msg-tex))
+				pos (- (Frame.center-x 4) (/ msg-w 2f))]
+				(draw-to-point 
+					@msg-tex
+					(zero)
+					(Vec2.init pos 0f)
+					false))))
+)
 
-  (sig update (Fn [(Ref Ball) (Ref Paddle)] ()))
-  (defn-do update [ball paddle]
-    (let [speed (Ball.speed ball)
-          dt (Core.get-delta-time)]
-      (Ball.set-speed! ball (+ @speed (* 8.0f dt))))
-    (Ball.move ball)
-    (Ball.reflect-if-collided-with-walls ball)
-    (Ball.reflect-if-collided-with-paddle ball paddle))
+;; game sub states
+(definterface tick-update! (Fn [a] Bool))
+(definterface tick-draw! (Fn [a] ()))
 
-  (sig color (Fn [] Color))
-  (defn color []
-    (Color.init (u8 0x76l) (u8 0xccl) (u8 0xe0l) (u8 0xffl)))
+(deftype GameStart [])
+(derive GameStart zero)
 
-  (sig draw (Fn [(Ref Ball)] Bool))
-  (defn draw [ball]
-    (Core.render-draw-rect (Ball.rect ball) false (Ball.color) false)))
+(defmodule GameStart
+	(defn create []
+		(GameStart.zero))
 
-;; game state
-(deftype GameState [paddle Paddle
-                    ball Ball
-                    font Font
-                    points-tex Texture
-                    info-tex Texture])
+	(sig update! (Fn [(Ref GameStart)] Bool))
+	(defn-do update! [self] 
+		(when (Input.is-moving? false)
+			(Messenger.game-running-signal!))
+		false)
+
+	(sig draw! (Fn [(Ref GameStart)] ()))
+	(defn-do draw! [self] 
+		(Frame.draw!)
+		(ignore
+			(let [info-tex (Resources.info &Resources.resources)]
+				(GameCommon.draw-message! info-tex))))
+
+	(implements tick-update! GameStart.update!)
+	(implements tick-draw! GameStart.draw!)
+)
+
+(deftype GameRunning [paddle Paddle ball Ball])
+(derive GameRunning zero)
+
+(defmodule GameRunning
+	(defn create []
+		(GameRunning.init
+			(Paddle.create) (Ball.create)))
+
+	(sig update! (Fn [(Ref GameRunning)] Bool))
+	(defn-do update! [self]
+		(Paddle.update! (paddle self))
+		(Ball.update! (ball self) (paddle self))
+		false)
+
+	(sig draw! (Fn [(Ref GameRunning)] ()))
+	(defn-do draw! [self]
+		(Frame.draw!)
+		(Entities.draw! (paddle self))
+		(Entities.draw! (ball self)))
+
+	(implements tick-update! GameRunning.update!)
+	(implements tick-draw! GameRunning.draw!)
+)
+
+;; main game state
+(deftype GameState
+	(Start [GameStart])
+	(Running [GameRunning]))
+
 (defmodule GameState
-  (sig new (Fn [] GameState))
-  (defn new []
-    (let [points-tex (empty-static-texture)
-          info-tex (empty-static-texture)]
-      (let [font-creation (Font.load (cstr "resources/monogram_extended.ttf") (i16 48l))
-            font (clone-font (FontCreation.font &font-creation))
-            _1 (Font.update-text font (Pointer.address &points-tex) (cstr "0 pts") Solid (Color.white) (u32 0l))
-            _2 (Font.update-text font (Pointer.address &info-tex) (cstr "Press [left] or [right] arrows") Solid (Color.white) (u32 0l))
-           ] ;; TODO: check font-creation's result to check for a runtime error
-      
-      (GameState.init (Paddle.new) (Ball.new) font points-tex info-tex ))))
+ (defn zero [] (GameState.Start (zero)))
+ (implements zero zero)
+)
 
-  (sig update-points-tex (Fn [(Ref GameState)] ()))
-  (defn update-points-tex [gamestate]
-    (let [font (GameState.font gamestate)
-          points-tex (GameState.points-tex gamestate)]
-      (ignore
-        (Font.update-text (clone-font font) (Pointer.address points-tex) (cstr &(String.concat &[(str Game-Points) @" pts"])) Solid (Color.white) (u32 0l)))))
-      
-  (sig update-info-tex (Fn [(Ref GameState) (Ptr CChar)] ()))
-  (defn update-info-tex [gamestate text]
-    (let [font (GameState.font gamestate)
-          info-tex (GameState.info-tex gamestate)]
-      (ignore
-        (Font.update-text (clone-font font) (Pointer.address info-tex) text Solid (Color.white) (u32 0l)))))
+(deftype Game [state GameState])
+(derive Game zero)
 
-  (sig draw (Fn [(Ref GameState)] ()))
-  (defn-do draw [gamestate]
-    (let [i 0l]
-      (while (< i 4l)
-        (let [offset (* i 2l)
-              offsetx2 (* offset 2l)
-              _ (Core.render-draw-rect 
-                  (Rect.init
-                    (Vec2i.init (i32 (+ offset 50l)) (i32 (+ offset 50l)))
-                    (Vec2i.init (i32 (- 700l offsetx2)) (i32 (- 500l offsetx2))))
-                  true
-                  (Color.init (u8 0xb3l) (u8 0x9dl) (u8 0xf3l) (u8 0xffl))
-                  false)
-                ] (++ i))))
-      (ignore-do
-        (let [points-tex (GameState.points-tex gamestate)
-              info-tex (GameState.info-tex gamestate)]
-          (ignore-do
-            (Texture.draw-to-point (clone-tex points-tex) (Rect.zero) (Vec2.init 600f 4f)  false)
-            (Texture.draw-to-point (clone-tex info-tex) (Rect.zero) (Vec2.init 130f 80f)  false)))
-        (Paddle.draw (GameState.paddle gamestate))
-        (Ball.draw (GameState.ball gamestate))))
+(defmodule Game
+	(def game (Game.zero))
 
-  (sig reset-game (Fn [(Ref GameState)] ()))
-  (defn-do reset-game [gamestate]
-    (GameState.update-info-tex gamestate (cstr " "))
-    (Ball.reset (Gamestate.ball gamestate))
-    (Paddle.reset (Gamestate.paddle gamestate))
-    (set! Game-Points 0)
-    (set! Gameplay-State (GameplayState.Running)))
+	(defn change-state! [state]
+		(set! game (Game.init state)))
 
-  (sig update-start (Fn [(Ref GameState)] ()))
-  (defn update-start [gamestate]
-    (if (or (Core.is-scancode-pressed sdl-scancode-left) (Core.is-scancode-pressed sdl-scancode-right))
-      (GameState.reset-game gamestate)
-      ()))
+	(defn-do setup-messenger! []
+		(set! Messenger.game-start-signal!
+			(fn [] (Game.change-state! (Start (GameStart.create)))))
+		(set! Messenger.game-running-signal!
+			(fn [] (Game.change-state! (Running (GameRunning.create))))))
 
-  (sig update-over (Fn [(Ref GameState)] ()))
-  (defn-do update-over [gamestate]
-    (GameState.update-info-tex gamestate (cstr "Game Over!"))
-    (if (Core.is-scancode-pressed sdl-scancode-r)
-      (GameState.reset-game gamestate)
-      ()))
+	(defn-do create []
+		(let-do [ok (Core.init (cstr "Reflected Pong") (fl 800l) (fl 600l) sdl-window-shown)]
+			(when ok
+				(do
+					(Resources.load!)
+					(setup-messenger!)
+					(change-state! (Start (GameStart.create)))))
+			ok))
 
-  (sig update-running (Fn [(Ref GameState)] ()))
-  (defn update-running [gamestate]
-    (let-do [paddle (GameState.paddle gamestate)
-             ball (GameState.ball gamestate)]
-      (Paddle.update paddle)
-      (Ball.update ball paddle)
-      (GameState.update-points-tex gamestate)))
-  
-  (sig update (Fn [(Ref GameState)] ()))
-  (defn update [gamestate]
-    (match Gameplay-State
-      (GameplayState.Start) (GameState.update-start gamestate)
-      (GameplayState.Running) (GameState.update-running gamestate)
-      (GameplayState.Over) (GameState.update-over gamestate))))
+	(defn update! []
+		(match-ref (state &game)
+			(Start g) (tick-update! g)
+			(Running g) (tick-update! g)))
 
-;; main function
-(defn-do main []
-  (let-do [_ (Core.init (cstr "Reflected Pong") (u16 800l) (u16 600l) sdl-window-shown)
-           gamestate (GameState.new) ]
-    (until (Core.should-quit)
-      (ignore-do
-        (Core.update)
-        (GameState.update &gamestate)
-        (Core.render-clear (Color.init (u8 0x2Cl) (u8 0x2El) (u8 0x34l) (u8 0xffl)))
-        (GameState.draw &gamestate)
-        (Core.render-present)))
-  (Core.terminate))
-  0)
+	(defn draw! []
+		(match-ref (state &game)
+			(Start g) (tick-draw! g)
+			(Running g) (tick-draw! g)))
+
+	(defn game-tick! []
+		(ignore-do
+			;; update state
+			(Core.update)
+			(Game.update!)
+			;; draw game
+			(Core.render-clear bg-color)
+			(Game.draw!)
+			(Core.render-present)))
+
+	(defn game-loop! []
+		(until (Core.should-quit)
+			(game-tick!)))
+
+	(defn-do terminate! [] 
+		(Resources.unload!)
+		(Core.terminate))
+)
+
+(defn main []
+	(let [ok (Game.create)]
+		(if (not ok)
+			(do
+				(System.exit exit-failure)
+				exit-failure)
+			(do
+				(Game.game-loop!)
+				(Game.terminate!)
+				exit-success)))
+)
