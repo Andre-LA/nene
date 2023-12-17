@@ -1,3 +1,7 @@
+# Note!
+
+This project moved to [CodeBerg](https://codeberg.org/Nene/nene)!
+
 # nene
 [![Matrix](https://img.shields.io/matrix/nene-and-friends:matrix.org?label=Matrix%20chat&logo=matrix)](https://matrix.to/#/#nene-and-friends:matrix.org)
 
