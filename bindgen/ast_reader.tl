@@ -184,8 +184,8 @@ readers['EnumConstantDecl'] = function(symbols: Symbols, line: string)
 	symbols:push_field(enum_const_name, enum_const_type)
 end
 
-readers['IntegerLiteral'] = function(symbols: Symbols, line: string)
-	local value = line:match("IntegerLiteral %w+ <.-> '[%w_]+' (%d+)")
+readers['value'] = function(symbols: Symbols, line: string)
+	local value = line:match("value: Int (%d+)")
 	symbols:push_field_constant(tonumber(value))
 end
 
@@ -377,10 +377,43 @@ end
 function ast_reader.get_symbol_enum_constants(symbol: Symbol): {AST.Enum.Constant}
 	assert(symbol, "'symbol' expected")
 	local constants: {AST.Enum.Constant} = {}
+
+	assert(
+		#symbol.field_seq >= 2,
+		string.format(
+			"There's less than two constants on enumeration '%s', is this right?",
+			symbol.name
+		)
+	)
+
+	local prefix_word_count = 999
+
+	for i = 2, #symbol.field_seq do
+		local i_prefix_count = 0
+
+		local prev_field = symbol.field_seq[i-1]
+		local cur_field = symbol.field_seq[i]
+
+		local prev_split = Utils.string_separate(prev_field.name, '(%w+)')
+		local cur_split = Utils.string_separate(cur_field.name, '(%w+)')
+
+		for j = 1, math.min(#prev_split, #cur_split) do
+			if prev_split[j] == cur_split[j] then
+				i_prefix_count = i_prefix_count + 1
+			else
+				break
+			end
+		end
+
+		if i_prefix_count < prefix_word_count then
+			prefix_word_count = i_prefix_count
+		end
+	end
+
 	for _, field in ipairs(symbol.field_seq) do
 		table.insert(constants, AST.Enum.Constant.new {
 			sym = {
-				name = Utils.from_all_caps_to_pascal_case(remove_prefix(field.name, 2)),
+				name = Utils.from_all_caps_to_pascal_case(remove_prefix(field.name, prefix_word_count)),
 				cname = field.name,
 				comment = get_ast_comment(field.comments),
 			},

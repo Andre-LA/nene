@@ -9,11 +9,14 @@ local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
 local AstCommon = require 'bindgen.ast_common'
 
-local symbols = ast_reader.read_file('texture', 'nene_Texture')
+local symbols = ast_reader.read_file('texture', 'nene_TextureAccess')
 assert(symbols, "no 'symbols' returned")
 
 local structs = ast_reader.get_structs(symbols, 'nene')
 assert(structs, "no 'structs' returned")
+
+local enums = ast_reader.get_enums(symbols, 'nene')
+assert(enums, "no 'enums' returned")
 
 local funcs = ast_reader.get_functions(symbols, 'nene_Texture')
 assert(funcs, "no 'funcs' returned")
@@ -44,8 +47,9 @@ local texture = AST.Module.new {
 		{ module = 'Vec2' },
 		{ module = 'Rect' },
 		{ module = 'Color' },
+		{ module = 'Core' },
 	},
-	enums = {},
+	enums = enums,
 	structs = structs,
 	funcs = funcs,
 }

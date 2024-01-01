@@ -8,8 +8,11 @@ SPDX-License-Identifier: Zlib
 local AST = require 'bindgen.ast'
 local ast_reader = require 'bindgen.ast_reader'
 
-local symbols = ast_reader.read_file('core', 'nene_GamepadState')
+local symbols = ast_reader.read_file('core', 'nene_WindowFlags')
 assert(symbols, "no 'symbols' returned")
+
+local enums = ast_reader.get_enums(symbols, 'nene')
+assert(enums, "no 'enums' returned")
 
 local structs = ast_reader.get_structs(symbols, 'nene')
 assert(structs, "no 'structs' returned")
@@ -25,7 +28,7 @@ local core = AST.Module.new {
 		{ module = 'Rect' },
 		{ module = 'Color' },
 	},
-	enums = {},
+	enums = enums,
 	structs = structs,
 	funcs = funcs,
 }

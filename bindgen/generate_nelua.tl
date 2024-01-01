@@ -48,38 +48,44 @@ end
 local Core = require 'bindgen.data.core'
 
 bind_module(Core, 'core', {
-	begin_prepend = [[
+	begin_prepend = [=[
 -- this contains the bindings for SDL2 and the linking procedures
-## linklib 'nene'
-## linklib 'm'
+##[[
+linklib 'nene'
+linklib 'm'
 
-## cinclude 'nene/core.h'
-## cinclude 'nene/config.h'
-## cinclude 'nene/texture.h'
-## cinclude 'nene/font.h'
-## cinclude 'nene/texture_atlas.h'
-## cinclude 'nene/audio/music.h'
-## cinclude 'nene/audio/sound.h'
-## cinclude 'nene/math/vec2i.h'
-## cinclude 'nene/math/vec2.h'
-## cinclude 'nene/math/rect.h'
-## cinclude 'nene/math/rectf.h'
-## cinclude 'nene/math/grid.h'
-## cinclude 'nene/math/segment.h'
-## cinclude 'nene/math/shape.h'
-## cinclude 'nene/intersections.h'
-## cinclude 'nene/collision.h'
-## cinclude 'nene/animation.h'
-## cinclude 'nene/tilemap.h'
-## cinclude 'nene/color.h'
+linklib 'SDL2'
+linklib 'SDL2_mixer'
+linklib 'SDL2_image'
+linklib 'SDL2_ttf'
+
+cinclude 'nene/core.h'
+cinclude 'nene/config.h'
+cinclude 'nene/texture.h'
+cinclude 'nene/font.h'
+cinclude 'nene/texture_atlas.h'
+cinclude 'nene/audio/music.h'
+cinclude 'nene/audio/sound.h'
+cinclude 'nene/math/vec2i.h'
+cinclude 'nene/math/vec2.h'
+cinclude 'nene/math/rect.h'
+cinclude 'nene/math/rectf.h'
+cinclude 'nene/math/grid.h'
+cinclude 'nene/math/segment.h'
+cinclude 'nene/math/shape.h'
+cinclude 'nene/intersections.h'
+cinclude 'nene/collision.h'
+cinclude 'nene/animation.h'
+cinclude 'nene/tilemap.h'
+cinclude 'nene/color.h'
+]]
 
 require 'nene.raw.sdl2'
-require 'nene.raw.sdl2_image'
 require 'nene.raw.sdl2_mixer'
 require 'nene.raw.sdl2_ttf'
 
 local MilliTime: type = @uint64
-]],
+]=],
 	append = [[
 local Core.MilliTime: type = @MilliTime 
 ]]
@@ -145,7 +151,9 @@ bind_module(Shape, 'math/shape', {})
 
 -- Texture
 local Texture = require 'bindgen.data.texture'
-bind_module(Texture, 'texture', {})
+bind_module(Texture, 'texture', {
+	prepend = "local BlendMode: type = @Core.BlendMode"
+})
 
 -- Font
 local Font = require 'bindgen.data.font'
