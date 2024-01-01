@@ -5,10 +5,11 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
-#include "SDL.h"
 #include "nene/font.h"
 #include "nene/core.h"
 #include "nene/impl/utils.h"
+#include "nene/impl/texture.h"
+#include "nene/impl/font.h"
 
 nene_GlyphMetrics nene_GlyphMetrics_zero(void) {
   return (nene_GlyphMetrics){
@@ -38,11 +39,6 @@ nene_Font nene_Font_copy(nene_Font *font) {
   else {
     return *font;
   }
-}
-
-TTF_Font *nene_Font_get_raw(nene_Font font) {
-  SDL_assert_release(font.raw != NULL);
-  return font.raw;
 }
 
 nene_FontCreation nene_Font_load(const char filepath[], int16_t pt_size) {
@@ -77,14 +73,14 @@ nene_TextureCreation nene_Font_render(nene_Font font, const char text[], nene_Te
   SDL_Color sdl_color = ImplUtils_color_to_sdlcolor(color);
 
   switch (quality) {
-    case NENE_TEXTQUALITY_SOLID: {
-      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_Font_get_raw(font), text, sdl_color, wrap_length); }
-      else                 { raw_surface = TTF_RenderUTF8_Solid(nene_Font_get_raw(font), text, sdl_color);                      }
+    case NENE_TEXT_QUALITY_SOLID: {
+      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Solid_Wrapped(nene_impl_Font_get_raw(font), text, sdl_color, wrap_length); }
+      else                 { raw_surface = TTF_RenderUTF8_Solid(nene_impl_Font_get_raw(font), text, sdl_color);                      }
       break;
     }
-    case NENE_TEXTQUALITY_BLENDED: {
-      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_Font_get_raw(font), text, sdl_color, wrap_length); }
-      else                 { raw_surface = TTF_RenderUTF8_Blended(nene_Font_get_raw(font), text, sdl_color);                      }
+    case NENE_TEXT_QUALITY_BLENDED: {
+      if (wrap_length > 0) { raw_surface = TTF_RenderUTF8_Blended_Wrapped(nene_impl_Font_get_raw(font), text, sdl_color, wrap_length); }
+      else                 { raw_surface = TTF_RenderUTF8_Blended(nene_impl_Font_get_raw(font), text, sdl_color);                      }
       break;
     }
     default: {
@@ -111,7 +107,7 @@ nene_TextureCreation nene_Font_render(nene_Font font, const char text[], nene_Te
   }
 
   nene_Texture texture = { .raw = NULL };
-  nene_Texture_apply_raw(&texture, raw_texture);
+  nene_impl_Texture_apply_raw(&texture, raw_texture);
 
   SDL_FreeSurface(raw_surface);
   return (nene_TextureCreation){
@@ -140,7 +136,7 @@ bool nene_Font_update_text(nene_Font font, nene_Texture *text_texture, const cha
 }
 
 nene_GlyphMetricsQuery nene_Font_get_glyph_metrics(nene_Font font, uint32_t glyph) {
-  TTF_Font *const raw_font = nene_Font_get_raw(font);
+  TTF_Font *const raw_font = nene_impl_Font_get_raw(font);
 
   int min_x = 0, min_y = 0, max_x = 0, max_y = 0, advance = 0;
 
@@ -162,23 +158,23 @@ nene_GlyphMetricsQuery nene_Font_get_glyph_metrics(nene_Font font, uint32_t glyp
 }
 
 uint16_t nene_Font_get_height(nene_Font font) {
-  return TTF_FontHeight(nene_Font_get_raw(font));
+  return TTF_FontHeight(nene_impl_Font_get_raw(font));
 }
 
 uint16_t nene_Font_get_ascent(nene_Font font) {
-  return TTF_FontAscent(nene_Font_get_raw(font));
+  return TTF_FontAscent(nene_impl_Font_get_raw(font));
 }
 
 uint16_t nene_Font_get_descent(nene_Font font) {
-  return TTF_FontDescent(nene_Font_get_raw(font));
+  return TTF_FontDescent(nene_impl_Font_get_raw(font));
 }
 
 uint16_t nene_Font_get_line_skip(nene_Font font) {
-  return TTF_FontLineSkip(nene_Font_get_raw(font));
+  return TTF_FontLineSkip(nene_impl_Font_get_raw(font));
 }
 
 nene_TextDimensions nene_Font_get_text_dimensions(nene_Font font, const char text[]) {
-  TTF_Font *const raw_font = nene_Font_get_raw(font);
+  TTF_Font *const raw_font = nene_impl_Font_get_raw(font);
   int w = 0, h = 0;
 
   if (TTF_SizeUTF8(raw_font, text, &w, &h) != 0) {
@@ -194,7 +190,7 @@ nene_TextDimensions nene_Font_get_text_dimensions(nene_Font font, const char tex
 }
 
 bool nene_Font_is_monospaced(nene_Font font) {
-  return TTF_FontFaceIsFixedWidth(nene_Font_get_raw(font)) != 0;
+  return TTF_FontFaceIsFixedWidth(nene_impl_Font_get_raw(font)) != 0;
 }
 
 void nene_Font_destroy(nene_Font *font) {
@@ -204,7 +200,7 @@ void nene_Font_destroy(nene_Font *font) {
     return;
   }
   
-  TTF_CloseFont(nene_Font_get_raw(*font));
+  TTF_CloseFont(nene_impl_Font_get_raw(*font));
 
   *font = nene_Font_zero();
 }

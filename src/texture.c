@@ -10,15 +10,8 @@ SPDX-License-Identifier: Zlib
 #include "nene/texture.h"
 #include "nene/core.h"
 
-static nene_Texture nene_impl_Texture_init(SDL_Texture *raw, uint16_t width, uint16_t height, SDL_TextureAccess access) {
-  SDL_assert(raw != NULL);
-  return (nene_Texture){
-    .raw = raw,
-    .width = width,
-    .height = height,
-    .access = access,
-  };
-}
+#include "nene/impl/math/rect.h"
+#include "nene/impl/texture.h"
 
 static bool nene_impl_Texture_render_copy(nene_Texture texture, nene_Rect source, nene_Rect destination) {
   nene_Core *const instance = nene_Core_instance();
@@ -29,17 +22,17 @@ static bool nene_impl_Texture_render_copy(nene_Texture texture, nene_Rect source
   SDL_Rect *ptr_dest_rect = NULL;
 
   if (source.size.y > 0 && source.size.y > 0) {
-    src_rect = nene_Rect_to_raw(source);
+    src_rect = nene_impl_Rect_to_raw(source);
     ptr_src_rect = &src_rect;
   }
 
   if (destination.size.y > 0 && destination.size.y > 0) {
     destination.pos = nene_Vec2i_add(destination.pos, nene_Vec2_to_vec2i(instance->render_offset));
-    dest_rect = nene_Rect_to_raw(destination);
+    dest_rect = nene_impl_Rect_to_raw(destination);
     ptr_dest_rect = &dest_rect;
   }
 
-  SDL_Texture *raw_texture = nene_Texture_get_raw(texture);
+  SDL_Texture *raw_texture = nene_impl_Texture_get_raw(texture);
 
   return SDL_RenderCopy(instance->renderer, raw_texture, ptr_src_rect, ptr_dest_rect) != 0;
 }
@@ -53,13 +46,13 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
   SDL_Rect *ptr_dest_rect = NULL;
 
   if (source.size.y > 0 && source.size.y > 0) {
-    src_rect = nene_Rect_to_raw(source);
+    src_rect = nene_impl_Rect_to_raw(source);
     ptr_src_rect = &src_rect;
   }
 
   if (destination.size.y > 0 && destination.size.y > 0) {
     destination.pos = nene_Vec2i_add(destination.pos, nene_Vec2_to_vec2i(instance->render_offset));
-    dest_rect = nene_Rect_to_raw(destination);
+    dest_rect = nene_impl_Rect_to_raw(destination);
     ptr_dest_rect = &dest_rect;
   }
 
@@ -72,7 +65,7 @@ static bool nene_impl_Texture_render_copy_ex(nene_Texture texture, nene_Rect sou
     .y = (int)rotation_center.y, 
   };
 
-  SDL_Texture *raw_texture = nene_Texture_get_raw(texture);
+  SDL_Texture *raw_texture = nene_impl_Texture_get_raw(texture);
 
   return SDL_RenderCopyEx(
     instance->renderer, 
@@ -107,45 +100,14 @@ void nene_Texture_destroy(nene_Texture *texture) {
     return;
   }
 
-  SDL_DestroyTexture(nene_Texture_get_raw(*texture));
+  SDL_DestroyTexture(nene_impl_Texture_get_raw(*texture));
   *texture = (nene_Texture){ .raw = NULL };
 }
 
-SDL_Texture *nene_Texture_get_raw(nene_Texture texture) {
-  SDL_assert(texture.raw != NULL);
-  return texture.raw;
-}
+bool nene_Texture_set_blend_mode(nene_Texture texture, nene_BlendMode blend_mode) {
+  SDL_Texture *raw_texture = nene_impl_Texture_get_raw(texture);
 
-bool nene_Texture_apply_raw(nene_Texture *texture, SDL_Texture *raw_texture) {
-  SDL_assert(texture != NULL);
-  SDL_assert(raw_texture != NULL);
-
-  if (texture == NULL || raw_texture == NULL) {
-    return false;
-  }
-
-  uint32_t fmt;
-  int access;
-  int w;
-  int h;
-
-  if (SDL_QueryTexture(raw_texture, &fmt, &access, &w, &h) != 0) {
-    nene_Core_warn("Nene.Texture.apply_raw", "could not query applied texture");
-    return false;
-  }
-
-  if (texture->raw != NULL) {
-    nene_Texture_destroy(texture);
-  }
-
-  *texture = nene_impl_Texture_init(raw_texture, w, h, access);
-  return true;
-}
-
-bool nene_Texture_set_blend_mode(nene_Texture texture, SDL_BlendMode blend_mode) {
-  SDL_Texture *raw_texture = nene_Texture_get_raw(texture);
-
-  if (SDL_SetTextureBlendMode(raw_texture, blend_mode) != 0) {
+  if (SDL_SetTextureBlendMode(raw_texture, (SDL_BlendMode)blend_mode) != 0) {
     nene_Core_warn("Nene.Texture.set_blend_mode", "could not set texture blend mode");
     return false;
   }
@@ -169,7 +131,7 @@ bool nene_Texture_set_color_mod(nene_Texture texture, nene_Color color) {
   return true;
 }
 
-nene_TextureCreation nene_Texture_create_with_access(uint16_t width, uint16_t height, SDL_TextureAccess access) {
+nene_TextureCreation nene_Texture_create_with_access(uint16_t width, uint16_t height, nene_TextureAccess access) {
   SDL_assert(width > 0);
   SDL_assert(height > 0);
 
@@ -191,7 +153,7 @@ nene_TextureCreation nene_Texture_create_with_access(uint16_t width, uint16_t he
 }
 
 nene_TextureCreation nene_Texture_create(uint16_t width, uint16_t height) {
-  return nene_Texture_create_with_access(width, height, SDL_TEXTUREACCESS_STATIC);
+  return nene_Texture_create_with_access(width, height, NENE_TEXTURE_ACCESS_STATIC);
 }
 
 nene_TextureCreation nene_Texture_load(const char *filepath) {
@@ -217,7 +179,7 @@ nene_TextureCreation nene_Texture_load(const char *filepath) {
 
   // let's apply the raw texture to nene texture, if the query fails, then
   // the texture it's destroyed and a failure it's returned.
-  if (!nene_Texture_apply_raw(&texture, raw_texture)) {
+  if (!nene_impl_Texture_apply_raw(&texture, raw_texture)) {
     nene_Texture_destroy(&texture);
     nene_Core_warn("Nene.Texture.load", "could not apply loaded image as a texture");
     return (nene_TextureCreation){

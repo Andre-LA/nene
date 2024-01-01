@@ -29,15 +29,6 @@ nene_Rect nene_Rect_copy(nene_Rect *rect) {
   }
 }
 
-SDL_Rect nene_Rect_to_raw(nene_Rect rect) {
-  return (SDL_Rect){
-    .x = rect.pos.x,
-    .y = rect.pos.y,
-    .w = rect.size.x,
-    .h = rect.size.y,
-  };
-}
-
 bool nene_Rect_equals(nene_Rect a, nene_Rect b) {
   return nene_Vec2i_equals(a.pos, b.pos) && nene_Vec2i_equals(a.size, b.size);
 }

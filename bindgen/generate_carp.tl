@@ -53,7 +53,6 @@ local Core = require 'bindgen.data.core'
 bind_module(Core, 'core', {
 	prepend = [[
 (load "nene/sdl/sdl2.carp")
-(load "nene/sdl/sdl2_image.carp")
 (load "nene/sdl/sdl2_mixer.carp")
 (load "nene/sdl/sdl2_ttf.carp")
 
@@ -61,7 +60,6 @@ bind_module(Core, 'core', {
 (Project.config "libflag" "-lnene -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf")
 
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL.h\""))
-(Unsafe.preproc (Unsafe.emit-c "#include \"SDL_image.h\""))
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL_ttf.h\""))
 (Unsafe.preproc (Unsafe.emit-c "#include \"SDL_mixer.h\""))
 

@@ -9,7 +9,6 @@ SPDX-License-Identifier: Zlib
 #define NENE_MUSIC_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include "SDL_mixer.h"
 
 typedef struct nene_Music {
@@ -24,8 +23,6 @@ typedef struct nene_MusicCreation {
 nene_Music nene_Music_zero(void);
 
 nene_Music nene_Music_copy(nene_Music *music);
-
-Mix_Music *nene_Music_get_raw(nene_Music music);
 
 nene_MusicCreation nene_Music_load(const char *filepath);
 

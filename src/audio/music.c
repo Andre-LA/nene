@@ -6,7 +6,8 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/audio/music.h"
-#include "SDL.h"
+#include "nene/impl/audio/music.h"
+#include "SDL_assert.h"
 
 nene_Music nene_Music_zero(void) {
   return (nene_Music){
@@ -21,11 +22,6 @@ nene_Music nene_Music_copy(nene_Music *music) {
   else {
     return *music;
   }
-}
-
-Mix_Music *nene_Music_get_raw(nene_Music music) {
-  SDL_assert(music.raw != NULL);
-  return music.raw;
 }
 
 nene_MusicCreation nene_Music_load(const char *filepath) {
@@ -60,7 +56,7 @@ bool nene_Music_play(nene_Music music, int16_t loops) {
     return false;
   }
 
-  if (Mix_PlayMusic(nene_Music_get_raw(music), loops) != 0) {
+  if (Mix_PlayMusic(nene_impl_Music_get_raw(music), loops) != 0) {
     return false;
   }
 
@@ -91,7 +87,7 @@ void nene_Music_destroy(nene_Music *music) {
     return;
   }
 
-  Mix_FreeMusic(nene_Music_get_raw(*music));
+  Mix_FreeMusic(nene_impl_Music_get_raw(*music));
 
   *music = (nene_Music){ .raw = NULL };
 }

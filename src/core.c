@@ -8,11 +8,13 @@ SPDX-License-Identifier: Zlib
 #include <math.h>
 #include <stdio.h>
 #include "SDL_events.h"
+#include "SDL_gamecontroller.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 #include "SDL_mixer.h"
 #include "nene/core.h"
 #include "nene/math/vec2.h"
+#include "nene/impl/math/rect.h"
 
 // define and empty-initialize global variables
 nene_Core _nene_instance = { .quit = false };
@@ -33,7 +35,7 @@ nene_Core* nene_Core_instance(void) {
 }
 
 // static (private) functions
-static int nene_impl_Core_get_controller_button_bit(SDL_GameControllerButton button) {
+static int nene_impl_Core_get_controller_button_bit(nene_GamepadButton button) {
   // if cb_event->button it's greater than 30, that means that button_bit
   // will be "1" shifted beyond the 32 bits of "buttons".
   SDL_assert_paranoid(button < 30);
@@ -230,21 +232,21 @@ void nene_Core_update(void) {
   instance->delta_time = (instance->current_time - prev_time) / 1000.0f;
 }
 
-bool nene_Core_is_scancode_held(SDL_Scancode scancode) {
+bool nene_Core_is_scancode_held(nene_Scancode scancode) {
   SDL_assert_release(_nene_initialized);
   
   nene_Core *const instance = nene_Core_instance();
   return instance->scancode_state[scancode];
 }
 
-bool nene_Core_is_scancode_pressed(SDL_Scancode scancode) {
+bool nene_Core_is_scancode_pressed(nene_Scancode scancode) {
   SDL_assert_release(_nene_initialized);
   
   nene_Core *const instance = nene_Core_instance();
   return instance->scancode_state[scancode] && !instance->prev_scancode_state[scancode];
 }
 
-bool nene_Core_is_scancode_released(SDL_Scancode scancode) {
+bool nene_Core_is_scancode_released(nene_Scancode scancode) {
   SDL_assert_release(_nene_initialized);
   
   nene_Core *const instance = nene_Core_instance();
@@ -279,7 +281,7 @@ bool nene_Core_is_mouse_button_released(uint32_t mouse_button) {
   );
 }
 
-bool nene_Core_is_gamepad_button_held(uint8_t gamepad_index, SDL_GameControllerButton gamepad_button) {
+bool nene_Core_is_gamepad_button_held(uint8_t gamepad_index, nene_GamepadButton gamepad_button) {
   // TODO: it would be nice to remove the repetetion between "held", "pressed" and "released" variants
   //       of this function.
   SDL_assert_release(_nene_initialized);
@@ -305,7 +307,7 @@ bool nene_Core_is_gamepad_button_held(uint8_t gamepad_index, SDL_GameControllerB
   return (gamepad_state->buttons & button_bit) != 0;
 }
 
-bool nene_Core_is_gamepad_button_pressed(uint8_t gamepad_index, SDL_GameControllerButton gamepad_button) {
+bool nene_Core_is_gamepad_button_pressed(uint8_t gamepad_index, nene_GamepadButton gamepad_button) {
   SDL_assert_release(_nene_initialized);
   SDL_assert(gamepad_index < NENE_CFG_GAMEPAD_COUNT);
 
@@ -332,7 +334,7 @@ bool nene_Core_is_gamepad_button_pressed(uint8_t gamepad_index, SDL_GameControll
   );
 }
 
-bool nene_Core_is_gamepad_button_released(uint8_t gamepad_index, SDL_GameControllerButton gamepad_button) {
+bool nene_Core_is_gamepad_button_released(uint8_t gamepad_index, nene_GamepadButton gamepad_button) {
   SDL_assert_release(_nene_initialized);
   SDL_assert(gamepad_index < NENE_CFG_GAMEPAD_COUNT);
 
@@ -359,7 +361,7 @@ bool nene_Core_is_gamepad_button_released(uint8_t gamepad_index, SDL_GameControl
   );
 }
 
-float nene_Core_get_gamepad_axis(uint8_t gamepad_index, SDL_GameControllerAxis gamepad_axis, float deadzone) {
+float nene_Core_get_gamepad_axis(uint8_t gamepad_index, nene_GamepadAxis gamepad_axis, float deadzone) {
   SDL_assert_release(_nene_initialized);
   SDL_assert(gamepad_index < NENE_CFG_GAMEPAD_COUNT);
 
@@ -378,7 +380,9 @@ float nene_Core_get_gamepad_axis(uint8_t gamepad_index, SDL_GameControllerAxis g
     return false;
   }
 
-  const int16_t i_axis_value = SDL_GameControllerGetAxis(gamepad_state->game_controller, gamepad_axis);
+  const int16_t i_axis_value = SDL_GameControllerGetAxis(
+    gamepad_state->game_controller, (SDL_GameControllerAxis)gamepad_axis
+  );
   float axis_limit = i_axis_value > 0 ? SDL_JOYSTICK_AXIS_MAX : -SDL_JOYSTICK_AXIS_MIN;
   float axis_value = i_axis_value / axis_limit;
   
@@ -484,12 +488,12 @@ bool nene_Core_set_render_draw_color(nene_Color color) {
   return true;
 }
 
-bool nene_Core_set_render_blend_mode(SDL_BlendMode blend_mode) {
+bool nene_Core_set_render_blend_mode(nene_BlendMode blend_mode) {
   SDL_assert_release(_nene_initialized);
 
   nene_Core *const instance = nene_Core_instance();
 
-  if (SDL_SetRenderDrawBlendMode(instance->renderer, blend_mode) != 0) {
+  if (SDL_SetRenderDrawBlendMode(instance->renderer, (SDL_BlendMode)blend_mode) != 0) {
     nene_Core_warn("Nene.Core.set_render_blend_mode", "could not set the  rendering blend mode");
     return false;
   }
@@ -511,7 +515,7 @@ bool nene_Core_set_render_clip(nene_Rect clip_rect, bool clip_is_screenspace){
         nene_Core_world_pos_to_screen_point( nene_Vec2_from_vec2i(clip_rect.pos) )
       );
     }
-    raw_rect = nene_Rect_to_raw(clip_rect);
+    raw_rect = nene_impl_Rect_to_raw(clip_rect);
     ptr_raw_clip_rect = &raw_rect;
   }
 
@@ -603,7 +607,7 @@ bool nene_Core_render_draw_rect(nene_Rect rect, bool only_lines, nene_Color colo
 
   rect = nene_Rect_add_pos(rect, nene_Vec2_to_vec2i(instance->render_offset));
 
-  SDL_Rect sdl_rect = nene_Rect_to_raw(rect);
+  SDL_Rect sdl_rect = nene_impl_Rect_to_raw(rect);
 
   nene_Core_set_render_draw_color(color);
 
@@ -630,7 +634,7 @@ void nene_Core_render_present(void) {
   SDL_RenderPresent(instance->renderer);
 }
 
-bool nene_Core_init(const char title[], uint16_t width, uint16_t height, SDL_WindowFlags flags) {
+bool nene_Core_init(const char title[], uint16_t width, uint16_t height, nene_WindowFlags flags) {
   SDL_assert_release(!_nene_initialized);
   SDL_assert(width > 0);
   SDL_assert(height > 0);
@@ -687,7 +691,7 @@ bool nene_Core_init(const char title[], uint16_t width, uint16_t height, SDL_Win
   };
 
   nene_Core_set_render_draw_color(nene_Color_white());
-  nene_Core_set_render_blend_mode(SDL_BLENDMODE_BLEND);
+  nene_Core_set_render_blend_mode(NENE_BLEND_MODE_BLEND);
 
   return true;
 }

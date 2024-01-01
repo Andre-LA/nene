@@ -8,7 +8,6 @@ SPDX-License-Identifier: Zlib
 #ifndef NENE_SOUND_H
 #define NENE_SOUND_H
 
-#include <stdint.h>
 #include <stdbool.h>
 #include "SDL_mixer.h"
 
@@ -25,8 +24,6 @@ typedef struct nene_SoundCreation {
 nene_Sound nene_Sound_zero(void);
 
 nene_Sound nene_Sound_copy(nene_Sound *sound);
-
-Mix_Chunk *nene_Sound_get_raw(nene_Sound sound);
 
 nene_SoundCreation nene_Sound_load(const char *filepath);
 

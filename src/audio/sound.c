@@ -6,7 +6,8 @@ SPDX-License-Identifier: Zlib
 */
 
 #include "nene/audio/sound.h"
-#include "SDL.h"
+#include "nene/impl/audio/sound.h"
+#include "SDL_assert.h"
 
 nene_Sound nene_Sound_zero(void) {
   return (nene_Sound){
@@ -21,11 +22,6 @@ nene_Sound nene_Sound_copy(nene_Sound *sound) {
   else {
     return *sound;
   }
-}
-
-Mix_Chunk *nene_Sound_get_raw(nene_Sound sound) {
-  SDL_assert(sound.raw != NULL);
-  return sound.raw;
 }
 
 nene_SoundCreation nene_Sound_load(const char *filepath) {
@@ -61,7 +57,7 @@ bool nene_Sound_play(nene_Sound *sound, int16_t loops) {
     return false;
   }
 
-  sound->channel = Mix_PlayChannel(-1, nene_Sound_get_raw(*sound), loops);
+  sound->channel = Mix_PlayChannel(-1, nene_impl_Sound_get_raw(*sound), loops);
 
   if (sound->channel == -1) {
     return false;
@@ -98,7 +94,7 @@ float nene_Sound_set_volume(nene_Sound sound, float volume) {
   scaled_vol = scaled_vol < 0 ? 0 : scaled_vol;
   scaled_vol = scaled_vol > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : scaled_vol;
 
-  int16_t prev_volume = Mix_VolumeChunk(nene_Sound_get_raw(sound), scaled_vol);
+  int16_t prev_volume = Mix_VolumeChunk(nene_impl_Sound_get_raw(sound), scaled_vol);
 
   return (float)prev_volume / MIX_MAX_VOLUME;
 }
@@ -110,7 +106,7 @@ void nene_Sound_destroy(nene_Sound *sound) {
     return;
   }
 
-  Mix_FreeChunk(nene_Sound_get_raw(*sound));
+  Mix_FreeChunk(nene_impl_Sound_get_raw(*sound));
 
   *sound = (nene_Sound){ .raw = NULL };
 }

@@ -48,6 +48,12 @@ set(NENE_SOURCE_FILES
   animation.c
   tilemap.c
   color.c
+  impl/texture.c
+  impl/font.c
+  impl/audio/music.c
+  impl/audio/sound.c
+  impl/math/rect.c
+  impl/math/rectf.c
 )
 
 # set the headers of the nene target
@@ -72,6 +78,12 @@ set(NENE_HEADER_FILES
   "${NENE_INCLUDE_DIR}/nene/animation.h"
   "${NENE_INCLUDE_DIR}/nene/tilemap.h"
   "${NENE_INCLUDE_DIR}/nene/color.h"
+  "${NENE_INCLUDE_DIR}/nene/impl/texture.h"
+  "${NENE_INCLUDE_DIR}/nene/impl/font.h"
+  "${NENE_INCLUDE_DIR}/nene/impl/audio/music.h"
+  "${NENE_INCLUDE_DIR}/nene/impl/audio/sound.h"
+  "${NENE_INCLUDE_DIR}/nene/impl/math/rect.h"
+  "${NENE_INCLUDE_DIR}/nene/impl/math/rectf.h"
 )
 
 # set the sources and the headers as the nene target sources

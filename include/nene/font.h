@@ -8,7 +8,6 @@ SPDX-License-Identifier: Zlib
 #ifndef NENE_FONT_H
 #define NENE_FONT_H
 
-#include <stdint.h>
 #include <stdbool.h>
 #include "SDL_ttf.h"
 #include "nene/math/vec2i.h"
@@ -18,9 +17,9 @@ SPDX-License-Identifier: Zlib
 /// The quality of the text rendering.
 typedef enum nene_TextQuality {
   /// Solid is faster, but not "smooth", ideal for fast rendering or pixel-art fonts.
-  NENE_TEXTQUALITY_SOLID = 0,
+  NENE_TEXT_QUALITY_SOLID = 0,
   /// Blended is slower, but have high-quality, with antialiasing.
-  NENE_TEXTQUALITY_BLENDED = 2,
+  NENE_TEXT_QUALITY_BLENDED = 2,
 } nene_TextQuality;
 
 /// The metrics of the font
@@ -68,9 +67,6 @@ nene_Font nene_Font_zero(void);
 
 /// Returns a copy of the Font handle (it doesn't clones the Font resource).
 nene_Font nene_Font_copy(nene_Font *font);
-
-/// Returns the internal data of the Font handle.
-TTF_Font *nene_Font_get_raw(nene_Font font);
 
 /// Returns the font creation result, this creates a font from a font asset (like .ttf files).
 nene_FontCreation nene_Font_load(const char filepath[], int16_t pt_size);

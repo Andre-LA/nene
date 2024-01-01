@@ -9,7 +9,6 @@ SPDX-License-Identifier: Zlib
 #define NENE_RECT_H
 
 #include <stdbool.h>
-#include "SDL.h"
 
 #include "nene/math/vec2i.h"
 
@@ -20,7 +19,6 @@ typedef struct nene_Rect {
 
 nene_Rect nene_Rect_zero(void);
 nene_Rect nene_Rect_copy(nene_Rect *rect);
-SDL_Rect nene_Rect_to_raw(nene_Rect rect);
 bool nene_Rect_equals(nene_Rect a, nene_Rect b);
 nene_Rect nene_Rect_add_pos(nene_Rect rect, nene_Vec2i pos);
 nene_Rect nene_Rect_add_size(nene_Rect rect, nene_Vec2i size);
