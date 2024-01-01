@@ -22,11 +22,9 @@
 		(Core.render-present)))
 
 (defn main [] 
-	(let [ok (Core.init (cstr "Minimal Hello World") (fl 800l) (fl 600l) sdl-window-shown)] 
+	(let [ok (Core.init (cstr "Minimal Hello World") (fl 800l) (fl 600l) WindowFlags.Shown)] 
 		(if (not ok)
-			(do
-				(System.exit exit-failure)
-				exit-failure)
+			exit-failure
 			(do
 				(until (Core.should-quit)
 					(tick))

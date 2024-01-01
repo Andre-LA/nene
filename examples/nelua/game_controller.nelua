@@ -12,7 +12,7 @@ Gamepad example
 -- nene modules
 local math = require 'math'
 
-local Nene = require 'nene.core'
+local Core = require 'nene.core'
 local Color = require 'nene.color'
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
@@ -37,7 +37,7 @@ local function game_controller()
     return Color{ r, g, b, 0xff }
   end
 
-  local ok = Nene.init('nene game controller', 800, 600)
+  local ok = Core.init('nene game controller', 800, 600)
   assert(ok, 'error: nene initialization failed')
 
   local rect: Rect = {
@@ -48,27 +48,27 @@ local function game_controller()
 
   repeat
     -- update game state
-    Nene.update()
+    Core.update()
 
     -- update rect color by pressing FaceButtonDown button
-    if Nene.is_gamepad_button_pressed(0, SDL_CONTROLLER_BUTTON_A) then
+    if Core.is_gamepad_button_pressed(0, Core.GamepadButton.RightFaceDown) then
       rect_color = get_random_color(rect_color)
     end
 
     -- update rect position by left thumbstick value
-    local lx = Nene.get_gamepad_axis(0, SDL_CONTROLLER_AXIS_LEFTX)
-    local ly = Nene.get_gamepad_axis(0, SDL_CONTROLLER_AXIS_LEFTY)
+    local lx = Core.get_gamepad_axis(0, Core.GamepadAxis.LeftX)
+    local ly = Core.get_gamepad_axis(0, Core.GamepadAxis.LeftY)
     rect = rect:add_pos({lx, -ly})
 
     -- draw game state
-    Nene.render_clear(Color.bg)
+    Core.render_clear(Color.bg)
 
-    Nene.render_draw_rect(rect, false, rect_color, true)
+    Core.render_draw_rect(rect, false, rect_color, true)
 
-    Nene.render_present()
-  until Nene.should_quit()
+    Core.render_present()
+  until Core.should_quit()
 
-  Nene.terminate()
+  Core.terminate()
 end
 
 game_controller()

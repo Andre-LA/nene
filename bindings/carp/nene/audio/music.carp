@@ -25,7 +25,6 @@
 	(sig -private-blit (Fn [Music] Music))
 	(defn- -private-blit [x] (the Music x))
 	(implements blit Music.-private-blit)
-	(register get-raw (Fn [Music] (Ptr Mix_Music)) "nene_Music_get_raw")
 	(private -private-load) (hidden -private-load)
 	(register -private-load (Fn [(Ptr CChar)] MusicCreation) "nene_Music_load")
 	(sig load (Fn [(Ptr CChar)] (Maybe Music)))

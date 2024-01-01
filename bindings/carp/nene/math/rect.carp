@@ -24,7 +24,6 @@
 	(sig -private-blit (Fn [Rect] Rect))
 	(defn- -private-blit [x] (the Rect x))
 	(implements blit Rect.-private-blit)
-	(register to-raw (Fn [Rect] SDL_Rect) "nene_Rect_to_raw")
 	(doc equals "")
 	(private -private-equals) (hidden -private-equals)
 	(register -private-equals (Fn [Rect, Rect] Bool) "nene_Rect_equals")

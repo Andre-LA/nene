@@ -5,15 +5,12 @@ Please refer to the LICENSE file for details
 SPDX-License-Identifier: Zlib
 */
 
-#include <math.h>
 #include "nene/collision.h"
-#include "nene/color.h"
 #include "nene/intersections.h"
 #include "nene/math/segment.h"
 #include "nene/math/shape.h"
 #include "nene/math/vec2.h"
-#include "nene/math/vec2i.h"
-#include "nene/core.h"
+#include "SDL_assert.h"
 
 typedef struct nene_impl_CollidingData {
   nene_Vec2 corner;

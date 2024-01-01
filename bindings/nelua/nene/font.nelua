@@ -76,10 +76,6 @@ function Font.zero(): Font <cimport 'nene_Font_zero', nodecl> end
 function Font.copy(font: *Font): Font <cimport 'nene_Font_copy', nodecl> end
 
 
---- Returns the internal data of the Font handle.
-function Font.get_raw(font: Font): *TTF_Font <cimport 'nene_Font_get_raw', nodecl> end
-
-
 local function nene_Font_load(filepath: cstring, pt_size: int16): FontCreation <cimport 'nene_Font_load', nodecl> end
 
 --- Returns the font creation result, this creates a font from a font asset (like .ttf files).

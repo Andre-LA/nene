@@ -49,9 +49,9 @@
 
 	(defn move-dir [is-held?]
 		(cond
-			(either-scancodes is-held? sdl-scancode-d sdl-scancode-right)
+			(either-scancodes is-held? Scancode.D Scancode.Right)
 				1f
-			(either-scancodes is-held? sdl-scancode-a sdl-scancode-left)
+			(either-scancodes is-held? Scancode.A Scancode.Left)
 				-1f
 			0f))
 
@@ -372,7 +372,7 @@
 			(fn [] (Game.change-state! (Running (GameRunning.create))))))
 
 	(defn-do create []
-		(let-do [ok (Core.init (cstr "Reflected Pong") (fl 800l) (fl 600l) sdl-window-shown)]
+		(let-do [ok (Core.init (cstr "Reflected Pong") (fl 800l) (fl 600l) WindowFlags.Shown)]
 			(when ok
 				(do
 					(Resources.load!)
@@ -412,9 +412,7 @@
 (defn main []
 	(let [ok (Game.create)]
 		(if (not ok)
-			(do
-				(System.exit exit-failure)
-				exit-failure)
+			exit-failure
 			(do
 				(Game.game-loop!)
 				(Game.terminate!)

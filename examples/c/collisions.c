@@ -26,7 +26,7 @@ You can also check the CMakeLists to see how to use CMake in this case, although
 #include "nene/collision.h"
 
 int main(int argc, char *argv[]) {
-  bool ok = nene_Core_init("collision test", 1280, 720, SDL_WINDOW_SHOWN);
+  bool ok = nene_Core_init("collision test", 1280, 720, NENE_WINDOW_FLAG_SHOWN);
   if (!ok) {
     return EXIT_FAILURE;
   }
@@ -50,22 +50,22 @@ int main(int argc, char *argv[]) {
 
     nene_Vec2 delta = nene_Vec2_zero();
 
-    if (nene_Core_is_scancode_held(SDL_SCANCODE_W)) {
+    if (nene_Core_is_scancode_held(NENE_SCANCODE_W)) {
       delta.y += 1;
     }
-    if (nene_Core_is_scancode_held(SDL_SCANCODE_S)) {
+    if (nene_Core_is_scancode_held(NENE_SCANCODE_S)) {
       delta.y -= 1;
     }
-    if (nene_Core_is_scancode_held(SDL_SCANCODE_A)) {
+    if (nene_Core_is_scancode_held(NENE_SCANCODE_A)) {
       delta.x -= 1;
     }
-    if (nene_Core_is_scancode_held(SDL_SCANCODE_D)) {
+    if (nene_Core_is_scancode_held(NENE_SCANCODE_D)) {
       delta.x += 1;
     }
 
     rect.pos = nene_Vec2_add(rect.pos, delta);
 
-    if (!nene_Core_is_scancode_held(SDL_SCANCODE_SPACE)) {
+    if (!nene_Core_is_scancode_held(NENE_SCANCODE_SPACE)) {
       for (int i = 0; i < SEGMENTS_COUNT; ++i) {
         nene_Collision collision = nene_Collision_rectf_with_segment(rect, segments[i], delta);
         if (collision.collided) {
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    nene_Color color = nene_Core_is_scancode_held(SDL_SCANCODE_SPACE) ? nene_Color_cyan(): nene_Color_white();
+    nene_Color color = nene_Core_is_scancode_held(NENE_SCANCODE_SPACE) ? nene_Color_cyan(): nene_Color_white();
 
     nene_Core_render_draw_rect(nene_Rectf_to_rect(rect), true, color, true);
 

@@ -29,10 +29,6 @@ function Sound.zero(): Sound <cimport 'nene_Sound_zero', nodecl> end
 function Sound.copy(sound: *Sound): Sound <cimport 'nene_Sound_copy', nodecl> end
 
 
-
-function Sound.get_raw(sound: Sound): *Mix_Chunk <cimport 'nene_Sound_get_raw', nodecl> end
-
-
 local function nene_Sound_load(filepath: cstring): SoundCreation <cimport 'nene_Sound_load', nodecl> end
 
 

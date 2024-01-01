@@ -8,6 +8,7 @@ SPDX-License-Identifier: Zlib
 #include "nene/core.h"
 #include "nene/tilemap.h"
 #include "nene/math/vec2.h"
+#include "SDL_assert.h"
 
 nene_Vec2i nene_Tilemap_get_size_in_tiles(nene_Tilemap tilemap) {
   const nene_Vec2i at_tile_coord = nene_Grid_get_nth_cell_coord(tilemap.tile_count, tilemap.width);

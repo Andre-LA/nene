@@ -27,10 +27,6 @@ function Music.zero(): Music <cimport 'nene_Music_zero', nodecl> end
 function Music.copy(music: *Music): Music <cimport 'nene_Music_copy', nodecl> end
 
 
-
-function Music.get_raw(music: Music): *Mix_Music <cimport 'nene_Music_get_raw', nodecl> end
-
-
 local function nene_Music_load(filepath: cstring): MusicCreation <cimport 'nene_Music_load', nodecl> end
 
 

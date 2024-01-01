@@ -1,11 +1,3 @@
-##[[
-if ccinfo.is_emscripten then
-  cflags '-s USE_SDL_TTF=2'
-else
-  linklib 'SDL2_ttf'
-end
-cinclude '<SDL_ttf.h>'
-]]
 global function TTF_Linked_Version(): *SDL_version <cimport,nodecl> end
 global function TTF_GetFreeTypeVersion(major: *cint, minor: *cint, patch: *cint): void <cimport,nodecl> end
 global function TTF_GetHarfBuzzVersion(major: *cint, minor: *cint, patch: *cint): void <cimport,nodecl> end

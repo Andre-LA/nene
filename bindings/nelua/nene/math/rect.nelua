@@ -24,10 +24,6 @@ function Rect.copy(rect: *Rect): Rect <cimport 'nene_Rect_copy', nodecl> end
 
 
 
-function Rect.to_raw(rect: Rect): SDL_Rect <cimport 'nene_Rect_to_raw', nodecl> end
-
-
-
 function Rect.__eq(a: Rect, b: Rect): boolean <cimport 'nene_Rect_equals', nodecl> end
 
 

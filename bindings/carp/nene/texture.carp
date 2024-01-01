@@ -4,13 +4,24 @@
 (load "nene/math/vec2.carp")
 (load "nene/math/rect.carp")
 (load "nene/color.carp")
+(load "nene/core.carp")
 
 
 
 
+(doc TextureAccess "")
+(register-type TextureAccess "nene_TextureAccess")
+(defmodule TextureAccess
+	(doc Static "")
+	(register Static TextureAccess "NENE_TEXTURE_ACCESS_STATIC")
+	(doc Streaming "")
+	(register Streaming TextureAccess "NENE_TEXTURE_ACCESS_STREAMING")
+	(doc Target "")
+	(register Target TextureAccess "NENE_TEXTURE_ACCESS_TARGET")
+)
 
 (doc Texture "")
-(register-type Texture "nene_Texture" [raw (Ptr SDL_Texture), width Uint16, height Uint16, access SDL_TextureAccess])
+(register-type Texture "nene_Texture" [raw (Ptr SDL_Texture), width Uint16, height Uint16, access TextureAccess])
 (doc TextureCreation "")
 (register-type TextureCreation "nene_TextureCreation" [created Bool, texture Texture])
 
@@ -29,13 +40,11 @@
 	(defn- -private-blit [x] (the Texture x))
 	(implements blit Texture.-private-blit)
 	(register destroy (Fn [(Ptr Texture)] ()) "nene_Texture_destroy")
-	(register get-raw (Fn [Texture] (Ptr SDL_Texture)) "nene_Texture_get_raw")
-	(register apply-raw (Fn [(Ptr Texture), (Ptr SDL_Texture)] Bool) "nene_Texture_apply_raw")
-	(register set-blend-mode (Fn [Texture, SDL_BlendMode] Bool) "nene_Texture_set_blend_mode")
+	(register set-blend-mode (Fn [Texture, BlendMode] Bool) "nene_Texture_set_blend_mode")
 	(register set-color-mod (Fn [Texture, Color] Bool) "nene_Texture_set_color_mod")
 	(private -private-create-with-access) (hidden -private-create-with-access)
-	(register -private-create-with-access (Fn [Uint16, Uint16, SDL_TextureAccess] TextureCreation) "nene_Texture_create_with_access")
-	(sig create-with-access (Fn [Uint16 Uint16 SDL_TextureAccess] (Maybe Texture)))
+	(register -private-create-with-access (Fn [Uint16, Uint16, TextureAccess] TextureCreation) "nene_Texture_create_with_access")
+	(sig create-with-access (Fn [Uint16 Uint16 TextureAccess] (Maybe Texture)))
 	(doc create_with_access "")
 	(defn create-with-access [width, height, access]
 		(let [maybe-result (Texture.-private-create-with-access width height access)]

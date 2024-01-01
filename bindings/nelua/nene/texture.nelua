@@ -4,9 +4,20 @@
 local Vec2 = require 'nene.math.vec2'
 local Rect = require 'nene.math.rect'
 local Color = require 'nene.color'
+local Core = require 'nene.core'
 
 
+local BlendMode: type = @Core.BlendMode
 
+
+local TextureAccess <cimport 'nene_TextureAccess', nodecl> = @enum{
+
+	Static = 0,
+
+	Streaming = 1,
+
+	Target = 2,
+}
 
 
 local Texture <cimport 'nene_Texture', nodecl> = @record{
@@ -17,7 +28,7 @@ local Texture <cimport 'nene_Texture', nodecl> = @record{
 
 	height: uint16,
 
-	access: SDL_TextureAccess,
+	access: TextureAccess,
 }
 
 
@@ -41,25 +52,17 @@ function Texture.destroy(texture: *Texture): void <cimport 'nene_Texture_destroy
 
 
 
-function Texture.get_raw(texture: Texture): *SDL_Texture <cimport 'nene_Texture_get_raw', nodecl> end
-
-
-
-function Texture.apply_raw(texture: *Texture, raw_texture: *SDL_Texture): boolean <cimport 'nene_Texture_apply_raw', nodecl> end
-
-
-
-function Texture.set_blend_mode(texture: Texture, blend_mode: SDL_BlendMode): boolean <cimport 'nene_Texture_set_blend_mode', nodecl> end
+function Texture.set_blend_mode(texture: Texture, blend_mode: BlendMode): boolean <cimport 'nene_Texture_set_blend_mode', nodecl> end
 
 
 
 function Texture.set_color_mod(texture: Texture, color: Color): boolean <cimport 'nene_Texture_set_color_mod', nodecl> end
 
 
-local function nene_Texture_create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
+local function nene_Texture_create_with_access(width: uint16, height: uint16, access: TextureAccess): TextureCreation <cimport 'nene_Texture_create_with_access', nodecl> end
 
 
-function Texture.create_with_access(width: uint16, height: uint16, access: SDL_TextureAccess): (boolean, Texture) 
+function Texture.create_with_access(width: uint16, height: uint16, access: TextureAccess): (boolean, Texture) 
 	local maybe_result = nene_Texture_create_with_access(width, height, access)
 	return maybe_result.created, maybe_result.texture
 end
@@ -107,6 +110,7 @@ function Texture.draw_to_rect_ex(texture: Texture, source: Rect, destination: Re
 
 
 
+local Texture.TextureAccess: type = TextureAccess
 local Texture.TextureCreation: type = TextureCreation
 
 return Texture
